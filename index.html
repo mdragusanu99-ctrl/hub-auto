@@ -620,7 +620,7 @@
         // MOTOR MAPARE MILIMETRICĂ 1 LA 1 - TOATE CELE 35 DE COORDONATE TALE
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează documentul cu mapare directă pe ID...";
+            statusEl.innerText = "Se generează documentul cu coordonatele directe PDF...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -655,62 +655,42 @@
                     return el ? el.value : '';
                 };
 
-                const scrie = (txt, x, y, size = 6.0, font = fontRegular) => {
+                const scrie = (txt, x, y, size = 6.5, font = fontRegular) => {
                     if (txt) {
                         firstPage.drawText(curataText(String(txt)), { x, y, size, font, color: colNegru });
                     }
                 };
 
-                // --- MAPARE DIRECTĂ 1 LA 1 PE BAZA COORDONATELOR TALE EXACTE ---
+                // --- COORDONATE DIRECTE PDF-LIB (FĂRĂ SCĂDERI) ---
                 
-                scrie(val('vNume'), 324, 692, 6.5, fontBold);       // Nume și Prenume (Subsemnatul)
-                scrie(val('vDomiciliu'), 178, 682, 6.5);          // Domiciliu subsemnatul
-                scrie(val('vJudet'), 268, 682, 6.5);              // Județ
-                scrie(val('vPostal'), 399, 682, 6.5);             // Cod poștal
-                scrie(val('vLocalitate'), 49, 670, 6.5);          // Municipiul/Oraș/Comună
-                scrie(val('vSat'), 212, 670, 6.5);                // Sat/Sector
-                scrie(val('vStrada'), 310, 670, 6.5);             // Stradă
-                scrie(val('vNumar'), 310, 670, 6.5);              // Număr
-                scrie(val('vBl'), 50, 659, 6.5);                  // Bloc (Bl.)
-                scrie(val('vSc'), 103, 659, 6.5);                 // Scară (Sc.)
-                scrie(val('vEtaj'), 158, 659, 6.5);               // Etaj
-                scrie(val('vAp'), 210, 659, 6.5);                 // Apartament
-                scrie(val('vActSeria'), 456, 659, 6.5);           // Seria act
-                scrie(val('vActNr'), 508, 659, 6.5);              // Număr act
-                scrie(val('vCnp'), 105, 648, 6.5, fontBold);      // CNP / CIF
-                scrie(val('vTel'), 256, 648, 6.5);                // Telefon/Fax
-                scrie(val('vEmail'), 367, 648, 6.5);              // E-mail
-                
-                scrie(val('vFiscDomiciliu'), 183, 635, 6.5);      // Domiciliu fiscal
-                scrie(val('vFiscJudet'), 183, 635, 6.5);          // Județ fiscal
-                scrie(val('vFiscPostal'), 496, 635, 6.5);         // Cod poștal fiscal
-                scrie(val('vFiscLocalitate'), 148, 624, 6.5);     // Municipiul fiscal
-                scrie(val('vFiscSat'), 296, 624, 6.5);            // Sat fiscal
-                scrie(val('vFiscStrada'), 391, 624, 6.5);         // Stradă fiscală
-                scrie(val('vFiscNumar'), 391, 614, 6.5);          // Număr fiscal
-                scrie(val('vFiscBl'), 105, 614, 6.5);             // Bloc fiscal
-                scrie(val('vFiscSc'), 149, 614, 6.5);             // Scară fiscală
-                scrie(val('vFiscEt'), 187, 614, 6.5);             // Etaj fiscal
-                scrie(val('vFiscAp'), 224, 614, 6.5);             // Apartament fiscal
-                scrie(val('vReprezentant'), 329, 614, 6.5);       // Reprezentată prin
-                scrie(val('vRepSeria'), 172, 601, 6.5);           // Seria act reprezentant
-                scrie(val('vRepNr'), 217, 601, 6.5);              // Număr act reprezentant
-                scrie(val('vRepCif'), 217, 601, 6.5);             // CIF reprezentant
-                scrie(val('vRepTel'), 424, 601, 6.5);             // Telefon reprezentant
-                scrie(val('vRepEmail'), 51, 589, 6.5);            // E-mail reprezentant
-                scrie(val('vCalitate'), 221, 589, 6.5);           // În calitate de
+                scrie(val('vNume'), 185, 712, 7, fontBold);       // Nume și Prenume (Subsemnatul)
+                scrie(val('vDomiciliu'), 178, 685, 6.5);          // Domiciliu subsemnatul
+                scrie(val('vJudet'), 100, 685, 6.5);              // Județ
+                scrie(val('vPostal'), 280, 685, 6.5);             // Cod poștal
+                scrie(val('vLocalitate'), 100, 672, 6.5);          // Municipiul/Oraș/Comună
+                scrie(val('vSat'), 275, 672, 6.5);                // Sat/Sector
+                scrie(val('vStrada'), 65, 659, 6.5);              // Stradă / Număr
+                scrie(val('vBl'), 50, 646, 6.5);                  // Bloc (Bl.)
+                scrie(val('vSc'), 100, 646, 6.5);                 // Scară (Sc.)
+                scrie(val('vEtaj'), 150, 646, 6.5);               // Etaj
+                scrie(val('vAp'), 200, 646, 6.5);                 // Apartament
+                scrie(val('vActSeria'), 175, 633, 6.5);           // Seria act
+                scrie(val('vActNr'), 210, 633, 6.5);              // Număr act
+                scrie(val('vCnp'), 340, 633, 6.5, fontBold);      // CNP / CIF
+                scrie(val('vTel'), 75, 620, 6.5);                 // Telefon/Fax
+                scrie(val('vEmail'), 220, 620, 6.5);              // E-mail
 
                 const pdfBytesFinal = await pdfDoc.save();
                 const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Fix.pdf";
+                link.download = "Contract_ITL_054_Corect.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Datele s-au așezat perfect pe coordonatele tale.";
+                statusEl.innerText = "Succes! Documentul a fost generat corect.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
