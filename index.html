@@ -40,9 +40,9 @@
         input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
         input:read-only { background-color: #f1f5f9; color: #64748b; border-color: #e2e8f0; cursor: not-allowed; }
         
-        .checkbox-container { display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 10px; cursor: pointer; }
-        .checkbox-container input { width: 18px; height: 18px; cursor: pointer; }
-        .checkbox-container label { margin: 0; cursor: pointer; color: #1e3a8a; font-weight: bold; font-size: 13px; text-transform: none; }
+        .fiscal-toggle-btn { background-color: #f8fafc; border: 2px dashed #cbd5f1; color: #1e3a8a; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; transition: all 0.2s; margin-top: 10px; width: 100%; }
+        .fiscal-toggle-btn:hover { background-color: #eff6ff; border-color: #2563eb; }
+        .fiscal-section { display: none; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #cbd5e1; margin-top: 10px; }
 
         .btn-group { display: flex; gap: 10px; margin-top: 30px; }
         .btn { flex: 1; padding: 14px; font-size: 15px; font-weight: bold; border-radius: 10px; cursor: pointer; border: none; transition: background 0.2s; }
@@ -159,26 +159,25 @@
                     <input type="text" id="seller_email" placeholder="ex: dragusanumario@gmail.com">
                 </div>
 
-                <!-- OPȚIUNE DOMICILIU FISCAL -->
+                <!-- BUTON EXTEXTIBIL PENTRU DOMICILIU FISCAL DIFERIT -->
                 <div class="full-width">
-                    <div class="checkbox-container">
-                        <input type="checkbox" id=" acelasiDomiciliuFiscal" checked onchange="toggleDomiciliuFiscal()">
-                        <label for="acelasiDomiciliuFiscal">Domiciliul fiscal este identic cu adresa de mai sus</label>
+                    <button type="button" class="fiscal-toggle-btn" id="btnToggleFiscal" onclick="comutaDomiciliuFiscal()">
+                        ➕ Adaugă Domiciliu Fiscal Diferit (Opțional)
+                    </button>
+                    
+                    <div id="sectiuneFiscala" class="fiscal-section">
+                        <div class="form-grid">
+                            <div class="full-width"><strong style="color: #1e3a8a; font-size: 13px;">Specificați Datele Domiciliului Fiscal</strong></div>
+                            <div><label>Județ Fiscal</label><input type="text" id="sellerFiscalCounty" placeholder="ex: Vaslui"></div>
+                            <div><label>Cod Poștal Fiscal</label><input type="text" id="sellerFiscalPostalCode" placeholder="ex: 731184"></div>
+                            <div><label>Localitate Fiscală</label><input type="text" id="sellerFiscalCity" placeholder="ex: Bârlad"></div>
+                            <div><label>Sector / Sat Fiscal</label><input type="text" id="sellerFiscalSector" placeholder="ex: -"></div>
+                            <div><label>Stradă Fiscală</label><input type="text" id="sellerFiscalStreet" placeholder="ex: Str. Principală"></div>
+                            <div><label>Număr Fiscal</label><input type="text" id="sellerFiscalStreetNo" placeholder="ex: 10"></div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- CÂMPURI DOMICILIU FISCAL (Ascunse dacă e bifat, altfel editabile) -->
-                <div id="sectiuneFiscala" style="display:none;" class="full-width">
-                    <div class="form-grid" style="margin-top: 10px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1;">
-                        <div class="full-width"><strong style="color: #1e3a8a; font-size: 13px;">Date Domiciliu Fiscal</strong></div>
-                        <div><label>Județ Fiscal</label><input type="text" id="sellerFiscalCounty"></div>
-                        <div><label>Cod Poștal Fiscal</label><input type="text" id="sellerFiscalPostalCode"></div>
-                        <div><label>Localitate Fiscală</label><input type="text" id="sellerFiscalCity"></div>
-                        <div><label>Sector / Sat Fiscal</label><input type="text" id="sellerFiscalSector"></div>
-                        <div><label>Stradă Fiscală</label><input type="text" id="sellerFiscalStreet"></div>
-                        <div><label>Număr Fiscal</label><input type="text" id="sellerFiscalStreetNo"></div>
-                    </div>
-                </div>
             </div>
             <div class="btn-group">
                 <button class="btn btn-next" onclick="nextStep(1)">Înainte ➔</button>
@@ -346,6 +345,7 @@
         let globalSessionId = null;
         let userRole = 'vanzator';
         let pollInterval = null;
+        let domiciliuFiscalDiferit = false;
 
         function selecteazaMod(mod) {
             modLucru = mod;
@@ -370,10 +370,23 @@
             }
         }
 
-        function toggleDomiciliuFiscal() {
-            const eIdentic = document.getElementById('acelasiDomiciliuFiscal').checked;
+        // Funcție pentru deschiderea/închiderea secțiunii de domiciliu fiscal diferit prin buton
+        function comutaDomiciliuFiscal() {
+            domiciliuFiscalDiferit = !domiciliuFiscalDiferit;
             const sectiune = document.getElementById('sectiuneFiscala');
-            sectiune.style.display = eIdentic ? 'none' : 'block';
+            const buton = document.getElementById('btnToggleFiscal');
+
+            if (domiciliuFiscalDiferit) {
+                sectiune.style.display = 'block';
+                buton.innerHTML = "➖ Ascunde Domiciliul Fiscal Diferit";
+                buton.style.borderColor = "#2563eb";
+                buton.style.backgroundColor = "#eff6ff";
+            } else {
+                sectiune.style.display = 'none';
+                buton.innerHTML = "➕ Adaugă Domiciliu Fiscal Diferit (Opțional)";
+                buton.style.borderColor = "#cbd5e1";
+                buton.style.backgroundColor = "#f8fafc";
+            }
         }
 
         function updateProgress() {
@@ -471,9 +484,9 @@
                 date[id] = el ? el.value : '';
             });
 
-            // Gestiune Domiciliu Fiscal: Dacă e bifat, copiem automat adresa principală în cea fiscală
-            const eIdentic = document.getElementById('acelasiDomiciliuFiscal').checked;
-            if (eIdentic) {
+            // Logica inteligentă pentru Domiciliul Fiscal: 
+            // Dacă secțiunea nu este deschisă (utilizatorul nu a apăsat butonul), copiem automat adresa principală.
+            if (!domiciliuFiscalDiferit) {
                 date['sellerFiscalCounty'] = date['sellerCounty'];
                 date['sellerFiscalPostalCode'] = date['sellerPostalCode'];
                 date['sellerFiscalCity'] = date['sellerCity'];
@@ -481,12 +494,12 @@
                 date['sellerFiscalStreet'] = date['sellerStreet'];
                 date['sellerFiscalStreetNo'] = date['sellerStreetNo'];
             } else {
-                date['sellerFiscalCounty'] = document.getElementById('sellerFiscalCounty').value;
-                date['sellerFiscalPostalCode'] = document.getElementById('sellerFiscalPostalCode').value;
-                date['sellerFiscalCity'] = document.getElementById('sellerFiscalCity').value;
-                date['sellerFiscalSector'] = document.getElementById('sellerFiscalSector').value;
-                date['sellerFiscalStreet'] = document.getElementById('sellerFiscalStreet').value;
-                date['sellerFiscalStreetNo'] = document.getElementById('sellerFiscalStreetNo').value;
+                date['sellerFiscalCounty'] = document.getElementById('sellerFiscalCounty')?.value || '';
+                date['sellerFiscalPostalCode'] = document.getElementById('sellerFiscalPostalCode')?.value || '';
+                date['sellerFiscalCity'] = document.getElementById('sellerFiscalCity')?.value || '';
+                date['sellerFiscalSector'] = document.getElementById('sellerFiscalSector')?.value || '';
+                date['sellerFiscalStreet'] = document.getElementById('sellerFiscalStreet')?.value || '';
+                date['sellerFiscalStreetNo'] = document.getElementById('sellerFiscalStreetNo')?.value || '';
             }
 
             return date;
