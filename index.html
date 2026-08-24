@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub Tranzacții Auto - Sistem High-Tech Cloud 2026</title>
-    <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.min.js"></script>
+    <title>Hub Tranzacții Auto - Contract Oficial ITL 054 (2026)</title>
+    <!-- Librării externe pentru QR, PDF și randare vectorială -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }
         .container { max-width: 720px; margin: 0 auto; background: white; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
         h2 { color: #1e3a8a; text-align: center; margin-bottom: 5px; font-size: 24px; }
         .subtitle { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 25px; }
         
-        .role-banner { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 18px; border-radius: 10px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; box-shadow: 0 2px 5px rgba(37,99,235,0.05); }
+        .role-banner { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 18px; border-radius: 10px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; }
         .role-banner.buyer { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
 
         .mode-selector { display: flex; gap: 15px; margin-bottom: 25px; }
@@ -58,13 +59,16 @@
         .share-link-text { font-size: 12px; color: #64748b; word-break: break-all; margin-top: 10px; background: white; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; }
         
         #status { text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
+
+        /* --- STILURI FORMULAR OFICIAL PENTRU PDF (Ascuns pe ecran, generat vectorial) --- */
+        #contract-print-template { display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h2>Hub Tranzacții Auto</h2>
-        <div class="subtitle">Sistem Cloud High-Tech • Flux Inteligent Vânzător - Cumpărător</div>
+        <div class="subtitle">Sistem Cloud High-Tech • Contract Oficial ITL 054</div>
         <div id="roleBanner" class="role-banner" style="display:none;"></div>
 
         <!-- Selector Mod de Lucru -->
@@ -73,11 +77,11 @@
             <div class="mode-selector">
                 <div class="mode-card selected" id="cardLocal" onclick="selecteazaMod('local')">
                     <h4>Completare Locală</h4>
-                    <p>Completezi tot formularul pe acest dispozitiv (Față-în-față - 4 Pași)</p>
+                    <p>Completezi tot formularul pe acest dispozitiv (Față-în-față)</p>
                 </div>
                 <div class="mode-card" id="cardRemote" onclick="selecteazaMod('remote')">
                     <h4>Completare la Distanță</h4>
-                    <p>Completezi doar vânzătorul și mașina, apoi trimiți linkul cumpărătorului - 3 Pași</p>
+                    <p>Completezi vânzătorul și mașina, trimiți linkul cumpărătorului</p>
                 </div>
             </div>
         </div>
@@ -124,8 +128,7 @@
                 </div>
                 <div>
                     <label>CNP / CUI</label>
-                    <input type="text" id="vCnp" placeholder="ex: 1800101123456" oninput="valideazaCNP(this)">
-                    <div id="vCnpError" class="error-msg">CNP-ul trebuie să aibă 13 caractere!</div>
+                    <input type="text" id="vCnp" placeholder="ex: 1800101123456">
                 </div>
                 <div>
                     <label>Telefon / Fax</label>
@@ -141,7 +144,7 @@
             </div>
         </div>
 
-        <!-- STEP 2: CUMPĂRĂTOR (Doar în mod local sau pentru cumpărătorul de la distanță) -->
+        <!-- STEP 2: CUMPĂRĂTOR -->
         <div class="step-content" id="step2">
             <div class="section-title">Pasul 2: Datele Cumpărătorului</div>
             <div class="form-grid">
@@ -175,8 +178,7 @@
                 </div>
                 <div>
                     <label>CNP / CUI</label>
-                    <input type="text" id="cCnp" placeholder="ex: 2950505654321" oninput="valideazaCNP(this)">
-                    <div id="cCnpError" class="error-msg">CNP-ul trebuie să aibă 13 caractere!</div>
+                    <input type="text" id="cCnp" placeholder="ex: 2950505654321">
                 </div>
                 <div>
                     <label>Telefon / Fax</label>
@@ -207,8 +209,7 @@
                 </div>
                 <div class="full-width">
                     <label>Număr Identificare (VIN)</label>
-                    <input type="text" id="aVin" placeholder="ex: WAUZZZ8K1FA123456" oninput="valideazaVIN(this)">
-                    <div id="aVinError" class="error-msg">Seria VIN trebuie să aibă 17 caractere!</div>
+                    <input type="text" id="aVin" placeholder="ex: WAUZZZ8K1FA123456">
                 </div>
                 <div>
                     <label>Serie Motor</label>
@@ -261,13 +262,13 @@
             </div>
         </div>
 
-        <!-- STEP 4: FINALIZARE & ACȚIUNI HIGH-TECH -->
+        <!-- STEP 4: FINALIZARE -->
         <div class="step-content" id="step4">
             <div class="section-title">Pasul 4: Finalizare & Sincronizare Cloud</div>
-            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Poți descărca contractul sau poți trimite linkul securizat cumpărătorului.</p>
+            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Poți descărca contractul oficial sau poți trimite linkul securizat cumpărătorului.</p>
             
             <div id="localActions">
-                <button class="btn btn-success" onclick="genereazaContractOficial()">📥 Descarcă Contractul PDF Oficial</button>
+                <button class="btn btn-success" onclick="genereazaContractOficialPDF()">📥 Descarcă Contractul Oficial PDF (Model ITL 054)</button>
                 <button class="btn btn-share" onclick="pornesteFluxRemote()">📤 Trimite Către Cumpărător (Mod Distanță)</button>
             </div>
 
@@ -290,6 +291,87 @@
         <div id="status"></div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- ȘABLONUL OFICIAL ITL 054 PENTRU GENERARE PDF -->
+    <!-- ========================================== -->
+    <div id="contract-print-template" style="font-family: 'Times New Roman', Times, serif; font-size: 11px; color: #000; background: #fff; padding: 20px; width: 750px; box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 10px; margin-bottom: 5px;">
+            <span>Model 2026 ITL 054</span>
+            <span>Anexa nr. 2</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <div style="border: 1px solid #000; padding: 5px; width: 42%; font-size: 9px;">
+                <b>A. Denumirea organului fiscal local de la domiciliul/sediul persoanei care înstrăinează</b><br>
+                CIF/Cod SIRUTA: .......................................<br>
+                Adresa: ...................................................<br>
+                Tel/fax/e-mail: ...........................................
+            </div>
+            <div style="text-align: center; width: 35%;">
+                <h3 style="margin: 0; font-size: 13px;">CONTRACT DE ÎNSTRĂINARE - DOBÂNDIRE</h3>
+                <h3 style="margin: 2px 0; font-size: 12px;">A UNUI MIJLOC DE TRANSPORT</h3>
+                <span style="font-size: 9px;">(Se completează și pe copii)</span>
+            </div>
+            <div style="border: 1px solid #000; padding: 5px; width: 20%; font-size: 9px;">
+                <b>B. Organ fiscal local</b><br>
+                Vânzătorul NU are debite.<br>
+                Rol nr.: ........ Funcția: ........
+            </div>
+        </div>
+
+        <!-- 1. VÂNZĂTOR -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px;">
+            <b>(1) PERSOANA CARE ÎNSTRĂINEAZĂ</b><br>
+            Subsemnatul(a) [X] Subscrisa <span id="lbl_vNume" style="font-weight:bold; text-decoration: underline;"></span>, cu domiciliul în ROMANIA, jud. <span id="lbl_vJudet" style="text-decoration: underline;"></span>, mun./oras/com. <span id="lbl_vLocalitate" style="text-decoration: underline;"></span>, sat/sector <span id="lbl_vSat" style="text-decoration: underline;"></span>, cod poștal <span id="lbl_vPostal" style="text-decoration: underline;"></span>, str. <span id="lbl_vStrada" style="text-decoration: underline;"></span>.<br>
+            Identificat prin <span id="lbl_vAct" style="text-decoration: underline;"></span>, C.N.P./C.I.F. <span id="lbl_vCnp" style="font-weight:bold; text-decoration: underline;"></span>, tel/fax: <span id="lbl_vTel" style="text-decoration: underline;"></span>, e-mail: <span id="lbl_vEmail" style="text-decoration: underline;"></span>.
+        </div>
+
+        <!-- 2. CUMPĂRĂTOR -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px;">
+            <b>(2) PERSOANA CARE DOBÂNDEȘTE</b><br>
+            Subsemnatul(a) [X] Subscrisa <span id="lbl_cNume" style="font-weight:bold; text-decoration: underline;"></span>, cu domiciliul în ROMANIA, jud. <span id="lbl_cJudet" style="text-decoration: underline;"></span>, mun./oras/com. <span id="lbl_cLocalitate" style="text-decoration: underline;"></span>, sat/sector <span id="lbl_cSat" style="text-decoration: underline;"></span>, cod poștal <span id="lbl_cPostal" style="text-decoration: underline;"></span>, str. <span id="lbl_cStrada" style="text-decoration: underline;"></span>.<br>
+            Identificat prin <span id="lbl_cAct" style="text-decoration: underline;"></span>, C.N.P./C.I.F. <span id="lbl_cCnp" style="font-weight:bold; text-decoration: underline;"></span>, tel/fax: <span id="lbl_cTel" style="text-decoration: underline;"></span>, e-mail: <span id="lbl_cEmail" style="text-decoration: underline;"></span>.
+        </div>
+
+        <!-- 3. OBIECTUL CONTRACTULUI -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px;">
+            <b>(3) OBIECTUL CONTRACTULUI</b><br>
+            Mijloc de transport: marca <span id="lbl_aMarca" style="font-weight:bold; text-decoration: underline;"></span>, tip <span id="lbl_aTip" style="text-decoration: underline;"></span>, nr. identificare (VIN): <span id="lbl_aVin" style="font-weight:bold; text-decoration: underline;"></span>.<br>
+            Serie motor: <span id="lbl_aSerieMotor" style="text-decoration: underline;"></span>, Capacitate cil. / putere: <span id="lbl_aCmKw" style="text-decoration: underline;"></span>, Greutate admisă: <span id="lbl_aGreutate" style="text-decoration: underline;"></span>.<br>
+            Nr. înmatriculare/înregistrare: <span id="lbl_aNumar" style="text-decoration: underline;"></span>, ITP valabil până la: <span id="lbl_aItp" style="text-decoration: underline;"></span>, C.I.V.: <span id="lbl_aCiv" style="text-decoration: underline;"></span>, An fabricație: <span id="lbl_aAn" style="text-decoration: underline;"></span>, Normă Euro: <span id="lbl_aEuro" style="text-decoration: underline;"></span>.<br>
+            Data dobândirii anterioare: <span id="lbl_aDataDobandirii" style="text-decoration: underline;"></span>.
+        </div>
+
+        <!-- 4. PREȚUL -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px;">
+            <b>(4) PREȚUL:</b> În cifre: <span id="lbl_aPretCifre" style="font-weight:bold; text-decoration: underline;"></span>, în litere: <span id="lbl_aPretLitere" style="font-style:italic; text-decoration: underline;"></span>.
+        </div>
+
+        <!-- 5. CLAUZE ȘI SEMNĂTURI -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px; font-size: 10px;">
+            Persoana care înstrăinează declară că mijlocul de transport este proprietatea sa, liber de orice sarcini. A predat vehiculul, cheile, C.I.V. și certificatul de înmatriculare, primind prețul menționat. Cumpărătorul are obligația transcrierii vehiculului pe numele său în termenul legal de maximum 90 de zile.<br>
+            Cunoaștem prevederile Codului penal privind falsul și uzul de fals.<br><br>
+            <div style="display: flex; justify-content: space-between; margin-top: 15px; font-weight: bold;">
+                <span>Semnătura înstrăinătorului ....................................</span>
+                <span>Semnătura dobânditorului ....................................</span>
+            </div>
+        </div>
+
+        <!-- C & D -->
+        <div style="display: flex; justify-content: space-between; font-size: 9px;">
+            <div style="border: 1px solid #000; padding: 5px; width: 48%;">
+                <b>C. Organ fiscal local - domiciliu dobânditor</b><br>
+                CIF / Cod SIRUTA: .......................................<br>
+                Adresa: ...................................................
+            </div>
+            <div style="border: 1px solid #000; padding: 5px; width: 48%;">
+                <b>D. Dobânditorul NU are debite</b><br>
+                Copie 1-4 „Conform cu originalul”<br>
+                Înstrăinător ................... Dobânditor ...................
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentStep = 1;
         let modLucru = 'local';
@@ -308,22 +390,19 @@
 
             if (mod === 'local') {
                 document.getElementById('cardLocal').classList.add('selected');
-                // Afișăm Pasul 2 (Cumpărător)
                 p2Indice.style.display = 'flex';
                 p3Indice.innerText = '3';
                 p4Indice.innerText = '4';
                 p4Indice.style.display = 'flex';
             } else {
                 document.getElementById('cardRemote').classList.add('selected');
-                // Ascundem Pasul 2 din interfața vânzătorului, mașina devine Pasul 2
                 p2Indice.style.display = 'none';
-                p3Indice.innerText = '2'; // Mașina devine Pasul 2
-                p4Indice.innerText = '3'; // Finalizarea devine Pasul 3
+                p3Indice.innerText = '2';
+                p4Indice.innerText = '3';
             }
         }
 
         function updateProgress() {
-            // Ajustare dinamică a bulinelor de progres în funcție de mod
             const totalSteps = (modLucru === 'remote' && userRole === 'vanzator') ? 3 : 4;
             for (let i = 1; i <= 4; i++) {
                 const p = document.getElementById('p' + i);
@@ -341,7 +420,6 @@
             document.getElementById('step' + step).classList.remove('active');
             
             if (modLucru === 'remote' && userRole === 'vanzator' && step === 1) {
-                // Dacă suntem la distanță ca vânzător, sărim direct de la Pasul 1 (Vânzător) la Pasul 3 (Mașină), ascunzând Pasul 2 (Cumpărător)
                 currentStep = 3;
                 document.getElementById('titleStep3').innerText = "Pasul 2: Vehiculul și Prețul";
             } else {
@@ -356,7 +434,6 @@
             document.getElementById('step' + step).classList.remove('active');
             
             if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) {
-                // Dacă dăm înapoi de la mașină în mod remote, sărim înapoi la Vânzător (Pasul 1)
                 currentStep = 1;
             } else {
                 currentStep = step - 1;
@@ -367,33 +444,7 @@
         }
 
         function finalizarePas() {
-            if (modLucru === 'remote' && userRole === 'vanzator') {
-                nextStep(3); // Merge la pasul final (Pasul 3 în mod remote)
-            } else {
-                nextStep(3); // Merge la Pasul 4 în mod local
-            }
-        }
-
-        function valideazaCNP(input) {
-            const errDiv = document.getElementById(input.id + 'Error');
-            if (input.value && input.value.length !== 13) {
-                input.classList.add('error');
-                if(errDiv) errDiv.style.display = 'block';
-            } else {
-                input.classList.remove('error');
-                if(errDiv) errDiv.style.display = 'none';
-            }
-        }
-
-        function valideazaVIN(input) {
-            const errDiv = document.getElementById(input.id + 'Error');
-            if (input.value && input.value.length !== 17) {
-                input.classList.add('error');
-                if(errDiv) errDiv.style.display = 'block';
-            } else {
-                input.classList.remove('error');
-                if(errDiv) errDiv.style.display = 'none';
-            }
+            nextStep(3);
         }
 
         window.onload = async function() {
@@ -412,12 +463,11 @@
                             }
                         }
 
-                        // Cumpărătorul are nevoie de Pasul 2 (Cumpărător) ca să își pună datele proprii
                         document.getElementById('modeSelectorContainer').style.display = 'none';
                         const banner = document.getElementById('roleBanner');
                         banner.style.display = 'block';
                         banner.className = 'role-banner buyer';
-                        banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate. Completează datele tale la Pasul 2 și finalizează.";
+                        banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate. Completează datele tale și finalizează.";
 
                         const inputsVanzatorSiMasina = document.querySelectorAll('[id^="v"], [id^="a"]');
                         inputsVanzatorSiMasina.forEach(input => {
@@ -426,10 +476,10 @@
 
                         document.getElementById('localActions').style.display = 'none';
                         document.getElementById('buyerActions').style.display = 'block';
-                        document.getElementById('step4Desc').innerText = "Verifică datele încărcate de vânzător, completează-ți datele și apasă butonul de finalizare.";
+                        document.getElementById('step4Desc').innerText = "Verifică datele, completează-ți datele și apasă butonul de finalizare.";
                     }
                 } catch (e) {
-                    console.error("Eroare la sincronizarea sesiunii:", e);
+                    console.error("Eroare la sincronizare:", e);
                 }
             }
         };
@@ -482,7 +532,7 @@
                     pornesteAscultareaLive();
                 }
             } catch (err) {
-                document.getElementById('status').innerText = "Eroare server: Asigură-te că serverul rulează.";
+                document.getElementById('status').innerText = "Eroare server.";
                 document.getElementById('status').style.color = "#dc2626";
             }
         }
@@ -497,7 +547,7 @@
                     if (result.success && result.data.status === 'COMPLETAT_GATA_CONTRACT') {
                         clearInterval(pollInterval);
                         document.getElementById('waitingText').style.display = 'none';
-                        document.getElementById('status').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele! Contractul este gata pentru descărcare.</b>";
+                        document.getElementById('status').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele! Contractul este gata.</b>";
                         
                         for (const key in result.data) {
                             if (document.getElementById(key)) {
@@ -510,13 +560,13 @@
                             dlBtn = document.createElement('button');
                             dlBtn.id = 'autoDownloadBtn';
                             dlBtn.className = 'btn btn-success';
-                            dlBtn.innerText = '📥 Descarcă Contractul PDF Final (Semnat Cloud)';
-                            dlBtn.onclick = genereazaContractOficial;
+                            dlBtn.innerText = '📥 Descarcă Contractul Oficial PDF (Model ITL 054)';
+                            dlBtn.onclick = genereazaContractOficialPDF;
                             document.getElementById('qrBoxContainer').appendChild(dlBtn);
                         }
                     }
                 } catch (e) {
-                    console.error("Eroare la verificare live:", e);
+                    console.error("Eroare live:", e);
                 }
             }, 4000);
         }
@@ -535,7 +585,7 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    document.getElementById('status').innerHTML = "✅ <b style='color:#16a34a;'>Datele tale au fost salvate și trimise vânzătorului cu succes! Poți descărca contractul mai jos.</b>";
+                    document.getElementById('status').innerHTML = "✅ <b style='color:#16a34a;'>Datele tale au fost trimise vânzătorului cu succes!</b>";
                     
                     let dlBtnBuyer = document.getElementById('buyerDownloadBtn');
                     if (!dlBtnBuyer) {
@@ -544,142 +594,53 @@
                         dlBtnBuyer.className = 'btn btn-success';
                         dlBtnBuyer.style.marginTop = '15px';
                         dlBtnBuyer.innerText = '📥 Descarcă Contractul Oficial PDF';
-                        dlBtnBuyer.onclick = genereazaContractOficial;
+                        dlBtnBuyer.onclick = genereazaContractOficialPDF;
                         document.getElementById('step4').appendChild(dlBtnBuyer);
                     }
                 }
             } catch (err) {
-                document.getElementById('status').innerText = "Eroare la salvarea datelor.";
+                document.getElementById('status').innerText = "Eroare la salvare.";
                 document.getElementById('status').style.color = "#dc2626";
             }
         }
 
-        function curataText(text) {
-            if (!text) return '';
-            return String(text)
-                .replace(/ț/g, 't').replace(/Ț/g, 'T').replace(/ţ/g, 't').replace(/Ţ/g, 'T')
-                .replace(/ș/g, 's').replace(/Ș/g, 'S').replace(/ş/g, 's').replace(/Ş/g, 'S')
-                .replace(/ă/g, 'a').replace(/Ă/g, 'A')
-                .replace(/â/g, 'a').replace(/Â/g, 'A')
-                .replace(/î/g, 'i').replace(/Î/g, 'I');
-        }
-
-        async function genereazaContractOficial() {
+        // --- MOTOR DE GENERARE PDF OFICIAL (Vectorial din HTML) ---
+        function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează noul contract PDF oficial...";
+            statusEl.innerText = "Se generează documentul oficial pentru primărie...";
             statusEl.style.color = "#d97706";
 
-            try {
-                if (typeof PDFLib === 'undefined') {
-                    throw new Error("Librăria PDFLib nu s-a încărcat!");
+            // 1. Populăm datele în șablonul oficial ascuns
+            const d = colecteazaDate();
+            for (const key in d) {
+                const label = document.getElementById('lbl_' + key);
+                if (label) {
+                    label.innerText = d[key] || '....................';
                 }
-
-                const { PDFDocument, rgb } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const page = pdfDoc.addPage([595.28, 841.89]);
-                
-                const fontRegular = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
-                const colNegru = rgb(0, 0, 0);
-
-                const d = colecteazaDate();
-                const scrie = (txt, x, y, size = 6, font = fontRegular) => {
-                    page.drawText(curataText(txt), { x, y, size, font, color: colNegru });
-                };
-                const chenar = (x, y, w, h) => {
-                    page.drawRectangle({ x, y, width: w, height: h, borderColor: colNegru, borderWidth: 0.6 });
-                };
-
-                let m = 25; 
-                let w = 545; 
-
-                // --- ANTET ---
-                chenar(m, 725, 160, 85);
-                scrie("A. Denumirea organului fiscal local de la", m + 4, 798, 5, fontBold);
-                scrie("domiciliul/sediul persoanei care instraineaza", m + 4, 790, 4.5);
-                scrie("CIF/Cod SIRUTA: .........................", m + 4, 775, 5);
-                scrie("Adresa: .......................................", m + 4, 760, 5);
-                scrie("Tel/fax/e-mail: .............................", m + 4, 745, 5);
-
-                chenar(m + 370, 725, 175, 85);
-                scrie("B. Denumirea organului fiscal local", m + 4, 798, 5, fontBold);
-                scrie("Vanzatorul NU are debite la data de intai", m + 4, 790, 4.5);
-                scrie("a lunii urmatoare inregistrarii actului", m + 4, 782, 4.5);
-                scrie("Rol nr.: ............ Functia: ...........", m + 4, 740, 5);
-
-                scrie("Model 2026 ITL 054", m + 210, 818, 7, fontBold);
-                scrie("Anexa nr. 2", m + 495, 818, 7, fontBold);
-                scrie("CONTRACT DE INSTRAINARE - DOBANDIRE", m + 185, 785, 9, fontBold);
-                scrie("A UNUI MIJLOC DE TRANSPORT", m + 195, 772, 8.5, fontBold);
-                scrie("(Se completeaza si pe copii)", m + 220, 758, 6);
-
-                // --- 1. VÂNZĂTORUL ---
-                chenar(m, 590, w, 125);
-                scrie("(1) PERSOANA CARE INSTRAINEAZA", m + 4, 702, 6.5, fontBold);
-                scrie(`Subsemnatul(a) [X] Subscrisa ${d.vNume}, cu domiciliul in ROMANIA, jud. ${d.vJudet},`, m + 4, 688, 6);
-                scrie(`mun./oras/com. ${d.vLocalitate}, sat/sector ${d.vSat}, cod postal ${d.vPostal}, ${d.vStrada}`, m + 4, 672, 6);
-                scrie(`Identificat prin ${d.vAct}, C.N.P./C.I.F. ${d.vCnp}, tel/fax: ${d.vTel}, e-mail: ${d.vEmail}`, m + 4, 656, 6);
-
-                // --- 2. CUMPĂRĂTORUL ---
-                chenar(m, 455, w, 125);
-                scrie("(2) PERSOANA CARE DOBANDESTE", m + 4, 567, 6.5, fontBold);
-                scrie(`Subsemnatul(a) [X] Subscrisa ${d.cNume}, cu domiciliul in ROMANIA, jud. ${d.cJudet},`, m + 4, 553, 6);
-                scrie(`mun./oras/com. ${d.cLocalitate}, sat/sector ${d.cSat}, cod postal ${d.cPostal}, ${d.cStrada}`, m + 4, 537, 6);
-                scrie(`Identificat prin ${d.cAct}, C.N.P./C.I.F. ${d.cCnp}, tel/fax: ${d.cTel}, e-mail: ${d.cEmail}`, m + 4, 521, 6);
-
-                // --- 3. OBIECTUL CONTRACTULUI ---
-                chenar(m, 365, w, 85);
-                scrie("(3) OBIECTUL CONTRACTULUI", m + 4, 442, 6.5, fontBold);
-                scrie(`Mijloc de transport: marca ${d.aMarca}, tip ${d.aTip}, nr. identificare (VIN): ${d.aVin}`, m + 4, 428, 6);
-                scrie(`Serie motor: ${d.aSerieMotor}, Capacitate / kW: ${d.aCmKw}, Greutate admisa: ${d.aGreutate}`, m + 4, 412, 6);
-                scrie(`Nr. inmatriculare: ${d.aNumar}, ITP expira la: ${d.aItp}, CIV: ${d.aCiv}, An: ${d.aAn}, Euro: ${d.aEuro}`, m + 4, 396, 6);
-
-                // --- 4. PREȚUL ---
-                chenar(m, 330, w, 30);
-                scrie("(4) PRETUL", m + 4, 352, 6.5, fontBold);
-                scrie(`In cifre: ${d.aPretCifre}, in litere: ${d.aPretLitere}`, m + 4, 339, 6);
-
-                // --- 5. CLAUZE ȘI SEMNĂTURI ---
-                chenar(m, 195, w, 130);
-                scrie("Persoana care instraineaza declara ca mijlocul de transport este proprietatea sa, liber de sarcini. A predat", m + 4, 312, 5.5);
-                scrie("vehiculul, cheile, CIV si certificatul de inmatriculare, primind pretul. Cumparatorul are obligatia", m + 4, 302, 5.5);
-                scrie("transcrierii vehiculului pe numele sau in noul termen legal de maximum 90 de zile.", m + 4, 292, 5.5, fontBold);
-                scrie("Cunoastem prevederile Codului penal privind falsul si uzul de fals.", m + 4, 280, 5.5);
-
-                scrie("Semnatura instrainatorului .............................", m + 35, 215, 6.5, fontBold);
-                scrie("Semnatura dobanditorului .............................", m + 310, 215, 6.5, fontBold);
-
-                // --- C & D. ORGANE FISCALE & NOTE ---
-                chenar(m, 110, 260, 80);
-                scrie("C. Organ fiscal local - domiciliu dobanditor", m + 4, 180, 5, fontBold);
-                scrie("CIF / Cod SIRUTA: .........................", m + 4, 167, 5);
-                scrie("Adresa: .......................................", m + 4, 154, 5);
-
-                chenar(m + 270, 110, 275, 80);
-                scrie("D. Cumparatorul NU are debite", m + 4, 180, 5, fontBold);
-                scrie("Copie 1-4 „Conform cu originalul”", m + 100, 155, 5.5, fontBold);
-                scrie("Vanzator ................... Cumparator ...................", m + 280, 130, 5);
-
-                scrie("1) REMTII - Registrul de evidenta. 2) Noua legislatie 2026 (termen 90 zile).", m, 98, 5);
-
-                const pdfBytesFinal = await pdfDoc.save();
-                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = "Contract_Auto_2026_ITL054.pdf";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                statusEl.innerText = "Succes! Contractul oficial a fost descărcat.";
-                statusEl.style.color = "#16a34a";
-
-            } catch (err) {
-                statusEl.innerText = "Eroare: " + err.message;
-                statusEl.style.color = "#dc2626";
-                console.error(err);
             }
+
+            const element = document.getElementById('contract-print-template');
+            element.style.display = 'block';
+
+            // 2. Setări PDF pentru a ieși impecabil pe format A4
+            const opt = {
+                margin:       10,
+                filename:     'Contract_Instrainare_Dobandire_ITL_054.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // 3. Generare și descărcare PDF vectorial
+            html2pdf().from(element).set(opt).save().then(() => {
+                element.style.display = 'none';
+                statusEl.innerText = "Succes! Contractul oficial a fost descărcat și este gata pentru primărie.";
+                statusEl.style.color = "#16a34a";
+            }).catch(err => {
+                element.style.display = 'none';
+                statusEl.innerText = "Eroare la generarea PDF: " + err.message;
+                statusEl.style.color = "#dc2626";
+            });
         }
     </script>
 </body>
