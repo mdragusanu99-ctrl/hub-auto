@@ -415,9 +415,10 @@
         }
 
         // FUNCȚIE DE DEBUG: Verifică dacă fișierul PDF conține câmpuri interactive predefinite
+        // FUNCȚIE DE DEBUG AVANSATĂ: Copiază toate cele 104 denumiri în clipboard
         async function verificaCampuriPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se analizează structura PDF-ului...";
+            statusEl.innerText = "Se extrag toate denumirile de câmpuri din PDF...";
             statusEl.style.color = "#475569";
 
             try {
@@ -430,15 +431,16 @@
                 const form = pdfDoc.getForm();
                 const fields = form.getFields();
 
-                if (fields.length === 0) {
-                    alert("Rezultat: Fișierul PDF actual NU conține câmpuri interactive predefinite (este un PDF simplu/scanat). Trecem la desenare milimetrică curată.");
-                    statusEl.innerText = "PDF-ul este de tip simplu/scanat (fără câmpuri interactive).";
-                } else {
-                    let msg = `S-au găsit ${fields.length} câmpuri:\n`;
-                    fields.forEach(f => { msg += `- ${f.getName()}\n`; });
-                    alert(msg);
-                    statusEl.innerText = `Găsite ${fields.length} câmpuri interactive în PDF.`;
-                }
+                let listaNume = [];
+                fields.forEach(f => {
+                    listaNume.push(f.getName());
+                });
+
+                const textComplet = listaNume.join('\n');
+                navigator.clipboard.writeText(textComplet);
+                
+                alert(`S-au găsit ${fields.length} câmpuri.\nTOATE DENUMIRILE AU FOST COPIATE ÎN CLIPBOARD!\n\nPateți da "Paste" (Ctrl+V) oriunde să le vezi.`);
+                statusEl.innerText = `Găsite ${fields.length} câmpuri (Copiate în clipboard).`;
             } catch (err) {
                 alert("Eroare la citirea PDF-ului: " + err.message);
             }
@@ -551,7 +553,7 @@
 
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se completează formularul oficial interactiv...";
+            statusEl.innerText = "Se generează documentul cu text negru vizibil...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -563,38 +565,41 @@
                 }
                 const templateBytes = await responseTemplate.arrayBuffer();
 
-                const { PDFDocument } = PDFLib;
+                const { PDFDocument, rgb, StandardFonts } = PDFLib;
                 const pdfDoc = await PDFDocument.load(templateBytes);
                 
-                // Accesăm formularul interactiv nativ din PDF
                 const form = pdfDoc.getForm();
+                
+                // Embed font negru îngroșat/standard pentru vizibilitate maximă
+                const fontNegru = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-                // Funcție de setare sigură a textului în câmpurile interactive găsite
                 const seteazaCamp = (numeCamp, valoare) => {
                     try {
                         const field = form.getTextField(numeCamp);
                         if (field && valoare) {
                             field.setText(String(valoare));
+                            // Forțăm stilul textului să fie Negru Intens și font vizibil
+                            field.setFont(fontNegru);
+                            field.setFontSize(8);
+                            field.enableReadOnly(); // Blochează editarea ulterioară
                         }
                     } catch (e) {
-                        console.log(`Câmpul ${numeCamp} nu a fost găsit sau nu este text.`);
+                        console.log(`Câmpul ${numeCamp} nu a fost găsit.`);
                     }
                 };
 
-                // --- MAPARE DIRECTĂ PE NIVELELE NATIVE DIN PDF ---
-                
-                // Exemplu pentru Vânzător (conectăm ID-urile tale la câmpurile native identificate)
-                seteazaCamp('sellerName', d.vNume);          // Nume vânzător
-                seteazaCamp('sellerCounty', d.vJudet);      // Județ vânzător
-                seteazaCamp('sellerCity', d.vLocalitate);   // Localitate vânzător
-                seteazaCamp('sellerPostalCode', d.vPostal); // Cod poștal vânzător
-                seteazaCamp('sellerStreet', d.vStrada);     // Stradă vânzător
-                seteazaCamp('sellerIdCard', d.vAct);        // Act identitate vânzător
-                seteazaCamp('sellerCnp', d.vCnp);           // CNP vânzător
-                seteazaCamp('sellerPhone', d.vTel);         // Telefon vânzător
-                seteazaCamp('sellerEmail', d.vEmail);       // E-mail vânzător
+                // --- MAPARE VÂNZĂTOR ---
+                seteazaCamp('sellerName', d.vNume);          
+                seteazaCamp('sellerCounty', d.vJudet);      
+                seteazaCamp('sellerCity', d.vLocalitate);   
+                seteazaCamp('sellerPostalCode', d.vPostal); 
+                seteazaCamp('sellerStreet', d.vStrada);     
+                seteazaCamp('sellerIdCard', d.vAct);        
+                seteazaCamp('sellerCnp', d.vCnp);           
+                seteazaCamp('sellerPhone', d.vTel);         
+                seteazaCamp('sellerEmail', d.vEmail);       
 
-                // Exemplu pentru Cumpărător
+                // --- MAPARE CUMPĂRĂTOR ---
                 seteazaCamp('buyerName', d.cNume);          
                 seteazaCamp('buyerCounty', d.cJudet);      
                 seteazaCamp('buyerCity', d.cLocalitate);   
@@ -605,20 +610,17 @@
                 seteazaCamp('buyerPhone', d.cTel);         
                 seteazaCamp('buyerEmail', d.cEmail);       
 
-                // Opțional: Flatten (blochează câmpurile ca să nu mai poată fi editate după generare, lăsându-le ca text permanent)
-                // form.flatten();
-
                 const pdfBytesFinal = await pdfDoc.save();
                 const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Nativ_Perfect.pdf";
+                link.download = "Contract_ITL_054_Negru_Intens.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Contractul a fost completat nativ și descărcat.";
+                statusEl.innerText = "Succes! Contractul a fost generat cu text negru vizibil.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
