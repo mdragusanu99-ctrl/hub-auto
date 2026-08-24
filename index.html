@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub Tranzacții Auto - Contract Oficial ITL 054 (2026)</title>
+    <!-- LIBRĂRII EXTERNE -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -238,7 +239,7 @@
                     <input type="text" id="aEuro" placeholder="ex: Euro 5">
                 </div>
                 <div>
-                    <label>Data Dobandirii Anterioare</label>
+                    <label>Data Dobândirii Anterioare</label>
                     <input type="text" id="aDataDobandirii" placeholder="ex: 15.05.2020">
                 </div>
                 <div>
@@ -632,7 +633,8 @@
                 scrie(d.aPretLitere, 280, 304, 7, fontBold);
 
                 const pdfBytesFinal = await pdfDoc.save();
-                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf'}})
+                // CORECTAT: Blob sintaxă validă
+                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
