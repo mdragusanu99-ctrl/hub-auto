@@ -67,27 +67,27 @@
         <div class="subtitle">Sistem Cloud High-Tech • Flux Inteligent Vânzător - Cumpărător</div>
         <div id="roleBanner" class="role-banner" style="display:none;"></div>
 
-        <!-- Selector Mod de Lucru (Doar pentru Vânzător la început) -->
+        <!-- Selector Mod de Lucru -->
         <div id="modeSelectorContainer" style="display:block;">
             <label style="margin-bottom: 8px; text-align:center;">Alege Modul de Completare:</label>
             <div class="mode-selector">
                 <div class="mode-card selected" id="cardLocal" onclick="selecteazaMod('local')">
                     <h4>Completare Locală</h4>
-                    <p>Completezi tot formularul pe acest dispozitiv (Față-în-față)</p>
+                    <p>Completezi tot formularul pe acest dispozitiv (Față-în-față - 4 Pași)</p>
                 </div>
                 <div class="mode-card" id="cardRemote" onclick="selecteazaMod('remote')">
                     <h4>Completare la Distanță</h4>
-                    <p>Trimiți link securizat cumpărătorului să își pună datele</p>
+                    <p>Completezi doar vânzătorul și mașina, apoi trimiți linkul cumpărătorului - 3 Pași</p>
                 </div>
             </div>
         </div>
 
-        <!-- Progress Bar -->
-        <div class="progress-container">
+        <!-- Progress Bar Dinamic -->
+        <div class="progress-container" id="progressBarContainer">
             <div class="progress-step active" id="p1">1</div>
             <div class="progress-step" id="p2">2</div>
             <div class="progress-step" id="p3">3</div>
-            <div class="progress-step" id="p4">4</div>
+            <div class="progress-step" id="p4" style="display:flex;">4</div>
         </div>
 
         <!-- STEP 1: VÂNZĂTOR -->
@@ -141,7 +141,7 @@
             </div>
         </div>
 
-        <!-- STEP 2: CUMPĂRĂTOR -->
+        <!-- STEP 2: CUMPĂRĂTOR (Doar în mod local sau pentru cumpărătorul de la distanță) -->
         <div class="step-content" id="step2">
             <div class="section-title">Pasul 2: Datele Cumpărătorului</div>
             <div class="form-grid">
@@ -195,7 +195,7 @@
 
         <!-- STEP 3: VEHICUL ȘI PREȚ -->
         <div class="step-content" id="step3">
-            <div class="section-title">Pasul 3: Vehiculul și Prețul</div>
+            <div class="section-title" id="titleStep3">Pasul 3: Vehiculul și Prețul</div>
             <div class="form-grid">
                 <div>
                     <label>Marcă</label>
@@ -292,25 +292,45 @@
 
     <script>
         let currentStep = 1;
-        let modLucru = 'local'; // 'local' sau 'remote'
+        let modLucru = 'local';
         let globalSessionId = null;
-        let userRole = 'vanzator'; // 'vanzator' sau 'cumparator'
+        let userRole = 'vanzator';
         let pollInterval = null;
 
         function selecteazaMod(mod) {
             modLucru = mod;
             document.getElementById('cardLocal').classList.remove('selected');
             document.getElementById('cardRemote').classList.remove('selected');
+            
+            const p2Indice = document.getElementById('p2');
+            const p3Indice = document.getElementById('p3');
+            const p4Indice = document.getElementById('p4');
+
             if (mod === 'local') {
                 document.getElementById('cardLocal').classList.add('selected');
+                // Afișăm Pasul 2 (Cumpărător)
+                p2Indice.style.display = 'flex';
+                p3Indice.innerText = '3';
+                p4Indice.innerText = '4';
+                p4Indice.style.display = 'flex';
             } else {
                 document.getElementById('cardRemote').classList.add('selected');
+                // Ascundem Pasul 2 din interfața vânzătorului, mașina devine Pasul 2
+                p2Indice.style.display = 'none';
+                p3Indice.innerText = '2'; // Mașina devine Pasul 2
+                p4Indice.innerText = '3'; // Finalizarea devine Pasul 3
             }
         }
 
         function updateProgress() {
+            // Ajustare dinamică a bulinelor de progres în funcție de mod
+            const totalSteps = (modLucru === 'remote' && userRole === 'vanzator') ? 3 : 4;
             for (let i = 1; i <= 4; i++) {
                 const p = document.getElementById('p' + i);
+                if (i > totalSteps) {
+                    p.style.display = 'none';
+                    continue;
+                }
                 p.classList.remove('active', 'completed');
                 if (i < currentStep) p.classList.add('completed');
                 if (i === currentStep) p.classList.add('active');
@@ -319,20 +339,39 @@
 
         function nextStep(step) {
             document.getElementById('step' + step).classList.remove('active');
-            currentStep = step + 1;
+            
+            if (modLucru === 'remote' && userRole === 'vanzator' && step === 1) {
+                // Dacă suntem la distanță ca vânzător, sărim direct de la Pasul 1 (Vânzător) la Pasul 3 (Mașină), ascunzând Pasul 2 (Cumpărător)
+                currentStep = 3;
+                document.getElementById('titleStep3').innerText = "Pasul 2: Vehiculul și Prețul";
+            } else {
+                currentStep = step + 1;
+            }
+
             document.getElementById('step' + currentStep).classList.add('active');
             updateProgress();
         }
 
         function prevStep(step) {
             document.getElementById('step' + step).classList.remove('active');
-            currentStep = step - 1;
+            
+            if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) {
+                // Dacă dăm înapoi de la mașină în mod remote, sărim înapoi la Vânzător (Pasul 1)
+                currentStep = 1;
+            } else {
+                currentStep = step - 1;
+            }
+
             document.getElementById('step' + currentStep).classList.add('active');
             updateProgress();
         }
 
         function finalizarePas() {
-            nextStep(3);
+            if (modLucru === 'remote' && userRole === 'vanzator') {
+                nextStep(3); // Merge la pasul final (Pasul 3 în mod remote)
+            } else {
+                nextStep(3); // Merge la Pasul 4 în mod local
+            }
         }
 
         function valideazaCNP(input) {
@@ -357,7 +396,6 @@
             }
         }
 
-        // Detectare Rol la încărcarea paginii (High-Tech State Sync)
         window.onload = async function() {
             const params = new URLSearchParams(window.location.search);
             if (params.has('sessionId')) {
@@ -374,20 +412,18 @@
                             }
                         }
 
-                        // Setări vizuale pentru Cumpărător
+                        // Cumpărătorul are nevoie de Pasul 2 (Cumpărător) ca să își pună datele proprii
                         document.getElementById('modeSelectorContainer').style.display = 'none';
                         const banner = document.getElementById('roleBanner');
                         banner.style.display = 'block';
                         banner.className = 'role-banner buyer';
-                        banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate oficial. Completează datele tale la Pasul 2 și finalizează.";
+                        banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate. Completează datele tale la Pasul 2 și finalizează.";
 
-                        // Blocăm câmpurile vânzătorului și ale mașinii să nu poată fi modificate de cumpărător
                         const inputsVanzatorSiMasina = document.querySelectorAll('[id^="v"], [id^="a"]');
                         inputsVanzatorSiMasina.forEach(input => {
                             input.setAttribute('readonly', true);
                         });
 
-                        // Ascundem opțiunile vânzătorului de la pasul 4 și lăsăm doar butonul cumpărătorului
                         document.getElementById('localActions').style.display = 'none';
                         document.getElementById('buyerActions').style.display = 'block';
                         document.getElementById('step4Desc').innerText = "Verifică datele încărcate de vânzător, completează-ți datele și apasă butonul de finalizare.";
@@ -443,7 +479,6 @@
                     document.getElementById('status').innerText = "Sesiune activă! Așteptăm ca cumpărătorul să își completeze datele...";
                     document.getElementById('status').style.color = "#16a34a";
 
-                    // Pornim sistemul de ascultare în timp real (Live Polling) pentru a vedea când termină cumpărătorul
                     pornesteAscultareaLive();
                 }
             } catch (err) {
@@ -452,7 +487,6 @@
             }
         }
 
-        // Funcție High-Tech de verificare în timp real pe ecranul vânzătorului
         function pornesteAscultareaLive() {
             if (pollInterval) clearInterval(pollInterval);
             
@@ -465,14 +499,12 @@
                         document.getElementById('waitingText').style.display = 'none';
                         document.getElementById('status').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele! Contractul este gata pentru descărcare.</b>";
                         
-                        // Populăm datele primite de la cumpărător în formularul vânzătorului
                         for (const key in result.data) {
                             if (document.getElementById(key)) {
                                 document.getElementById(key).value = result.data[key];
                             }
                         }
 
-                        // Afisăm butonul de descărcare PDF direct pe ecranul vânzătorului
                         let dlBtn = document.getElementById('autoDownloadBtn');
                         if (!dlBtn) {
                             dlBtn = document.createElement('button');
@@ -486,7 +518,7 @@
                 } catch (e) {
                     console.error("Eroare la verificare live:", e);
                 }
-            }, 4000); // Verifică la fiecare 4 secunde în baza de date
+            }, 4000);
         }
 
         async function salvareDateCumparatorSiFinalizare() {
@@ -505,7 +537,6 @@
                 if (result.success) {
                     document.getElementById('status').innerHTML = "✅ <b style='color:#16a34a;'>Datele tale au fost salvate și trimise vânzătorului cu succes! Poți descărca contractul mai jos.</b>";
                     
-                    // Afișăm butonul de descărcare și pentru cumpărător
                     let dlBtnBuyer = document.getElementById('buyerDownloadBtn');
                     if (!dlBtnBuyer) {
                         dlBtnBuyer = document.createElement('button');
