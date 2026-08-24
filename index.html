@@ -3,110 +3,619 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inspector & Hub Tranzacții Auto - Model ITL 054</title>
+    <title>Hub Tranzacții Auto - Contract Oficial ITL 054 (2026)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+        .container { max-width: 720px; margin: 0 auto; background: white; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
         h2 { color: #1e3a8a; text-align: center; margin-bottom: 5px; font-size: 24px; }
         .subtitle { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 25px; }
         
-        .inspector-box { background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-family: monospace; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-        .coord-display { color: #38bdf8; font-weight: bold; font-size: 16px; }
+        .role-banner { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 18px; border-radius: 10px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; }
+        .role-banner.buyer { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
 
-        .viewer-container { position: relative; border: 2px solid #cbd5e1; border-radius: 8px; overflow: auto; max-height: 600px; text-align: center; background: #e2e8f0; margin-bottom: 20px; cursor: crosshair; }
-        #pdfCanvas { display: block; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .mode-selector { display: flex; gap: 15px; margin-bottom: 25px; }
+        .mode-card { flex: 1; border: 2px solid #e2e8f0; padding: 15px; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.2s; background: #fafafa; }
+        .mode-card.selected { border-color: #2563eb; background: #eff6ff; color: #1e40af; font-weight: bold; }
+        .mode-card h4 { margin: 0 0 5px 0; font-size: 14px; }
+        .mode-card p { margin: 0; font-size: 11px; color: #64748b; }
 
-        .click-list { background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 8px; max-height: 150px; overflow-y: auto; font-size: 12px; font-family: monospace; }
+        .progress-container { display: flex; justify-content: space-between; margin-bottom: 30px; position: relative; }
+        .progress-container::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: #e2e8f0; transform: translateY(-50%); z-index: 1; }
+        .progress-step { width: 34px; height: 34px; border-radius: 50%; background: #e2e8f0; color: #64748b; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; position: relative; z-index: 2; transition: all 0.3s; }
+        .progress-step.active { background: #2563eb; color: white; box-shadow: 0 0 0 4px rgba(37,99,235,0.15); }
+        .progress-step.completed { background: #16a34a; color: white; }
+
+        .step-content { display: none; }
+        .step-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title { font-size: 16px; font-weight: 700; color: #1e3a8a; margin-bottom: 15px; border-bottom: 2px solid #eff6ff; padding-bottom: 8px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .full-width { grid-column: span 2; }
+        label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+        input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border 0.2s; }
+        input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        input:read-only { background-color: #f1f5f9; color: #64748b; border-color: #e2e8f0; cursor: not-allowed; }
         
-        .btn { padding: 12px 20px; font-size: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; border: none; background-color: #2563eb; color: white; transition: background 0.2s; }
-        .btn:hover { background-color: #1d4ed8; }
+        .btn-group { display: flex; gap: 10px; margin-top: 30px; }
+        .btn { flex: 1; padding: 14px; font-size: 15px; font-weight: bold; border-radius: 10px; cursor: pointer; border: none; transition: background 0.2s; }
+        .btn-prev { background-color: #e2e8f0; color: #475569; }
+        .btn-prev:hover { background-color: #cbd5e1; }
+        .btn-next, .btn-generate { background-color: #2563eb; color: white; }
+        .btn-next:hover, .btn-generate:hover { background-color: #1d4ed8; }
+        .btn-success { background-color: #16a34a; color: white; width: 100%; margin-top: 15px; }
+        .btn-success:hover { background-color: #15803d; }
+        .btn-share { background-color: #d97706; color: white; width: 100%; margin-top: 10px; }
+        .btn-share:hover { background-color: #b45309; }
+
+        .qr-box { text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 12px; margin-top: 15px; }
+        #qrcode { display: inline-block; margin-top: 10px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .share-link-text { font-size: 12px; color: #64748b; word-break: break-all; margin-top: 10px; background: white; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; }
+        
+        #status { text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Inspector de Coordonate PDF (Click-to-Get)</h2>
-        <div class="subtitle">Click oriunde pe formularul de mai jos pentru a extrage coordonatele X și Y milimetrice</div>
+        <h2>Hub Tranzacții Auto</h2>
+        <div class="subtitle">Sistem Cloud High-Tech • Contract Oficial ITL 054</div>
+        <div id="roleBanner" class="role-banner" style="display:none;"></div>
 
-        <div class="inspector-box">
-            <div>Ultima Coordonată Punctată: <span id="coordOutput" class="coord-display">X: 0, Y: 0</span></div>
-            <button class="btn" onclick="copiazaCoordonatele()">Copiază Istoricul</button>
+        <div id="modeSelectorContainer" style="display:block;">
+            <label style="margin-bottom: 8px; text-align:center;">Alege Modul de Completare:</label>
+            <div class="mode-selector">
+                <div class="mode-card selected" id="cardLocal" onclick="selecteazaMod('local')">
+                    <h4>Completare Locală</h4>
+                    <p>Completezi tot formularul pe acest dispozitiv (Față-în-față)</p>
+                </div>
+                <div class="mode-card" id="cardRemote" onclick="selecteazaMod('remote')">
+                    <h4>Completare la Distanță</h4>
+                    <p>Completezi vânzătorul și mașina, trimiți linkul cumpărătorului</p>
+                </div>
+            </div>
         </div>
 
-        <div class="viewer-container" id="viewerContainer">
-            <canvas id="pdfCanvas"></canvas>
+        <div class="progress-container" id="progressBarContainer">
+            <div class="progress-step active" id="p1">1</div>
+            <div class="progress-step" id="p2">2</div>
+            <div class="progress-step" id="p3">3</div>
+            <div class="progress-step" id="p4" style="display:flex;">4</div>
         </div>
 
-        <label style="font-weight: bold; margin-bottom: 5px; display: block;">Istoric Click-uri (X, Y pentru pdf-lib):</label>
-        <div id="clickList" class="click-list">Niciun punct selectat încă. Dă click pe PDF.</div>
+        <!-- STEP 1: VÂNZĂTOR -->
+        <div class="step-content active" id="step1">
+            <div class="section-title">Pasul 1: Datele Obligatorii ale Vânzătorului</div>
+            <div class="form-grid">
+                <div class="full-width">
+                    <label>Nume și Prenume</label>
+                    <input type="text" id="vNume" placeholder="ex: Dragusanu Mario">
+                </div>
+                <div>
+                    <label>Județ</label>
+                    <input type="text" id="vJudet" placeholder="ex: Vaslui">
+                </div>
+                <div>
+                    <label>Municipiul / Oraș / Comună</label>
+                    <input type="text" id="vLocalitate" placeholder="ex: Bârlad">
+                </div>
+                <div>
+                    <label>Cod Poștal</label>
+                    <input type="text" id="vPostal" placeholder="ex: 731184">
+                </div>
+                <div>
+                    <label>Sat / Sector</label>
+                    <input type="text" id="vSat" placeholder="ex: -">
+                </div>
+                <div class="full-width">
+                    <label>Stradă, Număr, Bloc, Scară, Etaj, Ap.</label>
+                    <input type="text" id="vStrada" placeholder="ex: str. G-ral. Vasile Milea nr. 2">
+                </div>
+                <div>
+                    <label>Tip Act & Serie / Număr</label>
+                    <input type="text" id="vAct" placeholder="ex: CI seria VS nr. 123456">
+                </div>
+                <div>
+                    <label>C.N.P. / C.I.F.</label>
+                    <input type="text" id="vCnp" placeholder="ex: 5040101123456">
+                </div>
+                <div>
+                    <label>Telefon / Fax</label>
+                    <input type="text" id="vTel" placeholder="ex: 0749685347">
+                </div>
+                <div>
+                    <label>E-mail</label>
+                    <input type="text" id="vEmail" placeholder="ex: dragusanumario@gmail.com">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-next" onclick="nextStep(1)">Înainte ➔</button>
+            </div>
+        </div>
+
+        <!-- STEP 2: CUMPĂRĂTOR -->
+        <div class="step-content" id="step2">
+            <div class="section-title">Pasul 2: Datele Obligatorii ale Cumpărătorului</div>
+            <div class="form-grid">
+                <div class="full-width">
+                    <label>Nume și Prenume</label>
+                    <input type="text" id="cNume" placeholder="ex: Ionescu Maria">
+                </div>
+                <div>
+                    <label>Județ</label>
+                    <input type="text" id="cJudet" placeholder="ex: București">
+                </div>
+                <div>
+                    <label>Municipiul / Oraș / Comună</label>
+                    <input type="text" id="cLocalitate" placeholder="ex: București">
+                </div>
+                <div>
+                    <label>Cod Poștal</label>
+                    <input type="text" id="cPostal" placeholder="ex: 010101">
+                </div>
+                <div>
+                    <label>Sat / Sector</label>
+                    <input type="text" id="cSat" placeholder="ex: Sector 1">
+                </div>
+                <div class="full-width">
+                    <label>Stradă, Număr, Bloc, Scară, Etaj, Ap.</label>
+                    <input type="text" id="cStrada" placeholder="ex: str. Victoriei nr. 5">
+                </div>
+                <div>
+                    <label>Tip Act & Serie / Număr</label>
+                    <input type="text" id="cAct" placeholder="ex: CI seria RX nr. 654321">
+                </div>
+                <div>
+                    <label>C.N.P. / C.I.F.</label>
+                    <input type="text" id="cCnp" placeholder="ex: 2950505654321">
+                </div>
+                <div>
+                    <label>Telefon / Fax</label>
+                    <input type="text" id="cTel" placeholder="ex: 0733000000">
+                </div>
+                <div>
+                    <label>E-mail</label>
+                    <input type="text" id="cEmail" placeholder="ex: cumparator@email.com">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-prev" onclick="prevStep(2)">⬅ Înapoi</button>
+                <button class="btn btn-next" onclick="nextStep(2)">Înainte ➔</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: VEHICUL ȘI PREȚ -->
+        <div class="step-content" id="step3">
+            <div class="section-title" id="titleStep3">Pasul 3: Vehiculul și Prețul</div>
+            <div class="form-grid">
+                <div>
+                    <label>Marcă</label>
+                    <input type="text" id="aMarca" placeholder="ex: Audi">
+                </div>
+                <div>
+                    <label>Tipul</label>
+                    <input type="text" id="aTip" placeholder="ex: A4 B8">
+                </div>
+                <div class="full-width">
+                    <label>Număr de Identificare (VIN)</label>
+                    <input type="text" id="aVin" placeholder="ex: WAUZZZ8K1FA123456">
+                </div>
+                <div>
+                    <label>Serie Motor</label>
+                    <input type="text" id="aSerieMotor" placeholder="ex: CAGA123456">
+                </div>
+                <div>
+                    <label>Capacitate Cilindrică / kW</label>
+                    <input type="text" id="aCmKw" placeholder="ex: 1968 cm³ / 130 kW">
+                </div>
+                <div>
+                    <label>Greutate Maximă Admisă (tone)</label>
+                    <input type="text" id="aGreutate" placeholder="ex: 1.8 tone">
+                </div>
+                <div>
+                    <label>Număr Înmatriculare / Înregistrare</label>
+                    <input type="text" id="aNumar" placeholder="ex: VS12XYZ">
+                </div>
+                <div>
+                    <label>Data Expirare ITP</label>
+                    <input type="text" id="aItp" placeholder="ex: 12.10.2027">
+                </div>
+                <div>
+                    <label>Număr C.I.V.</label>
+                    <input type="text" id="aCiv" placeholder="ex: B123456">
+                </div>
+                <div>
+                    <label>An Fabricație</label>
+                    <input type="text" id="aAn" placeholder="ex: 2012">
+                </div>
+                <div>
+                    <label>Normă Euro</label>
+                    <input type="text" id="aEuro" placeholder="ex: Euro 5">
+                </div>
+                <div>
+                    <label>Data Dobândirii Anterioare</label>
+                    <input type="text" id="aDataDobandirii" placeholder="ex: 15.05.2020">
+                </div>
+                <div>
+                    <label>Preț în Cifre</label>
+                    <input type="text" id="aPretCifre" placeholder="ex: 8.500 EUR">
+                </div>
+                <div>
+                    <label>Preț în Litere</label>
+                    <input type="text" id="aPretLitere" placeholder="ex: opt mii cinci sute euro">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-prev" onclick="prevStep(3)">⬅ Înapoi</button>
+                <button class="btn btn-generate" onclick="finalizarePas()">Finalizare & Opțiuni ➔</button>
+            </div>
+        </div>
+
+        <!-- STEP 4: FINALIZARE -->
+        <div class="step-content" id="step4">
+            <div class="section-title">Pasul 4: Finalizare & Sincronizare Cloud</div>
+            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Poți descărca contractul oficial sau poți trimite linkul securizat cumpărătorului.</p>
+            
+            <div id="localActions">
+                <button class="btn btn-success" onclick="genereazaContractOficialPDF()">📥 Descarcă Contractul Oficial PDF (Model ITL 054)</button>
+                <button class="btn btn-share" onclick="pornesteFluxRemote()">📤 Trimite Către Cumpărător (Mod Distanță)</button>
+            </div>
+
+            <div id="buyerActions" style="display:none;">
+                <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Salvează Datele & Notifică Vânzătorul</button>
+            </div>
+
+            <div class="qr-box" id="qrBoxContainer" style="display:none;">
+                <label style="color: #1e3a8a; font-weight: bold; margin-bottom: 8px;">🔗 Link Securizat Generat pentru Cumpărător</label>
+                <div id="qrcode"></div>
+                <div id="shareLinkContainer" class="share-link-text"></div>
+                <p id="waitingText" style="font-size: 12px; color: #d97706; margin-top: 10px; font-weight: bold; display:none;">Așteptare activă: Pagina va detecta automat când cumpărătorul își completează datele...</p>
+            </div>
+
+            <div class="btn-group" style="margin-top: 20px;">
+                <button class="btn btn-prev" onclick="prevStep(4)">⬅ Înapoi la Modificare</button>
+            </div>
+        </div>
+
+        <div id="status"></div>
     </div>
 
     <script>
-        let pdfDocPdfJs = null;
-        let scale = 1.25; // Scara de afișare pe ecran
-        let clickHistory = [];
+        let currentStep = 1;
+        let modLucru = 'local';
+        let globalSessionId = null;
+        let userRole = 'vanzator';
+        let pollInterval = null;
 
-        // Încărcăm PDF.js pentru a randare vizuală în browser
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+        function selecteazaMod(mod) {
+            modLucru = mod;
+            document.getElementById('cardLocal').classList.remove('selected');
+            document.getElementById('cardRemote').classList.remove('selected');
+            
+            const p2Indice = document.getElementById('p2');
+            const p3Indice = document.getElementById('p3');
+            const p4Indice = document.getElementById('p4');
 
-        async function incarcaVizualizatorul() {
-            try {
-                const loadingTask = pdfjsLib.getDocument('contract-instrainare-dobandire-auto-model-2026-ITL-054.pdf');
-                pdfDocPdfJs = await loadingTask.promise;
-                const page = await pdfDocPdfJs.getPage(1);
-                
-                const viewport = page.getViewport({ scale: scale });
-                const canvas = document.getElementById('pdfCanvas');
-                const context = canvas.getContext('2d');
-                
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                const renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-                await page.render(renderContext).promise;
-            } catch (err) {
-                alert("Eroare la încărcarea vizualizatorului PDF: Asigură-te că fișierul PDF este în folder!");
+            if (mod === 'local') {
+                document.getElementById('cardLocal').classList.add('selected');
+                p2Indice.style.display = 'flex';
+                p3Indice.innerText = '3';
+                p4Indice.innerText = '4';
+                p4Indice.style.display = 'flex';
+            } else {
+                document.getElementById('cardRemote').classList.add('selected');
+                p2Indice.style.display = 'none';
+                p3Indice.innerText = '2';
+                p4Indice.innerText = '3';
             }
         }
 
-        // Eveniment de Click pe Canvas pentru a calcula exact coordonatele PDF-Lib
-        document.getElementById('pdfCanvas').addEventListener('click', function(event) {
-            const canvas = this;
-            const rect = canvas.getBoundingClientRect();
-            
-            // Coordonatele pe elementul canvas
-            const clickX = event.clientX - rect.left;
-            const clickY = event.clientY - rect.top;
-
-            // Dimensiunile standard PDF A4 în puncte (595.28 x 841.89)
-            const pdfWidth = 595.28;
-            const pdfHeight = 841.89;
-
-            // Transformăm din pixeli ecran în coordonate PDF-lib (unde Y este inversat, de jos în sus)
-            const xPdf = Math.round((clickX / canvas.width) * pdfWidth);
-            const yPdf = Math.round(pdfHeight - ((clickY / canvas.height) * pdfHeight));
-
-            // Afișăm rezultatul
-            document.getElementById('coordOutput').innerText = `X: ${xPdf}, Y: ${yPdf}`;
-            
-            const punctNou = `scrie(d.camp, ${xPdf}, ${yPdf}, 7); // X: ${xPdf}, Y: ${yPdf}`;
-            clickHistory.unshift(punctNou);
-
-            document.getElementById('clickList').innerHTML = clickHistory.join('<br>');
-        });
-
-        function copiazaCoordonatele() {
-            const text = clickHistory.join('\n');
-            navigator.clipboard.writeText(text);
-            alert("Coordonatele au fost copiate în clipboard!");
+        function updateProgress() {
+            const totalSteps = (modLucru === 'remote' && userRole === 'vanzator') ? 3 : 4;
+            for (let i = 1; i <= 4; i++) {
+                const p = document.getElementById('p' + i);
+                if (i > totalSteps) {
+                    p.style.display = 'none';
+                    continue;
+                }
+                p.classList.remove('active', 'completed');
+                if (i < currentStep) p.classList.add('completed');
+                if (i === currentStep) p.classList.add('active');
+            }
         }
 
-        window.onload = incarcaVizualizatorul;
+        function nextStep(step) {
+            document.getElementById('step' + step).classList.remove('active');
+            
+            if (modLucru === 'remote' && userRole === 'vanzator' && step === 1) {
+                currentStep = 3;
+                document.getElementById('titleStep3').innerText = "Pasul 2: Vehiculul și Prețul";
+            } else {
+                currentStep = step + 1;
+            }
+
+            document.getElementById('step' + currentStep).classList.add('active');
+            updateProgress();
+        }
+
+        function prevStep(step) {
+            document.getElementById('step' + step).classList.remove('active');
+            
+            if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) {
+                currentStep = 1;
+            } else {
+                currentStep = step - 1;
+            }
+
+            document.getElementById('step' + currentStep).classList.add('active');
+            updateProgress();
+        }
+
+        function finalizarePas() {
+            nextStep(3);
+        }
+
+        window.onload = async function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('sessionId')) {
+                globalSessionId = params.get('sessionId');
+                userRole = 'cumparator';
+
+                try {
+                    const response = await fetch(`/api/obtine-tranzactie/${globalSessionId}`);
+                    const result = await response.json();
+                    if (result.success) {
+                        for (const key in result.data) {
+                            if (document.getElementById(key)) {
+                                document.getElementById(key).value = result.data[key];
+                            }
+                        }
+
+                        document.getElementById('modeSelectorContainer').style.display = 'none';
+                        const banner = document.getElementById('roleBanner');
+                        banner.style.display = 'block';
+                        banner.className = 'role-banner buyer';
+                        banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate. Completează datele tale și finalizează.";
+
+                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="v"], [id^="a"]');
+                        inputsVanzatorSiMasina.forEach(input => {
+                            input.setAttribute('readonly', true);
+                        });
+
+                        document.getElementById('localActions').style.display = 'none';
+                        document.getElementById('buyerActions').style.display = 'block';
+                        document.getElementById('step4Desc').innerText = "Verifică datele, completează-ți datele și apasă butonul de finalizare.";
+                    }
+                } catch (e) {
+                    console.error("Eroare la sincronizare:", e);
+                }
+            }
+        };
+
+        function colecteazaDate() {
+            const elemente = [
+                'vNume', 'vJudet', 'vLocalitate', 'vPostal', 'vSat', 'vStrada', 'vAct', 'vCnp', 'vTel', 'vEmail',
+                'cNume', 'cJudet', 'cLocalitate', 'cPostal', 'cSat', 'cStrada', 'cAct', 'cCnp', 'cTel', 'cEmail',
+                'aMarca', 'aTip', 'aVin', 'aSerieMotor', 'aCmKw', 'aGreutate', 'aNumar', 'aItp', 'aCiv', 'aAn', 'aEuro', 'aDataDobandirii',
+                'aPretCifre', 'aPretLitere'
+            ];
+            let date = {};
+            elemente.forEach(id => {
+                const el = document.getElementById(id);
+                date[id] = el ? el.value : '';
+            });
+            return date;
+        }
+
+        async function pornesteFluxRemote() {
+            const d = colecteazaDate();
+            document.getElementById('status').innerText = "Se generează sesiunea securizată în cloud...";
+            document.getElementById('status').style.color = "#d97706";
+
+            try {
+                const response = await fetch('/api/creeaza-tranzactie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(d)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    globalSessionId = result.sessionId;
+                    const buyerUrl = `${window.location.origin}/?sessionId=${globalSessionId}`;
+                    
+                    document.getElementById('qrBoxContainer').style.display = 'block';
+                    document.getElementById('waitingText').style.display = 'block';
+                    document.getElementById('qrcode').innerHTML = "";
+                    new QRCode(document.getElementById('qrcode'), {
+                        text: buyerUrl,
+                        width: 130,
+                        height: 130
+                    });
+
+                    document.getElementById('shareLinkContainer').innerHTML = `Link Cumpărător: <a href="${buyerUrl}" target="_blank">${buyerUrl}</a>`;
+                    document.getElementById('status').innerText = "Sesiune activă! Așteptăm ca cumpărătorul să își completeze datele...";
+                    document.getElementById('status').style.color = "#16a34a";
+
+                    pornesteAscultareaLive();
+                }
+            } catch (err) {
+                document.getElementById('status').innerText = "Eroare server.";
+                document.getElementById('status').style.color = "#dc2626";
+            }
+        }
+
+        function pornesteAscultareaLive() {
+            if (pollInterval) clearInterval(pollInterval);
+            
+            pollInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/obtine-tranzactie/${globalSessionId}`);
+                    const result = await response.json();
+                    if (result.success && result.data.status === 'COMPLETAT_GATA_CONTRACT') {
+                        clearInterval(pollInterval);
+                        document.getElementById('waitingText').style.display = 'none';
+                        document.getElementById('status').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele! Contractul este gata.</b>";
+                        
+                        for (const key in result.data) {
+                            if (document.getElementById(key)) {
+                                document.getElementById(key).value = result.data[key];
+                            }
+                        }
+
+                        let dlBtn = document.getElementById('autoDownloadBtn');
+                        if (!dlBtn) {
+                            dlBtn = document.createElement('button');
+                            dlBtn.id = 'autoDownloadBtn';
+                            dlBtn.className = 'btn btn-success';
+                            dlBtn.innerText = '📥 Descarcă Contractul Oficial PDF (Model ITL 054)';
+                            dlBtn.onclick = genereazaContractOficialPDF;
+                            document.getElementById('qrBoxContainer').appendChild(dlBtn);
+                        }
+                    }
+                } catch (e) {
+                    console.error("Eroare live:", e);
+                }
+            }, 4000);
+        }
+
+        async function salvareDateCumparatorSiFinalizare() {
+            const d = colecteazaDate();
+            document.getElementById('status').innerText = "Se trimit datele către vânzător...";
+            document.getElementById('status').style.color = "#d97706";
+
+            try {
+                const response = await fetch(`/api/actualizeaza-tranzactie/${globalSessionId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(d)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('status').innerHTML = "✅ <b style='color:#16a34a;'>Datele tale au fost trimise vânzătorului cu succes!</b>";
+                    
+                    let dlBtnBuyer = document.getElementById('buyerDownloadBtn');
+                    if (!dlBtnBuyer) {
+                        dlBtnBuyer = document.createElement('button');
+                        dlBtnBuyer.id = 'buyerDownloadBtn';
+                        dlBtnBuyer.className = 'btn btn-success';
+                        dlBtnBuyer.style.marginTop = '15px';
+                        dlBtnBuyer.innerText = '📥 Descarcă Contractul Oficial PDF';
+                        dlBtnBuyer.onclick = genereazaContractOficialPDF;
+                        document.getElementById('step4').appendChild(dlBtnBuyer);
+                    }
+                }
+            } catch (err) {
+                document.getElementById('status').innerText = "Eroare la salvare.";
+                document.getElementById('status').style.color = "#dc2626";
+            }
+        }
+
+        // MOTOR MAPARE MILIMETRICĂ PENTRU DATELE OBLIGATORII
+        async function genereazaContractOficialPDF() {
+            const statusEl = document.getElementById('status');
+            statusEl.innerText = "Se generează documentul cu toate coordonatele tale exacte...";
+            statusEl.style.color = "#d97706";
+
+            try {
+                const d = colecteazaDate();
+
+                const curataText = (txt) => {
+                    if (!txt) return '';
+                    return String(txt)
+                        .replace(/ă/g, 'a').replace(/Ă/g, 'A')
+                        .replace(/â/g, 'a').replace(/Â/g, 'A')
+                        .replace(/î/g, 'i').replace(/Î/g, 'I')
+                        .replace(/ș/g, 's').replace(/Ș/g, 'S')
+                        .replace(/ş/g, 's').replace(/Ş/g, 'S')
+                        .replace(/ț/g, 't').replace(/Ț/g, 'T')
+                        .replace(/ţ/g, 't').replace(/Ţ/g, 'T');
+                };
+
+                const responseTemplate = await fetch('contract-instrainare-dobandire-auto-model-2026-ITL-054.pdf');
+                if (!responseTemplate.ok) {
+                    throw new Error("Nu s-a putut încărca șablonul PDF oficial.");
+                }
+                const templateBytes = await responseTemplate.arrayBuffer();
+
+                const { PDFDocument, rgb, StandardFonts } = PDFLib;
+                const pdfDoc = await PDFDocument.load(templateBytes);
+                const firstPage = pdfDoc.getPages()[0];
+
+                const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+                const colNegru = rgb(0, 0, 0);
+
+                const scrie = (txt, x, y, size = 6.5, font = fontRegular) => {
+                    if (txt) {
+                        firstPage.drawText(curataText(txt), { x, y, size, font, color: colNegru });
+                    }
+                };
+
+                // --- MAPARE MILIMETRICĂ COMPLETă - DUPĂ COORDONATELE TALE EXACTE ---
+                
+                // 1. Nume și prenume vânzător
+                scrie(d.vNume, 324, 692, 7, fontBold);       
+
+                // 2. Domiciliu (Rândul 1 de adresă)
+                scrie(d.vJudet, 268, 682, 6.5);              // Județ
+                scrie(d.vPostal, 399, 682, 6.5);             // Cod poștal
+
+                // 3. Domiciliu (Rândul 2 de adresă)
+                scrie(d.vLocalitate, 49, 670, 6.5);          // Municipiul/Oraș/Comună
+                scrie(d.vSat, 212, 670, 6.5);                // Sat/Sector
+                scrie(d.vStrada, 310, 670, 6.5);             // Stradă / Număr
+
+                // 4. Detalii adresă (Bloc, Scară, Etaj, Ap., Serie act, Nr act)
+                scrie(d.vBl, 50, 659, 6.5);                  // Bl.
+                scrie(d.vSc, 103, 659, 6.5);                 // Sc.
+                scrie(d.vEt, 158, 659, 6.5);                 // Etaj
+                scrie(d.vAp, 210, 659, 6.5);                 // Apartament
+                scrie(d.vActSeria, 456, 659, 6.5);           // Seria act
+                scrie(d.vActNr, 508, 659, 6.5);              // Nr act
+
+                // 5. CNP, Telefon, E-mail
+                scrie(d.vCnp, 105, 648, 6.5, fontBold);      // CNP / CIF
+                scrie(d.vTel, 256, 648, 6.5);                // Telefon / Fax
+                scrie(d.vEmail, 367, 648, 6.5);              // E-mail
+
+                // 6. Domiciliu fiscal (dacă este diferit sau completat separat)
+                scrie(d.vFiscJudet, 183, 635, 6.5);           // Județ fiscal
+                scrie(d.vFiscPostal, 496, 635, 6.5);         // Cod poștal fiscal
+                scrie(d.vFiscLocalitate, 148, 624, 6.5);     // Municipiul/Oraș/Comună fiscal
+                scrie(d.vFiscSat, 296, 624, 6.5);            // Sat/Sector fiscal
+                scrie(d.vFiscStrada, 391, 624, 6.5);         // Stradă / Număr fiscal
+
+                // 7. Reprezentant / Calitate (dacă e cazul)
+                scrie(d.vReprezentant, 329, 614, 6.5);       // Reprezentată prin
+                scrie(d.vRepActSeria, 172, 601, 6.5);        // Seria act reprezentant
+                scrie(d.vRepActNr, 217, 601, 6.5);           // Nr act / CIF reprezentant
+                scrie(d.vRepTel, 424, 601, 6.5);             // Tel / Fax reprezentant
+                scrie(d.vRepEmail, 51, 589, 6.5);            // E-mail reprezentant
+                scrie(d.vCalitate, 221, 589, 6.5);           // În calitate de
+
+                // Salvare PDF final
+                const pdfBytesFinal = await pdfDoc.save();
+                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = "Contract_ITL_054_Vanzator_Complet.pdf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                statusEl.innerText = "Succes! Toate datele vânzătorului au fost mapate milimetric.";
+                statusEl.style.color = "#16a34a";
+
+            } catch (err) {
+                statusEl.innerText = "Eroare la generare: " + err.message;
+                statusEl.style.color = "#dc2626";
+            }
+        }
     </script>
 </body>
 </html>
