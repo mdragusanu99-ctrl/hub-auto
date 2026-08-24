@@ -514,132 +514,113 @@
             }
         }
 
-        // MOTOR VECTORIAL PUR PDF-LIB (Fără randare HTML nesigură)
+       // MOTOR VECTORIAL PUR PDF-LIB CU CURĂȚARE AUTOMATĂ DIACRITICE
         async function genereazaContractOficialPDF() {
-            const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează documentul oficial vectorial pentru primărie...";
-            statusEl.style.color = "#d97706";
+    const statusEl = document.getElementById('status');
+    statusEl.innerText = "Se încarcă șablonul oficial și se completează datele...";
+    statusEl.style.color = "#d97706";
 
-            try {
-                const d = colecteazaDate();
-                
-                const { PDFDocument, rgb, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const page = pdfDoc.addPage([595.28, 841.89]); // Format A4 standard
-                
-                const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                const colNegru = rgb(0, 0, 0);
+    try {
+        const d = colecteazaDate();
 
-                const scrie = (txt, x, y, size = 8, font = fontRegular) => {
-                    if (txt) {
-                        page.drawText(String(txt), { x, y, size, font, color: colNegru });
-                    }
-                };
+        const curataText = (txt) => {
+            if (!txt) return '';
+            return String(txt)
+                .replace(/ă/g, 'a').replace(/Ă/g, 'A')
+                .replace(/â/g, 'a').replace(/Â/g, 'A')
+                .replace(/î/g, 'i').replace(/Î/g, 'I')
+                .replace(/ș/g, 's').replace(/Ș/g, 'S')
+                .replace(/ş/g, 's').replace(/Ş/g, 'S')
+                .replace(/ț/g, 't').replace(/Ț/g, 'T')
+                .replace(/ţ/g, 't').replace(/Ţ/g, 'T');
+        };
 
-                const deseneazaDreptunghi = (x, y, width, height) => {
-                    page.drawRectangle({
-                        x, y, width, height,
-                        borderColor: colNegru,
-                        borderWidth: 1,
-                    });
-                };
-
-                // --- ANTET ---
-                scrie("Model 2026 ITL 054", 36, 810, 8, fontBold);
-                scrie("Anexa nr. 2", 520, 810, 8, fontBold);
-
-                // Caseta A & B & Titlu
-                deseneazaDreptunghi(36, 735, 180, 65);
-                scrie("A. Denumirea organului fiscal local:", 40, 785, 7, fontBold);
-                scrie(`CIF/Cod SIRUTA: .........................`, 40, 770, 7);
-                scrie(`Adresa: .......................................`, 40, 755, 7);
-                scrie(`Tel/fax/e-mail: ...............................`, 40, 740, 7);
-
-                scrie("CONTRACT DE ÎNSTRĂINARE - DOBÂNDIRE", 225, 775, 10, fontBold);
-                scrie("A UNUI MIJLOC DE TRANSPORT", 250, 760, 9, fontBold);
-                scrie("(se completează şi pe copii)", 260, 747, 7);
-
-                deseneazaDreptunghi(415, 735, 144, 65);
-                scrie("B. Denumirea organului fiscal local:", 420, 785, 7, fontBold);
-                scrie("Vânzătorul NU are debite.", 420, 765, 7);
-                scrie("Rol nr.: ........ Funcția: ........", 420, 747, 7);
-
-                // --- (1) VÂNZĂTOR ---
-                deseneazaDreptunghi(36, 650, 523, 75);
-                scrie("(1) PERSOANA CARE ÎNSTRĂINEAZĂ", 40, 712, 8, fontBold);
-                scrie(`Subsemnatul(a): ${d.vNume || '........................................................'}`, 180, 712, 8, fontBold);
-                scrie(`Domiciliu/Sediu: ROMÂNIA, jud. ${d.vJudet || '..........'}, mun./oraş/com. ${d.vLocalitate || '..........'}`, 40, 695, 7.5);
-                scrie(`Sat/sector: ${d.vSat || '......'}, cod poştal ${d.vPostal || '......'}, str. ${d.vStrada || '........................................'}`, 40, 680, 7.5);
-                scrie(`Act identitate: ${d.vAct || '......................'} | C.N.P./C.I.F.: ${d.vCnp || '......................'}`, 40, 665, 7.5);
-                scrie(`Tel./fax: ${d.vTel || '......................'} | E-mail: ${d.vEmail || '......................'}`, 40, 653, 7.5);
-
-                // --- (2) CUMPĂRĂTOR ---
-                deseneazaDreptunghi(36, 565, 523, 75);
-                scrie("(2) PERSOANA CARE DOBÂNDEŞTE", 40, 627, 8, fontBold);
-                scrie(`Subsemnatul(a): ${d.cNume || '........................................................'}`, 180, 627, 8, fontBold);
-                scrie(`Domiciliu/Sediu: ROMÂNIA, jud. ${d.cJudet || '..........'}, mun./oraş/com. ${d.cLocalitate || '..........'}`, 40, 610, 7.5);
-                scrie(`Sat/sector: ${d.cSat || '......'}, cod poştal ${d.cPostal || '......'}, str. ${d.cStrada || '........................................'}`, 40, 595, 7.5);
-                scrie(`Act identitate: ${d.cAct || '......................'} | C.N.P./C.I.F.: ${d.cCnp || '......................'}`, 40, 580, 7.5);
-                scrie(`Tel./fax: ${d.cTel || '......................'} | E-mail: ${d.cEmail || '......................'}`, 40, 568, 7.5);
-
-                // --- (3) OBIECTUL CONTRACTULUI ---
-                deseneazaDreptunghi(36, 455, 523, 100);
-                scrie("(3) OBIECTUL CONTRACTULUI", 40, 542, 8, fontBold);
-                scrie(`Mijloc de transport - Marcă: ${d.aMarca || '............'}, Tip: ${d.aTip || '............'}`, 40, 525, 7.5);
-                scrie(`Număr de identificare (VIN): ${d.aVin || '........................................'}`, 40, 510, 7.5);
-                scrie(`Serie motor: ${d.aSerieMotor || '............'} | Capacitate cilindrică/kW: ${d.aCmKw || '............'}`, 40, 495, 7.5);
-                scrie(`Greutate max. admisă: ${d.aGreutate || '......'} | Nr. înmatriculare: ${d.aNumar || '............'}`, 40, 480, 7.5);
-                scrie(`Data expirare ITP: ${d.aItp || '............'} | C.I.V.: ${d.aCiv || '............'} | An fabr.: ${d.aAn || '......'}`, 40, 465, 7.5);
-                scrie(`Normă euro: ${d.aEuro || '......'} | Dobândit la data de: ${d.aDataDobandirii || '............'}`, 40, 458, 7.5);
-
-                // --- (4) PREȚUL ---
-                deseneazaDreptunghi(36, 420, 523, 27);
-                scrie("(4) PREȚUL", 40, 432, 8, fontBold);
-                scrie(`În cifre: ${d.aPretCifre || '....................'} | În litere: ${d.aPretLitere || '........................................................'}`, 110, 432, 7.5, fontBold);
-
-                // --- CLAUZE ȘI DECLARAȚII ---
-                deseneazaDreptunghi(36, 305, 523, 107);
-                scrie("Persoana care înstrăinează declară că mijlocul de transport este proprietatea sa, liber de sarcini, și l-a predat", 40, 395, 7.5);
-                scrie("împreună cu cheile, certificatul de înmatriculare şi cartea de identitate a vehiculului, primind prețul.", 40, 383, 7.5);
-                scrie("Dobânditorul declară că a primit vehiculul, cheile, actele și a achitat prețul menționat.", 40, 371, 7.5);
-                scrie("Cunoaştem prevederile Codului penal privind falsul şi uzul de fals.", 40, 359, 7.5);
-                scrie("Începând cu data semnării, dobânditorul are calitatea de proprietar, preluând toate obligațiile legale,", 40, 347, 7.5);
-                scrie("inclusiv transcrierea vehiculului pe numele său în noul termen legal de maximum 90 de zile.", 40, 335, 7.5, fontBold);
-                
-                scrie("Semnătura înstrăinătorului", 60, 312, 7.5, fontBold);
-                scrie("Semnătura dobânditorului", 380, 312, 7.5, fontBold);
-
-                // --- C & D ---
-                deseneazaDreptunghi(36, 245, 255, 52);
-                scrie("C. Organ fiscal local - domiciliu dobânditor", 40, 285, 7, fontBold);
-                scrie("CIF / Cod SIRUTA: .......................................", 40, 270, 7);
-                scrie("Adresa: ...................................................", 40, 255, 7);
-
-                deseneazaDreptunghi(304, 245, 255, 52);
-                scrie("D. Dobânditorul NU are debite", 310, 285, 7, fontBold);
-                scrie("Copie 1-4 „Conform cu originalul”", 310, 270, 7);
-                scrie("Înstrăinător ................... Dobânditor ..................", 310, 255, 7);
-
-                // Salvare PDF Vectorial
-                const pdfBytesFinal = await pdfDoc.save();
-                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = "Contract_Instrainare_Dobandire_ITL_054.pdf";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                statusEl.innerText = "Succes! Contractul oficial a fost descărcat în format PDF vectorial curat.";
-                statusEl.style.color = "#16a34a";
-
-            } catch (err) {
-                statusEl.innerText = "Eroare la generare: " + err.message;
-                statusEl.style.color = "#dc2626";
-            }
+        // 1. Descărcăm șablonul PDF oficial existent din folderul proiectului
+        const responseTemplate = await fetch('contract-instrainare-dobandire-auto-model-2026-ITL-054.pdf');
+        if (!responseTemplate.ok) {
+            throw new Error("Nu s-a putut încărca șablonul PDF oficial. Verifică dacă fișierul este în folder!");
         }
+        const templateBytes = await responseTemplate.arrayBuffer();
+
+        const { PDFDocument, rgb, StandardFonts } = PDFLib;
+        
+        // 2. Încărcăm fișierul oficial în pdf-lib
+        const pdfDoc = await PDFDocument.load(templateBytes);
+        const pages = pdfDoc.getPages();
+        const firstPage = pages[0]; // Prima pagină a formularului oficial[cite: 11]
+
+        const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        const colNegru = rgb(0, 0, 0);
+
+        const scrie = (txt, x, y, size = 7, font = fontRegular) => {
+            if (txt) {
+                firstPage.drawText(curataText(txt), { x, y, size, font, color: colNegru });
+            }
+        };
+
+        // 3. Completarea datelor direct pe formularul oficial (coordonate mapate pe pagina A4)
+        // (1) Vânzător
+        scrie(d.vNume, 175, 680, 7.5, fontBold);
+        scrie(d.vJudet, 100, 655, 7);
+        scrie(d.vPostal, 280, 655, 7);
+        scrie(d.vLocalitate, 100, 642, 7);
+        scrie(d.vSat, 275, 642, 7);
+        scrie(d.vStrada, 70, 628, 7);
+        scrie(d.vAct, 180, 615, 7);
+        scrie(d.vCnp, 340, 615, 7, fontBold);
+        scrie(d.vTel, 80, 602, 7);
+        scrie(d.vEmail, 230, 602, 7);
+
+        // (2) Cumpărător
+        scrie(d.cNume, 175, 540, 7.5, fontBold);
+        scrie(d.cJudet, 100, 515, 7);
+        scrie(d.cPostal, 280, 515, 7);
+        scrie(d.cLocalitate, 100, 502, 7);
+        scrie(d.cSat, 275, 502, 7);
+        scrie(d.cStrada, 70, 488, 7);
+        scrie(d.cAct, 180, 475, 7);
+        scrie(d.cCnp, 340, 475, 7, fontBold);
+        scrie(d.cTel, 80, 462, 7);
+        scrie(d.cEmail, 230, 462, 7);
+
+        // (3) Obiectul contractului
+        scrie(d.aMarca, 150, 405, 7, fontBold);
+        scrie(d.aTip, 220, 405, 7);
+        scrie(d.aVin, 350, 405, 7, fontBold);
+        scrie(d.aSerieMotor, 100, 392, 7);
+        scrie(d.aCmKw, 240, 392, 7);
+        scrie(d.aGreutate, 420, 392, 7);
+        scrie(d.aNumar, 130, 378, 7);
+        scrie(d.aItp, 360, 378, 7);
+        scrie(d.aCiv, 130, 364, 7);
+        scrie(d.aAn, 280, 364, 7);
+        scrie(d.aEuro, 360, 364, 7);
+        scrie(d.aDataDobandirii, 130, 350, 7);
+
+        // (4) Prețul
+        scrie(d.aPretCifre, 150, 325, 7.5, fontBold);
+        scrie(d.aPretLitere, 260, 325, 7.5, fontBold);
+
+        // 4. Salvăm și descărcăm noul PDF completat direct pe formularul oficial
+        const pdfBytesFinal = await pdfDoc.save();
+        const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = "Contract_Instrainare_Dobandire_ITL_054_Completat.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        statusEl.innerText = "Succes! Contractul a fost completat direct pe formularul oficial.";
+        statusEl.style.color = "#16a34a";
+
+    } czyn(err) { // Dacă apare vreo excepție
+        statusEl.innerText = "Eroare la generare: " + err.message;
+        statusEl.style.color = "#dc2626";
+    }
+}
     </script>
 </body>
 </html>
