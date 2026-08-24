@@ -85,28 +85,10 @@
             <div class="progress-step" id="p4" style="display:flex;">4</div>
         </div>
 
-        <!-- STEP 1: VÂNZĂTOR & FISCAL -->
+        <!-- STEP 1: VÂNZĂTOR -->
         <div class="step-content active" id="step1">
-            <div class="section-title">Pasul 1: Datele Vânzătorului & Organul Fiscal (Chenarul A)</div>
+            <div class="section-title">Pasul 1: Datele Obligatorii ale Vânzătorului</div>
             <div class="form-grid">
-                <div class="full-width" style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 5px;">
-                    <label style="color: #1e3a8a;">Date Organ Fiscal (Chenarul A)</label>
-                </div>
-                <div class="full-width">
-                    <label>Denumire Organ Fiscal (ex: Primaria Barlad)</label>
-                    <input type="text" id="fDenumire" placeholder="ex: Primaria Municipiului Barlad">
-                </div>
-                <div>
-                    <label>CIF / Cod SIRUTA</label>
-                    <input type="text" id="fCifSiruta" placeholder="ex: 4349141 / 161685">
-                </div>
-                <div>
-                    <label>Rol Număr (pentru chenarul A)</label>
-                    <input type="text" id="fRolNr" placeholder="ex: 12345">
-                </div>
-                <div class="full-width" style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 5px; margin-bottom: 5px;">
-                    <label style="color: #1e3a8a;">Date Personale Vânzător</label>
-                </div>
                 <div class="full-width">
                     <label>Nume și Prenume</label>
                     <input type="text" id="vNume" placeholder="ex: Dragusanu Mario">
@@ -129,7 +111,7 @@
                 </div>
                 <div class="full-width">
                     <label>Stradă, Număr, Bloc, Scară, Etaj, Ap.</label>
-                    <input type="text" id="vStrada" placeholder="ex: G-ral. Vasile Milea nr. 2">
+                    <input type="text" id="vStrada" placeholder="ex: str. G-ral. Vasile Milea nr. 2">
                 </div>
                 <div>
                     <label>Tip Act & Serie / Număr</label>
@@ -155,7 +137,7 @@
 
         <!-- STEP 2: CUMPĂRĂTOR -->
         <div class="step-content" id="step2">
-            <div class="section-title">Pasul 2: Datele Cumpărătorului</div>
+            <div class="section-title">Pasul 2: Datele Obligatorii ale Cumpărătorului</div>
             <div class="form-grid">
                 <div class="full-width">
                     <label>Nume și Prenume</label>
@@ -397,7 +379,7 @@
                         banner.className = 'role-banner buyer';
                         banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate. Completează datele tale și finalizează.";
 
-                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="v"], [id^="a"], [id^="f"]');
+                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="v"], [id^="a"]');
                         inputsVanzatorSiMasina.forEach(input => {
                             input.setAttribute('readonly', true);
                         });
@@ -414,7 +396,6 @@
 
         function colecteazaDate() {
             const elemente = [
-                'fDenumire', 'fCifSiruta', 'fRolNr',
                 'vNume', 'vJudet', 'vLocalitate', 'vPostal', 'vSat', 'vStrada', 'vAct', 'vCnp', 'vTel', 'vEmail',
                 'cNume', 'cJudet', 'cLocalitate', 'cPostal', 'cSat', 'cStrada', 'cAct', 'cCnp', 'cTel', 'cEmail',
                 'aMarca', 'aTip', 'aVin', 'aSerieMotor', 'aCmKw', 'aGreutate', 'aNumar', 'aItp', 'aCiv', 'aAn', 'aEuro', 'aDataDobandirii',
@@ -533,10 +514,10 @@
             }
         }
 
-        // MOTOR MAPARE MILIMETRICĂ - ÎCEPEM CU CHENARUL A ȘI SECȚIUNEA 1
+        // MOTOR MAPARE MILIMETRICĂ PENTRU DATELE OBLIGATORII
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează documentul cu mapare milimetrică...";
+            statusEl.innerText = "Se generează documentul cu datele obligatorii...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -574,54 +555,49 @@
                     }
                 };
 
-                // --- MAPARE MILIMETRICĂ EXACTĂ PENTRU CHENARUL A ȘI SECȚIUNEA (1) ---
+                // --- MAPARE MILIMETRICĂ EXACTĂ PENTRU SECȚIUNILE OBLIGATORII ---
 
-                // CHENARUL A (Sus - Stânga) - Bazat exact pe imaginea ta
-                scrie(d.fDenumire, 42, 792, 6.5, fontBold);  // Denumirea organ fiscal
-                scrie(d.fCifSiruta, 100, 765, 6.5);         // CIF / Cod SIRUTA
-                scrie(d.fRolNr, 95, 712, 6.5, fontBold);      // Rol număr
+                // (1) VÂNZĂTOR
+                scrie(d.vNume, 185, 672, 7, fontBold);
+                scrie(d.vJudet, 100, 646, 6.5);
+                scrie(d.vPostal, 280, 646, 6.5);
+                scrie(d.vLocalitate, 100, 633, 6.5);
+                scrie(d.vSat, 275, 633, 6.5);
+                scrie(d.vStrada, 65, 620, 6.5);
+                scrie(d.vAct, 175, 594, 6.5);
+                scrie(d.vCnp, 340, 594, 6.5, fontBold);
+                scrie(d.vTel, 75, 581, 6.5);
+                scrie(d.vEmail, 220, 581, 6.5);
 
-                // (1) PERSOANA CARE ÎNSTRĂINEAZĂ (Vânzătorul)
-                scrie(d.vNume, 185, 672, 7, fontBold);       // Nume și Prenume
-                scrie(d.vJudet, 100, 646, 6.5);              // Județ
-                scrie(d.vPostal, 280, 646, 6.5);             // Cod poștal
-                scrie(d.vLocalitate, 100, 633, 6.5);         // Municipiu / Oraș / Comună
-                scrie(d.vSat, 275, 633, 6.5);                // Sat / Sector
-                scrie(d.vStrada, 65, 620, 6.5);              // Stradă, număr, bloc, etaj, ap.
-                scrie(d.vAct, 175, 594, 6.5);                // Act identitate (BI/CI/Pașaport seria și nr)
-                scrie(d.vCnp, 340, 594, 6.5, fontBold);      // CNP / CIF
-                scrie(d.vTel, 75, 581, 6.5);                 // Telefon / Fax
-                scrie(d.vEmail, 220, 581, 6.5);              // E-mail
-
-                // (2) PERSOANA CARE DOBÂNDEȘTE (Cumpărătorul)
-                scrie(d.cNume, 185, 518, 7, fontBold);       
-                scrie(d.cJudet, 100, 492, 6.5);              
-                scrie(d.cPostal, 280, 492, 6.5);             
-                scrie(d.cLocalitate, 100, 479, 6.5);         
-                scrie(d.cSat, 275, 479, 6.5);                
-                scrie(d.cStrada, 65, 466, 6.5);              
-                scrie(d.cAct, 175, 440, 6.5);                
-                scrie(d.cCnp, 340, 440, 6.5, fontBold);      
-                scrie(d.cTel, 75, 427, 6.5);                 
-                scrie(d.cEmail, 220, 427, 6.5);              
+                // (2) CUMPĂRĂTOR
+                scrie(d.cNume, 185, 518, 7, fontBold);
+                scrie(d.cJudet, 100, 492, 6.5);
+                scrie(d.cPostal, 280, 492, 6.5);
+                scrie(d.cLocalitate, 100, 479, 6.5);
+                scrie(d.cSat, 275, 479, 6.5);
+                scrie(d.cStrada, 65, 466, 6.5);
+                scrie(d.cAct, 175, 440, 6.5);
+                scrie(d.cCnp, 340, 440, 6.5, fontBold);
+                scrie(d.cTel, 75, 427, 6.5);
+                scrie(d.cEmail, 220, 427, 6.5);
 
                 // (3) OBIECTUL CONTRACTULUI
-                scrie(d.aMarca, 210, 368, 6.5, fontBold);    
-                scrie(d.aTip, 290, 368, 6.5);                
-                scrie(d.aVin, 140, 355, 6.5, fontBold);      
-                scrie(d.aSerieMotor, 110, 342, 6.5);         
-                scrie(d.aCmKw, 270, 342, 6.5);               
-                scrie(d.aGreutate, 120, 329, 6.5);           
-                scrie(d.aNumar, 240, 316, 6.5);              
-                scrie(d.aItp, 140, 303, 6.5);                
-                scrie(d.aCiv, 90, 290, 6.5);                 
-                scrie(d.aAn, 320, 290, 6.5);                 
-                scrie(d.aEuro, 100, 277, 6.5);               
-                scrie(d.aDataDobandirii, 280, 277, 6.5);     
+                scrie(d.aMarca, 210, 368, 6.5, fontBold);
+                scrie(d.aTip, 290, 368, 6.5);
+                scrie(d.aVin, 140, 355, 6.5, fontBold);
+                scrie(d.aSerieMotor, 110, 342, 6.5);
+                scrie(d.aCmKw, 270, 342, 6.5);
+                scrie(d.aGreutate, 120, 329, 6.5);
+                scrie(d.aNumar, 240, 316, 6.5);
+                scrie(d.aItp, 140, 303, 6.5);
+                scrie(d.aCiv, 90, 290, 6.5);
+                scrie(d.aAn, 320, 290, 6.5);
+                scrie(d.aEuro, 100, 277, 6.5);
+                scrie(d.aDataDobandirii, 280, 277, 6.5);
 
                 // (4) PREȚUL
-                scrie(d.aPretCifre, 140, 252, 7, fontBold);  
-                scrie(d.aPretLitere, 280, 252, 7, fontBold); 
+                scrie(d.aPretCifre, 140, 252, 7, fontBold);
+                scrie(d.aPretLitere, 280, 252, 7, fontBold);
 
                 // Salvare PDF
                 const pdfBytesFinal = await pdfDoc.save();
@@ -629,12 +605,12 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_ChenarulA_Mapat.pdf";
+                link.download = "Contract_ITL_054_Completat.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Chenarul A și datele au fost mapate perfect.";
+                statusEl.innerText = "Succes! Contractul a fost generat cu datele obligatorii.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
