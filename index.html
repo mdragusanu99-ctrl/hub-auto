@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub Tranzacții Auto - Contract Oficial ITL 054 (2026)</title>
-    <!-- TOATE LIBRĂRIILE NECESARE INCLUSE CORECT -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -51,6 +50,8 @@
         .btn-success:hover { background-color: #15803d; }
         .btn-share { background-color: #d97706; color: white; width: 100%; margin-top: 10px; }
         .btn-share:hover { background-color: #b45309; }
+        .btn-debug { background-color: #475569; color: white; width: 100%; margin-top: 10px; }
+        .btn-debug:hover { background-color: #334155; }
 
         .qr-box { text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 12px; margin-top: 15px; }
         #qrcode { display: inline-block; margin-top: 10px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -87,17 +88,13 @@
             <div class="progress-step" id="p4" style="display:flex;">4</div>
         </div>
 
-        <!-- STEP 1: VÂNZĂTOR (DATE COMPLETE DUPĂ MĂSURĂTORILE TALE) -->
+        <!-- STEP 1: VÂNZĂTOR -->
         <div class="step-content active" id="step1">
-            <div class="section-title">Pasul 1: Datele Vânzătorului (Mapare Detaliată)</div>
+            <div class="section-title">Pasul 1: Datele Vânzătorului</div>
             <div class="form-grid">
                 <div class="full-width">
                     <label>Nume și Prenume (Subsemnatul)</label>
                     <input type="text" id="vNume" placeholder="ex: Dragusanu Mario">
-                </div>
-                <div class="full-width">
-                    <label>Domiciliul subsemnatului (Text descriptiv)</label>
-                    <input type="text" id="vDomiciliu" placeholder="ex: ROMÂNIA">
                 </div>
                 <div>
                     <label>Județ</label>
@@ -115,37 +112,13 @@
                     <label>Sat / Sector</label>
                     <input type="text" id="vSat" placeholder="ex: -">
                 </div>
-                <div>
-                    <label>Stradă</label>
-                    <input type="text" id="vStrada" placeholder="ex: G-ral. Vasile Milea">
+                <div class="full-width">
+                    <label>Stradă și Număr</label>
+                    <input type="text" id="vStrada" placeholder="ex: G-ral. Vasile Milea nr. 2">
                 </div>
                 <div>
-                    <label>Număr</label>
-                    <input type="text" id="vNumar" placeholder="ex: 2">
-                </div>
-                <div>
-                    <label>Bloc (Bl.)</label>
-                    <input type="text" id="vBl" placeholder="ex: B1">
-                </div>
-                <div>
-                    <label>Scară (Sc.)</label>
-                    <input type="text" id="vSc" placeholder="ex: 1">
-                </div>
-                <div>
-                    <label>Etaj (Et.)</label>
-                    <input type="text" id="vEtaj" placeholder="ex: 2">
-                </div>
-                <div>
-                    <label>Apartament (Ap.)</label>
-                    <input type="text" id="vAp" placeholder="ex: 10">
-                </div>
-                <div>
-                    <label>Seria Act Identitate</label>
-                    <input type="text" id="vActSeria" placeholder="ex: VS">
-                </div>
-                <div>
-                    <label>Număr Act Identitate</label>
-                    <input type="text" id="vActNr" placeholder="ex: 123456">
+                    <label>Seria și Număr Act</label>
+                    <input type="text" id="vAct" placeholder="ex: VS 123456">
                 </div>
                 <div>
                     <label>C.N.P. / C.I.F.</label>
@@ -155,80 +128,9 @@
                     <label>Telefon / Fax</label>
                     <input type="text" id="vTel" placeholder="ex: 0749685347">
                 </div>
-                <div class="full-width">
+                <div>
                     <label>E-mail</label>
                     <input type="text" id="vEmail" placeholder="ex: dragusanumario@gmail.com">
-                </div>
-                <div class="full-width" style="background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #e2e8f0; margin-top:10px;">
-                    <label style="color:#1e3a8a;">Domiciliu Fiscal & Reprezentant (Dacă este cazul)</label>
-                </div>
-                <div class="full-width">
-                    <label>Domiciliu Fiscal (Text)</label>
-                    <input type="text" id="vFiscDomiciliu" placeholder="ex: ROMÂNIA">
-                </div>
-                <div>
-                    <label>Județ Fiscal</label>
-                    <input type="text" id="vFiscJudet" placeholder="ex: Vaslui">
-                </div>
-                <div>
-                    <label>Cod Poștal Fiscal</label>
-                    <input type="text" id="vFiscPostal" placeholder="ex: 731184">
-                </div>
-                <div>
-                    <label>Municipiul / Oraș / Comună Fiscal</label>
-                    <input type="text" id="vFiscLocalitate" placeholder="ex: Bârlad">
-                </div>
-                <div>
-                    <label>Sat / Sector Fiscal</label>
-                    <input type="text" id="vFiscSat" placeholder="ex: -">
-                </div>
-                <div>
-                    <label>Stradă Fiscală</label>
-                    <input type="text" id="vFiscStrada" placeholder="ex: Str. Principală">
-                </div>
-                <div>
-                    <label>Număr Fiscal</label>
-                    <input type="text" id="vFiscNumar" placeholder="ex: 10">
-                </div>
-                <div>
-                    <label>Bloc Fiscal (Bl.)</label>
-                    <input type="text" id="vFiscBl" placeholder="ex: -">
-                </div>
-                <div>
-                    <label>Scară Fiscală (Sc.)</label>
-                    <input type="text" id="vFiscSc" placeholder="ex: -">
-                </div>
-                <div>
-                    <label>Etaj Fiscal (Et.)</label>
-                    <input type="text" id="vFiscEt" placeholder="ex: -">
-                </div>
-                <div>
-                    <label>Apartament Fiscal (Ap.)</label>
-                    <input type="text" id="vFiscAp" placeholder="ex: -">
-                </div>
-                <div class="full-width">
-                    <label>Reprezentată prin</label>
-                    <input type="text" id="vReprezentant" placeholder="ex: Nume reprezentant">
-                </div>
-                <div>
-                    <label>Seria Act Reprezentant</label>
-                    <input type="text" id="vRepSeria" placeholder="ex: RX">
-                </div>
-                <div>
-                    <label>Număr Act / CIF Reprezentant</label>
-                    <input type="text" id="vRepNr" placeholder="ex: 654321">
-                </div>
-                <div>
-                    <label>Telefon / Fax Reprezentant</label>
-                    <input type="text" id="vRepTel" placeholder="ex: 0733000000">
-                </div>
-                <div>
-                    <label>E-mail Reprezentant</label>
-                    <input type="text" id="vRepEmail" placeholder="ex: reprezentant@email.com">
-                </div>
-                <div class="full-width">
-                    <label>În calitate de</label>
-                    <input type="text" id="vCalitate" placeholder="ex: Administrator / Mandatar">
                 </div>
             </div>
             <div class="btn-group">
@@ -336,7 +238,7 @@
                     <input type="text" id="aEuro" placeholder="ex: Euro 5">
                 </div>
                 <div>
-                    <label>Data Dobândirii Anterioare</label>
+                    <label>Data Dobandirii Anterioare</label>
                     <input type="text" id="aDataDobandirii" placeholder="ex: 15.05.2020">
                 </div>
                 <div>
@@ -357,10 +259,11 @@
         <!-- STEP 4: FINALIZARE -->
         <div class="step-content" id="step4">
             <div class="section-title">Pasul 4: Finalizare & Sincronizare Cloud</div>
-            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Poți descărca contractul oficial sau poți trimite linkul securizat cumpărătorului.</p>
+            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Poți descărca contractul oficial sau poți rula verificarea formularului.</p>
             
             <div id="localActions">
-                <button class="btn btn-success" onclick="genereazaContractOficialPDF()">📥 Descarcă Contractul Oficial PDF (Model ITL 054)</button>
+                <button class="btn btn-success" onclick="genereazaContractOficialPDF()">📥 Descarcă Contractul Oficial PDF</button>
+                <button class="btn btn-debug" onclick="verificaCampuriPDF()">🔍 Verifică Câmpurile PDF Oficiale (Debug)</button>
                 <button class="btn btn-share" onclick="pornesteFluxRemote()">📤 Trimite Către Cumpărător (Mod Distanță)</button>
             </div>
 
@@ -497,9 +400,7 @@
 
         function colecteazaDate() {
             const elemente = [
-                'vNume', 'vDomiciliu', 'vJudet', 'vPostal', 'vLocalitate', 'vSat', 'vStrada', 'vNumar', 'vBl', 'vSc', 'vEtaj', 'vAp', 'vActSeria', 'vActNr', 'vCnp', 'vTel', 'vEmail',
-                'vFiscDomiciliu', 'vFiscJudet', 'vFiscPostal', 'vFiscLocalitate', 'vFiscSat', 'vFiscStrada', 'vFiscNumar', 'vFiscBl', 'vFiscSc', 'vFiscEt', 'vFiscAp',
-                'vReprezentant', 'vRepSeria', 'vRepNr', 'vRepTel', 'vRepEmail', 'vCalitate',
+                'vNume', 'vJudet', 'vPostal', 'vLocalitate', 'vSat', 'vStrada', 'vAct', 'vCnp', 'vTel', 'vEmail',
                 'cNume', 'cJudet', 'cLocalitate', 'cPostal', 'cSat', 'cStrada', 'cAct', 'cCnp', 'cTel', 'cEmail',
                 'aMarca', 'aTip', 'aVin', 'aSerieMotor', 'aCmKw', 'aGreutate', 'aNumar', 'aItp', 'aCiv', 'aAn', 'aEuro', 'aDataDobandirii',
                 'aPretCifre', 'aPretLitere'
@@ -510,6 +411,36 @@
                 date[id] = el ? el.value : '';
             });
             return date;
+        }
+
+        // FUNCȚIE DE DEBUG: Verifică dacă fișierul PDF conține câmpuri interactive predefinite
+        async function verificaCampuriPDF() {
+            const statusEl = document.getElementById('status');
+            statusEl.innerText = "Se analizează structura PDF-ului...";
+            statusEl.style.color = "#475569";
+
+            try {
+                const responseTemplate = await fetch('contract-instrainare-dobandire-auto-model-2026-ITL-054.pdf');
+                if (!responseTemplate.ok) throw new Error("Nu s-a putut încărca șablonul PDF.");
+                const templateBytes = await responseTemplate.arrayBuffer();
+                
+                const { PDFDocument } = PDFLib;
+                const pdfDoc = await PDFDocument.load(templateBytes);
+                const form = pdfDoc.getForm();
+                const fields = form.getFields();
+
+                if (fields.length === 0) {
+                    alert("Rezultat: Fișierul PDF actual NU conține câmpuri interactive predefinite (este un PDF simplu/scanat). Trecem la desenare milimetrică curată.");
+                    statusEl.innerText = "PDF-ul este de tip simplu/scanat (fără câmpuri interactive).";
+                } else {
+                    let msg = `S-au găsit ${fields.length} câmpuri:\n`;
+                    fields.forEach(f => { msg += `- ${f.getName()}\n`; });
+                    alert(msg);
+                    statusEl.innerText = `Găsite ${fields.length} câmpuri interactive în PDF.`;
+                }
+            } catch (err) {
+                alert("Eroare la citirea PDF-ului: " + err.message);
+            }
         }
 
         async function pornesteFluxRemote() {
@@ -573,7 +504,7 @@
                             dlBtn = document.createElement('button');
                             dlBtn.id = 'autoDownloadBtn';
                             dlBtn.className = 'btn btn-success';
-                            dlBtn.innerText = '📥 Descarcă Contractul Oficial PDF (Model ITL 054)';
+                            dlBtn.innerText = '📥 Descarcă Contractul Oficial PDF';
                             dlBtn.onclick = genereazaContractOficialPDF;
                             document.getElementById('qrBoxContainer').appendChild(dlBtn);
                         }
@@ -617,13 +548,14 @@
             }
         }
 
-        // MOTOR MAPARE MILIMETRICĂ 1 LA 1 - TOATE CELE 35 DE COORDONATE TALE
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează documentul cu coordonatele directe PDF...";
+            statusEl.innerText = "Se generează documentul oficial...";
             statusEl.style.color = "#d97706";
 
             try {
+                const d = colecteazaDate();
+
                 const curataText = (txt) => {
                     if (!txt) return '';
                     return String(txt)
@@ -650,47 +582,66 @@
                 const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
                 const colNegru = rgb(0, 0, 0);
 
-                const val = (id) => {
-                    const el = document.getElementById(id);
-                    return el ? el.value : '';
-                };
-
                 const scrie = (txt, x, y, size = 6.5, font = fontRegular) => {
                     if (txt) {
-                        firstPage.drawText(curataText(String(txt)), { x, y, size, font, color: colNegru });
+                        firstPage.drawText(curataText(txt), { x, y, size, font, color: colNegru });
                     }
                 };
 
-                // --- COORDONATE DIRECTE PDF-LIB (FĂRĂ SCĂDERI) ---
-                
-                scrie(val('vNume'), 185, 712, 7, fontBold);       // Nume și Prenume (Subsemnatul)
-                scrie(val('vDomiciliu'), 178, 685, 6.5);          // Domiciliu subsemnatul
-                scrie(val('vJudet'), 100, 685, 6.5);              // Județ
-                scrie(val('vPostal'), 280, 685, 6.5);             // Cod poștal
-                scrie(val('vLocalitate'), 100, 672, 6.5);          // Municipiul/Oraș/Comună
-                scrie(val('vSat'), 275, 672, 6.5);                // Sat/Sector
-                scrie(val('vStrada'), 65, 659, 6.5);              // Stradă / Număr
-                scrie(val('vBl'), 50, 646, 6.5);                  // Bloc (Bl.)
-                scrie(val('vSc'), 100, 646, 6.5);                 // Scară (Sc.)
-                scrie(val('vEtaj'), 150, 646, 6.5);               // Etaj
-                scrie(val('vAp'), 200, 646, 6.5);                 // Apartament
-                scrie(val('vActSeria'), 175, 633, 6.5);           // Seria act
-                scrie(val('vActNr'), 210, 633, 6.5);              // Număr act
-                scrie(val('vCnp'), 340, 633, 6.5, fontBold);      // CNP / CIF
-                scrie(val('vTel'), 75, 620, 6.5);                 // Telefon/Fax
-                scrie(val('vEmail'), 220, 620, 6.5);              // E-mail
+                // --- COORDONATE FIXE CURATE PE FORMULARUL ITL 054 ---
+                // (1) VÂNZĂTOR
+                scrie(d.vNume, 185, 712, 7, fontBold);
+                scrie(d.vJudet, 100, 685, 6.5);
+                scrie(d.vPostal, 280, 685, 6.5);
+                scrie(d.vLocalitate, 100, 672, 6.5);
+                scrie(d.vSat, 275, 672, 6.5);
+                scrie(d.vStrada, 65, 659, 6.5);
+                scrie(d.vAct, 175, 633, 6.5);
+                scrie(d.vCnp, 340, 633, 6.5, fontBold);
+                scrie(d.vTel, 75, 620, 6.5);
+                scrie(d.vEmail, 220, 620, 6.5);
+
+                // (2) CUMPĂRĂTOR
+                scrie(d.cNume, 185, 574, 7, fontBold);
+                scrie(d.cJudet, 100, 548, 6.5);
+                scrie(d.cPostal, 280, 548, 6.5);
+                scrie(d.cLocalitate, 100, 535, 6.5);
+                scrie(d.cSat, 275, 535, 6.5);
+                scrie(d.cStrada, 65, 522, 6.5);
+                scrie(d.cAct, 175, 496, 6.5);
+                scrie(d.cCnp, 340, 496, 6.5, fontBold);
+                scrie(d.cTel, 75, 483, 6.5);
+                scrie(d.cEmail, 220, 483, 6.5);
+
+                // (3) OBIECTUL CONTRACTULUI
+                scrie(d.aMarca, 210, 420, 6.5, fontBold);
+                scrie(d.aTip, 290, 420, 6.5);
+                scrie(d.aVin, 140, 407, 6.5, fontBold);
+                scrie(d.aSerieMotor, 110, 394, 6.5);
+                scrie(d.aCmKw, 270, 394, 6.5);
+                scrie(d.aGreutate, 120, 381, 6.5);
+                scrie(d.aNumar, 240, 368, 6.5);
+                scrie(d.aItp, 140, 355, 6.5);
+                scrie(d.aCiv, 90, 342, 6.5);
+                scrie(d.aAn, 320, 342, 6.5);
+                scrie(d.aEuro, 100, 329, 6.5);
+                scrie(d.aDataDobandirii, 280, 329, 6.5);
+
+                // (4) PREȚUL
+                scrie(d.aPretCifre, 140, 304, 7, fontBold);
+                scrie(d.aPretLitere, 280, 304, 7, fontBold);
 
                 const pdfBytesFinal = await pdfDoc.save();
-                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
+                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf'}})
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Corect.pdf";
+                link.download = "Contract_ITL_054_Oficial.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Documentul a fost generat corect.";
+                statusEl.innerText = "Succes! Contractul a fost generat și descărcat.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
