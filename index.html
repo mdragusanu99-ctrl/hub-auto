@@ -517,7 +517,7 @@
         // MOTOR COMPLETARE PE ȘABLONUL PDF OFICIAL
     async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează documentul pe formularul oficial...";
+            statusEl.innerText = "Se generează contractul prin mapare manuală milimetrică...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -549,66 +549,69 @@
                 const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
                 const colNegru = rgb(0, 0, 0);
 
-                const scrie = (txt, x, y, size = 7, font = fontRegular) => {
+                // Funcție de desenare țintită pentru fiecare chenar/linie liberă
+                const scrie = (txt, x, y, size = 6.5, font = fontRegular) => {
                     if (txt) {
                         firstPage.drawText(curataText(txt), { x, y, size, font, color: colNegru });
                     }
                 };
 
-                // Coordonate precise pentru formularul oficial A4 (dimensiune standard ~595x842)
-                // (1) Vânzător
-                scrie(d.vNume, 190, 680, 7.5, fontBold);
-                scrie(d.vJudet, 110, 655, 7);
-                scrie(d.vPostal, 290, 655, 7);
-                scrie(d.vLocalitate, 110, 642, 7);
-                scrie(d.vSat, 290, 642, 7);
-                scrie(d.vStrada, 75, 629, 7);
-                scrie(d.vAct, 180, 615, 7);
-                scrie(d.vCnp, 350, 615, 7, fontBold);
-                scrie(d.vTel, 80, 602, 7);
-                scrie(d.vEmail, 230, 602, 7);
+                // --- MAPARE MANUALĂ MILIMETRICĂ PE FIȘIERUL OFICIAL ---
 
-                // (2) Cumpărător
-                scrie(d.cNume, 190, 540, 7.5, fontBold);
-                scrie(d.cJudet, 110, 515, 7);
-                scrie(d.cPostal, 290, 515, 7);
-                scrie(d.cLocalitate, 110, 502, 7);
-                scrie(d.cSat, 290, 502, 7);
-                scrie(d.cStrada, 75, 489, 7);
-                scrie(d.cAct, 180, 475, 7);
-                scrie(d.cCnp, 350, 475, 7, fontBold);
-                scrie(d.cTel, 80, 462, 7);
-                scrie(d.cEmail, 230, 462, 7);
+                // 1. SECȚIUNEA VÂNZĂTOR (1)
+                scrie(d.vNume, 185, 712, 7, fontBold);       // Nume și Prenume
+                scrie(d.vJudet, 100, 685, 6.5);              // Județ
+                scrie(d.vPostal, 280, 685, 6.5);             // Cod poștal
+                scrie(d.vLocalitate, 100, 672, 6.5);         // Municipiu / Oraș / Comună
+                scrie(d.vSat, 275, 672, 6.5);                // Sat / Sector
+                scrie(d.vStrada, 65, 659, 6.5);              // Stradă, număr, bloc, ap.
+                scrie(d.vAct, 175, 633, 6.5);                // Tip act & serie/număr
+                scrie(d.vCnp, 340, 633, 6.5, fontBold);      // CNP / CIF
+                scrie(d.vTel, 75, 620, 6.5);                 // Telefon / Fax
+                scrie(d.vEmail, 220, 620, 6.5);              // E-mail
 
-                // (3) Obiectul contractului
-                scrie(d.aMarca, 160, 405, 7, fontBold);
-                scrie(d.aTip, 230, 405, 7);
-                scrie(d.aVin, 360, 405, 7, fontBold);
-                scrie(d.aSerieMotor, 110, 392, 7);
-                scrie(d.aCmKw, 250, 392, 7);
-                scrie(d.aGreutate, 430, 392, 7);
-                scrie(d.aNumar, 140, 378, 7);
-                scrie(d.aItp, 370, 378, 7);
-                scrie(d.aCiv, 140, 364, 7);
-                scrie(d.aAn, 290, 364, 7);
-                scrie(d.aEuro, 370, 364, 7);
-                scrie(d.aDataDobandirii, 140, 350, 7);
+                // 2. SECȚIUNEA CUMPĂRĂTOR (2)
+                scrie(d.cNume, 185, 574, 7, fontBold);       // Nume și Prenume
+                scrie(d.cJudet, 100, 548, 6.5);              // Județ
+                scrie(d.cPostal, 280, 548, 6.5);             // Cod poștal
+                scrie(d.cLocalitate, 100, 535, 6.5);         // Municipiu / Oraș / Comună
+                scrie(d.cSat, 275, 535, 6.5);                // Sat / Sector
+                scrie(d.cStrada, 65, 522, 6.5);              // Stradă, număr, bloc, ap.
+                scrie(d.cAct, 175, 496, 6.5);                // Tip act & serie/număr
+                scrie(d.cCnp, 340, 496, 6.5, fontBold);      // CNP / CIF
+                scrie(d.cTel, 75, 483, 6.5);                 // Telefon / Fax
+                scrie(d.cEmail, 220, 483, 6.5);              // E-mail
 
-                // (4) Prețul
-                scrie(d.aPretCifre, 160, 325, 7.5, fontBold);
-                scrie(d.aPretLitere, 270, 325, 7.5, fontBold);
+                // 3. SECȚIUNEA OBIECTUL CONTRACTULUI (3)
+                scrie(d.aMarca, 210, 420, 6.5, fontBold);    // Marcă
+                scrie(d.aTip, 290, 420, 6.5);                // Tip
+                scrie(d.aVin, 140, 407, 6.5, fontBold);      // Număr de identificare (VIN)
+                scrie(d.aSerieMotor, 110, 394, 6.5);         // Serie motor
+                scrie(d.aCmKw, 270, 394, 6.5);               // Capacitate / kW
+                scrie(d.aGreutate, 120, 381, 6.5);           // Greutate maximă admisă
+                scrie(d.aNumar, 240, 368, 6.5);              // Număr înmatriculare
+                scrie(d.aItp, 140, 355, 6.5);                // Data expirare ITP
+                scrie(d.aCiv, 90, 342, 6.5);                 // Număr C.I.V.
+                scrie(d.aAn, 320, 342, 6.5);                 // An fabricație
+                scrie(d.aEuro, 100, 329, 6.5);               // Normă Euro
+                scrie(d.aDataDobandirii, 280, 329, 6.5);     // Data dobândirii anterioare
 
+                // 4. SECȚIUNEA PREȚUL (4)
+                scrie(d.aPretCifre, 140, 304, 7, fontBold);  // Preț în cifre
+                scrie(d.aPretLitere, 280, 304, 7, fontBold); // Preț în litere
+
+                // Salvare PDF final mapat
                 const pdfBytesFinal = await pdfDoc.save();
                 const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Completat.pdf";
+                link.download = "Contract_ITL_054_Mapat_Perfect.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Contractul a fost descărcat cu succes.";
+                statusEl.innerText = "Succes! Contractul a fost mapat și descărcat perfect.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
