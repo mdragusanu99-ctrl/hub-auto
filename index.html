@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub Tranzacții Auto - Contract Oficial ITL 054 (2026)</title>
-    <!-- Librării externe pentru QR, PDF și randare vectorială -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -60,7 +59,7 @@
         
         #status { text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
 
-        /* --- STILURI FORMULAR OFICIAL PENTRU PDF (Ascuns pe ecran, generat vectorial) --- */
+        /* --- STILURI EXACTE MODEL OFICIAL ITL 054 PENTRU PDF --- */
         #contract-print-template { display: none; }
     </style>
 </head>
@@ -71,7 +70,6 @@
         <div class="subtitle">Sistem Cloud High-Tech • Contract Oficial ITL 054</div>
         <div id="roleBanner" class="role-banner" style="display:none;"></div>
 
-        <!-- Selector Mod de Lucru -->
         <div id="modeSelectorContainer" style="display:block;">
             <label style="margin-bottom: 8px; text-align:center;">Alege Modul de Completare:</label>
             <div class="mode-selector">
@@ -86,7 +84,6 @@
             </div>
         </div>
 
-        <!-- Progress Bar Dinamic -->
         <div class="progress-container" id="progressBarContainer">
             <div class="progress-step active" id="p1">1</div>
             <div class="progress-step" id="p2">2</div>
@@ -99,7 +96,7 @@
             <div class="section-title">Pasul 1: Datele Vânzătorului</div>
             <div class="form-grid">
                 <div class="full-width">
-                    <label>Nume și Prenume / Denumire Firmă</label>
+                    <label>Nume și Prenume</label>
                     <input type="text" id="vNume" placeholder="ex: Popescu Ion">
                 </div>
                 <div>
@@ -123,11 +120,11 @@
                     <input type="text" id="vStrada" placeholder="ex: Str. Republicii nr. 10">
                 </div>
                 <div>
-                    <label>Tip Act & Serie / Număr</label>
-                    <input type="text" id="vAct" placeholder="ex: BI/CI seria VS nr. 123456">
+                    <label>Tip Act (BI/CI/Pașaport) & Serie/Nr</label>
+                    <input type="text" id="vAct" placeholder="ex: CI seria VS nr. 123456">
                 </div>
                 <div>
-                    <label>CNP / CUI</label>
+                    <label>C.N.P. / C.I.F.</label>
                     <input type="text" id="vCnp" placeholder="ex: 1800101123456">
                 </div>
                 <div>
@@ -149,7 +146,7 @@
             <div class="section-title">Pasul 2: Datele Cumpărătorului</div>
             <div class="form-grid">
                 <div class="full-width">
-                    <label>Nume și Prenume / Denumire Firmă</label>
+                    <label>Nume și Prenume</label>
                     <input type="text" id="cNume" placeholder="ex: Ionescu Maria">
                 </div>
                 <div>
@@ -173,11 +170,11 @@
                     <input type="text" id="cStrada" placeholder="ex: Str. Victoriei nr. 5">
                 </div>
                 <div>
-                    <label>Tip Act & Serie / Număr</label>
-                    <input type="text" id="cAct" placeholder="ex: BI/CI seria RX nr. 654321">
+                    <label>Tip Act (BI/CI/Pașaport) & Serie/Nr</label>
+                    <input type="text" id="cAct" placeholder="ex: CI seria RX nr. 654321">
                 </div>
                 <div>
-                    <label>CNP / CUI</label>
+                    <label>C.N.P. / C.I.F.</label>
                     <input type="text" id="cCnp" placeholder="ex: 2950505654321">
                 </div>
                 <div>
@@ -201,14 +198,14 @@
             <div class="form-grid">
                 <div>
                     <label>Marcă</label>
-                    <input type="text" id="aMarca" placeholder="ex: Audi A4 B8">
+                    <input type="text" id="aMarca" placeholder="ex: Audi">
                 </div>
                 <div>
-                    <label>Tip</label>
-                    <input type="text" id="aTip" placeholder="ex: Sedan">
+                    <label>Tipul</label>
+                    <input type="text" id="aTip" placeholder="ex: A4 B8">
                 </div>
                 <div class="full-width">
-                    <label>Număr Identificare (VIN)</label>
+                    <label>Număr de Identificare (VIN)</label>
                     <input type="text" id="aVin" placeholder="ex: WAUZZZ8K1FA123456">
                 </div>
                 <div>
@@ -216,15 +213,15 @@
                     <input type="text" id="aSerieMotor" placeholder="ex: CAGA123456">
                 </div>
                 <div>
-                    <label>Capacitate Cilindrică / Putere kW</label>
+                    <label>Capacitate Cilindrică / kW</label>
                     <input type="text" id="aCmKw" placeholder="ex: 1968 cm³ / 130 kW">
                 </div>
                 <div>
-                    <label>Greutate Maximă (tone)</label>
+                    <label>Greutate Maximă Admisă (tone)</label>
                     <input type="text" id="aGreutate" placeholder="ex: 1.8 tone">
                 </div>
                 <div>
-                    <label>Număr Înmatriculare</label>
+                    <label>Număr Înmatriculare / Înregistrare</label>
                     <input type="text" id="aNumar" placeholder="ex: VS12XYZ">
                 </div>
                 <div>
@@ -232,7 +229,7 @@
                     <input type="text" id="aItp" placeholder="ex: 12.10.2027">
                 </div>
                 <div>
-                    <label>Număr CIV</label>
+                    <label>Număr C.I.V.</label>
                     <input type="text" id="aCiv" placeholder="ex: B123456">
                 </div>
                 <div>
@@ -248,7 +245,7 @@
                     <input type="text" id="aDataDobandirii" placeholder="ex: 15.05.2020">
                 </div>
                 <div>
-                    <label>Preț în Cifre</label>
+                    <label>Preț în Cifre (lei/valută)</label>
                     <input type="text" id="aPretCifre" placeholder="ex: 8.500 EUR">
                 </div>
                 <div>
@@ -291,83 +288,80 @@
         <div id="status"></div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- ȘABLONUL OFICIAL ITL 054 PENTRU GENERARE PDF -->
-    <!-- ========================================== -->
-    <div id="contract-print-template" style="font-family: 'Times New Roman', Times, serif; font-size: 11px; color: #000; background: #fff; padding: 20px; width: 750px; box-sizing: border-box;">
-        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 10px; margin-bottom: 5px;">
-            <span>Model 2026 ITL 054</span>
-            <span>Anexa nr. 2</span>
+    <!-- ================================================================= -->
+    <!-- ȘABLONUL VECTORIAL IDEM MODELUL OFICIAL ITL 054 (ANEXA 2) -->
+    <!-- ================================================================= -->
+    <div id="contract-print-template" style="font-family: 'Times New Roman', Times, serif; font-size: 10.5px; color: #000; background: #fff; padding: 15px; width: 750px; box-sizing: border-box; line-height: 1.2;">
+        
+        <!-- TOP HEADER -->
+        <div style="display: flex; justify-content: space-between; font-size: 9px; margin-bottom: 5px;">
+            <div>Model 2026 ITL 054[cite: 2]</div>
+            <div>Anexa nr. 2[cite: 2]</div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-            <div style="border: 1px solid #000; padding: 5px; width: 42%; font-size: 9px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div style="border: 1px solid #000; padding: 5px; width: 38%; font-size: 8.5px;">
                 <b>A. Denumirea organului fiscal local de la domiciliul/sediul persoanei care înstrăinează</b><br>
                 CIF/Cod SIRUTA: .......................................<br>
                 Adresa: ...................................................<br>
                 Tel/fax/e-mail: ...........................................
             </div>
-            <div style="text-align: center; width: 35%;">
-                <h3 style="margin: 0; font-size: 13px;">CONTRACT DE ÎNSTRĂINARE - DOBÂNDIRE</h3>
-                <h3 style="margin: 2px 0; font-size: 12px;">A UNUI MIJLOC DE TRANSPORT</h3>
-                <span style="font-size: 9px;">(Se completează și pe copii)</span>
+            <div style="text-align: center; width: 38%; padding-top: 5px;">
+                <b style="font-size: 11px; display: block;">CONTRACT DE<br>ÎNSTRĂINARE - DOBÂNDIRE</b>
+                <b style="font-size: 10px; display: block; margin-top: 2px;">A UNUI MIJLOC DE TRANSPORT</b>
+                <span style="font-size: 8px;">(se completează și pe copii)[cite: 2]</span>
             </div>
-            <div style="border: 1px solid #000; padding: 5px; width: 20%; font-size: 9px;">
-                <b>B. Organ fiscal local</b><br>
-                Vânzătorul NU are debite.<br>
+            <div style="border: 1px solid #000; padding: 5px; width: 20%; font-size: 8.5px;">
+                <b>B. Denumirea organului fiscal local</b><br>
+                Vânzătorul NU are debite[cite: 2].<br>
                 Rol nr.: ........ Funcția: ........
             </div>
         </div>
 
-        <!-- 1. VÂNZĂTOR -->
-        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px;">
-            <b>(1) PERSOANA CARE ÎNSTRĂINEAZĂ</b><br>
-            Subsemnatul(a) [X] Subscrisa <span id="lbl_vNume" style="font-weight:bold; text-decoration: underline;"></span>, cu domiciliul în ROMANIA, jud. <span id="lbl_vJudet" style="text-decoration: underline;"></span>, mun./oras/com. <span id="lbl_vLocalitate" style="text-decoration: underline;"></span>, sat/sector <span id="lbl_vSat" style="text-decoration: underline;"></span>, cod poștal <span id="lbl_vPostal" style="text-decoration: underline;"></span>, str. <span id="lbl_vStrada" style="text-decoration: underline;"></span>.<br>
-            Identificat prin <span id="lbl_vAct" style="text-decoration: underline;"></span>, C.N.P./C.I.F. <span id="lbl_vCnp" style="font-weight:bold; text-decoration: underline;"></span>, tel/fax: <span id="lbl_vTel" style="text-decoration: underline;"></span>, e-mail: <span id="lbl_vEmail" style="text-decoration: underline;"></span>.
+        <!-- (1) VÂNZĂTOR -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 8px;">
+            <b>(1) PERSOANA CARE ÎNSTRĂINEAZĂ</b> Subsemnatul(a) / Subscrisa <span id="lbl_vNume" style="font-weight:bold; text-decoration: underline;"></span>, cu domiciliul/sediul în ROMÂNIA, județul <span id="lbl_vJudet" style="text-decoration: underline;"></span>, municipiul/oraşul/comuna <span id="lbl_vLocalitate" style="text-decoration: underline;"></span>, satul/sectorul <span id="lbl_vSat" style="text-decoration: underline;"></span>, codul poştal <span id="lbl_vPostal" style="text-decoration: underline;"></span>, str. <span id="lbl_vStrada" style="text-decoration: underline;"></span>, identificat prin act <span id="lbl_vAct" style="text-decoration: underline;"></span>, C.N.P./C.I.F. <span id="lbl_vCnp" style="font-weight:bold; text-decoration: underline;"></span>, tel./fax <span id="lbl_vTel" style="text-decoration: underline;"></span>, e-mail <span id="lbl_vEmail" style="text-decoration: underline;"></span>.
         </div>
 
-        <!-- 2. CUMPĂRĂTOR -->
-        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px;">
-            <b>(2) PERSOANA CARE DOBÂNDEȘTE</b><br>
-            Subsemnatul(a) [X] Subscrisa <span id="lbl_cNume" style="font-weight:bold; text-decoration: underline;"></span>, cu domiciliul în ROMANIA, jud. <span id="lbl_cJudet" style="text-decoration: underline;"></span>, mun./oras/com. <span id="lbl_cLocalitate" style="text-decoration: underline;"></span>, sat/sector <span id="lbl_cSat" style="text-decoration: underline;"></span>, cod poștal <span id="lbl_cPostal" style="text-decoration: underline;"></span>, str. <span id="lbl_cStrada" style="text-decoration: underline;"></span>.<br>
-            Identificat prin <span id="lbl_cAct" style="text-decoration: underline;"></span>, C.N.P./C.I.F. <span id="lbl_cCnp" style="font-weight:bold; text-decoration: underline;"></span>, tel/fax: <span id="lbl_cTel" style="text-decoration: underline;"></span>, e-mail: <span id="lbl_cEmail" style="text-decoration: underline;"></span>.
+        <!-- (2) CUMPĂRĂTOR -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 8px;">
+            <b>(2) PERSOANA CARE DOBÂNDEŞTE</b> Subsemnatul(a) / Subscrisa <span id="lbl_cNume" style="font-weight:bold; text-decoration: underline;"></span>, cu domiciliul/sediul în ROMÂNIA, județul <span id="lbl_cJudet" style="text-decoration: underline;"></span>, municipiul/oraşul/comuna <span id="lbl_cLocalitate" style="text-decoration: underline;"></span>, satul/sectorul <span id="lbl_cSat" style="text-decoration: underline;"></span>, codul poştal <span id="lbl_cPostal" style="text-decoration: underline;"></span>, str. <span id="lbl_cStrada" style="text-decoration: underline;"></span>, identificat prin act <span id="lbl_cAct" style="text-decoration: underline;"></span>, C.N.P./C.I.F. <span id="lbl_cCnp" style="font-weight:bold; text-decoration: underline;"></span>, tel./fax <span id="lbl_cTel" style="text-decoration: underline;"></span>, e-mail <span id="lbl_cEmail" style="text-decoration: underline;"></span>.
         </div>
 
-        <!-- 3. OBIECTUL CONTRACTULUI -->
-        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px;">
+        <!-- (3) OBIECTUL CONTRACTULUI -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 8px;">
             <b>(3) OBIECTUL CONTRACTULUI</b><br>
-            Mijloc de transport: marca <span id="lbl_aMarca" style="font-weight:bold; text-decoration: underline;"></span>, tip <span id="lbl_aTip" style="text-decoration: underline;"></span>, nr. identificare (VIN): <span id="lbl_aVin" style="font-weight:bold; text-decoration: underline;"></span>.<br>
-            Serie motor: <span id="lbl_aSerieMotor" style="text-decoration: underline;"></span>, Capacitate cil. / putere: <span id="lbl_aCmKw" style="text-decoration: underline;"></span>, Greutate admisă: <span id="lbl_aGreutate" style="text-decoration: underline;"></span>.<br>
-            Nr. înmatriculare/înregistrare: <span id="lbl_aNumar" style="text-decoration: underline;"></span>, ITP valabil până la: <span id="lbl_aItp" style="text-decoration: underline;"></span>, C.I.V.: <span id="lbl_aCiv" style="text-decoration: underline;"></span>, An fabricație: <span id="lbl_aAn" style="text-decoration: underline;"></span>, Normă Euro: <span id="lbl_aEuro" style="text-decoration: underline;"></span>.<br>
-            Data dobândirii anterioare: <span id="lbl_aDataDobandirii" style="text-decoration: underline;"></span>.
+            Mijlocul de transport: marca <span id="lbl_aMarca" style="font-weight:bold; text-decoration: underline;"></span>, tipul <span id="lbl_aTip" style="text-decoration: underline;"></span>, număr de identificare (VIN): <span id="lbl_aVin" style="font-weight:bold; text-decoration: underline;"></span>, serie motor <span id="lbl_aSerieMotor" style="text-decoration: underline;"></span>, capacitatea cilindrică/kW <span id="lbl_aCmKw" style="text-decoration: underline;"></span>, greutate maximă admisă <span id="lbl_aGreutate" style="text-decoration: underline;"></span>, număr de înmatriculare/înregistrare <span id="lbl_aNumar" style="text-decoration: underline;"></span>, data la care expiră inspecția tehnică periodică <span id="lbl_aItp" style="text-decoration: underline;"></span>, numărul cărții de identitate a vehiculului (C.I.V.) <span id="lbl_aCiv" style="text-decoration: underline;"></span>, anul de fabricaţie <span id="lbl_aAn" style="text-decoration: underline;"></span>, norma euro <span id="lbl_aEuro" style="text-decoration: underline;"></span>, dobândit la data de <span id="lbl_aDataDobandirii" style="text-decoration: underline;"></span>.
         </div>
 
-        <!-- 4. PREȚUL -->
-        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px;">
-            <b>(4) PREȚUL:</b> În cifre: <span id="lbl_aPretCifre" style="font-weight:bold; text-decoration: underline;"></span>, în litere: <span id="lbl_aPretLitere" style="font-style:italic; text-decoration: underline;"></span>.
+        <!-- (4) PREȚUL -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 8px;">
+            <b>(4) PREȚUL</b> în cifre <span id="lbl_aPretCifre" style="font-weight:bold; text-decoration: underline;"></span>, în litere <span id="lbl_aPretLitere" style="font-style:italic; text-decoration: underline;"></span>.
         </div>
 
-        <!-- 5. CLAUZE ȘI SEMNĂTURI -->
-        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 10px; font-size: 10px;">
-            Persoana care înstrăinează declară că mijlocul de transport este proprietatea sa, liber de orice sarcini. A predat vehiculul, cheile, C.I.V. și certificatul de înmatriculare, primind prețul menționat. Cumpărătorul are obligația transcrierii vehiculului pe numele său în termenul legal de maximum 90 de zile.<br>
-            Cunoaștem prevederile Codului penal privind falsul și uzul de fals.<br><br>
-            <div style="display: flex; justify-content: space-between; margin-top: 15px; font-weight: bold;">
-                <span>Semnătura înstrăinătorului ....................................</span>
-                <span>Semnătura dobânditorului ....................................</span>
+        <!-- (5) CLAUZE ȘI DECLARAȚII -->
+        <div style="border: 1px solid #000; padding: 6px; margin-bottom: 8px; font-size: 9.5px;">
+            Persoana care înstrăinează declară că mijlocul de transport este proprietatea sa, liber de orice sarcini. A predat vehiculul, cheile, certificatul de înmatriculare şi cartea de identitate a vehiculului, primind prețul menționat[cite: 2].<br>
+            Dobânditorul declară că a primit vehiculul, cheile, actele și a achitat prețul[cite: 2].<br>
+            Cunoaştem prevederile Codului penal privind falsul şi uzul de fals[cite: 2].<br>
+            Începând cu data semnării, dobânditorul are calitatea de proprietar, preluând toate obligațiile legale, inclusiv transcrierea vehiculului pe numele său în noul termen legal de maximum <b>90 de zile</b>[cite: 2].<br><br>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px; font-weight: bold;">
+                <span>Semnătura înstrăinătorului ...........................................</span>
+                <span>Semnătura dobânditorului ...........................................</span>
             </div>
         </div>
 
         <!-- C & D -->
-        <div style="display: flex; justify-content: space-between; font-size: 9px;">
+        <div style="display: flex; justify-content: space-between; font-size: 8.5px;">
             <div style="border: 1px solid #000; padding: 5px; width: 48%;">
-                <b>C. Organ fiscal local - domiciliu dobânditor</b><br>
+                <b>C. Organ fiscal local - domiciliu dobânditor</b>[cite: 2]<br>
                 CIF / Cod SIRUTA: .......................................<br>
                 Adresa: ...................................................
             </div>
             <div style="border: 1px solid #000; padding: 5px; width: 48%;">
-                <b>D. Dobânditorul NU are debite</b><br>
-                Copie 1-4 „Conform cu originalul”<br>
-                Înstrăinător ................... Dobânditor ...................
+                <b>D. Dobânditorul NU are debite</b>[cite: 2]<br>
+                Copie 1-4 „Conform cu originalul”[cite: 2]<br>
+                Înstrăinător ................... Dobânditor ..................
             </div>
         </div>
     </div>
@@ -604,13 +598,11 @@
             }
         }
 
-        // --- MOTOR DE GENERARE PDF OFICIAL (Vectorial din HTML) ---
         function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
             statusEl.innerText = "Se generează documentul oficial pentru primărie...";
             statusEl.style.color = "#d97706";
 
-            // 1. Populăm datele în șablonul oficial ascuns
             const d = colecteazaDate();
             for (const key in d) {
                 const label = document.getElementById('lbl_' + key);
@@ -622,19 +614,17 @@
             const element = document.getElementById('contract-print-template');
             element.style.display = 'block';
 
-            // 2. Setări PDF pentru a ieși impecabil pe format A4
             const opt = {
-                margin:       10,
+                margin:       8,
                 filename:     'Contract_Instrainare_Dobandire_ITL_054.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // 3. Generare și descărcare PDF vectorial
             html2pdf().from(element).set(opt).save().then(() => {
                 element.style.display = 'none';
-                statusEl.innerText = "Succes! Contractul oficial a fost descărcat și este gata pentru primărie.";
+                statusEl.innerText = "Succes! Contractul oficial a fost descărcat și este pregătit pentru primărie.";
                 statusEl.style.color = "#16a34a";
             }).catch(err => {
                 element.style.display = 'none';
