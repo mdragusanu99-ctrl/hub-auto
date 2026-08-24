@@ -620,12 +620,10 @@
         // MOTOR MAPARE MILIMETRICĂ 1 LA 1 - TOATE CELE 35 DE COORDONATE TALE
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează documentul cu cele 35 de coordonate exacte...";
+            statusEl.innerText = "Se generează documentul cu mapare directă pe ID...";
             statusEl.style.color = "#d97706";
 
             try {
-                const d = colecteazaDate();
-
                 const curataText = (txt) => {
                     if (!txt) return '';
                     return String(txt)
@@ -652,62 +650,67 @@
                 const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
                 const colNegru = rgb(0, 0, 0);
 
+                const val = (id) => {
+                    const el = document.getElementById(id);
+                    return el ? el.value : '';
+                };
+
                 const scrie = (txt, x, y, size = 6.0, font = fontRegular) => {
                     if (txt) {
-                        firstPage.drawText(curataText(txt), { x, y, size, font, color: colNegru });
+                        firstPage.drawText(curataText(String(txt)), { x, y, size, font, color: colNegru });
                     }
                 };
 
-                // --- MAPARE EXACTĂ 1 LA 1 PE BAZA CELOR 35 MĂSURĂTORI ALE TALE ---
+                // --- MAPARE DIRECTĂ 1 LA 1 PE BAZA COORDONATELOR TALE EXACTE ---
                 
-                scrie(d.vNume, 324, 692, 6.5, fontBold);       // X: 324, Y: 692 - pentru subsemnatul
-                scrie(d.vDomiciliu, 178, 682, 6.5);          // X: 178, Y: 682 - pentru domiciliul subsemnatului
-                scrie(d.vJudet, 268, 682, 6.5);              // X: 268, Y: 682 - pentru judet
-                scrie(d.vPostal, 399, 682, 6.5);             // X: 399, Y: 682 - pentru codul postal
-                scrie(d.vLocalitate, 49, 670, 6.5);          // X: 49, Y: 670 - pentru municipiul/oras/comuna
-                scrie(d.vSat, 212, 670, 6.5);                // X: 212, Y: 670 - pentru sat/sectorul
-                scrie(d.vStrada, 310, 670, 6.5);             // X: 310, Y: 670 - pentru strada
-                scrie(d.vNumar, 310, 670, 6.5);              // X: 310, Y: 670 - pentru numar
-                scrie(d.vBl, 50, 659, 6.5);                  // X: 50, Y: 659 - pentru bl.
-                scrie(d.vSc, 103, 659, 6.5);                 // X: 103, Y: 659 - pentru sc.
-                scrie(d.vEtaj, 158, 659, 6.5);               // X: 158, Y: 659 - pentru etaj
-                scrie(d.vAp, 210, 659, 6.5);                 // X: 210, Y: 659 - pentru apartament
-                scrie(d.vActSeria, 456, 659, 6.5);           // X: 456, Y: 659 - seria
-                scrie(d.vActNr, 508, 659, 6.5);              // X: 508, Y: 659 - nr
-                scrie(d.vCnp, 105, 648, 6.5, fontBold);      // X: 105, Y: 648 - cnp/cif
-                scrie(d.vTel, 256, 648, 6.5);                // X: 256, Y: 648 - tel/fax
-                scrie(d.vEmail, 367, 648, 6.5);              // X: 367, Y: 648 - email
+                scrie(val('vNume'), 324, 692, 6.5, fontBold);       // Nume și Prenume (Subsemnatul)
+                scrie(val('vDomiciliu'), 178, 682, 6.5);          // Domiciliu subsemnatul
+                scrie(val('vJudet'), 268, 682, 6.5);              // Județ
+                scrie(val('vPostal'), 399, 682, 6.5);             // Cod poștal
+                scrie(val('vLocalitate'), 49, 670, 6.5);          // Municipiul/Oraș/Comună
+                scrie(val('vSat'), 212, 670, 6.5);                // Sat/Sector
+                scrie(val('vStrada'), 310, 670, 6.5);             // Stradă
+                scrie(val('vNumar'), 310, 670, 6.5);              // Număr
+                scrie(val('vBl'), 50, 659, 6.5);                  // Bloc (Bl.)
+                scrie(val('vSc'), 103, 659, 6.5);                 // Scară (Sc.)
+                scrie(val('vEtaj'), 158, 659, 6.5);               // Etaj
+                scrie(val('vAp'), 210, 659, 6.5);                 // Apartament
+                scrie(val('vActSeria'), 456, 659, 6.5);           // Seria act
+                scrie(val('vActNr'), 508, 659, 6.5);              // Număr act
+                scrie(val('vCnp'), 105, 648, 6.5, fontBold);      // CNP / CIF
+                scrie(val('vTel'), 256, 648, 6.5);                // Telefon/Fax
+                scrie(val('vEmail'), 367, 648, 6.5);              // E-mail
                 
-                scrie(d.vFiscDomiciliu, 183, 635, 6.5);      // X: 183, Y: 635 - domiciliu fiscal
-                scrie(d.vFiscJudet, 183, 635, 6.5);          // X: 183, Y: 635 - judetul
-                scrie(d.vFiscPostal, 496, 635, 6.5);         // X: 496, Y: 635 - cod postal
-                scrie(d.vFiscLocalitate, 148, 624, 6.5);     // X: 148, Y: 624 - municipiul/orasul/comuna
-                scrie(d.vFiscSat, 296, 624, 6.5);            // X: 296, Y: 624 - satul sectorul
-                scrie(d.vFiscStrada, 391, 624, 6.5);         // X: 391, Y: 624 - strada
-                scrie(d.vFiscNumar, 391, 614, 6.5);          // X: 391, Y: 614 - nr
-                scrie(d.vFiscBl, 105, 614, 6.5);             // X: 105, Y: 614 - bl.
-                scrie(d.vFiscSc, 149, 614, 6.5);             // X: 149, Y: 614 - sc.
-                scrie(d.vFiscEt, 187, 614, 6.5);             // X: 187, Y: 614 - et.
-                scrie(d.vFiscAp, 224, 614, 6.5);             // X: 224, Y: 614 - ap.
-                scrie(d.vReprezentant, 329, 614, 6.5);       // X: 329, Y: 614 - reprezentata prin
-                scrie(d.vRepSeria, 172, 601, 6.5);           // X: 172, Y: 601 - seria
-                scrie(d.vRepNr, 217, 601, 6.5);              // X: 217, Y: 601 - nr
-                scrie(d.vRepCif, 217, 601, 6.5);             // X: 217, Y: 601 - cif
-                scrie(d.vRepTel, 424, 601, 6.5);             // X: 424, Y: 601 - tel/ fax
-                scrie(d.vRepEmail, 51, 589, 6.5);            // X: 51, Y: 589 - email
-                scrie(d.vCalitate, 221, 589, 6.5);           // X: 221, Y: 589 - in calitate de
+                scrie(val('vFiscDomiciliu'), 183, 635, 6.5);      // Domiciliu fiscal
+                scrie(val('vFiscJudet'), 183, 635, 6.5);          // Județ fiscal
+                scrie(val('vFiscPostal'), 496, 635, 6.5);         // Cod poștal fiscal
+                scrie(val('vFiscLocalitate'), 148, 624, 6.5);     // Municipiul fiscal
+                scrie(val('vFiscSat'), 296, 624, 6.5);            // Sat fiscal
+                scrie(val('vFiscStrada'), 391, 624, 6.5);         // Stradă fiscală
+                scrie(val('vFiscNumar'), 391, 614, 6.5);          // Număr fiscal
+                scrie(val('vFiscBl'), 105, 614, 6.5);             // Bloc fiscal
+                scrie(val('vFiscSc'), 149, 614, 6.5);             // Scară fiscală
+                scrie(val('vFiscEt'), 187, 614, 6.5);             // Etaj fiscal
+                scrie(val('vFiscAp'), 224, 614, 6.5);             // Apartament fiscal
+                scrie(val('vReprezentant'), 329, 614, 6.5);       // Reprezentată prin
+                scrie(val('vRepSeria'), 172, 601, 6.5);           // Seria act reprezentant
+                scrie(val('vRepNr'), 217, 601, 6.5);              // Număr act reprezentant
+                scrie(val('vRepCif'), 217, 601, 6.5);             // CIF reprezentant
+                scrie(val('vRepTel'), 424, 601, 6.5);             // Telefon reprezentant
+                scrie(val('vRepEmail'), 51, 589, 6.5);            // E-mail reprezentant
+                scrie(val('vCalitate'), 221, 589, 6.5);           // În calitate de
 
                 const pdfBytesFinal = await pdfDoc.save();
                 const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Complet_Mãsurat.pdf";
+                link.download = "Contract_ITL_054_Fix.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Toate cele 35 de puncte au fost aplicate fără erori.";
+                statusEl.innerText = "Succes! Datele s-au așezat perfect pe coordonatele tale.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
