@@ -12,6 +12,9 @@
         h2 { color: #1e3a8a; text-align: center; margin-bottom: 5px; font-size: 22px; }
         .subtitle { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 25px; }
         
+        /* Banner rol utilizator */
+        .role-banner { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 10px 15px; border-radius: 8px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; }
+
         /* Progress Bar */
         .progress-container { display: flex; justify-content: space-between; margin-bottom: 30px; position: relative; }
         .progress-container::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: #e2e8f0; transform: translateY(-50%); z-index: 1; }
@@ -41,6 +44,8 @@
         .btn-next:hover, .btn-generate:hover { background-color: #1d4ed8; }
         .btn-success { background-color: #16a34a; color: white; width: 100%; margin-top: 15px; }
         .btn-success:hover { background-color: #15803d; }
+        .btn-share { background-color: #d97706; color: white; width: 100%; margin-top: 10px; }
+        .btn-share:hover { background-color: #b45309; }
 
         .qr-box { text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 12px; margin-top: 15px; }
         #qrcode { display: inline-block; margin-top: 10px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -54,6 +59,7 @@
     <div class="container">
         <h2>Hub Tranzacții Auto</h2>
         <div class="subtitle">Sistem Cloud Full-Stack • Noul Contract Oficial (Model ITL 054)</div>
+        <div id="roleBanner" class="role-banner" style="display:none;"></div>
 
         <!-- Progress Bar -->
         <div class="progress-container">
@@ -69,44 +75,44 @@
             <div class="form-grid">
                 <div class="full-width">
                     <label>Nume și Prenume / Denumire Firmă</label>
-                    <input type="text" id="vNume" value="Popescu Ion">
+                    <input type="text" id="vNume" placeholder="ex: Popescu Ion">
                 </div>
                 <div>
                     <label>Județ</label>
-                    <input type="text" id="vJudet" value="Vaslui">
+                    <input type="text" id="vJudet" placeholder="ex: Vaslui">
                 </div>
                 <div>
                     <label>Municipiul / Oraș / Comună</label>
-                    <input type="text" id="vLocalitate" value="Bârlad">
+                    <input type="text" id="vLocalitate" placeholder="ex: Bârlad">
                 </div>
                 <div>
                     <label>Cod Poștal</label>
-                    <input type="text" id="vPostal" value="731150">
+                    <input type="text" id="vPostal" placeholder="ex: 731150">
                 </div>
                 <div>
                     <label>Sat / Sector</label>
-                    <input type="text" id="vSat" value="-">
+                    <input type="text" id="vSat" placeholder="ex: -">
                 </div>
                 <div class="full-width">
                     <label>Stradă, Număr, Bloc, Scară, Etaj, Ap.</label>
-                    <input type="text" id="vStrada" value="Str. Republicii nr. 10">
+                    <input type="text" id="vStrada" placeholder="ex: Str. Republicii nr. 10">
                 </div>
                 <div>
                     <label>Tip Act & Serie / Număr</label>
-                    <input type="text" id="vAct" value="BI/CI seria VS nr. 123456">
+                    <input type="text" id="vAct" placeholder="ex: BI/CI seria VS nr. 123456">
                 </div>
                 <div>
                     <label>CNP / CUI</label>
-                    <input type="text" id="vCnp" value="1800101123456" oninput="valideazaCNP(this)">
+                    <input type="text" id="vCnp" placeholder="ex: 1800101123456" oninput="valideazaCNP(this)">
                     <div id="vCnpError" class="error-msg">CNP-ul trebuie să aibă 13 caractere!</div>
                 </div>
                 <div>
                     <label>Telefon / Fax</label>
-                    <input type="text" id="vTel" value="0722000000">
+                    <input type="text" id="vTel" placeholder="ex: 0722000000">
                 </div>
                 <div>
                     <label>E-mail</label>
-                    <input type="text" id="vEmail" value="vanzator@email.com">
+                    <input type="text" id="vEmail" placeholder="ex: vanzator@email.com">
                 </div>
             </div>
             <div class="btn-group">
@@ -120,44 +126,44 @@
             <div class="form-grid">
                 <div class="full-width">
                     <label>Nume și Prenume / Denumire Firmă</label>
-                    <input type="text" id="cNume" value="Ionescu Maria">
+                    <input type="text" id="cNume" placeholder="ex: Ionescu Maria">
                 </div>
                 <div>
                     <label>Județ</label>
-                    <input type="text" id="cJudet" value="București">
+                    <input type="text" id="cJudet" placeholder="ex: București">
                 </div>
                 <div>
                     <label>Municipiul / Oraș / Comună</label>
-                    <input type="text" id="cLocalitate" value="București">
+                    <input type="text" id="cLocalitate" placeholder="ex: București">
                 </div>
                 <div>
                     <label>Cod Poștal</label>
-                    <input type="text" id="cPostal" value="010101">
+                    <input type="text" id="cPostal" placeholder="ex: 010101">
                 </div>
                 <div>
                     <label>Sat / Sector</label>
-                    <input type="text" id="cSat" value="Sector 1">
+                    <input type="text" id="cSat" placeholder="ex: Sector 1">
                 </div>
                 <div class="full-width">
                     <label>Stradă, Număr, Bloc, Scară, Etaj, Ap.</label>
-                    <input type="text" id="cStrada" value="Str. Victoriei nr. 5">
+                    <input type="text" id="cStrada" placeholder="ex: Str. Victoriei nr. 5">
                 </div>
                 <div>
                     <label>Tip Act & Serie / Număr</label>
-                    <input type="text" id="cAct" value="BI/CI seria RX nr. 654321">
+                    <input type="text" id="cAct" placeholder="ex: BI/CI seria RX nr. 654321">
                 </div>
                 <div>
                     <label>CNP / CUI</label>
-                    <input type="text" id="cCnp" value="2950505654321" oninput="valideazaCNP(this)">
+                    <input type="text" id="cCnp" placeholder="ex: 2950505654321" oninput="valideazaCNP(this)">
                     <div id="cCnpError" class="error-msg">CNP-ul trebuie să aibă 13 caractere!</div>
                 </div>
                 <div>
                     <label>Telefon / Fax</label>
-                    <input type="text" id="cTel" value="0733000000">
+                    <input type="text" id="cTel" placeholder="ex: 0733000000">
                 </div>
                 <div>
                     <label>E-mail</label>
-                    <input type="text" id="cEmail" value="cumparator@email.com">
+                    <input type="text" id="cEmail" placeholder="ex: cumparator@email.com">
                 </div>
             </div>
             <div class="btn-group">
@@ -172,80 +178,80 @@
             <div class="form-grid">
                 <div>
                     <label>Marcă</label>
-                    <input type="text" id="aMarca" value="Audi A4 B8">
+                    <input type="text" id="aMarca" placeholder="ex: Audi A4 B8">
                 </div>
                 <div>
                     <label>Tip</label>
-                    <input type="text" id="aTip" value="Sedan">
+                    <input type="text" id="aTip" placeholder="ex: Sedan">
                 </div>
                 <div class="full-width">
                     <label>Număr Identificare (VIN)</label>
-                    <input type="text" id="aVin" value="WAUZZZ8K1FA123456" oninput="valideazaVIN(this)">
+                    <input type="text" id="aVin" placeholder="ex: WAUZZZ8K1FA123456" oninput="valideazaVIN(this)">
                     <div id="aVinError" class="error-msg">Seria VIN trebuie să aibă 17 caractere!</div>
                 </div>
                 <div>
                     <label>Serie Motor</label>
-                    <input type="text" id="aSerieMotor" value="CAGA123456">
+                    <input type="text" id="aSerieMotor" placeholder="ex: CAGA123456">
                 </div>
                 <div>
                     <label>Capacitate Cilindrică / Putere kW</label>
-                    <input type="text" id="aCmKw" value="1968 cm³ / 130 kW">
+                    <input type="text" id="aCmKw" placeholder="ex: 1968 cm³ / 130 kW">
                 </div>
                 <div>
                     <label>Greutate Maximă (tone)</label>
-                    <input type="text" id="aGreutate" value="-">
+                    <input type="text" id="aGreutate" placeholder="ex: 1.8 tone">
                 </div>
                 <div>
                     <label>Număr Înmatriculare</label>
-                    <input type="text" id="aNumar" value="VS12XYZ">
+                    <input type="text" id="aNumar" placeholder="ex: VS12XYZ">
                 </div>
                 <div>
                     <label>Data Expirare ITP</label>
-                    <input type="text" id="aItp" value="12.10.2027">
+                    <input type="text" id="aItp" placeholder="ex: 12.10.2027">
                 </div>
                 <div>
                     <label>Număr CIV</label>
-                    <input type="text" id="aCiv" value="B123456">
+                    <input type="text" id="aCiv" placeholder="ex: B123456">
                 </div>
                 <div>
                     <label>An Fabricație</label>
-                    <input type="text" id="aAn" value="2012">
+                    <input type="text" id="aAn" placeholder="ex: 2012">
                 </div>
                 <div>
                     <label>Normă Euro</label>
-                    <input type="text" id="aEuro" value="Euro 5">
+                    <input type="text" id="aEuro" placeholder="ex: Euro 5">
                 </div>
                 <div>
-                    <label>Data Dobandirii Anterioare</label>
-                    <input type="text" id="aDataDobandirii" value="15.05.2020">
+                    <label>Data Dobândirii Anterioare</label>
+                    <input type="text" id="aDataDobandirii" placeholder="ex: 15.05.2020">
                 </div>
                 <div>
                     <label>Preț în Cifre</label>
-                    <input type="text" id="aPretCifre" value="8.500 EUR">
+                    <input type="text" id="aPretCifre" placeholder="ex: 8.500 EUR">
                 </div>
                 <div>
                     <label>Preț în Litere</label>
-                    <input type="text" id="aPretLitere" value="opt mii cinci sute euro">
+                    <input type="text" id="aPretLitere" placeholder="ex: opt mii cinci sute euro">
                 </div>
             </div>
             <div class="btn-group">
                 <button class="btn btn-prev" onclick="prevStep(3)">⬅ Înapoi</button>
-                <button class="btn btn-generate" onclick="finalizarePas()">Generează Opțiuni ➔</button>
+                <button class="btn btn-generate" onclick="finalizarePas()">Finalizare & Opțiuni ➔</button>
             </div>
         </div>
 
-        <!-- STEP 4: FINALIZARE & SERVER -->
+        <!-- STEP 4: FINALIZARE & TRIMITERE CĂTRE CUMPĂRĂTOR -->
         <div class="step-content" id="step4">
-            <div class="section-title">Pasul 4: Sincronizare pe Server & Descărcare</div>
-            <p style="font-size: 13px; color: #475569; text-align: center;">Datele sunt pregătite. Poți descărca contractul sau poți crea un link de server pentru colaborare la distanță.</p>
+            <div class="section-title">Pasul 4: Generare & Trimitere la Distanță</div>
+            <p style="font-size: 13px; color: #475569; text-align: center;">Poți descărca direct contractul sau poți trimite linkul cumpărătorului ca să își completeze singur datele de acasă.</p>
             
-            <button class="btn btn-success" onclick="genereazaContractOficial()">📥 Descarcă Noul Contract PDF</button>
+            <button class="btn btn-success" onclick="genereazaContractOficial()">📥 Descarcă Contractul PDF (Complet)</button>
+            <button class="btn btn-share" onclick="salvareSiTrimiteCumparatorului()">📤 Trimite Către Cumpărător (Link Distanță)</button>
 
-            <div class="qr-box">
-                <label style="color: #1e3a8a; font-weight: bold; margin-bottom: 8px;">🌐 Salvare pe Server (Link Colaborare)</label>
-                <button class="btn btn-next" style="padding: 10px; font-size: 13px;" onclick="salvarePeServer()">Creează Link Server</button>
+            <div class="qr-box" id="qrBoxContainer" style="display:none;">
+                <label style="color: #1e3a8a; font-weight: bold; margin-bottom: 8px;">🔗 Link Generat pentru Cumpărător</label>
                 <div id="qrcode"></div>
-                <div id="shareLinkContainer" class="share-link-text" style="display:none;"></div>
+                <div id="shareLinkContainer" class="share-link-text"></div>
             </div>
 
             <div class="btn-group" style="margin-top: 20px;">
@@ -258,6 +264,7 @@
 
     <script>
         let currentStep = 1;
+        let globalSessionId = null;
 
         function updateProgress() {
             for (let i = 1; i <= 4; i++) {
@@ -288,7 +295,7 @@
 
         function valideazaCNP(input) {
             const errDiv = document.getElementById(input.id + 'Error');
-            if (input.value.length !== 13) {
+            if (input.value && input.value.length !== 13) {
                 input.classList.add('error');
                 if(errDiv) errDiv.style.display = 'block';
             } else {
@@ -299,7 +306,7 @@
 
         function valideazaVIN(input) {
             const errDiv = document.getElementById(input.id + 'Error');
-            if (input.value.length !== 17) {
+            if (input.value && input.value.length !== 17) {
                 input.classList.add('error');
                 if(errDiv) errDiv.style.display = 'block';
             } else {
@@ -308,13 +315,13 @@
             }
         }
 
-        // Preluare automată de pe server folosind rute relative (funcționează și local, și pe Render)
+        // Preluare automată de pe server la încărcarea paginii (Flux la distanță)
         window.onload = async function() {
             const params = new URLSearchParams(window.location.search);
             if (params.has('sessionId')) {
-                const sessionId = params.get('sessionId');
+                globalSessionId = params.get('sessionId');
                 try {
-                    const response = await fetch(`/api/obtine-tranzactie/${sessionId}`);
+                    const response = await fetch(`/api/obtine-tranzactie/${globalSessionId}`);
                     const result = await response.json();
                     if (result.success) {
                         for (const key in result.data) {
@@ -322,13 +329,16 @@
                                 document.getElementById(key).value = result.data[key];
                             }
                         }
-                        document.getElementById('status').innerText = "Datele au fost descărcate cu succes de pe server!";
+                        // Afișează banner că ești cumpărătorul conectat la distanță
+                        const banner = document.getElementById('roleBanner');
+                        banner.style.display = 'block';
+                        banner.innerHTML = "👋 Bun venit! Datele vânzătorului și mașinii au fost încărcate. Te rugăm să îți completezi datele la Pasul 2.";
+                        
+                        document.getElementById('status').innerText = "Datele au fost sincronizate cu succes de pe server!";
                         document.getElementById('status').style.color = "#2563eb";
                     }
                 } catch (e) {
                     console.error("Eroare la preluarea de pe server:", e);
-                    document.getElementById('status').innerText = "Eroare: Nu s-a putut conecta la server.";
-                    document.getElementById('status').style.color = "#dc2626";
                 }
             }
         };
@@ -342,14 +352,15 @@
             ];
             let date = {};
             elemente.forEach(id => {
-                date[id] = document.getElementById(id) ? document.getElementById(id).value : '';
+                const el = document.getElementById(id);
+                date[id] = el ? el.value : '';
             });
             return date;
         }
 
-        async function salvarePeServer() {
+        async function salvareSiTrimiteCumparatorului() {
             const d = colecteazaDate();
-            document.getElementById('status').innerText = "Se trimit datele către server...";
+            document.getElementById('status').innerText = "Se generează linkul pentru cumpărător...";
             document.getElementById('status').style.color = "#d97706";
 
             try {
@@ -361,9 +372,10 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // Folosește automat adresa curentă a site-ului (fie localhost, fie domeniul public de pe Render)
-                    const shareUrl = `${window.location.origin}/?sessionId=${result.sessionId}`;
+                    globalSessionId = result.sessionId;
+                    const shareUrl = `${window.location.origin}/?sessionId=${globalSessionId}`;
                     
+                    document.getElementById('qrBoxContainer').style.display = 'block';
                     document.getElementById('qrcode').innerHTML = "";
                     new QRCode(document.getElementById('qrcode'), {
                         text: shareUrl,
@@ -372,9 +384,8 @@
                     });
 
                     const linkContainer = document.getElementById('shareLinkContainer');
-                    linkContainer.style.display = 'block';
-                    linkContainer.innerHTML = `Link Server: <a href="${shareUrl}" target="_blank">${shareUrl}</a>`;
-                    document.getElementById('status').innerText = "Tranzacție salvată pe server cu succes!";
+                    linkContainer.innerHTML = `Trimite acest link cumpărătorului: <a href="${shareUrl}" target="_blank">${shareUrl}</a>`;
+                    document.getElementById('status').innerText = "Link generat! Trimite-l cumpărătorului pe WhatsApp sau SMS.";
                     document.getElementById('status').style.color = "#16a34a";
                 }
             } catch (err) {
