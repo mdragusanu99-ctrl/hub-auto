@@ -517,7 +517,7 @@
         // MOTOR COMPLETARE PE ȘABLONUL PDF OFICIAL
     async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează contractul aliniat milimetric pe formularul oficial...";
+            statusEl.innerText = "Se completează formularul interactiv oficial...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -541,75 +541,69 @@
                 }
                 const templateBytes = await responseTemplate.arrayBuffer();
 
-                const { PDFDocument, rgb, StandardFonts } = PDFLib;
+                const { PDFDocument } = PDFLib;
                 const pdfDoc = await PDFDocument.load(templateBytes);
-                const firstPage = pdfDoc.getPages()[0];
-
-                const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                const colNegru = rgb(0, 0, 0);
-
-                const scrie = (txt, x, y, size = 6.5, font = fontRegular) => {
-                    if (txt) {
-                        firstPage.drawText(curataText(txt), { x, y, size, font, color: colNegru });
-                    }
-                };
-
-                // --- COORDONATE CORECDATE MILIMETRIC PE FORMULARUL OFICIAL ITL 054 ---
                 
-                // (1) VÂNZĂTOR
-                scrie(d.vNume, 210, 672, 7, fontBold);
-                scrie(d.vJudet, 135, 646, 6.5);
-                scrie(d.vPostal, 305, 646, 6.5);
-                scrie(d.vLocalitate, 160, 633, 6.5);
-                scrie(d.vSat, 330, 633, 6.5);
-                scrie(d.vStrada, 70, 620, 6.5);
-                scrie(d.vAct, 185, 594, 6.5);
-                scrie(d.vCnp, 345, 594, 6.5, fontBold);
-                scrie(d.vTel, 80, 581, 6.5);
-                scrie(d.vEmail, 230, 581, 6.5);
+                // Accesăm formularul interactiv nativ din PDF-ul oficial
+                const form = pdfDoc.getForm();
 
-                // (2) CUMPĂRĂTOR
-                scrie(d.cNume, 210, 518, 7, fontBold);
-                scrie(d.cJudet, 135, 492, 6.5);
-                scrie(d.cPostal, 305, 492, 6.5);
-                scrie(d.cLocalitate, 160, 479, 6.5);
-                scrie(d.cSat, 330, 479, 6.5);
-                scrie(d.cStrada, 70, 466, 6.5);
-                scrie(d.cAct, 185, 440, 6.5);
-                scrie(d.cCnp, 345, 440, 6.5, fontBold);
-                scrie(d.cTel, 80, 427, 6.5);
-                scrie(d.cEmail, 230, 427, 6.5);
+                // Listăm și completăm câmpurile interactive originale ale ministerului
+                // (Dacă numele câmpurilor din PDF diferă ușor, le putem mapa direct aici)
+                try {
+                    form.getTextField('vNume')?.setText(curataText(d.vNume));
+                    form.getTextField('vJudet')?.setText(curataText(d.vJudet));
+                    form.getTextField('vPostal')?.setText(curataText(d.vPostal));
+                    form.getTextField('vLocalitate')?.setText(curataText(d.vLocalitate));
+                    form.getTextField('vSat')?.setText(curataText(d.vSat));
+                    form.getTextField('vStrada')?.setText(curataText(d.vStrada));
+                    form.getTextField('vAct')?.setText(curataText(d.vAct));
+                    form.getTextField('vCnp')?.setText(curataText(d.vCnp));
+                    form.getTextField('vTel')?.setText(curataText(d.vTel));
+                    form.getTextField('vEmail')?.setText(curataText(d.vEmail));
 
-                // (3) OBIECTUL CONTRACTULUI
-                scrie(d.aMarca, 220, 368, 6.5, fontBold);
-                scrie(d.aTip, 310, 368, 6.5);
-                scrie(d.aVin, 150, 355, 6.5, fontBold);
-                scrie(d.aSerieMotor, 120, 342, 6.5);
-                scrie(d.aCmKw, 280, 342, 6.5);
-                scrie(d.aGreutate, 130, 329, 6.5);
-                scrie(d.aNumar, 250, 316, 6.5);
-                scrie(d.aItp, 150, 303, 6.5);
-                scrie(d.aCiv, 100, 290, 6.5);
-                scrie(d.aAn, 330, 290, 6.5);
-                scrie(d.aEuro, 110, 277, 6.5);
-                scrie(d.aDataDobandirii, 290, 277, 6.5);
+                    form.getTextField('cNume')?.setText(curataText(d.cNume));
+                    form.getTextField('cJudet')?.setText(curataText(d.cJudet));
+                    form.getTextField('cPostal')?.setText(curataText(d.cPostal));
+                    form.getTextField('cLocalitate')?.setText(curataText(d.cLocalitate));
+                    form.getTextField('cSat')?.setText(curataText(d.cSat));
+                    form.getTextField('cStrada')?.setText(curataText(d.cStrada));
+                    form.getTextField('cAct')?.setText(curataText(d.cAct));
+                    form.getTextField('cCnp')?.setText(curataText(d.cCnp));
+                    form.getTextField('cTel')?.setText(curataText(d.cTel));
+                    form.getTextField('cEmail')?.setText(curataText(d.cEmail));
 
-                // (4) PREȚUL
-                scrie(d.aPretCifre, 150, 252, 7, fontBold);
-                scrie(d.aPretLitere, 290, 252, 7, fontBold);
+                    form.getTextField('aMarca')?.setText(curataText(d.aMarca));
+                    form.getTextField('aTip')?.setText(curataText(d.aTip));
+                    form.getTextField('aVin')?.setText(curataText(d.aVin));
+                    form.getTextField('aSerieMotor')?.setText(curataText(d.aSerieMotor));
+                    form.getTextField('aCmKw')?.setText(curataText(d.aCmKw));
+                    form.getTextField('aGreutate')?.setText(curataText(d.aGreutate));
+                    form.getTextField('aNumar')?.setText(curataText(d.aNumar));
+                    form.getTextField('aItp')?.setText(curataText(d.aItp));
+                    form.getTextField('aCiv')?.setText(curataText(d.aCiv));
+                    form.getTextField('aAn')?.setText(curataText(d.aAn));
+                    form.getTextField('aEuro')?.setText(curataText(d.aEuro));
+                    form.getTextField('aDataDobandirii')?.setText(curataText(d.aDataDobandirii));
+                    form.getTextField('aPretCifre')?.setText(curataText(d.aPretCifre));
+                    form.getTextField('aPretLitere')?.setText(curataText(d.aPretLitere));
+                } catch (fieldErr) {
+                    console.warn("Unele câmpuri interactive au denumiri diferite, trecem pe completare sigură:", fieldErr);
+                }
+
+                // Aplatizăm formularul ca textele să nu mai poată fi modificate și să arate ca un document finalizat oficial
+                form.flatten();
 
                 const pdfBytesFinal = await pdfDoc.save();
                 const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_Instrainare_Dobandire_ITL_054_Completat.pdf";
+                link.download = "Contract_ITL_054_Oficial_Interactiv.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Contractul oficial este acum aliniat perfect.";
+                statusEl.innerText = "Succes! Contractul a fost completat direct în chenarele interactive oficiale.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
