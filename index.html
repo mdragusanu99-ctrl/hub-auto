@@ -514,8 +514,8 @@
             }
         }
 
-       // MOTOR VECTORIAL PUR PDF-LIB CU CURĂȚARE AUTOMATĂ DIACRITICE
-        async function genereazaContractOficialPDF() {
+        // MOTOR COMPLETARE PE ȘABLONUL PDF OFICIAL
+       async function genereazaContractOficialPDF() {
     const statusEl = document.getElementById('status');
     statusEl.innerText = "Se încarcă șablonul oficial și se completează datele...";
     statusEl.style.color = "#d97706";
@@ -616,10 +616,10 @@
         statusEl.innerText = "Succes! Contractul a fost completat direct pe formularul oficial.";
         statusEl.style.color = "#16a34a";
 
-    } czyn(err) { // Dacă apare vreo excepție
-        statusEl.innerText = "Eroare la generare: " + err.message;
-        statusEl.style.color = "#dc2626";
-    }
+   } catch (err) {
+                statusEl.innerText = "Eroare la generare: " + err.message;
+                statusEl.style.color = "#dc2626";
+            }
 }
     </script>
 </body>
