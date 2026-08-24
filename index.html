@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub Tranzacții Auto - Contract Oficial ITL 054 (2026)</title>
+    <!-- TOATE LIBRĂRIILE NECESARE INCLUSE CORECT -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }
         .container { max-width: 720px; margin: 0 auto; background: white; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
@@ -85,13 +87,17 @@
             <div class="progress-step" id="p4" style="display:flex;">4</div>
         </div>
 
-        <!-- STEP 1: VÂNZĂTOR (CORESPONDENȚĂ 1 LA 1 CU COORDONATELE TALE) -->
+        <!-- STEP 1: VÂNZĂTOR (DATE COMPLETE DUPĂ MĂSURĂTORILE TALE) -->
         <div class="step-content active" id="step1">
             <div class="section-title">Pasul 1: Datele Vânzătorului (Mapare Detaliată)</div>
             <div class="form-grid">
                 <div class="full-width">
                     <label>Nume și Prenume (Subsemnatul)</label>
                     <input type="text" id="vNume" placeholder="ex: Dragusanu Mario">
+                </div>
+                <div class="full-width">
+                    <label>Domiciliul subsemnatului (Text descriptiv)</label>
+                    <input type="text" id="vDomiciliu" placeholder="ex: ROMÂNIA">
                 </div>
                 <div>
                     <label>Județ</label>
@@ -109,9 +115,13 @@
                     <label>Sat / Sector</label>
                     <input type="text" id="vSat" placeholder="ex: -">
                 </div>
-                <div class="full-width">
-                    <label>Stradă și Număr</label>
-                    <input type="text" id="vStrada" placeholder="ex: G-ral. Vasile Milea nr. 2">
+                <div>
+                    <label>Stradă</label>
+                    <input type="text" id="vStrada" placeholder="ex: G-ral. Vasile Milea">
+                </div>
+                <div>
+                    <label>Număr</label>
+                    <input type="text" id="vNumar" placeholder="ex: 2">
                 </div>
                 <div>
                     <label>Bloc (Bl.)</label>
@@ -123,7 +133,7 @@
                 </div>
                 <div>
                     <label>Etaj (Et.)</label>
-                    <input type="text" id="vEt" placeholder="ex: 2">
+                    <input type="text" id="vEtaj" placeholder="ex: 2">
                 </div>
                 <div>
                     <label>Apartament (Ap.)</label>
@@ -148,6 +158,77 @@
                 <div class="full-width">
                     <label>E-mail</label>
                     <input type="text" id="vEmail" placeholder="ex: dragusanumario@gmail.com">
+                </div>
+                <div class="full-width" style="background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #e2e8f0; margin-top:10px;">
+                    <label style="color:#1e3a8a;">Domiciliu Fiscal & Reprezentant (Dacă este cazul)</label>
+                </div>
+                <div class="full-width">
+                    <label>Domiciliu Fiscal (Text)</label>
+                    <input type="text" id="vFiscDomiciliu" placeholder="ex: ROMÂNIA">
+                </div>
+                <div>
+                    <label>Județ Fiscal</label>
+                    <input type="text" id="vFiscJudet" placeholder="ex: Vaslui">
+                </div>
+                <div>
+                    <label>Cod Poștal Fiscal</label>
+                    <input type="text" id="vFiscPostal" placeholder="ex: 731184">
+                </div>
+                <div>
+                    <label>Municipiul / Oraș / Comună Fiscal</label>
+                    <input type="text" id="vFiscLocalitate" placeholder="ex: Bârlad">
+                </div>
+                <div>
+                    <label>Sat / Sector Fiscal</label>
+                    <input type="text" id="vFiscSat" placeholder="ex: -">
+                </div>
+                <div>
+                    <label>Stradă Fiscală</label>
+                    <input type="text" id="vFiscStrada" placeholder="ex: Str. Principală">
+                </div>
+                <div>
+                    <label>Număr Fiscal</label>
+                    <input type="text" id="vFiscNumar" placeholder="ex: 10">
+                </div>
+                <div>
+                    <label>Bloc Fiscal (Bl.)</label>
+                    <input type="text" id="vFiscBl" placeholder="ex: -">
+                </div>
+                <div>
+                    <label>Scară Fiscală (Sc.)</label>
+                    <input type="text" id="vFiscSc" placeholder="ex: -">
+                </div>
+                <div>
+                    <label>Etaj Fiscal (Et.)</label>
+                    <input type="text" id="vFiscEt" placeholder="ex: -">
+                </div>
+                <div>
+                    <label>Apartament Fiscal (Ap.)</label>
+                    <input type="text" id="vFiscAp" placeholder="ex: -">
+                </div>
+                <div class="full-width">
+                    <label>Reprezentată prin</label>
+                    <input type="text" id="vReprezentant" placeholder="ex: Nume reprezentant">
+                </div>
+                <div>
+                    <label>Seria Act Reprezentant</label>
+                    <input type="text" id="vRepSeria" placeholder="ex: RX">
+                </div>
+                <div>
+                    <label>Număr Act / CIF Reprezentant</label>
+                    <input type="text" id="vRepNr" placeholder="ex: 654321">
+                </div>
+                <div>
+                    <label>Telefon / Fax Reprezentant</label>
+                    <input type="text" id="vRepTel" placeholder="ex: 0733000000">
+                </div>
+                <div>
+                    <label>E-mail Reprezentant</label>
+                    <input type="text" id="vRepEmail" placeholder="ex: reprezentant@email.com">
+                </div>
+                <div class="full-width">
+                    <label>În calitate de</label>
+                    <input type="text" id="vCalitate" placeholder="ex: Administrator / Mandatar">
                 </div>
             </div>
             <div class="btn-group">
@@ -416,7 +497,9 @@
 
         function colecteazaDate() {
             const elemente = [
-                'vNume', 'vJudet', 'vPostal', 'vLocalitate', 'vSat', 'vStrada', 'vBl', 'vSc', 'vEt', 'vAp', 'vActSeria', 'vActNr', 'vCnp', 'vTel', 'vEmail',
+                'vNume', 'vDomiciliu', 'vJudet', 'vPostal', 'vLocalitate', 'vSat', 'vStrada', 'vNumar', 'vBl', 'vSc', 'vEtaj', 'vAp', 'vActSeria', 'vActNr', 'vCnp', 'vTel', 'vEmail',
+                'vFiscDomiciliu', 'vFiscJudet', 'vFiscPostal', 'vFiscLocalitate', 'vFiscSat', 'vFiscStrada', 'vFiscNumar', 'vFiscBl', 'vFiscSc', 'vFiscEt', 'vFiscAp',
+                'vReprezentant', 'vRepSeria', 'vRepNr', 'vRepTel', 'vRepEmail', 'vCalitate',
                 'cNume', 'cJudet', 'cLocalitate', 'cPostal', 'cSat', 'cStrada', 'cAct', 'cCnp', 'cTel', 'cEmail',
                 'aMarca', 'aTip', 'aVin', 'aSerieMotor', 'aCmKw', 'aGreutate', 'aNumar', 'aItp', 'aCiv', 'aAn', 'aEuro', 'aDataDobandirii',
                 'aPretCifre', 'aPretLitere'
@@ -534,10 +617,10 @@
             }
         }
 
-        // MOTOR MAPARE MILIMETRICĂ 1 LA 1 PE COORDONATELE TALE EXACTE
+        // MOTOR MAPARE MILIMETRICĂ 1 LA 1 - TOATE CELE 35 DE COORDONATE TALE
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează documentul cu toate cele 35 de coordonate exacte...";
+            statusEl.innerText = "Se generează documentul cu cele 35 de coordonate exacte...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -575,66 +658,56 @@
                     }
                 };
 
-                // --- MAPARE INTEGRALĂ 1 LA 1 DUPĂ TOATE COORDONATELE TALE ---
+                // --- MAPARE EXACTĂ 1 LA 1 PE BAZA CELOR 35 MĂSURĂTORI ALE TALE ---
                 
-                // 1. Subsemnatul și Domiciliul principal
-                scrie(d.vNume, 324, 692, 6.5, fontBold);       // Nume / Subsemnatul
-                scrie(d.vDomiciliu, 178, 682, 6.5);          // Domiciliul subsemnatului
-                scrie(d.vJudet, 268, 682, 6.5);              // Județ
-                scrie(d.vPostal, 399, 682, 6.5);             // Cod poștal
-                scrie(d.vLocalitate, 49, 670, 6.5);          // Municipiul/Oraș/Comună
-                scrie(d.vSat, 212, 670, 6.5);                // Sat/Sector
-                scrie(d.vStrada, 310, 670, 6.5);             // Stradă
-                scrie(d.vNumar, 310, 670, 6.5);              // Număr
-
-                // 2. Detalii adresă (Bl, Sc, Et, Ap) și Act
-                scrie(d.vBl, 50, 659, 6.5);                  // Bl.
-                scrie(d.vSc, 103, 659, 6.5);                 // Sc.
-                scrie(d.vEtaj, 158, 659, 6.5);               // Etaj
-                scrie(d.vAp, 210, 659, 6.5);                 // Ap.
-                scrie(d.vActSeria, 456, 659, 6.5);           // Seria act
-                scrie(d.vActNr, 508, 659, 6.5);              // Nr act
-
-                // 3. CNP, Telefon, E-mail principal
-                scrie(d.vCnp, 105, 648, 6.5, fontBold);      // CNP / CIF
-                scrie(d.vTel, 256, 648, 6.5);                // Tel / fax
-                scrie(d.vEmail, 367, 648, 6.5);              // E-mail
-
-                // 4. Domiciliu fiscal
-                scrie(d.vFiscDomiciliu, 183, 635, 6.5);      // Domiciliu fiscal
-                scrie(d.vFiscJudet, 183, 635, 6.5);          // Județul fiscal
-                scrie(d.vFiscPostal, 496, 635, 6.5);         // Cod poștal fiscal
-                scrie(d.vFiscLocalitate, 148, 624, 6.5);     // Municipiul/Orașul/Comuna fiscal
-                scrie(d.vFiscSat, 296, 624, 6.5);            // Satul / Sectorul fiscal
-                scrie(d.vFiscStrada, 391, 624, 6.5);         // Strada fiscală
-                scrie(d.vFiscNumar, 391, 614, 6.5);          // Număr fiscal
-
-                // 5. Detalii domiciliu fiscal suplimentare & Reprezentant
-                scrie(d.vFiscBl, 105, 614, 6.5);             // Bl. fiscal
-                scrie(d.vFiscSc, 149, 614, 6.5);             // Sc. fiscal
-                scrie(d.vFiscEt, 187, 614, 6.5);             // Et. fiscal
-                scrie(d.vFiscAp, 224, 614, 6.5);             // Ap. fiscal
-                scrie(d.vReprezentant, 329, 614, 6.5);       // Reprezentată prin
-
-                // 6. Date reprezentant & Calitate
-                scrie(d.vRepSeria, 172, 601, 6.5);           // Seria act reprezentant
-                scrie(d.vRepNr, 217, 601, 6.5);              // Nr act reprezentant
-                scrie(d.vRepCif, 217, 601, 6.5);             // CIF reprezentant
-                scrie(d.vRepTel, 424, 601, 6.5);             // Tel / fax reprezentant
-                scrie(d.vRepEmail, 51, 589, 6.5);            // E-mail reprezentant
-                scrie(d.vCalitate, 221, 589, 6.5);           // În calitate de
+                scrie(d.vNume, 324, 692, 6.5, fontBold);       // X: 324, Y: 692 - pentru subsemnatul
+                scrie(d.vDomiciliu, 178, 682, 6.5);          // X: 178, Y: 682 - pentru domiciliul subsemnatului
+                scrie(d.vJudet, 268, 682, 6.5);              // X: 268, Y: 682 - pentru judet
+                scrie(d.vPostal, 399, 682, 6.5);             // X: 399, Y: 682 - pentru codul postal
+                scrie(d.vLocalitate, 49, 670, 6.5);          // X: 49, Y: 670 - pentru municipiul/oras/comuna
+                scrie(d.vSat, 212, 670, 6.5);                // X: 212, Y: 670 - pentru sat/sectorul
+                scrie(d.vStrada, 310, 670, 6.5);             // X: 310, Y: 670 - pentru strada
+                scrie(d.vNumar, 310, 670, 6.5);              // X: 310, Y: 670 - pentru numar
+                scrie(d.vBl, 50, 659, 6.5);                  // X: 50, Y: 659 - pentru bl.
+                scrie(d.vSc, 103, 659, 6.5);                 // X: 103, Y: 659 - pentru sc.
+                scrie(d.vEtaj, 158, 659, 6.5);               // X: 158, Y: 659 - pentru etaj
+                scrie(d.vAp, 210, 659, 6.5);                 // X: 210, Y: 659 - pentru apartament
+                scrie(d.vActSeria, 456, 659, 6.5);           // X: 456, Y: 659 - seria
+                scrie(d.vActNr, 508, 659, 6.5);              // X: 508, Y: 659 - nr
+                scrie(d.vCnp, 105, 648, 6.5, fontBold);      // X: 105, Y: 648 - cnp/cif
+                scrie(d.vTel, 256, 648, 6.5);                // X: 256, Y: 648 - tel/fax
+                scrie(d.vEmail, 367, 648, 6.5);              // X: 367, Y: 648 - email
+                
+                scrie(d.vFiscDomiciliu, 183, 635, 6.5);      // X: 183, Y: 635 - domiciliu fiscal
+                scrie(d.vFiscJudet, 183, 635, 6.5);          // X: 183, Y: 635 - judetul
+                scrie(d.vFiscPostal, 496, 635, 6.5);         // X: 496, Y: 635 - cod postal
+                scrie(d.vFiscLocalitate, 148, 624, 6.5);     // X: 148, Y: 624 - municipiul/orasul/comuna
+                scrie(d.vFiscSat, 296, 624, 6.5);            // X: 296, Y: 624 - satul sectorul
+                scrie(d.vFiscStrada, 391, 624, 6.5);         // X: 391, Y: 624 - strada
+                scrie(d.vFiscNumar, 391, 614, 6.5);          // X: 391, Y: 614 - nr
+                scrie(d.vFiscBl, 105, 614, 6.5);             // X: 105, Y: 614 - bl.
+                scrie(d.vFiscSc, 149, 614, 6.5);             // X: 149, Y: 614 - sc.
+                scrie(d.vFiscEt, 187, 614, 6.5);             // X: 187, Y: 614 - et.
+                scrie(d.vFiscAp, 224, 614, 6.5);             // X: 224, Y: 614 - ap.
+                scrie(d.vReprezentant, 329, 614, 6.5);       // X: 329, Y: 614 - reprezentata prin
+                scrie(d.vRepSeria, 172, 601, 6.5);           // X: 172, Y: 601 - seria
+                scrie(d.vRepNr, 217, 601, 6.5);              // X: 217, Y: 601 - nr
+                scrie(d.vRepCif, 217, 601, 6.5);             // X: 217, Y: 601 - cif
+                scrie(d.vRepTel, 424, 601, 6.5);             // X: 424, Y: 601 - tel/ fax
+                scrie(d.vRepEmail, 51, 589, 6.5);            // X: 51, Y: 589 - email
+                scrie(d.vCalitate, 221, 589, 6.5);           // X: 221, Y: 589 - in calitate de
 
                 const pdfBytesFinal = await pdfDoc.save();
                 const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Vanzator_Complet_35.pdf";
+                link.download = "Contract_ITL_054_Complet_Mãsurat.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Toate cele 35 de coordonate au fost aplicate.";
+                statusEl.innerText = "Succes! Toate cele 35 de puncte au fost aplicate fără erori.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
