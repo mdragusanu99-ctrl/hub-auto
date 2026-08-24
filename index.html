@@ -85,13 +85,31 @@
             <div class="progress-step" id="p4" style="display:flex;">4</div>
         </div>
 
-        <!-- STEP 1: VÂNZĂTOR -->
+        <!-- STEP 1: VÂNZĂTOR & FISCAL -->
         <div class="step-content active" id="step1">
-            <div class="section-title">Pasul 1: Datele Vânzătorului</div>
+            <div class="section-title">Pasul 1: Datele Vânzătorului & Organul Fiscal (Chenarul A)</div>
             <div class="form-grid">
+                <div class="full-width" style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 5px;">
+                    <label style="color: #1e3a8a;">Date Organ Fiscal (Chenarul A)</label>
+                </div>
+                <div class="full-width">
+                    <label>Denumire Organ Fiscal (ex: Primaria Barlad)</label>
+                    <input type="text" id="fDenumire" placeholder="ex: Primaria Municipiului Barlad">
+                </div>
+                <div>
+                    <label>CIF / Cod SIRUTA</label>
+                    <input type="text" id="fCifSiruta" placeholder="ex: 4349141 / 161685">
+                </div>
+                <div>
+                    <label>Rol Număr (pentru chenarul A)</label>
+                    <input type="text" id="fRolNr" placeholder="ex: 12345">
+                </div>
+                <div class="full-width" style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 5px; margin-bottom: 5px;">
+                    <label style="color: #1e3a8a;">Date Personale Vânzător</label>
+                </div>
                 <div class="full-width">
                     <label>Nume și Prenume</label>
-                    <input type="text" id="vNume" placeholder="ex: Popescu Ion">
+                    <input type="text" id="vNume" placeholder="ex: Dragusanu Mario">
                 </div>
                 <div>
                     <label>Județ</label>
@@ -103,7 +121,7 @@
                 </div>
                 <div>
                     <label>Cod Poștal</label>
-                    <input type="text" id="vPostal" placeholder="ex: 731150">
+                    <input type="text" id="vPostal" placeholder="ex: 731184">
                 </div>
                 <div>
                     <label>Sat / Sector</label>
@@ -111,7 +129,7 @@
                 </div>
                 <div class="full-width">
                     <label>Stradă, Număr, Bloc, Scară, Etaj, Ap.</label>
-                    <input type="text" id="vStrada" placeholder="ex: str. Republicii nr. 10">
+                    <input type="text" id="vStrada" placeholder="ex: G-ral. Vasile Milea nr. 2">
                 </div>
                 <div>
                     <label>Tip Act & Serie / Număr</label>
@@ -119,15 +137,15 @@
                 </div>
                 <div>
                     <label>C.N.P. / C.I.F.</label>
-                    <input type="text" id="vCnp" placeholder="ex: 1800101123456">
+                    <input type="text" id="vCnp" placeholder="ex: 5040101123456">
                 </div>
                 <div>
                     <label>Telefon / Fax</label>
-                    <input type="text" id="vTel" placeholder="ex: 0722000000">
+                    <input type="text" id="vTel" placeholder="ex: 0749685347">
                 </div>
                 <div>
                     <label>E-mail</label>
-                    <input type="text" id="vEmail" placeholder="ex: vanzator@email.com">
+                    <input type="text" id="vEmail" placeholder="ex: dragusanumario@gmail.com">
                 </div>
             </div>
             <div class="btn-group">
@@ -379,7 +397,7 @@
                         banner.className = 'role-banner buyer';
                         banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate. Completează datele tale și finalizează.";
 
-                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="v"], [id^="a"]');
+                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="v"], [id^="a"], [id^="f"]');
                         inputsVanzatorSiMasina.forEach(input => {
                             input.setAttribute('readonly', true);
                         });
@@ -396,6 +414,7 @@
 
         function colecteazaDate() {
             const elemente = [
+                'fDenumire', 'fCifSiruta', 'fRolNr',
                 'vNume', 'vJudet', 'vLocalitate', 'vPostal', 'vSat', 'vStrada', 'vAct', 'vCnp', 'vTel', 'vEmail',
                 'cNume', 'cJudet', 'cLocalitate', 'cPostal', 'cSat', 'cStrada', 'cAct', 'cCnp', 'cTel', 'cEmail',
                 'aMarca', 'aTip', 'aVin', 'aSerieMotor', 'aCmKw', 'aGreutate', 'aNumar', 'aItp', 'aCiv', 'aAn', 'aEuro', 'aDataDobandirii',
@@ -514,10 +533,10 @@
             }
         }
 
-        // MOTOR COMPLETARE PE ȘABLONUL PDF OFICIAL
-    async function genereazaContractOficialPDF() {
+        // MOTOR MAPARE MILIMETRICĂ - ÎCEPEM CU CHENARUL A ȘI SECȚIUNEA 1
+        async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează contractul prin mapare manuală milimetrică...";
+            statusEl.innerText = "Se generează documentul cu mapare milimetrică...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -549,69 +568,73 @@
                 const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
                 const colNegru = rgb(0, 0, 0);
 
-                // Funcție de desenare țintită pentru fiecare chenar/linie liberă
                 const scrie = (txt, x, y, size = 6.5, font = fontRegular) => {
                     if (txt) {
                         firstPage.drawText(curataText(txt), { x, y, size, font, color: colNegru });
                     }
                 };
 
-                // --- MAPARE MANUALĂ MILIMETRICĂ PE FIȘIERUL OFICIAL ---
+                // --- MAPARE MILIMETRICĂ EXACTĂ PENTRU CHENARUL A ȘI SECȚIUNEA (1) ---
 
-                // 1. SECȚIUNEA VÂNZĂTOR (1)
-                scrie(d.vNume, 185, 712, 7, fontBold);       // Nume și Prenume
-                scrie(d.vJudet, 100, 685, 6.5);              // Județ
-                scrie(d.vPostal, 280, 685, 6.5);             // Cod poștal
-                scrie(d.vLocalitate, 100, 672, 6.5);         // Municipiu / Oraș / Comună
-                scrie(d.vSat, 275, 672, 6.5);                // Sat / Sector
-                scrie(d.vStrada, 65, 659, 6.5);              // Stradă, număr, bloc, ap.
-                scrie(d.vAct, 175, 633, 6.5);                // Tip act & serie/număr
-                scrie(d.vCnp, 340, 633, 6.5, fontBold);      // CNP / CIF
-                scrie(d.vTel, 75, 620, 6.5);                 // Telefon / Fax
-                scrie(d.vEmail, 220, 620, 6.5);              // E-mail
+                // CHENARUL A (Sus - Stânga) - Bazat exact pe imaginea ta
+                scrie(d.fDenumire, 42, 792, 6.5, fontBold);  // Denumirea organ fiscal
+                scrie(d.fCifSiruta, 100, 765, 6.5);         // CIF / Cod SIRUTA
+                scrie(d.fRolNr, 95, 712, 6.5, fontBold);      // Rol număr
 
-                // 2. SECȚIUNEA CUMPĂRĂTOR (2)
-                scrie(d.cNume, 185, 574, 7, fontBold);       // Nume și Prenume
-                scrie(d.cJudet, 100, 548, 6.5);              // Județ
-                scrie(d.cPostal, 280, 548, 6.5);             // Cod poștal
-                scrie(d.cLocalitate, 100, 535, 6.5);         // Municipiu / Oraș / Comună
-                scrie(d.cSat, 275, 535, 6.5);                // Sat / Sector
-                scrie(d.cStrada, 65, 522, 6.5);              // Stradă, număr, bloc, ap.
-                scrie(d.cAct, 175, 496, 6.5);                // Tip act & serie/număr
-                scrie(d.cCnp, 340, 496, 6.5, fontBold);      // CNP / CIF
-                scrie(d.cTel, 75, 483, 6.5);                 // Telefon / Fax
-                scrie(d.cEmail, 220, 483, 6.5);              // E-mail
+                // (1) PERSOANA CARE ÎNSTRĂINEAZĂ (Vânzătorul)
+                scrie(d.vNume, 185, 672, 7, fontBold);       // Nume și Prenume
+                scrie(d.vJudet, 100, 646, 6.5);              // Județ
+                scrie(d.vPostal, 280, 646, 6.5);             // Cod poștal
+                scrie(d.vLocalitate, 100, 633, 6.5);         // Municipiu / Oraș / Comună
+                scrie(d.vSat, 275, 633, 6.5);                // Sat / Sector
+                scrie(d.vStrada, 65, 620, 6.5);              // Stradă, număr, bloc, etaj, ap.
+                scrie(d.vAct, 175, 594, 6.5);                // Act identitate (BI/CI/Pașaport seria și nr)
+                scrie(d.vCnp, 340, 594, 6.5, fontBold);      // CNP / CIF
+                scrie(d.vTel, 75, 581, 6.5);                 // Telefon / Fax
+                scrie(d.vEmail, 220, 581, 6.5);              // E-mail
 
-                // 3. SECȚIUNEA OBIECTUL CONTRACTULUI (3)
-                scrie(d.aMarca, 210, 420, 6.5, fontBold);    // Marcă
-                scrie(d.aTip, 290, 420, 6.5);                // Tip
-                scrie(d.aVin, 140, 407, 6.5, fontBold);      // Număr de identificare (VIN)
-                scrie(d.aSerieMotor, 110, 394, 6.5);         // Serie motor
-                scrie(d.aCmKw, 270, 394, 6.5);               // Capacitate / kW
-                scrie(d.aGreutate, 120, 381, 6.5);           // Greutate maximă admisă
-                scrie(d.aNumar, 240, 368, 6.5);              // Număr înmatriculare
-                scrie(d.aItp, 140, 355, 6.5);                // Data expirare ITP
-                scrie(d.aCiv, 90, 342, 6.5);                 // Număr C.I.V.
-                scrie(d.aAn, 320, 342, 6.5);                 // An fabricație
-                scrie(d.aEuro, 100, 329, 6.5);               // Normă Euro
-                scrie(d.aDataDobandirii, 280, 329, 6.5);     // Data dobândirii anterioare
+                // (2) PERSOANA CARE DOBÂNDEȘTE (Cumpărătorul)
+                scrie(d.cNume, 185, 518, 7, fontBold);       
+                scrie(d.cJudet, 100, 492, 6.5);              
+                scrie(d.cPostal, 280, 492, 6.5);             
+                scrie(d.cLocalitate, 100, 479, 6.5);         
+                scrie(d.cSat, 275, 479, 6.5);                
+                scrie(d.cStrada, 65, 466, 6.5);              
+                scrie(d.cAct, 175, 440, 6.5);                
+                scrie(d.cCnp, 340, 440, 6.5, fontBold);      
+                scrie(d.cTel, 75, 427, 6.5);                 
+                scrie(d.cEmail, 220, 427, 6.5);              
 
-                // 4. SECȚIUNEA PREȚUL (4)
-                scrie(d.aPretCifre, 140, 304, 7, fontBold);  // Preț în cifre
-                scrie(d.aPretLitere, 280, 304, 7, fontBold); // Preț în litere
+                // (3) OBIECTUL CONTRACTULUI
+                scrie(d.aMarca, 210, 368, 6.5, fontBold);    
+                scrie(d.aTip, 290, 368, 6.5);                
+                scrie(d.aVin, 140, 355, 6.5, fontBold);      
+                scrie(d.aSerieMotor, 110, 342, 6.5);         
+                scrie(d.aCmKw, 270, 342, 6.5);               
+                scrie(d.aGreutate, 120, 329, 6.5);           
+                scrie(d.aNumar, 240, 316, 6.5);              
+                scrie(d.aItp, 140, 303, 6.5);                
+                scrie(d.aCiv, 90, 290, 6.5);                 
+                scrie(d.aAn, 320, 290, 6.5);                 
+                scrie(d.aEuro, 100, 277, 6.5);               
+                scrie(d.aDataDobandirii, 280, 277, 6.5);     
 
-                // Salvare PDF final mapat
+                // (4) PREȚUL
+                scrie(d.aPretCifre, 140, 252, 7, fontBold);  
+                scrie(d.aPretLitere, 280, 252, 7, fontBold); 
+
+                // Salvare PDF
                 const pdfBytesFinal = await pdfDoc.save();
                 const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Mapat_Perfect.pdf";
+                link.download = "Contract_ITL_054_ChenarulA_Mapat.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Contractul a fost mapat și descărcat perfect.";
+                statusEl.innerText = "Succes! Chenarul A și datele au fost mapate perfect.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
