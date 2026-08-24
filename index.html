@@ -517,7 +517,7 @@
         // MOTOR MAPARE MILIMETRICĂ PENTRU DATELE OBLIGATORII
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează documentul cu toate coordonatele tale exacte...";
+            statusEl.innerText = "Se generează documentul cu maparea corectată...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -555,60 +555,40 @@
                     }
                 };
 
-                // --- MAPARE MILIMETRICĂ COMPLETă - DUPĂ COORDONATELE TALE EXACTE ---
+                // --- MAPARE CORECTATĂ STRICT PE COORDONATELE TALE MĂSURATE ---
                 
-                // 1. Nume și prenume vânzător
-                scrie(d.vNume, 324, 692, 7, fontBold);       
+                // 1. (1) Persoana care înstrăinează - Rândul cu Subsemnatul(a)
+                scrie(d.vNume, 324, 692, 7, fontBold);       // Nume și Prenume la Subsemnatul(a)
 
-                // 2. Domiciliu (Rândul 1 de adresă)
-                scrie(d.vJudet, 268, 682, 6.5);              // Județ
-                scrie(d.vPostal, 399, 682, 6.5);             // Cod poștal
+                // 2. Domiciliul (Județ și Cod Poștal)
+                scrie(d.vJudet, 268, 682, 6.5);              // Județul
+                scrie(d.vPostal, 399, 682, 6.5);             // Codul poștal
 
-                // 3. Domiciliu (Rândul 2 de adresă)
-                scrie(d.vLocalitate, 49, 670, 6.5);          // Municipiul/Oraș/Comună
-                scrie(d.vSat, 212, 670, 6.5);                // Sat/Sector
-                scrie(d.vStrada, 310, 670, 6.5);             // Stradă / Număr
+                // 3. Localitate, Sat/Sector, Stradă
+                scrie(d.vLocalitate, 49, 670, 6.5);          // Municipiul/Orașul/Comuna
+                scrie(d.vSat, 212, 670, 6.5);                // Satul/Sectorul
+                scrie(d.vStrada, 310, 670, 6.5);             // Strada / Număr
 
-                // 4. Detalii adresă (Bloc, Scară, Etaj, Ap., Serie act, Nr act)
-                scrie(d.vBl, 50, 659, 6.5);                  // Bl.
-                scrie(d.vSc, 103, 659, 6.5);                 // Sc.
-                scrie(d.vEt, 158, 659, 6.5);                 // Etaj
-                scrie(d.vAp, 210, 659, 6.5);                 // Apartament
-                scrie(d.vActSeria, 456, 659, 6.5);           // Seria act
-                scrie(d.vActNr, 508, 659, 6.5);              // Nr act
+                // 4. Detalii adresă suplimentare și Act de identitate
+                scrie(d.vAct, 456, 659, 6.5);                // Seria și numărul actului (sau completat combinat)
 
-                // 5. CNP, Telefon, E-mail
-                scrie(d.vCnp, 105, 648, 6.5, fontBold);      // CNP / CIF
+                // 5. CNP / CIF, Telefon, E-mail
+                scrie(d.vCnp, 105, 648, 6.5, fontBold);      // C.N.P. / C.I.F.
                 scrie(d.vTel, 256, 648, 6.5);                // Telefon / Fax
                 scrie(d.vEmail, 367, 648, 6.5);              // E-mail
 
-                // 6. Domiciliu fiscal (dacă este diferit sau completat separat)
-                scrie(d.vFiscJudet, 183, 635, 6.5);           // Județ fiscal
-                scrie(d.vFiscPostal, 496, 635, 6.5);         // Cod poștal fiscal
-                scrie(d.vFiscLocalitate, 148, 624, 6.5);     // Municipiul/Oraș/Comună fiscal
-                scrie(d.vFiscSat, 296, 624, 6.5);            // Sat/Sector fiscal
-                scrie(d.vFiscStrada, 391, 624, 6.5);         // Stradă / Număr fiscal
-
-                // 7. Reprezentant / Calitate (dacă e cazul)
-                scrie(d.vReprezentant, 329, 614, 6.5);       // Reprezentată prin
-                scrie(d.vRepActSeria, 172, 601, 6.5);        // Seria act reprezentant
-                scrie(d.vRepActNr, 217, 601, 6.5);           // Nr act / CIF reprezentant
-                scrie(d.vRepTel, 424, 601, 6.5);             // Tel / Fax reprezentant
-                scrie(d.vRepEmail, 51, 589, 6.5);            // E-mail reprezentant
-                scrie(d.vCalitate, 221, 589, 6.5);           // În calitate de
-
-                // Salvare PDF final
+                // Salvare PDF
                 const pdfBytesFinal = await pdfDoc.save();
                 const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Vanzator_Complet.pdf";
+                link.download = "Contract_ITL_054_Corectat.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
-                statusEl.innerText = "Succes! Toate datele vânzătorului au fost mapate milimetric.";
+                statusEl.innerText = "Succes! Datele au fost fixate corect pe rândurile lor.";
                 statusEl.style.color = "#16a34a";
 
             } catch (err) {
