@@ -16,29 +16,33 @@
         .role-banner { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 18px; border-radius: 10px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; }
         .role-banner.buyer { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
 
-        #modeSelectorContainer { text-align: center; padding: 20px 0; }
+        /* Ecranul de alegere mod */
+        #modeSelectorContainer { text-align: center; padding: 10px 0 20px 0; }
         .mode-selector { display: flex; gap: 20px; margin-top: 20px; }
         .mode-card { flex: 1; border: 2px solid #cbd5e1; padding: 25px 20px; border-radius: 16px; cursor: pointer; text-align: center; transition: all 0.25s ease; background: #fafafa; }
         .mode-card:hover { border-color: #2563eb; background: #eff6ff; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1); }
         .mode-card h4 { margin: 0 0 10px 0; font-size: 18px; color: #1e3a8a; }
         .mode-card p { margin: 0; font-size: 13px; color: #64748b; line-height: 1.5; }
 
-        /* Bara de progres și animația de transformare */
-        .progress-container { display: flex; justify-content: space-between; margin-bottom: 30px; position: relative; transition: all 0.5s ease; }
+        /* Headere secțiuni și buton schimbare mod */
+        .step-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #eff6ff; padding-bottom: 8px; }
+        .section-title { font-size: 16px; font-weight: 700; color: #1e3a8a; margin: 0; }
+        .btn-change-mode { background: #f1f5f9; border: 1px solid #cbd5e1; color: #475569; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-change-mode:hover { background: #e2e8f0; color: #1e293b; }
+
+        /* Bara de progres */
+        .progress-container { display: flex; justify-content: space-between; margin-bottom: 30px; position: relative; }
         .progress-container::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: #e2e8f0; transform: translateY(-50%); z-index: 1; }
         .progress-step { width: 34px; height: 34px; border-radius: 50%; background: #e2e8f0; color: #64748b; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; position: relative; z-index: 2; transition: all 0.3s; }
         .progress-step.active { background: #2563eb; color: white; box-shadow: 0 0 0 4px rgba(37,99,235,0.15); }
         .progress-step.completed { background: #16a34a; color: white; }
 
-        /* Banner animat de succes care înlocuiește pașii la final */
-        .steps-completed-banner { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; color: #166534; padding: 14px; border-radius: 12px; text-align: center; font-weight: 600; font-size: 14px; margin-bottom: 30px; animation: slideDown 0.4s ease-in-out; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.08); }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .steps-completed-banner { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; color: #166534; padding: 14px; border-radius: 12px; text-align: center; font-weight: 600; font-size: 14px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.08); }
 
         .step-content { display: none; }
         .step-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .section-title { font-size: 16px; font-weight: 700; color: #1e3a8a; margin-bottom: 15px; border-bottom: 2px solid #eff6ff; padding-bottom: 8px; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .full-width { grid-column: span 2; }
         label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -56,7 +60,7 @@
         .btn-prev:hover { background-color: #cbd5e1; }
         .btn-next, .btn-generate { background-color: #2563eb; color: white; }
         .btn-next:hover, .btn-generate:hover { background-color: #1d4ed8; }
-        .btn-success { background-color: #16a34a; color: white; width: 100%; margin-top: 15px; padding: 16px; font-size: 16px; }
+        .btn-success { background-color: #16a34a; color: white; width: 100%; margin-top: 15px; padding: 16px; font-size: 16px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; }
         .btn-success:hover { background-color: #15803d; }
         
         .btn-share-modern { background: linear-gradient(135deg, #d97706, #b45309); color: white; width: 100%; padding: 16px; font-size: 16px; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3); transition: all 0.2s; }
@@ -111,14 +115,17 @@
             <div class="progress-step" id="p4" style="display:flex;">4</div>
         </div>
 
-        <!-- BANNER ANIMAT DE FINALIZARE (înlocuiește pașii la pasul 4) -->
+        <!-- BANNER DE FINALIZARE -->
         <div id="stepsCompletedBanner" class="steps-completed-banner" style="display:none;">
             ✨ Felicitări! Toți pașii au fost parcurși cu succes. Tranzacția este pregătită.
         </div>
 
         <!-- STEP 1: VÂNZĂTOR -->
         <div class="step-content" id="step1">
-            <div class="section-title">Pasul 1: Datele Vânzătorului</div>
+            <div class="step-header-row">
+                <div class="section-title">Pasul 1: Datele Vânzătorului</div>
+                <button class="btn-change-mode" onclick="resetAndShowModeSelector()">🔄 Schimbă Modul</button>
+            </div>
             <div class="form-grid">
                 <div class="full-width">
                     <label>Nume și Prenume (Subsemnatul)</label>
@@ -282,7 +289,7 @@
                 </div>
             </div>
             <div class="btn-group" id="btnGroupStep2">
-                <button class="btn btn-prev" onclick="prevStep(2)">⬅ Înapoi</button>
+                <button class="btn btn-prev" id="btnPrevStep2" onclick="prevStep(2)">⬅ Înapoi</button>
                 <button class="btn btn-next" onclick="nextStep(2)">Înainte ➔</button>
             </div>
         </div>
@@ -372,15 +379,15 @@
 
         <!-- STEP 4: FINALIZARE -->
         <div class="step-content" id="step4">
-            <div class="section-title">Pasul 4: Finalizare & Sincronizare Cloud</div>
-            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Trimite linkul securizat către cumpărător.</p>
+            <div class="section-title" id="titleStep4">Pasul 4: Finalizare Contract</div>
+            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit.</p>
             
             <div id="localActions">
                 <button class="btn-share-modern" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cumpărător (Mod Distanță)</button>
             </div>
 
             <div id="buyerActions" style="display:none;">
-                <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Salvează Datele & Notifică Vânzătorul</button>
+                <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Salvează Datele & Generează Contractul</button>
             </div>
 
             <div id="waitingAnimationContainer" style="display:none;" class="waiting-animation-box">
@@ -416,6 +423,7 @@
 
     <script>
         let currentStep = 1;
+        let buyerCurrentStep = 1; // Pas dedicat pentru cumpărător (1, 2 sau 3)
         let modLucru = 'local';
         let globalSessionId = null;
         let userRole = 'vanzator';
@@ -423,6 +431,14 @@
         let domiciliuFiscalDiferit = false;
         let esteFirmaSauMandatar = false;
         let linkCumparatorGlobal = "";
+
+        function resetAndShowModeSelector() {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('progressBarContainer').style.display = 'none';
+            document.getElementById('stepsCompletedBanner').style.display = 'none';
+            document.getElementById('modeSelectorContainer').style.display = 'block';
+            currentStep = 1;
+        }
 
         function selecteazaModSiPorneste(mod) {
             modLucru = mod;
@@ -445,6 +461,7 @@
             }
 
             currentStep = 1;
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
             document.getElementById('step1').classList.add('active');
             updateProgress();
         }
@@ -486,6 +503,11 @@
         }
 
         function updateProgress() {
+            if (userRole === 'cumparator') {
+                updateProgressBuyer();
+                return;
+            }
+
             const totalSteps = (modLucru === 'remote' && userRole === 'vanzator') ? 3 : 4;
             
             for (let i = 1; i <= 4; i++) {
@@ -513,7 +535,13 @@
             }
         }
 
+        /* Navigare dedicată Vânzător */
         function nextStep(step) {
+            if (userRole === 'cumparator') {
+                nextStepBuyer(buyerCurrentStep);
+                return;
+            }
+
             document.getElementById('step' + step).classList.remove('active');
             
             if (modLucru === 'remote' && userRole === 'vanzator' && step === 1) {
@@ -525,12 +553,9 @@
                 currentStep = step + 1;
             }
 
-            // DACĂ AM AJUNS LA PASUL 4 (FINAL), TRANSFORMĂM BARA DE PAȘI ÎN BANNER ANIMAT DE SUCCES
             if (currentStep === 4) {
-                const progressContainer = document.getElementById('progressBarContainer');
-                const completedBanner = document.getElementById('stepsCompletedBanner');
-                if (progressContainer) progressContainer.style.display = 'none';
-                if (completedBanner) completedBanner.style.display = 'block';
+                document.getElementById('progressBarContainer').style.display = 'none';
+                document.getElementById('stepsCompletedBanner').style.display = 'block';
             }
 
             document.getElementById('step' + currentStep).classList.add('active');
@@ -538,6 +563,11 @@
         }
 
         function prevStep(step) {
+            if (userRole === 'cumparator') {
+                prevStepBuyer(buyerCurrentStep);
+                return;
+            }
+
             document.getElementById('step' + step).classList.remove('active');
             
             if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) {
@@ -548,20 +578,76 @@
                 currentStep = step - 1;
             }
 
-            // Dacă ne întoarcem de la pasul 4, refacem vizibilă bara de pași
             if (currentStep < 4) {
-                const progressContainer = document.getElementById('progressBarContainer');
-                const completedBanner = document.getElementById('stepsCompletedBanner');
-                if (progressContainer) progressContainer.style.display = 'flex';
-                if (completedBanner) completedBanner.style.display = 'none';
+                document.getElementById('progressBarContainer').style.display = 'flex';
+                document.getElementById('stepsCompletedBanner').style.display = 'none';
             }
 
             document.getElementById('step' + currentStep).classList.add('active');
             updateProgress();
         }
 
+        /* FLUX SPECIAL ȘI STRICT PENTRU CUMPĂRĂTOR */
+        function updateProgressBuyer() {
+            const p1 = document.getElementById('p1');
+            const p2 = document.getElementById('p2');
+            const p3 = document.getElementById('p3');
+            const p4 = document.getElementById('p4');
+
+            if (p1) { p1.style.display = 'flex'; p1.innerText = '1'; p1.className = 'progress-step'; }
+            if (p2) { p2.style.display = 'flex'; p2.innerText = '2'; p2.className = 'progress-step'; }
+            if (p3) { p3.style.display = 'flex'; p3.innerText = '3'; p3.className = 'progress-step'; }
+            if (p4) { p4.style.display = 'none'; }
+
+            if (buyerCurrentStep === 1) {
+                if (p1) p1.classList.add('active');
+            } else if (buyerCurrentStep === 2) {
+                if (p1) p1.classList.add('completed');
+                if (p2) p2.classList.add('active');
+            } else if (buyerCurrentStep === 3) {
+                if (p1) p1.classList.add('completed');
+                if (p2) p2.classList.add('completed');
+                if (p3) p3.classList.add('active');
+            }
+        }
+
+        function nextStepBuyer(step) {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+
+            if (step === 1) {
+                buyerCurrentStep = 2;
+                document.getElementById('step3').classList.add('active');
+                document.getElementById('titleStep3').innerText = "Pasul 2: Verificare Vehicul & Vânzător";
+            } else if (step === 2) {
+                buyerCurrentStep = 3;
+                document.getElementById('step4').classList.add('active');
+                document.getElementById('titleStep4').innerText = "Pasul 3: Finalizare & Salvare Contract";
+                document.getElementById('step4Desc').innerText = "Verifică datele introduse și apasă pe butonul de mai jos pentru a trimite informațiile către vânzător.";
+            }
+            updateProgressBuyer();
+        }
+
+        function prevStepBuyer(step) {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+
+            if (step === 2) {
+                buyerCurrentStep = 1;
+                document.getElementById('step2').classList.add('active');
+                document.getElementById('titleStep2').innerText = "Pasul 1: Datele Cumpărătorului";
+            } else if (step === 3) {
+                buyerCurrentStep = 2;
+                document.getElementById('step3').classList.add('active');
+                document.getElementById('titleStep3').innerText = "Pasul 2: Verificare Vehicul & Vânzător";
+            }
+            updateProgressBuyer();
+        }
+
         function finalizarePas() {
-            nextStep(3);
+            if (userRole === 'cumparator') {
+                nextStepBuyer(2);
+            } else {
+                nextStep(3);
+            }
         }
 
         window.onload = async function() {
@@ -571,15 +657,8 @@
                 userRole = 'cumparator';
 
                 document.getElementById('modeSelectorContainer').style.display = 'none';
-                document.getElementById('progressBarContainer').style.display = 'none'; // Ascundem bara clasică pentru cumpărător și punem direct bannerul de finalizare sau starea
+                document.getElementById('progressBarContainer').style.display = 'flex';
                 
-                // Afișăm direct bannerul de succes și pentru cumpărător deoarece datele vânzătorului sunt deja preluate
-                const completedBanner = document.getElementById('stepsCompletedBanner');
-                if (completedBanner) {
-                    completedBanner.innerHTML = "✨ Datele vânzătorului și ale vehiculului au fost încărcate. Completează datele tale mai jos.";
-                    completedBanner.style.display = 'block';
-                }
-
                 try {
                     const response = await fetch(`/api/obtine-tranzactie/${globalSessionId}`);
                     const result = await response.json();
@@ -590,20 +669,21 @@
                             }
                         }
 
-                        // Cumpărătorul intră direct pe Pasul 2 (Datele Cumpărătorului)
+                        // Cumpărătorul începe strict de la Pasul 1 (Date Cumpărător)
                         document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
                         document.getElementById('step2').classList.add('active');
-                        currentStep = 2;
+                        buyerCurrentStep = 1;
 
-                        document.getElementById('titleStep2').innerText = "Pasul 1: Datele Cumpărătorului (Completează Aici)";
+                        document.getElementById('titleStep2').innerText = "Pasul 1: Datele Cumpărătorului";
                         
-                        const btnPrevBuyer = document.querySelector('#btnGroupStep2 .btn-prev');
-                        if(btnPrevBuyer) btnPrevBuyer.style.display = 'none';
+                        // Ascundem butonul „Înapoi” de pe primul pas al cumpărătorului
+                        const btnPrevStep2 = document.getElementById('btnPrevStep2');
+                        if (btnPrevStep2) btnPrevStep2.style.display = 'none';
 
                         const banner = document.getElementById('roleBanner');
                         banner.style.display = 'block';
                         banner.className = 'role-banner buyer';
-                        banner.innerHTML = "🔒 <b>Bun venit, Cumpărătorule!</b> Verifică mai jos datele introduse de vânzător, completează datele tale în acest formular și apasă pe finalizare.";
+                        banner.innerHTML = "🔒 <b>Bun venit, Cumpărătorule!</b> Completează datele tale la acest pas, iar la pasul următor vei putea verifica datele mașinii.";
 
                         // Blocăm complet câmpurile vânzătorului și ale vehiculului
                         const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="repr"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"], #acquiredActType, #acquiredActDetails');
@@ -616,7 +696,7 @@
 
                         document.getElementById('localActions').style.display = 'none';
                         document.getElementById('buyerActions').style.display = 'block';
-                        document.getElementById('step4Desc').innerText = "După ce ai completat datele tale de mai sus, apasă butonul de mai jos pentru a trimite informațiile către vânzător.";
+                        updateProgressBuyer();
                     }
                 } catch (e) {
                     console.error("Eroare la sincronizare:", e);
@@ -729,10 +809,10 @@
                         document.getElementById('waitingAnimationContainer').style.display = 'none';
                         document.getElementById('finalDownloadContainer').style.display = 'block';
                         
-                        // Actualizăm bannerul de succes și pentru vânzător când cumpărătorul a terminat
                         const completedBanner = document.getElementById('stepsCompletedBanner');
                         if(completedBanner) {
                             completedBanner.innerHTML = "🎉 Cumpărătorul și-a completat datele! Contractul este oficial pregătit.";
+                            completedBanner.style.display = 'block';
                         }
 
                         document.getElementById('step4Desc').innerHTML = "<b style='color:#16a34a;'>Tranzacția este complet sincronizată. Poți descărca documentul oficial.</b>";
@@ -770,21 +850,21 @@
                     const btnBackFinal = document.getElementById('btnGroupBackFinal');
                     if(btnBackFinal) btnBackFinal.style.display = 'none';
 
-                    // Actualizăm bannerul de sus pentru cumpărător după salvare
+                    document.getElementById('progressBarContainer').style.display = 'none';
                     const completedBanner = document.getElementById('stepsCompletedBanner');
                     if(completedBanner) {
-                        completedBanner.innerHTML = "✨ Datele tale au fost înregistrate cu succes în sistem!";
+                        completedBanner.innerHTML = "🎉 Datele tale au fost trimise cu succes către vânzător!";
+                        completedBanner.style.display = 'block';
                     }
 
-                    document.getElementById('step4Desc').innerHTML = "Contractul oficial este gata. Poți descărca documentul finalizat.";
+                    document.getElementById('step4Desc').innerText = "Contractul oficial este generat. Apasă butonul de mai jos pentru a-l descărca.";
 
                     let dlBtnBuyer = document.getElementById('buyerDownloadBtn');
                     if (!dlBtnBuyer) {
                         dlBtnBuyer = document.createElement('button');
                         dlBtnBuyer.id = 'buyerDownloadBtn';
                         dlBtnBuyer.className = 'btn btn-success';
-                        dlBtnBuyer.style.marginTop = '15px';
-                        dlBtnBuyer.innerText = '📥 Descarcă Contractul Oficial PDF (Completat)';
+                        dlBtnBuyer.innerText = '📥 Descarcă Contractul Oficial PDF';
                         dlBtnBuyer.onclick = genereazaContractOficialPDF;
                         document.getElementById('step4').appendChild(dlBtnBuyer);
                     }
