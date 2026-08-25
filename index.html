@@ -16,7 +16,6 @@
         .role-banner { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 18px; border-radius: 10px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; }
         .role-banner.buyer { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
 
-        /* Ecranul de alegere mod */
         #modeSelectorContainer { text-align: center; padding: 10px 0 20px 0; }
         .mode-selector { display: flex; gap: 20px; margin-top: 20px; }
         .mode-card { flex: 1; border: 2px solid #cbd5e1; padding: 25px 20px; border-radius: 16px; cursor: pointer; text-align: center; transition: all 0.25s ease; background: #fafafa; }
@@ -115,7 +114,7 @@
 
         <!-- BANNER DE FINALIZARE -->
         <div id="stepsCompletedBanner" class="steps-completed-banner" style="display:none;">
-            ✨ Felicitări! Toți pașii au fost parcurși cu succes. Tranzacția este pregătită.
+            🎉 Toate datele au fost colectate și contractul este pregătit pentru descărcare.
         </div>
 
         <!-- STEP 1: VÂNZĂTOR -->
@@ -385,12 +384,12 @@
             </div>
 
             <div id="buyerActions" style="display:none;">
-                <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Salvează Datele & Trimite Vânzătorului</button>
+                <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Trimite Datele Către Vânzător</button>
             </div>
 
             <div id="waitingAnimationContainer" style="display:none;" class="waiting-animation-box">
                 <div class="spinner"></div>
-                <h4 style="color: #1e3a8a; margin: 0 0 5px 0;">Sesiune creată cu succes în cloud!</h4>
+                <h4 style="color: #1e3a8a; margin: 0 0 5px 0;">Sesiune securizată creată!</h4>
                 <p style="font-size: 13px; color: #64748b; margin: 0 0 15px 0;">Trimite linkul de mai jos cumpărătorului:</p>
                 
                 <div class="qr-box">
@@ -408,7 +407,7 @@
             </div>
 
             <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                <button class="btn btn-success" onclick="genereazaContractOficialPDF()">📥 Descarcă Contractul Oficial PDF (Completat)</button>
+                <button class="btn btn-success" onclick="genereazaContractOficialPDF()">📥 Descarcă Contractul Oficial PDF</button>
             </div>
 
             <div class="btn-group" id="btnGroupBackFinal" style="margin-top: 20px;">
@@ -550,11 +549,6 @@
                 currentStep = step + 1;
             }
 
-            if (currentStep === 4) {
-                document.getElementById('progressBarContainer').style.display = 'none';
-                document.getElementById('stepsCompletedBanner').style.display = 'block';
-            }
-
             document.getElementById('step' + currentStep).classList.add('active');
             updateProgress();
         }
@@ -573,11 +567,6 @@
                 currentStep = 3;
             } else {
                 currentStep = step - 1;
-            }
-
-            if (currentStep < 4) {
-                document.getElementById('progressBarContainer').style.display = 'flex';
-                document.getElementById('stepsCompletedBanner').style.display = 'none';
             }
 
             document.getElementById('step' + currentStep).classList.add('active');
@@ -617,8 +606,9 @@
             } else if (step === 2) {
                 buyerCurrentStep = 3;
                 document.getElementById('step4').classList.add('active');
-                document.getElementById('titleStep4').innerText = "Pasul 3: Finalizare & Salvare Contract";
-                document.getElementById('step4Desc').innerText = "Verifică informațiile de mai sus și apasă pe butonul de salvare pentru a trimite datele către vânzător.";
+                document.getElementById('titleStep4').innerText = "Pasul 3: Finalizare & Trimite Datele";
+                // Text curat și logic pentru pasul final al cumpărătorului:
+                document.getElementById('step4Desc').innerText = "Datele tale sunt completate. Apasă pe butonul de mai jos pentru a le trimite către vânzător.";
             }
             updateProgressBuyer();
         }
