@@ -50,21 +50,26 @@
         .btn-prev:hover { background-color: #cbd5e1; }
         .btn-next, .btn-generate { background-color: #2563eb; color: white; }
         .btn-next:hover, .btn-generate:hover { background-color: #1d4ed8; }
-        .btn-success { background-color: #16a34a; color: white; width: 100%; margin-top: 15px; }
+        .btn-success { background-color: #16a34a; color: white; width: 100%; margin-top: 15px; padding: 16px; font-size: 16px; }
         .btn-success:hover { background-color: #15803d; }
         
-        /* Buton modern pentru trimitere la distanță */
         .btn-share-modern { background: linear-gradient(135deg, #d97706, #b45309); color: white; width: 100%; padding: 16px; font-size: 16px; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3); transition: all 0.2s; }
         .btn-share-modern:hover { background: linear-gradient(135deg, #b45309, #92400e); transform: translateY(-1px); }
 
-        /* Animație de încărcare / așteptare elegantă */
-        .waiting-animation-box { text-align: center; background: #f8fafc; border: 2px dashed #cbd5e1; padding: 30px; border-radius: 16px; margin-top: 20px; }
-        .spinner { width: 45px; height: 45px; border: 4px solid #e2e8f0; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+        .waiting-animation-box { text-align: center; background: #f8fafc; border: 2px dashed #cbd5e1; padding: 25px; border-radius: 16px; margin-top: 20px; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid #d97706; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .qr-box { text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 12px; margin-top: 15px; }
-        #qrcode { display: inline-block; margin-top: 10px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .share-link-text { font-size: 12px; color: #64748b; word-break: break-all; margin-top: 10px; background: white; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .action-link-row { display: flex; gap: 10px; margin-top: 12px; }
+        .btn-action-small { flex: 1; padding: 10px; font-size: 13px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; color: white; transition: opacity 0.2s; }
+        .btn-copy { background-color: #475569; }
+        .btn-copy:hover { background-color: #334155; }
+        .btn-whatsapp { background-color: #25d366; }
+        .btn-whatsapp:hover { background-color: #20ba5a; }
+
+        .qr-box { text-align: center; margin-top: 15px; }
+        #qrcode { display: inline-block; background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .share-link-text { font-size: 12px; color: #475569; word-break: break-all; margin-top: 8px; background: white; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; font-weight: 600; }
         
         #status { text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
     </style>
@@ -211,7 +216,7 @@
 
         <!-- STEP 2: CUMPĂRĂTOR -->
         <div class="step-content" id="step2">
-            <div class="section-title">Pasul 2: Datele Cumpărătorului</div>
+            <div class="section-title" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
             <div class="form-grid">
                 <div class="full-width">
                     <label>Nume și Prenume / Denumire</label>
@@ -262,7 +267,7 @@
                     <input type="text" id="buyerEmail" placeholder="ex: cumparator@email.com">
                 </div>
             </div>
-            <div class="btn-group">
+            <div class="btn-group" id="btnGroupStep2">
                 <button class="btn btn-prev" onclick="prevStep(2)">⬅ Înapoi</button>
                 <button class="btn btn-next" onclick="nextStep(2)">Înainte ➔</button>
             </div>
@@ -354,10 +359,10 @@
         <!-- STEP 4: FINALIZARE -->
         <div class="step-content" id="step4">
             <div class="section-title">Pasul 4: Finalizare & Sincronizare Cloud</div>
-            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Poți trimite linkul securizat către cumpărător.</p>
+            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Trimite linkul securizat către cumpărător.</p>
             
             <div id="localActions">
-                <!-- Doar butonul frumos de trimis linkul în mod distanță -->
+                <!-- Butonul modern de trimis linkul în mod distanță -->
                 <button class="btn-share-modern" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cumpărător (Mod Distanță)</button>
             </div>
 
@@ -365,20 +370,33 @@
                 <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Salvează Datele & Notifică Vânzătorul</button>
             </div>
 
-            <!-- Animația de încărcare în loc de pași după trimitere -->
+            <!-- Animația de încărcare și opțiunile de trimitere rapidă -->
             <div id="waitingAnimationContainer" style="display:none;" class="waiting-animation-box">
                 <div class="spinner"></div>
-                <h4 style="color: #1e3a8a; margin: 0 0 8px 0;">Se așteaptă completarea datelor...</h4>
-                <p style="font-size: 13px; color: #64748b; margin: 0 0 15px 0;">Cumpărătorul a primit linkul și își completează datele pe telefonul lui. Această pagină se va actualiza automat în momentul în care finalizează!</p>
-                <div id="qrcode"></div>
+                <h4 style="color: #1e3a8a; margin: 0 0 5px 0;">Sesiune creată cu succes!</h4>
+                <p style="font-size: 13px; color: #64748b; margin: 0 0 15px 0;">Trimite linkul de mai jos cumpărătorului și așteaptă ca acesta să își completeze datele:</p>
+                
+                <div class="qr-box">
+                    <div id="qrcode"></div>
+                </div>
+                
                 <div id="shareLinkContainer" class="share-link-text"></div>
+                
+                <!-- Butoane de acțiune rapidă pentru vânzător -->
+                <div class="action-link-row">
+                    <button class="btn-action-small btn-copy" onclick="copiazaLinkul()">📋 Copiază Linkul</button>
+                    <button class="btn-action-small btn-whatsapp" onclick="trimitePeWhatsApp()">💬 Trimite pe WhatsApp</button>
+                </div>
+                
+                <p style="font-size: 12px; color: #d97706; margin-top: 15px; font-weight: bold;">⏳ Această pagină se va actualiza automat imediat ce cumpărătorul finalizează!</p>
             </div>
 
-            <!-- Containerul care aparține cumpărătorului când finalizează pe același dispozitiv sau cloud -->
+            <!-- Containerul care aparține cumpărătorului când finalizează -->
             <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                <button class="btn btn-success" onclick="genereazaContractOficialPDF()" style="padding: 16px; font-size: 16px;">📥 Descarcă Contractul Oficial PDF (Completat)</button>
+                <button class="btn btn-success" onclick="genereazaContractOficialPDF()">📥 Descarcă Contractul Oficial PDF (Completat)</button>
             </div>
 
+            <!-- Butonul de înapoi la modificare (ascuns în mod distanță la final sau pe ecranul de așteptare) -->
             <div class="btn-group" id="btnGroupBackFinal" style="margin-top: 20px;">
                 <button class="btn btn-prev" onclick="prevStep(4)">⬅ Înapoi la Modificare</button>
             </div>
@@ -395,6 +413,7 @@
         let pollInterval = null;
         let domiciliuFiscalDiferit = false;
         let esteFirmaSauMandatar = false;
+        let linkCumparatorGlobal = "";
 
         function selecteazaMod(mod) {
             modLucru = mod;
@@ -407,15 +426,15 @@
 
             if (mod === 'local') {
                 document.getElementById('cardLocal').classList.add('selected');
-                p2Indice.style.display = 'flex';
-                p3Indice.innerText = '3';
-                p4Indice.innerText = '4';
-                p4Indice.style.display = 'flex';
+                if(p2Indice) p2Indice.style.display = 'flex';
+                if(p3Indice) p3Indice.innerText = '3';
+                if(p4Indice) p4Indice.innerText = '4';
+                if(p4Indice) p4Indice.style.display = 'flex';
             } else {
                 document.getElementById('cardRemote').classList.add('selected');
-                p2Indice.style.display = 'none';
-                p3Indice.innerText = '2';
-                p4Indice.innerText = '3';
+                if(p2Indice) p2Indice.style.display = 'none';
+                if(p3Indice) p3Indice.innerText = '2';
+                if(p4Indice) p4Indice.innerText = '3';
             }
             updateProgress();
         }
@@ -535,19 +554,26 @@
                             }
                         }
 
-                        // Când cumpărătorul deschide linkul, îl ducem direct pe Pasul 2 (Datele Cumpărătorului)
+                        // Când cumpărătorul deschide linkul, este întâmpinat direct pe prima lui pagină (Pasul 2 - Datele Cumpărătorului)
                         document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
                         document.getElementById('step2').classList.add('active');
                         currentStep = 2;
+
+                        // Schimbăm titlul pasului pentru cumpărător să fie prietenos
+                        document.getElementById('titleStep2').innerText = "Pasul 1: Datele Cumpărătorului (Completează Aici)";
+                        
+                        // Ascundem butonul "Înapoi" pentru cumpărător la primul său pas ca să nu iasă din formularul lui
+                        const btnPrevBuyer = document.querySelector('#btnGroupStep2 .btn-prev');
+                        if(btnPrevBuyer) btnPrevBuyer.style.display = 'none';
 
                         document.getElementById('modeSelectorContainer').style.display = 'none';
                         const banner = document.getElementById('roleBanner');
                         banner.style.display = 'block';
                         banner.className = 'role-banner buyer';
-                        banner.innerHTML = "🔒 <b>Mod Cumpărător:</b> Verifică datele introduse de vânzător, completează datele tale la acest pas și finalizează.";
+                        banner.innerHTML = "🔒 <b>Bun venit, Cumpărătorule!</b> Verifică mai jos datele introduse de vânzător, completează datele tale în acest formular și apasă pe finalizare.";
 
-                        // Blocăm complet toate câmpurile vânzătorului și ale vehiculului (inclusiv selectul actului)
-                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="repr"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"], #acquiredActType');
+                        // Blocăm absolut toate câmpurile vânzătorului și ale vehiculului (inclusiv selectul actului)
+                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="repr"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"], #acquiredActType, #acquiredActDetails');
                         inputsVanzatorSiMasina.forEach(input => {
                             input.setAttribute('readonly', true);
                             if(input.tagName === 'SELECT') {
@@ -617,22 +643,27 @@
 
                 if (result.success) {
                     globalSessionId = result.sessionId;
-                    const buyerUrl = `${window.location.origin}/?sessionId=${globalSessionId}`;
+                    linkCumparatorGlobal = `${window.location.origin}/?sessionId=${globalSessionId}`;
                     
-                    // Ascundem butonul de trimis și descărcarea locală veche, afișăm animația de încărcare/așteptare
+                    // Ascundem butonul de trimis și afișăm animația de așteptare cu linkul generat
                     document.getElementById('localActions').style.display = 'none';
                     document.getElementById('waitingAnimationContainer').style.display = 'block';
-                    document.getElementById('step4Desc').innerText = "Linkul a fost generat cu succes. Se așteaptă ca cumpărătorul să își completeze datele.";
+                    
+                    // SCOATEM butonul de înapoi la modificare de pe ultima pagină în mod distanță
+                    const btnBackFinal = document.getElementById('btnGroupBackFinal');
+                    if(btnBackFinal) btnBackFinal.style.display = 'none';
+
+                    document.getElementById('step4Desc').innerText = "Sesiune creată cu succes în cloud.";
 
                     document.getElementById('qrcode').innerHTML = "";
                     new QRCode(document.getElementById('qrcode'), {
-                        text: buyerUrl,
-                        width: 130,
-                        height: 130
+                        text: linkCumparatorGlobal,
+                        width: 120,
+                        height: 120
                     });
 
-                    document.getElementById('shareLinkContainer').innerHTML = `Link Cumpărător: <a href="${buyerUrl}" target="_blank">${buyerUrl}</a>`;
-                    document.getElementById('status').innerText = "Sesiune activă în cloud!";
+                    document.getElementById('shareLinkContainer').innerText = linkCumparatorGlobal;
+                    document.getElementById('status').innerText = "Sesiune activă! Trimite linkul cumpărătorului.";
                     document.getElementById('status').style.color = "#16a34a";
 
                     pornesteAscultareaLive();
@@ -641,6 +672,17 @@
                 document.getElementById('status').innerText = "Eroare server.";
                 document.getElementById('status').style.color = "#dc2626";
             }
+        }
+
+        function copiazaLinkul() {
+            navigator.clipboard.writeText(linkCumparatorGlobal).then(() => {
+                alert("Linkul a fost copiat în portieră (clipboard)! Îl poți trimite oriunde.");
+            });
+        }
+
+        function trimitePeWhatsApp() {
+            const mesaj = encodeURIComponent(`Salut! Accesează acest link securizat pentru a completa datele tale de cumpărător la contractul auto: ${linkCumparatorGlobal}`);
+            window.open(`https://api.whatsapp.com/send?text=${mesaj}`, '_blank');
         }
 
         function pornesteAscultareaLive() {
@@ -653,7 +695,7 @@
                     if (result.success && result.data.status === 'COMPLETAT_GATA_CONTRACT') {
                         clearInterval(pollInterval);
                         
-                        // Când cumpărătorul a completat datele, ascundem animația și afișăm butonul de descărcare finală
+                        // Când cumpărătorul a completat datele, ascundem animația de așteptare și afișăm butonul de descărcare
                         document.getElementById('waitingAnimationContainer').style.display = 'none';
                         document.getElementById('finalDownloadContainer').style.display = 'block';
                         document.getElementById('step4Desc').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele cu succes! Contractul este gata de descărcare.</b>";
@@ -688,14 +730,16 @@
                     document.getElementById('status').innerHTML = "✅ <b style='color:#16a34a;'>Datele tale au fost trimise vânzătorului cu succes!</b>";
                     document.getElementById('buyerActions').style.display = 'none';
                     
+                    // SCOATEM butonul de înapoi și pentru cumpărător la final
+                    const btnBackFinal = document.getElementById('btnGroupBackFinal');
+                    if(btnBackFinal) btnBackFinal.style.display = 'none';
+
                     let dlBtnBuyer = document.getElementById('buyerDownloadBtn');
                     if (!dlBtnBuyer) {
                         dlBtnBuyer = document.createElement('button');
                         dlBtnBuyer.id = 'buyerDownloadBtn';
                         dlBtnBuyer.className = 'btn btn-success';
                         dlBtnBuyer.style.marginTop = '15px';
-                        dlBtnBuyer.style.padding = '16px';
-                        dlBtnBuyer.style.fontSize = '16px';
                         dlBtnBuyer.innerText = '📥 Descarcă Contractul Oficial PDF';
                         dlBtnBuyer.onclick = genereazaContractOficialPDF;
                         document.getElementById('step4').appendChild(dlBtnBuyer);
