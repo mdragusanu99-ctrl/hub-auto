@@ -36,8 +36,9 @@
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .full-width { grid-column: span 2; }
         label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
-        input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border 0.2s; }
-        input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border 0.2s; background: white; }
+        input:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        input:read-only { background-color: #f1f5f9; color: #64748b; border-color: #e2e8f0; cursor: not-allowed; }
         
         .fiscal-toggle-btn { background-color: #f8fafc; border: 2px dashed #cbd5e1; color: #1e3a8a; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; transition: all 0.2s; margin-top: 10px; width: 100%; }
         .fiscal-toggle-btn:hover { background-color: #eff6ff; border-color: #2563eb; }
@@ -158,7 +159,7 @@
                     <input type="text" id="seller_email" placeholder="ex: dragusanumario@gmail.com">
                 </div>
 
-                <!-- BUTON DOMICILIU FISCAL DIFERIT -->
+                <!-- DOMICILIU FISCAL -->
                 <div class="full-width">
                     <button type="button" class="fiscal-toggle-btn" id="btnToggleFiscal" onclick="comutaDomiciliuFiscal()">
                         ➕ Adaugă Domiciliu Fiscal Diferit (Opțional)
@@ -176,7 +177,7 @@
                     </div>
                 </div>
 
-                <!-- BUTON FIRMĂ / REPREZENTANT LEGAL -->
+                <!-- FIRMĂ / MANDATAR -->
                 <div class="full-width">
                     <button type="button" class="fiscal-toggle-btn" id="btnToggleFirma" onclick="comutaFirma()">
                         🏢 Vânzarea se face prin Firmă / Mandatar (Opțional)
@@ -312,6 +313,22 @@
                     <label>Data Dobândirii Anterioare</label>
                     <input type="text" id="acquiredDate" placeholder="ex: 15.05.2020">
                 </div>
+
+                <!-- ACTUL ANTERIOR DE DOBÂNDIRE (SELECTOR + DATĂ) -->
+                <div>
+                    <label>Tipul Actului Anterior de Dobândire</label>
+                    <select id="acquiredActType">
+                        <option value="Contract de vânzare-cumpărare">Contract de vânzare-cumpărare</option>
+                        <option value="Factură fiscală">Factură fiscală</option>
+                        <option value="Certificat de moștenitor">Certificat de moștenitor</option>
+                        <option value="Contract de donație">Contract de donație</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Număr și Dată Act Dobândire</label>
+                    <input type="text" id="acquiredActDetails" placeholder="ex: nr. 45 din 12.05.2023">
+                </div>
+
                 <div>
                     <label>Preț în Cifre</label>
                     <input type="text" id="figurePrice" placeholder="ex: 8.500 EUR">
@@ -386,6 +403,7 @@
                 p3Indice.innerText = '2';
                 p4Indice.innerText = '3';
             }
+            updateProgress();
         }
 
         function comutaDomiciliuFiscal() {
@@ -425,24 +443,21 @@
         }
 
         function updateProgress() {
-            // Dacă suntem la distanță ca vânzător, avem exact 3 pași. Dacă suntem local, avem 4 pași.
             const totalSteps = (modLucru === 'remote' && userRole === 'vanzator') ? 3 : 4;
             
             for (let i = 1; i <= 4; i++) {
                 const p = document.getElementById('p' + i);
                 if (!p) continue;
                 
-                // Gestionăm vizibilitatea bulinelor în funcție de modul ales
                 if (i > totalSteps) {
                     p.style.display = 'none';
                 } else {
                     p.style.display = 'flex';
                 }
                 
-                // Setăm eticheta corectă pentru bulina 3 sau 4 în modul remote
                 if (modLucru === 'remote' && userRole === 'vanzator') {
-                    if (i === 2) p.innerText = '2'; // Pasul Vehicul
-                    if (i === 3) p.innerText = '3'; // Pasul Finalizare (Trimite link)
+                    if (i === 2) p.innerText = '2';
+                    if (i === 3) p.innerText = '3';
                 } else {
                     if (i === 2) p.innerText = '2';
                     if (i === 3) p.innerText = '3';
@@ -461,6 +476,8 @@
             if (modLucru === 'remote' && userRole === 'vanzator' && step === 1) {
                 currentStep = 3;
                 document.getElementById('titleStep3').innerText = "Pasul 2: Vehiculul și Prețul";
+            } else if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) {
+                currentStep = 4;
             } else {
                 currentStep = step + 1;
             }
@@ -474,6 +491,8 @@
             
             if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) {
                 currentStep = 1;
+            } else if (modLucru === 'remote' && userRole === 'vanzator' && step === 4) {
+                currentStep = 3;
             } else {
                 currentStep = step - 1;
             }
@@ -528,7 +547,7 @@
                 'sellerName', 'sellerCounty', 'sellerPostalCode', 'sellerCity', 'seller_sector', 'sellerStreet', 'sellerStreetNo', 'sellerBlock', 'sellerBuilding', 'sellerFloor', 'sellerApartment', 'seller_ci_serie', 'seller_ci_number', 'seller_ci_cnp', 'seller_phone', 'seller_email',
                 'sellerRepresentant', 'sellerQuality', 'reprCISeries', 'reprCINumber', 'reprCNP', 'reprPhone', 'reprEmail',
                 'buyerName', 'buyer_judet', 'buyerPostalCode', 'buyer_city', 'buyer_sector', 'buyerStreet', 'buyerStreetNo', 'buyerBlock', 'buyerBuilding', 'buyerFloor', 'buyerApartment', 'buyerCISeries', 'buyerCINumber', 'buyerCNP', 'buyerPhone', 'buyerEmail',
-                'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredAct', 'figurePrice', 'lettersPrice'
+                'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'figurePrice', 'lettersPrice'
             ];
             
             let date = {};
@@ -536,6 +555,11 @@
                 const el = document.getElementById(id);
                 date[id] = el ? el.value : '';
             });
+
+            // Combinăm tipul de act selectat cu detaliile introduse
+            const tipAct = document.getElementById('acquiredActType')?.value || 'Contract de vânzare-cumpărare';
+            const detaliiAct = document.getElementById('acquiredActDetails')?.value || '';
+            date['acquiredAct'] = `${tipAct} ${detaliiAct}`.trim();
 
             // Gestiune Domiciliu Fiscal
             if (!domiciliuFiscalDiferit) {
@@ -662,10 +686,10 @@
             }
         }
 
-        // GENERATORUL FINAL NATIV CU TOATE CÂMPURIle, INCLUSIV REPREZENTANT / FIRMĂ
+        // GENERATORUL FINAL NATIV CU 4 SPAȚII GOALE ÎNAINTEA FIECĂRUI TEXT
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează contractul oficial complet cu text negru...";
+            statusEl.innerText = "Se generează contractul oficial complet cu spații de siguranță...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -687,11 +711,11 @@
                     try {
                         const field = form.getTextField(numeCamp);
                         if (field && valoare) {
-                            // Adăugăm exact 4 spații goale în față pentru a depărta textul de marginea căsuței
+                            // Adăugăm exact 4 spații goale în față ca datele să nu se lipească
                             const valoareCuSpatii = "    " + String(valoare);
                             field.setText(valoareCuSpatii);
                             field.setFont(fontNegru);
-                            field.setFontSize(7.5); // Păstrăm dimensiunea ta preferată
+                            field.setFontSize(7.5);
                         }
                     } catch (e) {
                         console.log(`Câmpul ${numeCamp} nu a fost găsit.`);
@@ -765,6 +789,7 @@
                 seteazaCamp('productionYear', d.productionYear);
                 seteazaCamp('euroStandard', d.euroStandard);
                 seteazaCamp('acquiredDate', d.acquiredDate);
+                seteazaCamp('acquiredAct', d.acquiredAct);
 
                 // 4. Prețul
                 seteazaCamp('figurePrice', d.figurePrice);
@@ -775,7 +800,7 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Complet_ActPeLoc.pdf";
+                link.download = "Contract_ITL_054_ActPeLoc.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
