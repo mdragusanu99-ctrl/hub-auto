@@ -24,13 +24,11 @@
         .mode-card h4 { margin: 0 0 10px 0; font-size: 18px; color: #1e3a8a; }
         .mode-card p { margin: 0; font-size: 13px; color: #64748b; line-height: 1.5; }
 
-        /* Headere secțiuni și buton schimbare mod */
         .step-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #eff6ff; padding-bottom: 8px; }
         .section-title { font-size: 16px; font-weight: 700; color: #1e3a8a; margin: 0; }
         .btn-change-mode { background: #f1f5f9; border: 1px solid #cbd5e1; color: #475569; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .btn-change-mode:hover { background: #e2e8f0; color: #1e293b; }
 
-        /* Bara de progres */
         .progress-container { display: flex; justify-content: space-between; margin-bottom: 30px; position: relative; }
         .progress-container::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: #e2e8f0; transform: translateY(-50%); z-index: 1; }
         .progress-step { width: 34px; height: 34px; border-radius: 50%; background: #e2e8f0; color: #64748b; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; position: relative; z-index: 2; transition: all 0.3s; }
@@ -387,7 +385,7 @@
             </div>
 
             <div id="buyerActions" style="display:none;">
-                <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Salvează Datele & Generează Contractul</button>
+                <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Salvează Datele & Trimite Vânzătorului</button>
             </div>
 
             <div id="waitingAnimationContainer" style="display:none;" class="waiting-animation-box">
@@ -423,7 +421,7 @@
 
     <script>
         let currentStep = 1;
-        let buyerCurrentStep = 1; // Pas dedicat pentru cumpărător (1, 2 sau 3)
+        let buyerCurrentStep = 1;
         let modLucru = 'local';
         let globalSessionId = null;
         let userRole = 'vanzator';
@@ -535,7 +533,6 @@
             }
         }
 
-        /* Navigare dedicată Vânzător */
         function nextStep(step) {
             if (userRole === 'cumparator') {
                 nextStepBuyer(buyerCurrentStep);
@@ -587,7 +584,6 @@
             updateProgress();
         }
 
-        /* FLUX SPECIAL ȘI STRICT PENTRU CUMPĂRĂTOR */
         function updateProgressBuyer() {
             const p1 = document.getElementById('p1');
             const p2 = document.getElementById('p2');
@@ -622,7 +618,7 @@
                 buyerCurrentStep = 3;
                 document.getElementById('step4').classList.add('active');
                 document.getElementById('titleStep4').innerText = "Pasul 3: Finalizare & Salvare Contract";
-                document.getElementById('step4Desc').innerText = "Verifică datele introduse și apasă pe butonul de mai jos pentru a trimite informațiile către vânzător.";
+                document.getElementById('step4Desc').innerText = "Verifică informațiile de mai sus și apasă pe butonul de salvare pentru a trimite datele către vânzător.";
             }
             updateProgressBuyer();
         }
@@ -669,23 +665,20 @@
                             }
                         }
 
-                        // Cumpărătorul începe strict de la Pasul 1 (Date Cumpărător)
                         document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
                         document.getElementById('step2').classList.add('active');
                         buyerCurrentStep = 1;
 
                         document.getElementById('titleStep2').innerText = "Pasul 1: Datele Cumpărătorului";
                         
-                        // Ascundem butonul „Înapoi” de pe primul pas al cumpărătorului
                         const btnPrevStep2 = document.getElementById('btnPrevStep2');
                         if (btnPrevStep2) btnPrevStep2.style.display = 'none';
 
                         const banner = document.getElementById('roleBanner');
                         banner.style.display = 'block';
                         banner.className = 'role-banner buyer';
-                        banner.innerHTML = "🔒 <b>Bun venit, Cumpărătorule!</b> Completează datele tale la acest pas, iar la pasul următor vei putea verifica datele mașinii.";
+                        banner.innerHTML = "🔒 <b>Bun venit, Cumpărătorule!</b> Completează datele tale mai jos, apoi mergi mai departe pentru a verifica datele vehiculului.";
 
-                        // Blocăm complet câmpurile vânzătorului și ale vehiculului
                         const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="repr"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"], #acquiredActType, #acquiredActDetails');
                         inputsVanzatorSiMasina.forEach(input => {
                             input.setAttribute('readonly', true);
