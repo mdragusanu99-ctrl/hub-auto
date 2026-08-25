@@ -425,13 +425,30 @@
         }
 
         function updateProgress() {
+            // Dacă suntem la distanță ca vânzător, avem exact 3 pași. Dacă suntem local, avem 4 pași.
             const totalSteps = (modLucru === 'remote' && userRole === 'vanzator') ? 3 : 4;
+            
             for (let i = 1; i <= 4; i++) {
                 const p = document.getElementById('p' + i);
+                if (!p) continue;
+                
+                // Gestionăm vizibilitatea bulinelor în funcție de modul ales
                 if (i > totalSteps) {
                     p.style.display = 'none';
-                    continue;
+                } else {
+                    p.style.display = 'flex';
                 }
+                
+                // Setăm eticheta corectă pentru bulina 3 sau 4 în modul remote
+                if (modLucru === 'remote' && userRole === 'vanzator') {
+                    if (i === 2) p.innerText = '2'; // Pasul Vehicul
+                    if (i === 3) p.innerText = '3'; // Pasul Finalizare (Trimite link)
+                } else {
+                    if (i === 2) p.innerText = '2';
+                    if (i === 3) p.innerText = '3';
+                    if (i === 4) p.innerText = '4';
+                }
+
                 p.classList.remove('active', 'completed');
                 if (i < currentStep) p.classList.add('completed');
                 if (i === currentStep) p.classList.add('active');
