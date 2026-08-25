@@ -225,7 +225,7 @@
             </div>
         </div>
 
-        <!-- ================= ECRANUL FORMULARULUI WIZARD ================= -->
+        <!-- ================= ECRANul FORMULARULUI WIZARD ================= -->
         <div id="view-form" class="hidden space-y-6">
             <div class="flex justify-between items-center mb-2">
                 <button onclick="sariLaAcasa()" class="text-slate-400 text-xs hover:text-white transition-colors flex items-center space-x-1">
@@ -238,9 +238,9 @@
             <!-- Bară Progres Stepper -->
             <div class="glass-card p-4 rounded-2xl space-y-3">
                 <div class="flex justify-between text-[11px] font-bold text-slate-400">
-                    <span id="lbl-step-1" class="text-cyan-400">1. Partea I</span>
-                    <span id="lbl-step-2">2. Partea II</span>
-                    <span id="lbl-step-3">3. Detalii</span>
+                    <span id="lbl-step-1" class="text-cyan-400">1. Vânzător</span>
+                    <span id="lbl-step-2">2. Cumpărător</span>
+                    <span id="lbl-step-3">3. Vehicul</span>
                     <span id="lbl-step-4">4. Semnătură</span>
                 </div>
                 <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
@@ -263,7 +263,7 @@
                 </div>
                 <div class="text-center space-y-1">
                     <h3 class="text-xl font-black text-white">Deblocare Document Oficial</h3>
-                    <p class="text-xs text-slate-400">Achită taxa unică de 25 RON pentru a genera documentul complet și chitanța fiscală în baza de date.</p>
+                    <p class="text-xs text-slate-400">Achită taxa unică de 25 RON pentru a genera documentul complet și chitanța fiscală.</p>
                 </div>
 
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex justify-between items-center">
@@ -318,7 +318,7 @@
         <p>&copy; 2026 ActPeLoc. Toate drepturile rezervate. Server Render & Supabase Active.</p>
     </footer>
 
-    <!-- Scripturi Complete cu Sincronizare Cloud & Generare PDF -->
+    <!-- Scripturi Complete -->
     <script>
         let tipActCurent = '';
         let titluActCurent = '';
@@ -340,20 +340,16 @@
             auto: [
                 { id: 'vanzare_auto', titlu: '📝 Contract Vânzare-Cumpărare Auto (ITL 054 & Supabase)', desc: 'Model oficial completat cu opțiune de completare la distanță' },
                 { id: 'inchiriere_auto', titlu: '🚗 Contract Închiriere Auto', desc: 'Garanție, daune, interdicții rutiere, clauze extinse' },
-                { id: 'comodat_auto', titlu: '🔑 Contract Comodat Auto', desc: 'Folosință gratuită autovehicul cu clauze de răspundere' },
-                { id: 'imputernicire_auto', titlu: '🌍 Împuternicire / Procură Auto Extern', desc: 'Pentru ieșirea din țară cu mașina și reprezentare' }
+                { id: 'comodat_auto', titlu: '🔑 Contract Comodat Auto', desc: 'Folosință gratuită autovehicul cu clauze de răspundere' }
             ],
             imobiliare: [
-                { id: 'inchiriere_imobil', titlu: '🏢 Contract Închiriere Imobil', desc: 'Locuință, chirie, garanție, penalități' },
-                { id: 'comodat_imobil', titlu: '🏡 Contract Comodat Imobil', desc: 'Folosință gratuită spațiu / viză flotant' }
+                { id: 'inchiriere_imobil', titlu: '🏢 Contract Închiriere Imobil', desc: 'Locuință, chirie, garanție, penalități' }
             ],
             financiar: [
-                { id: 'imprumut_bani', titlu: '💵 Contract de Împrumut Bani', desc: 'Scadență, restituire, penalități moratorii' },
-                { id: 'chitanta_avans', titlu: '🧾 Chitanță Avans / Arvună', desc: 'Dovadă încasare bani și angajament civil' }
+                { id: 'imprumut_bani', titlu: '💵 Contract de Împrumut Bani', desc: 'Scadență, restituire, penalități moratorii' }
             ],
             administrative: [
-                { id: 'cerere_demisie', titlu: '📄 Cerere de Demisie (Cu Preaviz)', desc: 'Model legal demisie conform Codului Muncii' },
-                { id: 'cerere_concediu', titlu: '🏖️ Cerere Concediu de Odihnă', desc: 'Solicitare oficială zile libere plătite' }
+                { id: 'cerere_demisie', titlu: '📄 Cerere de Demisie (Cu Preaviz)', desc: 'Model legal demisie conform Codului Muncii' }
             ],
             prestari: [
                 { id: 'prestari_servicii', titlu: '🤝 Contract de Prestări Servicii', desc: 'Pentru freelanceri, PFA-uri, onorarii' }
@@ -504,8 +500,11 @@
             const container = document.getElementById('form-dynamic-content');
             let html = `<form id="contractForm" class="space-y-5" onsubmit="return false;">`;
 
-            if (id === 'vanzare_auto') html += renderFormVanzareAutoITL();
-            else html += renderFormDemisie();
+            if (id === 'vanzare_auto') {
+                html += renderFormVanzareAutoITL();
+            } else {
+                html += renderFormGeneralGeneric();
+            }
 
             html += `</form>`;
             container.innerHTML = html;
@@ -529,7 +528,7 @@
                             <div><label class="text-[10px] text-slate-400 block mb-1">Număr *</label><input type="text" id="sellerStreetNo" oninput="valideazaPasCurent()" placeholder="10" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
-                            <div><label class="text-[10px] text-slate-400 block mb-1">Serie CI *</label><input type="text" id="seller_ci_serie" oninput="valideazaPasCurent()" placeholder="VS" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Seria CI *</label><input type="text" id="seller_ci_serie" oninput="valideazaPasCurent()" placeholder="VS" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
                             <div><label class="text-[10px] text-slate-400 block mb-1">Număr CI *</label><input type="text" id="seller_ci_number" oninput="valideazaPasCurent()" placeholder="123456" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
                         </div>
                         <div><label class="text-[10px] text-slate-400 block mb-1">C.N.P. (13 cifre) *</label><input type="text" id="seller_ci_cnp" maxlength="13" oninput="valideazaPasCurent()" placeholder="5040101..." class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
@@ -537,6 +536,7 @@
                     </div>
                     <button type="button" id="btn-next-1" onclick="schimbaPas(2)" class="w-full bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
                 </div>
+
                 <div id="form-step-2" class="form-step space-y-4 hidden">
                     <div class="glass-card p-5 rounded-2xl space-y-3">
                         <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
@@ -556,6 +556,7 @@
                         <button type="button" id="btn-next-2" onclick="schimbaPas(3)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
                     </div>
                 </div>
+
                 <div id="form-step-3" class="form-step space-y-4 hidden">
                     <div class="glass-card p-5 rounded-2xl space-y-3">
                         <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
@@ -577,11 +578,12 @@
                         <button type="button" id="btn-next-3" onclick="schimbaPas(4)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Spre Semnătură &rarr;</button>
                     </div>
                 </div>
+
                 ${renderStepSemnaturiSingle()}
             `;
         }
 
-        function renderFormDemisie() {
+        function renderFormGeneralGeneric() {
             return `
                 <div id="form-step-1" class="form-step space-y-4">
                     <div class="glass-card p-5 rounded-2xl space-y-3">
@@ -605,7 +607,7 @@
                         <div class="flex justify-between items-center pb-1 border-b border-slate-800">
                             <div class="flex items-center space-x-2">
                                 <span class="text-lg">✍️</span>
-                                <h3 id="sig-title" class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Semnătură Digitală & Opțiuni Server</h3>
+                                <h3 id="sig-title" class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Semnătură Digitală & Opțiuni Cloud</h3>
                             </div>
                             <button type="button" onclick="clearSig()" class="text-xs text-slate-400 underline">Șterge</button>
                         </div>
@@ -618,7 +620,7 @@
                     ${tipActCurent === 'vanzare_auto' && userRole === 'vanzator' ? `
                     <div class="glass-card p-4 rounded-2xl space-y-3 text-center border-cyan-500/30">
                         <h4 class="text-xs font-bold text-cyan-400 uppercase">Mod Distanță (Supabase & Render)</h4>
-                        <p class="text-[11px] text-slate-400">Poți trimite linkul securizat cumpărătorului pentru a-și completa datele pe telefon.</p>
+                        <p class="text-[11px] text-slate-400">Trimite linkul securizat cumpărătorului pentru a-și completa datele pe telefon.</p>
                         <button type="button" onclick="pornesteFluxRemote()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/30 font-bold p-3 rounded-xl text-xs">
                             📤 Generează Link Sesiune Cloud
                         </button>
@@ -720,8 +722,25 @@
                 amprentaHash = 'HASH-' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
                 const pdfBytes = await genereazaPDFSpecificDupaTip();
+                const chitantaBytes = await creeazaObiectChitanta();
+
                 ultimulPdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
                 ultimulNumeFisier = `Contract_${tipActCurent}_${numarUnicAct}.pdf`;
+
+                ultimaChitantaBlob = new Blob([chitantaBytes], { type: 'application/pdf' });
+                ultimulNumeChitanta = `Chitanta_Fiscala_${numarUnicAct}.pdf`;
+
+                let emailClient = document.getElementById('seller_email')?.value || 'client@exemplu.ro';
+                let p1 = document.getElementById('sellerName')?.value || 'Client';
+
+                // Trimitere opțională prin EmailJS
+                emailjs.send("service_5epmvz9", "template_krf7x8j", {
+                    to_email: emailClient,
+                    nume_client: p1,
+                    nume_act: titluActCurent,
+                    id_act: numarUnicAct,
+                    data_generare: timestampGenerare
+                }).catch(() => {});
 
                 if (globalSessionId && userRole === 'cumparator') {
                     await fetch(`/api/actualizeaza-tranzactie/${globalSessionId}`, {
@@ -731,6 +750,15 @@
                     });
                 }
 
+                salveazaInIstoricLocal({
+                    id: numarUnicAct,
+                    data: new Date().toLocaleDateString('ro-RO'),
+                    tip: tipActCurent.toUpperCase(),
+                    nume: p1,
+                    numeFisier: ultimulNumeFisier,
+                    numeChitanta: ultimulNumeChitanta
+                });
+
                 document.getElementById('modal-succes').classList.remove('hidden');
             } catch (err) {
                 arataNotificare("Eroare generare PDF.", "❌");
@@ -738,13 +766,23 @@
         }
 
         async function genereazaPDFSpecificDupaTip() {
-            const { PDFDocument, rgb, StandardFonts } = PDFLib;
+            const { PDFDocument, StandardFonts } = PDFLib;
             const pdfDoc = await PDFDocument.create();
             const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
             let page = pdfDoc.addPage([595.28, 841.89]);
             page.drawText(`ACTPELOC TECH - CONTRACT OFICIAL | ID: ${numarUnicAct}`, { x: 50, y: 790, size: 10, font });
             page.drawText(`Tip Act: ${titluActCurent.toUpperCase()}`, { x: 50, y: 750, size: 12, font });
             page.drawText(`Generat la data: ${timestampGenerare} (Sincronizat Server Render & Supabase)`, { x: 50, y: 720, size: 9, font });
+            return await pdfDoc.save();
+        }
+
+        async function creeazaObiectChitanta() {
+            const { PDFDocument, StandardFonts } = PDFLib;
+            const pdfDoc = await PDFDocument.create();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            let page = pdfDoc.addPage([595.28, 400]);
+            page.drawText(`CHITANȚĂ FISCALĂ DIGITALĂ - ID: ${numarUnicAct}`, { x: 45, y: 330, size: 12, font });
+            page.drawText(`Suma încasată: 25.00 RON (Taxă unică generare)`, { x: 45, y: 290, size: 10, font });
             return await pdfDoc.save();
         }
 
@@ -756,9 +794,48 @@
             link.click();
         }
 
-        function descarcaChitantaDirect() { arataNotificare("Chitanța fiscală a fost descărcată."); }
-        function incarcaIstoricGeneral() {}
-        function stergeIstoric() {}
+        function descarcaChitantaDirect() {
+            if(!ultimaChitantaBlob) return;
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(ultimaChitantaBlob);
+            link.download = ultimulNumeChitanta;
+            link.click();
+        }
+
+        function salveazaInIstoricLocal(item) {
+            let istoric = JSON.parse(localStorage.getItem('actpeloc_istoric_general') || '[]');
+            istoric.unshift(item);
+            if (istoric.length > 15) istoric.pop();
+            localStorage.setItem('actpeloc_istoric_general', JSON.stringify(istoric));
+        }
+
+        function incarcaIstoricGeneral(filtru = '') {
+            let istoric = JSON.parse(localStorage.getItem('actpeloc_istoric_general') || '[]');
+            const sec = document.getElementById('istoric-section');
+            const lista = document.getElementById('lista-istoric');
+            lista.innerHTML = '';
+            if (istoric.length > 0) {
+                sec.classList.remove('hidden');
+                istoric.forEach(item => {
+                    lista.innerHTML += `
+                        <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl flex justify-between items-center text-xs shadow-sm">
+                            <div>
+                                <div class="font-bold text-white">[${item.tip}] ${item.nume}</div>
+                                <div class="text-slate-400 text-[10px]">${item.data} | ID: ${item.id}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                sec.classList.add('hidden');
+            }
+        }
+
+        function stergeIstoric() {
+            localStorage.removeItem('actpeloc_istoric_general');
+            incarcaIstoricGeneral();
+        }
+
         function filtreazaIstoric() {}
     </script>
 </body>
