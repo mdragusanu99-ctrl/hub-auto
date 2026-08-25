@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ActPeLoc - Platformă Generare Contracte & Documente Oficiale</title>
+    <title>ActPeLoc - Platformă Tech Oficială Generare Contracte & Documente</title>
     <script>
-        if (localStorage.getItem('actpeloc_theme') === 'dark') {
-            document.documentElement.classList.add('dark');
-        } else {
+        if (localStorage.getItem('actpeloc_theme') === 'light') {
             document.documentElement.classList.remove('dark');
-            localStorage.setItem('actpeloc_theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('actpeloc_theme', 'dark');
         }
     </script>
     <!-- Tailwind CSS -->
@@ -17,12 +17,22 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0B0F19',
+                        cyberDark: '#030712',
+                        cyberCard: 'rgba(15, 23, 42, 0.75)',
+                        cyberCyan: '#06B6D4',
+                        cyberBlue: '#3B82F6',
+                    }
+                }
+            }
         }
     </script>
-    <!-- Librării PDF și QR Code -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <!-- Librării externe -->
+    <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
@@ -31,115 +41,101 @@
     </script>
     <style>
         .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.04);
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .dark .glass-card {
-            background: rgba(15, 23, 42, 0.85);
-            border-color: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
+        .light .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
         }
         .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
             transform: translateY(-2px);
-            border-color: rgba(251, 191, 36, 0.4);
         }
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 25px rgba(251, 191, 36, 0.4); }
-            50% { box-shadow: 0 0 50px rgba(251, 191, 36, 0.8); }
+        @keyframes cyberGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
         }
-        .glow-btn { animation: pulseGlow 3s infinite; }
+        .glow-btn { animation: cyberGlow 3s infinite; }
         .tab-btn.active {
-            background-color: rgba(251, 191, 36, 0.15);
-            border-color: rgba(251, 191, 36, 0.6);
-            color: #d97706;
-        }
-        .dark .tab-btn.active {
-            color: #fbbf24;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.2));
+            border-color: rgba(6, 182, 212, 0.8);
+            color: #22d3ee;
         }
         input, textarea, select {
             transition: all 0.2s ease;
-            text-transform: uppercase;
-        }
-        input[type="email"], input#seller_email, input#buyerEmail, input#reprEmail {
-            text-transform: none;
         }
         input:focus, textarea:focus, select:focus {
-            border-color: #f59e0b !important;
-            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+            border-color: #06B6D4 !important;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
         }
-        .role-banner { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 18px; border-radius: 12px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; }
-        .role-banner.buyer { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
-        
-        .waiting-animation-box { text-align: center; background: rgba(248, 250, 252, 0.8); border: 2px dashed #cbd5e1; padding: 25px; border-radius: 16px; margin-top: 20px; }
-        .dark .waiting-animation-box { background: rgba(15, 23, 42, 0.8); border-color: #334155; }
-        .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid #d97706; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-slate-100 to-amber-50/30 dark:from-[#030712] dark:via-[#090d16] dark:to-[#0f172a] text-slate-900 dark:text-slate-100 min-h-screen flex flex-col justify-between font-sans selection:bg-amber-400 selection:text-slate-950 transition-colors duration-300">
+<body class="bg-obsidian text-slate-100 min-h-screen flex flex-col justify-between font-sans selection:bg-cyan-500 selection:text-slate-950 transition-colors duration-300">
 
-    <!-- Notificare Toast Flotant -->
+    <!-- Notificare Toast Tech -->
     <div id="toast-notificare" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-        <div id="toast-content" class="bg-slate-900 dark:bg-slate-800 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 text-xs font-bold flex items-center space-x-2">
-            <span id="toast-icon">✨</span>
-            <span id="toast-text">Notificare</span>
+        <div id="toast-content" class="bg-slate-900 text-cyan-400 px-4 py-3 rounded-2xl shadow-2xl border border-cyan-500/30 text-xs font-bold flex items-center space-x-2">
+            <span id="toast-icon">⚡</span>
+            <span id="toast-text" class="text-white">Notificare</span>
         </div>
     </div>
 
-    <!-- Header Principal -->
-    <header class="w-full py-4 px-6 border-b border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md bg-white/80 dark:bg-[#030712]/90 sticky top-0 z-50 flex justify-between items-center max-w-2xl mx-auto">
+    <!-- Header Tech Principal -->
+    <header class="w-full py-4 px-6 border-b border-slate-800/80 backdrop-blur-md bg-cyberDark/90 sticky top-0 z-50 flex justify-between items-center max-w-3xl mx-auto">
         <div class="flex items-center space-x-2 cursor-pointer group" onclick="sariLaAcasa()">
-            <span class="text-2xl font-black text-amber-500 dark:text-amber-400 tracking-tight group-hover:scale-105 transition-transform">⚡ Act<span class="text-slate-900 dark:text-white">PeLoc</span></span>
+            <span class="text-xl font-black tracking-tighter bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent group-hover:scale-105 transition-transform">⚡ ACT<span class="text-white">PELOC</span>.TECH</span>
         </div>
         <div class="flex items-center space-x-2">
-            <button onclick="toggleSetariEmitent()" class="bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 p-2 rounded-xl text-xs transition-all font-bold flex items-center space-x-1" title="Setări PFA / Firmă">
-                <span>⚙️ Date PFA</span>
+            <button onclick="toggleSetariEmitent()" class="bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-2 rounded-xl text-xs transition-all font-bold border border-slate-700 flex items-center space-x-1" title="Setări PFA">
+                <span>⚙️ PFA</span>
             </button>
-            <button onclick="comutaTema()" class="bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 p-2 rounded-xl text-xs transition-all" title="Schimbă tema">
-                <span id="theme-icon">☀️</span>
+            <button onclick="comutaTema()" class="bg-slate-800 hover:bg-slate-700 p-2 rounded-xl text-xs transition-all border border-slate-700" title="Schimbă tema">
+                <span id="theme-icon">🌙</span>
             </button>
-            <div id="save-indicator" class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono hidden bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">💾 Salvat</div>
+            <div id="save-indicator" class="text-[10px] text-emerald-400 font-mono hidden bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">💾 Salvat</div>
         </div>
     </header>
 
     <!-- Conținut Principal -->
-    <main class="max-w-2xl mx-auto px-6 py-8 w-full flex-grow space-y-6">
+    <main class="max-w-3xl mx-auto px-6 py-8 w-full flex-grow space-y-6">
         
         <!-- ================= SETĂRI EMITENT ================= -->
-        <div id="panel-emitent" class="glass-card p-5 rounded-2xl space-y-3 hidden border-amber-500/40">
+        <div id="panel-emitent" class="glass-card p-5 rounded-2xl space-y-3 hidden border-cyan-500/40">
             <div class="flex justify-between items-center">
-                <h3 class="text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">⚙️ Configurare Date PFA / Firmă</h3>
-                <button onclick="toggleSetariEmitent()" class="text-slate-500 hover:text-slate-900 dark:hover:text-white text-xs">✕ Închide</button>
+                <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">⚙️ Configurare Date PFA / Firmă Emitentă</h3>
+                <button onclick="toggleSetariEmitent()" class="text-slate-400 hover:text-white text-xs">✕ Închide</button>
             </div>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">Aceste date vor apărea ca emitent oficial pe chitanțe și rapoarte.</p>
+            <p class="text-[11px] text-slate-400">Datele introduse vor apărea automat pe chitanțele fiscale și documente.</p>
             <div class="grid grid-cols-2 gap-2">
                 <div>
-                    <label class="text-[10px] text-slate-500 dark:text-slate-400 block mb-1">Nume sau PFA / Firmă *</label>
-                    <input type="text" id="set_nume_firma" placeholder="ex: ActPeLoc PFA" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs text-slate-800 dark:text-slate-200 outline-none">
+                    <label class="text-[10px] text-slate-400 block mb-1">Nume sau PFA / Firmă *</label>
+                    <input type="text" id="set_nume_firma" placeholder="ex: ActPeLoc PFA" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200 outline-none">
                 </div>
                 <div>
-                    <label class="text-[10px] text-slate-500 dark:text-slate-400 block mb-1">C.I.F. / C.N.P. *</label>
-                    <input type="text" id="set_cif_firma" placeholder="RO..." class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs text-slate-800 dark:text-slate-200 outline-none">
+                    <label class="text-[10px] text-slate-400 block mb-1">C.I.F. / C.N.P. *</label>
+                    <input type="text" id="set_cif_firma" placeholder="RO..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200 outline-none">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <div>
-                    <label class="text-[10px] text-slate-500 dark:text-slate-400 block mb-1">Județ *</label>
-                    <input type="text" id="set_judet_firma" placeholder="Vaslui" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs text-slate-800 dark:text-slate-200 outline-none">
+                    <label class="text-[10px] text-slate-400 block mb-1">Județ *</label>
+                    <input type="text" id="set_judet_firma" placeholder="Vaslui" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200 outline-none">
                 </div>
                 <div>
-                    <label class="text-[10px] text-slate-500 dark:text-slate-400 block mb-1">Adresă Sediu *</label>
-                    <input type="text" id="set_adresa_firma" placeholder="Barlad" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs text-slate-800 dark:text-slate-200 outline-none">
+                    <label class="text-[10px] text-slate-400 block mb-1">Adresă Sediu *</label>
+                    <input type="text" id="set_adresa_firma" placeholder="Barlad" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200 outline-none">
                 </div>
             </div>
             <div class="flex space-x-2 pt-1">
-                <button onclick="salveazaSetariEmitent()" class="w-1/2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-2.5 rounded-xl text-xs transition-colors">
-                    Salvează și Aplică
+                <button onclick="salveazaSetariEmitent()" class="w-1/2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-slate-950 font-bold p-2.5 rounded-xl text-xs transition-all">
+                    Salvează Datele
                 </button>
-                <button onclick="anuleazaPrecompletarea()" class="w-1/2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-red-600 dark:text-red-400 font-bold p-2.5 rounded-xl text-xs border border-red-500/20 transition-colors">
+                <button onclick="anuleazaPrecompletarea()" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-red-400 font-bold p-2.5 rounded-xl text-xs border border-red-500/20 transition-colors">
                     🚫 Golește
                 </button>
             </div>
@@ -148,228 +144,223 @@
         <!-- ================= ECRANUL PRINCIPAL ================= -->
         <div id="view-home" class="space-y-6">
             <div class="text-center mb-6 space-y-3">
-                <span class="bg-amber-400/10 text-amber-600 dark:text-amber-400 text-xs font-bold px-4 py-1.5 rounded-full border border-amber-400/20 inline-flex items-center space-x-1.5">
-                    <span>✨</span>
-                    <span>Model Oficial ITL 054 (2026) • Valabilitate Juridică Completă</span>
+                <span class="bg-cyan-500/10 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full border border-cyan-500/30 inline-flex items-center space-x-1.5 shadow-lg shadow-cyan-500/10">
+                    <span>⚡</span>
+                    <span>Sistem Inteligent de Generare Documente • Arhitectură Tech 2026</span>
                 </span>
-                <h1 class="text-4xl font-black tracking-tight mb-2">Generează <span class="text-amber-500 dark:text-amber-400">Actul Dorit</span> în Câteva Secunde</h1>
-                <p class="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto">Alege categoria potrivită, completează datele simplu și primești documentul oficial complet plus chitanța fiscală.</p>
+                <h1 class="text-3xl sm:text-4xl font-black tracking-tight mb-2">Generează <span class="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Actul Dorit</span> Instantaneu</h1>
+                <p class="text-slate-400 text-xs sm:text-sm max-w-md mx-auto">Selectează categoria potrivită, completează datele prin interfața ghidată și obține documentul juridic oficial și chitanța fiscală.</p>
             </div>
 
-            <!-- Butoane Categorii Principale -->
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="selecteazaCategorie('auto')" id="cat-btn-auto" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-2 group">
+            <!-- Categorii Principale -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button onclick="selecteazaCategorie('auto')" id="cat-btn-auto" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-800 flex flex-col justify-between space-y-2 group">
                     <div class="text-2xl group-hover:scale-110 transition-transform origin-left">🚗</div>
                     <div>
-                        <div class="font-bold text-slate-900 dark:text-white text-sm">Auto & Transport</div>
-                        <div class="text-[11px] text-slate-500 dark:text-slate-400">Contract Vânzare-Cumpărare ITL 054 și altele</div>
+                        <div class="font-bold text-white text-sm">Auto & Transport</div>
+                        <div class="text-[11px] text-slate-400">Contract ITL 054, închiriere, comodat, procură</div>
                     </div>
                 </button>
 
-                <button onclick="selecteazaCategorie('imobiliare')" id="cat-btn-imobiliare" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-2 group">
+                <button onclick="selecteazaCategorie('imobiliare')" id="cat-btn-imobiliare" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-800 flex flex-col justify-between space-y-2 group">
                     <div class="text-2xl group-hover:scale-110 transition-transform origin-left">🏠</div>
                     <div>
-                        <div class="font-bold text-slate-900 dark:text-white text-sm">Imobiliare</div>
-                        <div class="text-[11px] text-slate-500 dark:text-slate-400">Închiriere, comodat, vânzare imobil</div>
+                        <div class="font-bold text-white text-sm">Imobiliare</div>
+                        <div class="text-[11px] text-slate-400">Închiriere, comodat, vânzare imobil / teren</div>
                     </div>
                 </button>
 
-                <button onclick="selecteazaCategorie('financiar')" id="cat-btn-financiar" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-2 group">
+                <button onclick="selecteazaCategorie('financiar')" id="cat-btn-financiar" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-800 flex flex-col justify-between space-y-2 group">
                     <div class="text-2xl group-hover:scale-110 transition-transform origin-left">💰</div>
                     <div>
-                        <div class="font-bold text-slate-900 dark:text-white text-sm">Financiar & Diverse</div>
-                        <div class="text-[11px] text-slate-500 dark:text-slate-400">Împrumut bani, chitanță avans, declarație</div>
+                        <div class="font-bold text-white text-sm">Financiar & Diverse</div>
+                        <div class="text-[11px] text-slate-400">Împrumut bani, chitanță avans, declarație proprie</div>
                     </div>
                 </button>
 
-                <button onclick="selecteazaCategorie('administrative')" id="cat-btn-administrative" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-2 group">
+                <button onclick="selecteazaCategorie('administrative')" id="cat-btn-administrative" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-800 flex flex-col justify-between space-y-2 group">
                     <div class="text-2xl group-hover:scale-110 transition-transform origin-left">📋</div>
                     <div>
-                        <div class="font-bold text-slate-900 dark:text-white text-sm">Muncă & Administrative</div>
-                        <div class="text-[11px] text-slate-500 dark:text-slate-400">Cerere demisie, concediu, adeverință</div>
+                        <div class="font-bold text-white text-sm">Muncă & Administrative</div>
+                        <div class="text-[11px] text-slate-400">Cerere demisie, concediu, adeverință vechime</div>
                     </div>
                 </button>
 
-                <button onclick="selecteazaCategorie('prestari')" id="cat-btn-prestari" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-2 group">
+                <button onclick="selecteazaCategorie('prestari')" id="cat-btn-prestari" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-800 flex flex-col justify-between space-y-2 group">
                     <div class="text-2xl group-hover:scale-110 transition-transform origin-left">🤝</div>
                     <div>
-                        <div class="font-bold text-slate-900 dark:text-white text-sm">Prestări Servicii & PFA</div>
-                        <div class="text-[11px] text-slate-500 dark:text-slate-400">Contract colaborare, prestări servicii</div>
+                        <div class="font-bold text-white text-sm">Prestări Servicii & PFA</div>
+                        <div class="text-[11px] text-slate-400">Contract colaborare B2B, prestări servicii</div>
                     </div>
                 </button>
 
-                <button onclick="selecteazaCategorie('notariale')" id="cat-btn-notariale" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-2 group">
+                <button onclick="selecteazaCategorie('notariale')" id="cat-btn-notariale" class="tab-btn glass-card p-4 rounded-2xl text-left transition-all border border-slate-800 flex flex-col justify-between space-y-2 group">
                     <div class="text-2xl group-hover:scale-110 transition-transform origin-left">⚖️</div>
                     <div>
-                        <div class="font-bold text-slate-900 dark:text-white text-sm">Procuri & Diverse</div>
-                        <div class="text-[11px] text-slate-500 dark:text-slate-400">Procură generală, proces-verbal primire</div>
+                        <div class="font-bold text-white text-sm">Procuri & Diverse</div>
+                        <div class="text-[11px] text-slate-400">Procură generală, proces-verbal primire</div>
                     </div>
                 </button>
             </div>
 
-            <!-- Container Subcategorii -->
+            <!-- Subcategorii -->
             <div id="subcat-container" class="glass-card p-5 rounded-2xl space-y-3 hidden transition-all">
-                <h3 id="subcat-title" class="text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5">
+                <h3 id="subcat-title" class="text-cyan-400 text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5">
                     <span>📁</span>
                     <span>Selectează Tipul Exact de Document</span>
                 </h3>
                 <div id="subcat-list" class="space-y-2"></div>
             </div>
 
-            <!-- Istoric Local General -->
+            <!-- Istoric Local -->
             <div id="istoric-section" class="glass-card p-5 rounded-2xl space-y-3 hidden">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5">
+                    <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5">
                         <span>📂</span>
                         <span>Arhivă Acte & Chitanțe Salvate</span>
                     </h3>
-                    <button onclick="stergeIstoric()" class="text-[10px] text-slate-500 hover:text-red-500 underline transition-colors">Șterge tot</button>
+                    <button onclick="stergeIstoric()" class="text-[10px] text-slate-400 hover:text-red-400 underline transition-colors">Șterge tot</button>
                 </div>
                 <div>
-                    <input type="text" id="input-cautare" oninput="filtreazaIstoric()" placeholder="🔍 Caută după nume client sau ID act..." class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs text-slate-800 dark:text-slate-200 outline-none">
+                    <input type="text" id="input-cautare" oninput="filtreazaIstoric()" placeholder="🔍 Caută după nume client sau ID act..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200 outline-none">
                 </div>
                 <div id="lista-istoric" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
-        <!-- ================= ECRANUL FORMULARULUI DINAMIC ================= -->
+        <!-- ================= ECRANUL FORMULARULUI WIZARD ================= -->
         <div id="view-form" class="hidden space-y-6">
             <div class="flex justify-between items-center mb-2">
-                <button onclick="sariLaAcasa()" class="text-slate-500 dark:text-slate-400 text-sm hover:text-slate-900 dark:hover:text-white transition-colors flex items-center space-x-1">
+                <button onclick="sariLaAcasa()" class="text-slate-400 text-xs hover:text-white transition-colors flex items-center space-x-1">
                     <span>&larr;</span>
                     <span>Înapoi la Categorii</span>
                 </button>
-                <div id="form-active-title" class="text-xs text-amber-600 dark:text-amber-400 font-bold bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20"></div>
+                <div id="form-active-title" class="text-xs text-cyan-400 font-bold bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20"></div>
             </div>
             
-            <!-- BARĂ DE PROGRES -->
+            <!-- Bară Progres Stepper -->
             <div class="glass-card p-4 rounded-2xl space-y-3">
-                <div class="flex justify-between text-[11px] font-bold text-slate-500 dark:text-slate-400">
-                    <span id="lbl-step-1" class="text-amber-600 dark:text-amber-400">1. Vânzător</span>
-                    <span id="lbl-step-2">2. Cumpărător</span>
-                    <span id="lbl-step-3">3. Vehicul & Preț</span>
-                    <span id="lbl-step-4">4. Finalizare</span>
+                <div class="flex justify-between text-[11px] font-bold text-slate-400">
+                    <span id="lbl-step-1" class="text-cyan-400">1. Partea I</span>
+                    <span id="lbl-step-2">2. Partea II</span>
+                    <span id="lbl-step-3">3. Detalii</span>
+                    <span id="lbl-step-4">4. Semnătură</span>
                 </div>
-                <div class="w-full bg-slate-200 dark:bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-300 dark:border-slate-800">
-                    <div id="progress-bar-fill" class="bg-amber-500 dark:bg-amber-400 h-full transition-all duration-300" style="width: 25%;"></div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
+                    <div id="progress-bar-fill" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full transition-all duration-300" style="width: 25%;"></div>
                 </div>
-            </div>
-
-            <!-- Banner Rol pentru Modul Distanță -->
-            <div id="roleBanner" class="role-banner" style="display:none;"></div>
-
-            <!-- Banner Sesiune Finalizată -->
-            <div id="stepsCompletedBanner" class="role-banner buyer" style="display:none; text-align: center;">
-                🎉 Toate datele au fost colectate și contractul este pregătit.
             </div>
 
             <div id="form-dynamic-content" class="space-y-5"></div>
         </div>
 
-        <!-- ================= ECRANUL TERMENI ȘI CONDIȚII ================= -->
+        <!-- ================= ECRANUL TERMENI ================= -->
         <div id="view-termeni" class="hidden space-y-6">
             <div class="flex justify-between items-center mb-2">
-                <button onclick="sariLaAcasa()" class="text-slate-500 dark:text-slate-400 text-sm hover:text-slate-900 dark:hover:text-white transition-colors">&larr; Înapoi la Meniul Principal</button>
-                <div class="text-xs text-amber-600 dark:text-amber-400 font-bold">Document Legal Oficial</div>
+                <button onclick="sariLaAcasa()" class="text-slate-400 text-xs hover:text-white transition-colors">&larr; Înapoi la Meniul Principal</button>
+                <div class="text-xs text-cyan-400 font-bold">Document Legal Oficial</div>
             </div>
-            <div class="glass-card p-6 rounded-3xl space-y-4 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
-                <h2 class="text-lg font-black text-slate-900 dark:text-white mb-2">TERMENI ȘI CONDIȚII GENERALE DE UTILIZARE A PLATFORMEI ACTPELOC</h2>
-                <p class="font-mono text-[10px] text-slate-400">Ultima actualizare: August 2026. Versiunea contractului: 6.0</p>
-                <p>Prezentul document stabilește termenii și condițiile oficiale în baza cărora utilizatorii accesează, navighează și utilizează serviciile web puse la dispoziție prin intermediul platformei digitale <strong>ActPeLoc</strong>.</p>
+            <div class="glass-card p-6 rounded-3xl space-y-4 text-xs leading-relaxed text-slate-300">
+                <h2 class="text-lg font-black text-white mb-2">TERMENI ȘI CONDIȚII GENERALE DE UTILIZARE ACTPELOC</h2>
+                <p class="font-mono text-[10px] text-slate-500">Actualizat: August 2026. Versiune securizată: 6.0</p>
+                <p>Prezentul document stabilește termenii și condițiile oficiale în baza cărora utilizatorii accesează platforma digitală <strong>ActPeLoc</strong>.</p>
             </div>
-            <button onclick="sariLaAcasa()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-3.5 rounded-xl text-sm transition-colors">Am înțeles, înapoi la platformă</button>
+            <button onclick="sariLaAcasa()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-slate-950 font-bold p-3.5 rounded-xl text-sm transition-all">Am înțeles, înapoi</button>
         </div>
 
-        <!-- ================= ECRANUL POLITICA DE CONFIDENȚIALITATE ================= -->
+        <!-- ================= ECRANUL CONFIDENȚIALITATE ================= -->
         <div id="view-confidentialitate" class="hidden space-y-6">
             <div class="flex justify-between items-center mb-2">
-                <button onclick="sariLaAcasa()" class="text-slate-500 dark:text-slate-400 text-sm hover:text-slate-900 dark:hover:text-white transition-colors">&larr; Înapoi la Meniul Principal</button>
-                <div class="text-xs text-amber-600 dark:text-amber-400 font-bold">Conformitate GDPR (UE 2016/679)</div>
+                <button onclick="sariLaAcasa()" class="text-slate-400 text-xs hover:text-white transition-colors">&larr; Înapoi la Meniul Principal</button>
+                <div class="text-xs text-cyan-400 font-bold">Conformitate GDPR (UE 2016/679)</div>
             </div>
-            <div class="glass-card p-6 rounded-3xl space-y-4 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
-                <h2 class="text-lg font-black text-slate-900 dark:text-white mb-2">POLITICA DE CONFIDENȚIALITATE ȘI PROTECȚIA DATELOR CU CARACTER PERSONAL</h2>
-                <p class="font-mono text-[10px] text-slate-400">Data intrării în vigoare: August 2026. Standard de securitate SSL/TLS 256-bit.</p>
-                <p>Protecția datelor dumneavoastră cu caracter personal reprezintă o prioritate fundamentală pentru echipa <strong>ActPeLoc</strong>.</p>
+            <div class="glass-card p-6 rounded-3xl space-y-4 text-xs leading-relaxed text-slate-300">
+                <h2 class="text-lg font-black text-white mb-2">POLITICA DE CONFIDENȚIALITATE ȘI PROTECȚIA DATELOR</h2>
+                <p class="font-mono text-[10px] text-slate-500">Standard securitate SSL/TLS 256-bit.</p>
+                <p>Protecția datelor dumneavoastră cu caracter personal reprezintă o prioritate fundamentală pentru platforma <strong>ActPeLoc</strong>.</p>
             </div>
-            <button onclick="sariLaAcasa()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-3.5 rounded-xl text-sm transition-colors">Am înțeles, înapoi la platformă</button>
+            <button onclick="sariLaAcasa()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-slate-950 font-bold p-3.5 rounded-xl text-sm transition-all">Am înțeles, înapoi</button>
         </div>
 
-        <!-- ================= MODAL DE PLATĂ ================= -->
-        <div id="modal-plata" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
-            <div class="glass-card p-6 rounded-3xl max-w-md w-full space-y-5 border-amber-400/40 shadow-2xl">
+        <!-- ================= MODAL DE PLATĂ / CHECKOUT ================= -->
+        <div id="modal-plata" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
+            <div class="glass-card p-6 rounded-3xl max-w-md w-full space-y-5 border-cyan-500/40 shadow-2xl">
                 <div class="flex justify-between items-center">
-                    <span class="text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wider flex items-center space-x-1">
+                    <span class="text-cyan-400 font-bold text-xs uppercase tracking-wider flex items-center space-x-1">
                         <span>💳</span>
-                        <span>Checkout Securizat</span>
+                        <span>Checkout Securizat Tech</span>
                     </span>
-                    <button onclick="inchidePlata()" class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm">✕</button>
+                    <button onclick="inchidePlata()" class="text-slate-400 hover:text-white text-sm">✕</button>
                 </div>
                 <div class="text-center space-y-1">
-                    <h3 class="text-xl font-black text-slate-900 dark:text-white">Deblocare Document Oficial</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Achită taxa unică de 25 RON pentru a genera documentul oficial complet extins și chitanța fiscală.</p>
+                    <h3 class="text-xl font-black text-white">Deblocare Document Oficial</h3>
+                    <p class="text-xs text-slate-400">Achită taxa unică de 25 RON pentru generarea instantanee a contractului extins complet și a chitanței fiscale.</p>
                 </div>
 
-                <div class="bg-slate-100/80 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl flex justify-between items-center">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex justify-between items-center">
                     <div>
-                        <div class="text-xs font-bold text-slate-900 dark:text-white" id="plata-titlu-act">Contract Oficial Detaliat</div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Generare instant: PDF Model ITL 054 + Chitanță</div>
+                        <div class="text-xs font-bold text-white" id="plata-titlu-act">Contract Oficial Detaliat</div>
+                        <div class="text-[10px] text-slate-400">Generare instant: PDF Multi-Pagină + Chitanță</div>
                     </div>
-                    <div class="text-lg font-black text-amber-600 dark:text-amber-400">25 RON</div>
+                    <div class="text-lg font-black text-cyan-400">25 RON</div>
                 </div>
 
                 <div class="space-y-3">
                     <div>
-                        <label class="text-[10px] text-slate-500 dark:text-slate-400 block mb-1">Număr Card (Simulat pre-Stripe)</label>
-                        <input type="text" placeholder="4000 1234 5678 9010" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 rounded-xl text-sm outline-none font-mono text-slate-800 dark:text-slate-200">
+                        <label class="text-[10px] text-slate-400 block mb-1">Număr Card (Simulare Securizată)</label>
+                        <input type="text" placeholder="4000 1234 5678 9010" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm outline-none font-mono text-slate-200">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="text" placeholder="LL/AA" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 rounded-xl text-sm outline-none font-mono text-slate-800 dark:text-slate-200">
-                        <input type="text" placeholder="CVV" maxlength="3" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 rounded-xl text-sm outline-none font-mono text-slate-800 dark:text-slate-200">
+                        <input type="text" placeholder="LL/AA" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm outline-none font-mono text-slate-200">
+                        <input type="text" placeholder="CVV" maxlength="3" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm outline-none font-mono text-slate-200">
                     </div>
                 </div>
 
-                <button onclick="confirmaPlataCuCardul()" class="w-full bg-amber-500 hover:bg-amber-400 dark:bg-amber-400 dark:hover:bg-amber-300 text-slate-950 font-extrabold p-3.5 rounded-xl text-sm shadow-lg glow-btn transition-all">
+                <button onclick="confirmaPlataCuCardul()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-slate-950 font-extrabold p-3.5 rounded-xl text-sm shadow-lg glow-btn transition-all">
                     Achită 25 RON și Generează &rarr;
                 </button>
             </div>
         </div>
 
         <!-- ================= MODAL SUCCES ================= -->
-        <div id="modal-succes" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
-            <div class="glass-card p-6 rounded-3xl max-w-sm w-full space-y-4 text-center border-amber-400/40 shadow-2xl">
+        <div id="modal-succes" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
+            <div class="glass-card p-6 rounded-3xl max-w-sm w-full space-y-4 text-center border-cyan-500/40 shadow-2xl">
                 <div class="text-5xl">🎉</div>
-                <h3 class="text-xl font-black text-slate-900 dark:text-white">Plată Confirmată cu Succes!</h3>
-                <p id="succes-desc-email" class="text-xs text-slate-500 dark:text-slate-400">Plata a fost procesată cu succes! Contractul și chitanța au fost descărcate pe dispozitivul tău, iar notificarea de confirmare a fost trimisă pe e-mail.</p>
+                <h3 class="text-xl font-black text-white">Plată Confirmată cu Succes!</h3>
+                <p id="succes-desc-email" class="text-xs text-slate-400">Contractul și chitanța fiscală au fost descărcate și trimise prin e-mail.</p>
                 
                 <div class="space-y-2 pt-2">
-                    <button onclick="descarcaPDFDirect()" class="w-full bg-amber-500 hover:bg-amber-400 dark:bg-amber-400 dark:hover:bg-amber-300 text-slate-950 font-bold p-3 rounded-xl text-xs flex items-center justify-center space-x-2 transition-colors">
-                        <span>📥 Descarcă Contractul Oficial PDF (ITL 054)</span>
+                    <button onclick="descarcaPDFDirect()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold p-3 rounded-xl text-xs flex items-center justify-center space-x-2 transition-opacity hover:opacity-90">
+                        <span>📥 Descarcă Contractul PDF Complet</span>
                     </button>
                     <button onclick="descarcaChitantaDirect()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold p-3 rounded-xl text-xs flex items-center justify-center space-x-2 transition-colors">
                         <span>🧾 Descarcă Chitanța Fiscală PDF</span>
                     </button>
                 </div>
 
-                <button onclick="sariLaAcasa()" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline pt-2 block mx-auto">Înapoi la meniul principal</button>
+                <button onclick="sariLaAcasa()" class="text-xs text-slate-400 hover:text-white underline pt-2 block mx-auto">Înapoi la meniul principal</button>
             </div>
         </div>
 
     </main>
 
-    <!-- Footer Oficial cu Linkuri Legale -->
-    <footer class="w-full py-6 px-6 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-[#030712]/50 text-center text-slate-500 dark:text-slate-400 text-xs space-y-2">
+    <!-- Footer Oficial -->
+    <footer class="w-full py-6 px-6 border-t border-slate-800/80 bg-cyberDark/50 text-center text-slate-400 text-xs space-y-2">
         <div class="flex justify-center space-x-4 font-semibold text-[11px]">
-            <button onclick="deschideTermeni()" class="hover:text-amber-500 transition-colors">Termeni și Condiții</button>
+            <button onclick="deschideTermeni()" class="hover:text-cyan-400 transition-colors">Termeni și Condiții</button>
             <span>•</span>
-            <button onclick="deschideConfidentialitate()" class="hover:text-amber-500 transition-colors">Politica de Confidențialitate (GDPR)</button>
+            <button onclick="deschideConfidentialitate()" class="hover:text-cyan-400 transition-colors">Politica de Confidențialitate (GDPR)</button>
         </div>
-        <p>&copy; 2026 ActPeLoc. Toate drepturile rezervate. Platformă digitală de generare acte oficiale.</p>
+        <p>&copy; 2026 ActPeLoc. Toate drepturile rezervate. Platformă digitală avansată.</p>
     </footer>
 
-    <!-- Scripturi & Logica Hub-ului & Contract Auto ITL 054 -->
+    <!-- Scripturi & Logica Unificată -->
     <script>
         let tipActCurent = '';
         let titluActCurent = '';
+        let sigDataP1 = null;
+        let sigDataP2 = null;
+        let pasSemnatura = 1;
         let numarUnicAct = '';
         let timestampGenerare = '';
         let amprentaHash = '';
@@ -378,116 +369,42 @@
         let ultimaChitantaBlob = null;
         let ultimulNumeChitanta = '';
 
-        // Stări specifice fluxului auto avansat (Local vs Distanță)
-        let currentStep = 1;
-        let buyerCurrentStep = 1;
-        let modLucru = 'local';
-        let globalSessionId = null;
-        let userRole = 'vanzator';
-        let pollInterval = null;
-        let domiciliuFiscalDiferit = false;
-        let esteFirmaSauMandatar = false;
-        let linkCumparatorGlobal = "";
-
-        const elementeFormularAuto = [
-            'sellerName', 'sellerCounty', 'sellerPostalCode', 'sellerCity', 'seller_sector', 'sellerStreet', 'sellerStreetNo', 'sellerBlock', 'sellerBuilding', 'sellerFloor', 'sellerApartment', 'seller_ci_serie', 'seller_ci_number', 'seller_ci_cnp', 'seller_phone', 'seller_email',
-            'sellerFiscalCounty', 'sellerFiscalPostalCode', 'sellerFiscalCity', 'sellerFiscalSector', 'sellerFiscalStreet', 'sellerFiscalStreetNo',
-            'sellerRepresentant', 'sellerQuality', 'reprCISeries', 'reprCINumber', 'reprCNP', 'reprPhone', 'reprEmail',
-            'buyerName', 'buyer_judet', 'buyerPostalCode', 'buyer_city', 'buyer_sector', 'buyerStreet', 'buyerStreetNo', 'buyerBlock', 'buyerBuilding', 'buyerFloor', 'buyerApartment', 'buyerCISeries', 'buyerCINumber', 'buyerCNP', 'buyerPhone', 'buyerEmail',
-            'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredActType', 'acquiredActDetails', 'figurePrice', 'lettersPrice'
-        ];
-
         const subcategoriiData = {
             auto: [
-                { id: 'vanzare_auto', titlu: '📝 Contract Vânzare-Cumpărare Auto (ITL 054)', desc: 'Model oficial detaliat pentru înmatriculare și radiere cu opțiune de completare la distanță' },
+                { id: 'vanzare_auto', titlu: '📝 Contract Vânzare-Cumpărare Auto (ITL 054)', desc: 'Model oficial completat pentru înmatriculare și primărie' },
                 { id: 'inchiriere_auto', titlu: '🚗 Contract Închiriere Auto', desc: 'Garanție, daune, interdicții rutiere, clauze extinse' },
                 { id: 'comodat_auto', titlu: '🔑 Contract Comodat Auto', desc: 'Folosință gratuită autovehicul cu clauze de răspundere' },
-                { id: 'imputernicire_auto', titlu: '🌍 Împuternicire / Procură Auto Extern', desc: 'Pentru ieșirea din țară cu mașina și reprezentare vamală' }
+                { id: 'imputernicire_auto', titlu: '🌍 Împuternicire / Procură Auto Extern', desc: 'Pentru ieșirea din țară cu mașina și reprezentare' }
             ],
             imobiliare: [
-                { id: 'inchiriere_imobil', titlu: '🏢 Contract Închiriere Imobil', desc: 'Locuință, chirie, garanție, penalități, utilități detaliate' },
-                { id: 'comodat_imobil', titlu: '🏡 Contract Comodat Imobil', desc: 'Folosință gratuită spațiu / viză flotant detaliat' },
-                { id: 'vanzare_imobil', titlu: '🏗️ Contract Vânzare-Cumpărare / Promisiune', desc: 'Teren, casă, apartament, avans, CF, clauze de arvună' }
+                { id: 'inchiriere_imobil', titlu: '🏢 Contract Închiriere Imobil', desc: 'Locuință, chirie, garanție, penalități, utilități' },
+                { id: 'comodat_imobil', titlu: '🏡 Contract Comodat Imobil', desc: 'Folosință gratuită spațiu / viză flotant' },
+                { id: 'vanzare_imobil', titlu: '🏗️ Contract Vânzare-Cumpărare / Promisiune', desc: 'Teren, casă, apartament, avans, CF' }
             ],
             financiar: [
-                { id: 'imprumut_bani', titlu: '💵 Contract de Împrumut Bani', desc: 'Scadență, restituire, penalități moratorii detaliate' },
+                { id: 'imprumut_bani', titlu: '💵 Contract de Împrumut Bani', desc: 'Scadență, restituire, penalități moratorii' },
                 { id: 'chitanta_avans', titlu: '🧾 Chitanță Avans / Arvună', desc: 'Dovadă încasare bani și angajament civil complex' },
                 { id: 'declaratie_proprie', titlu: '📋 Declarație pe Propria Răspundere', desc: 'Formular oficial extins personalizabil' }
             ],
             administrative: [
                 { id: 'cerere_demisie', titlu: '📄 Cerere de Demisie (Cu Preaviz)', desc: 'Model legal demisie extins conform Codului Muncii' },
-                { id: 'cerere_concediu', titlu: '🏖️ Cerere Concediu de Odihnă', desc: 'Solicitare oficială zile libere plătite cu justificări' },
-                { id: 'cerere_adeverinta', titlu: '📑 Cerere Eliberare Adeverință', desc: 'Solicitare adeverință vechime, salariat sau venituri' }
+                { id: 'cerere_concediu', titlu: '🏖️ Cerere Concediu de Odihnă', desc: 'Solicitare oficială zile libere plătite' },
+                { id: 'cerere_adeverinta', titlu: '📑 Cerere Eliberare Adeverință', desc: 'Solicitare adeverință vechime sau salariat' }
             ],
             prestari: [
-                { id: 'prestari_servicii', titlu: '🤝 Contract de Prestări Servicii', desc: 'Pentru freelanceri, PFA-uri, onorarii și termene stricte' },
-                { id: 'contract_colaborare', titlu: '💼 Contract de Colaborare B2B', desc: 'Parteneriat comercial extins și prestare servicii periodice' }
+                { id: 'prestari_servicii', titlu: '🤝 Contract de Prestări Servicii', desc: 'Pentru freelanceri, PFA-uri, onorarii și termene' },
+                { id: 'contract_colaborare', titlu: '💼 Contract de Colaborare B2B', desc: 'Parteneriat comercial extins și prestare servicii' }
             ],
             notariale: [
-                { id: 'procura_generala', titlu: '⚖️ Procură / Împuternicire Generală', desc: 'Reprezentare extinsă în fața instituțiilor și terților' },
-                { id: 'proces_verbal', titlu: '📦 Proces-Verbal de Predare-Primire', desc: 'Predare bunuri, echipamente sau spații cu inventar' }
+                { id: 'procura_generala', titlu: '⚖️ Procură / Împuternicire Generală', desc: 'Reprezentare extinsă în fața instituțiilor' },
+                { id: 'proces_verbal', titlu: '📦 Proces-Verbal de Predare-Primire', desc: 'Predare bunuri, echipamente sau spații' }
             ]
         };
 
-        window.onload = async function() {
+        window.onload = function() {
             incarcaSetariEmitent();
             incarcaIstoricGeneral();
             sincronizeazaIconitaTema();
-
-            // Verificăm dacă suntem în mod remote cu un sessionId în URL
-            const params = new URLSearchParams(window.location.search);
-            if (params.has('sessionId')) {
-                globalSessionId = params.get('sessionId');
-                userRole = 'cumparator';
-                tipActCurent = 'vanzare_auto';
-                titluActCurent = 'Contract Vânzare-Cumpărare Auto (ITL 054)';
-
-                document.getElementById('view-home').classList.add('hidden');
-                document.getElementById('view-form').classList.remove('hidden');
-                document.getElementById('form-active-title').innerText = titluActCurent;
-
-                construiesteFormularVanzareAuto();
-
-                try {
-                    const response = await fetch(`/api/obtine-tranzactie/${globalSessionId}`);
-                    const result = await response.json();
-                    if (result.success) {
-                        for (const key in result.data) {
-                            if (document.getElementById(key)) {
-                                document.getElementById(key).value = (result.data[key] || '').toUpperCase();
-                            }
-                        }
-
-                        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-                        document.getElementById('step2').classList.add('active');
-                        buyerCurrentStep = 1;
-
-                        document.getElementById('titleStep2').innerText = "Pasul 1: Datele Cumpărătorului";
-                        
-                        const btnPrevStep2 = document.getElementById('btnPrevStep2');
-                        if (btnPrevStep2) btnPrevStep2.style.display = 'none';
-
-                        const banner = document.getElementById('roleBanner');
-                        banner.style.display = 'block';
-                        banner.className = 'role-banner buyer';
-                        banner.innerHTML = "🔒 <b>Bun venit, Cumpărătorule!</b> Completează datele tale mai jos, apoi mergi mai departe pentru a verifica datele vehiculului.";
-
-                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="repr"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"], #acquiredActType, #acquiredActDetails');
-                        inputsVanzatorSiMasina.forEach(input => {
-                            input.setAttribute('readonly', true);
-                            if(input.tagName === 'SELECT') {
-                                input.setAttribute('disabled', true);
-                            }
-                        });
-
-                        document.getElementById('localActions').style.display = 'none';
-                        document.getElementById('buyerActions').style.display = 'block';
-                        updateProgressBuyer();
-                    }
-                } catch (e) {
-                    console.error("Eroare la sincronizare:", e);
-                }
-            }
         }
 
         function sincronizeazaIconitaTema() {
@@ -499,7 +416,7 @@
             }
         }
 
-        function arataNotificare(mesaj, iconita = '✨') {
+        function arataNotificare(mesaj, iconita = '⚡') {
             const toast = document.getElementById('toast-notificare');
             const text = document.getElementById('toast-text');
             const icon = document.getElementById('toast-icon');
@@ -517,8 +434,7 @@
         }
 
         function toggleSetariEmitent() {
-            const panel = document.getElementById('panel-emitent');
-            panel.classList.toggle('hidden');
+            document.getElementById('panel-emitent').classList.toggle('hidden');
         }
 
         function salveazaSetariEmitent() {
@@ -555,8 +471,10 @@
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
+                html.classList.add('light');
                 localStorage.setItem('actpeloc_theme', 'light');
             } else {
+                html.classList.remove('light');
                 html.classList.add('dark');
                 localStorage.setItem('actpeloc_theme', 'dark');
             }
@@ -574,12 +492,12 @@
 
             subcategoriiData[cat].forEach(item => {
                 lista.innerHTML += `
-                    <div onclick="deschideFormular('${item.id}', '${item.titlu}')" class="bg-white/80 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 hover:border-amber-400 p-3.5 rounded-xl cursor-pointer flex justify-between items-center transition-all group shadow-sm hover:shadow-md">
+                    <div onclick="deschideFormular('${item.id}', '${item.titlu}')" class="bg-slate-900/60 border border-slate-800 hover:border-cyan-500 p-3.5 rounded-xl cursor-pointer flex justify-between items-center transition-all group shadow-sm hover:shadow-md">
                         <div>
-                            <div class="font-bold text-slate-900 dark:text-white text-xs group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">${item.titlu}</div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">${item.desc}</div>
+                            <div class="font-bold text-white text-xs group-hover:text-cyan-400 transition-colors">${item.titlu}</div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">${item.desc}</div>
                         </div>
-                        <span class="text-amber-500 dark:text-amber-400 font-bold transform group-hover:translate-x-1 transition-transform">&rarr;</span>
+                        <span class="text-cyan-400 font-bold transform group-hover:translate-x-1 transition-transform">&rarr;</span>
                     </div>
                 `;
             });
@@ -619,324 +537,510 @@
         function deschideFormular(idAct, titluAct) {
             tipActCurent = idAct;
             titluActCurent = titluAct;
+            sigDataP1 = null;
+            sigDataP2 = null;
+            pasSemnatura = 1;
             numarUnicAct = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
 
             document.getElementById('view-home').classList.add('hidden');
             document.getElementById('view-form').classList.remove('hidden');
             document.getElementById('form-active-title').innerText = titluAct;
 
-            if (idAct === 'vanzare_auto') {
-                construiesteFormularVanzareAuto();
+            actualizeazaNumePasiDupaTip(idAct);
+            construiesteFormularDinamic(idAct);
+            precompleteazaPartea1();
+            schimbaPas(1);
+        }
+
+        function actualizeazaNumePasiDupaTip(id) {
+            const lbl1 = document.getElementById('lbl-step-1');
+            const lbl2 = document.getElementById('lbl-step-2');
+            
+            if (id === 'vanzare_auto') {
+                lbl1.innerText = "1. Vânzător";
+                lbl2.innerText = "2. Cumpărător";
+            } else if (id.includes('auto') || id.includes('imobil') || id === 'imprumut_bani' || id === 'chitanta_avans' || id === 'prestari_servicii' || id === 'contract_colaborare') {
+                lbl1.innerText = "1. Partea I";
+                lbl2.innerText = "2. Partea II";
+            } else if (id === 'cerere_demisie' || id === 'cerere_concediu' || id === 'cerere_adeverinta') {
+                lbl1.innerText = "1. Solicitant";
+                lbl2.innerText = "2. Angajator";
             } else {
-                // Pentru celelalte tipuri de acte, încărcăm un formular generic compatibil
-                construiesteFormularGeneric(idAct);
+                lbl1.innerText = "1. Mandant";
+                lbl2.innerText = "2. Mandatar";
             }
         }
 
-        // ================= CONSTRUIRE FORMULAR VÂNZARE AUTO ITL 054 =================
-        function construiesteFormularVanzareAuto() {
-            const container = document.getElementById('form-dynamic-content');
-            container.innerHTML = `
-                <!-- SELECTOR MOD INIȚIAL PENTRU AUTO -->
-                <div id="modeSelectorContainer" class="glass-card p-6 rounded-2xl text-center space-y-4">
-                    <h3 style="color: #d97706; font-weight: bold; font-size: 16px;">Cum doriți să completați contractul auto?</h3>
-                    <p style="color: #64748b; font-size: 13px;">Alegeți opțiunea potrivită pentru tranzacția dumneavoastră:</p>
-                    <div style="display: flex; gap: 15px; margin-top: 15px;">
-                        <div class="glass-card" style="flex: 1; padding: 20px; border-radius: 12px; cursor: pointer; text-align: center;" onclick="selecteazaModSiPorneste('local')">
-                            <h4 style="color: #d97706; font-weight: bold; margin-bottom: 8px;">💻 Completare Locală</h4>
-                            <p style="font-size: 11px; color: #64748b;">Completați toate datele direct pe acest dispozitiv (ideal față-în-față).</p>
-                        </div>
-                        <div class="glass-card" style="flex: 1; padding: 20px; border-radius: 12px; cursor: pointer; text-align: center;" onclick="selecteazaModSiPorneste('remote')">
-                            <h4 style="color: #d97706; font-weight: bold; margin-bottom: 8px;">📱 Completare la Distanță</h4>
-                            <p style="font-size: 11px; color: #64748b;">Completați datele vânzătorului și ale mașinii, apoi trimiteți linkul cumpărătorului.</p>
-                        </div>
-                    </div>
-                </div>
+        function precompleteazaPartea1() {
+            let saved = JSON.parse(localStorage.getItem('actpeloc_emitent') || '{}');
+            if(saved.nume) {
+                const elNume = document.getElementById('p1_nume') || document.getElementById('p1_nume_firma') || document.getElementById('sellerName');
+                const elCnp = document.getElementById('p1_cnp') || document.getElementById('seller_ci_cnp');
+                const elJudet = document.getElementById('p1_judet') || document.getElementById('sellerCounty');
+                const elAdresa = document.getElementById('p1_adresa') || document.getElementById('sellerStreet');
 
-                <!-- STEP 1: VÂNZĂTOR -->
-                <div class="step-content hidden" id="step1">
-                    <div class="flex justify-between items-center mb-3 border-b border-slate-200 dark:border-slate-800 pb-2">
-                        <div class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase">Pasul 1: Datele Vânzătorului</div>
-                        <button class="text-[10px] text-slate-500 underline" onclick="resetAndShowModeSelector()">🔄 Schimbă Modul</button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="col-span-2">
-                            <label class="text-[10px] text-slate-500 block mb-1">Nume și Prenume (Subsemnatul)</label>
-                            <input type="text" id="sellerName" placeholder="ex: DRAGUSANU MARIO" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs">
-                        </div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Județ</label><input type="text" id="sellerCounty" placeholder="VASLUI" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Cod Poștal</label><input type="text" id="sellerPostalCode" placeholder="731184" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Municipiul / Oraș</label><input type="text" id="sellerCity" placeholder="BARLAD" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Sat / Sector</label><input type="text" id="seller_sector" placeholder="-" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Stradă</label><input type="text" id="sellerStreet" placeholder="G-RAL MILEA" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Număr Stradă</label><input type="text" id="sellerStreetNo" placeholder="2" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Bloc (Bl.)</label><input type="text" id="sellerBlock" placeholder="B1" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Scară</label><input type="text" id="sellerBuilding" placeholder="1" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Etaj</label><input type="text" id="sellerFloor" placeholder="2" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Apartament</label><input type="text" id="sellerApartment" placeholder="10" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Seria Act</label><input type="text" id="seller_ci_serie" placeholder="VS" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Număr Act</label><input type="text" id="seller_ci_number" placeholder="123456" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div class="col-span-2"><label class="text-[10px] text-slate-500 block mb-1">C.N.P. / C.I.F. (13 cifre)</label><input type="text" id="seller_ci_cnp" maxlength="13" placeholder="5040101123456" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Telefon</label><input type="text" id="seller_phone" placeholder="0749685347" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">E-mail</label><input type="email" id="seller_email" placeholder="email@exemplu.ro" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs" style="text-transform: none;"></div>
-                    </div>
-                    <div class="flex space-x-2 mt-4">
-                        <button type="button" onclick="nextStepAuto(1)" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs">Înainte &rarr;</button>
-                    </div>
-                </div>
-
-                <!-- STEP 2: CUMPĂRĂTOR -->
-                <div class="step-content hidden" id="step2">
-                    <div class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase mb-3 border-b border-slate-200 dark:border-slate-800 pb-2" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="col-span-2"><label class="text-[10px] text-slate-500 block mb-1">Nume și Prenume / Denumire</label><input type="text" id="buyerName" placeholder="ex: IONESCU MARIA" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Județ</label><input type="text" id="buyer_judet" placeholder="BUCURESTI" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Cod Poștal</label><input type="text" id="buyerPostalCode" placeholder="010101" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Municipiul / Oraș</label><input type="text" id="buyer_city" placeholder="BUCURESTI" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Sat / Sector</label><input type="text" id="buyer_sector" placeholder="SECTOR 1" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Stradă</label><input type="text" id="buyerStreet" placeholder="VICTORIEI" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Număr</label><input type="text" id="buyerStreetNo" placeholder="5" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Tip & Serie Act</label><input type="text" id="buyerCISeries" placeholder="CI RX" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Număr Act</label><input type="text" id="buyerCINumber" placeholder="654321" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div class="col-span-2"><label class="text-[10px] text-slate-500 block mb-1">C.N.P. / C.I.F. (13 cifre)</label><input type="text" id="buyerCNP" maxlength="13" placeholder="2950505654321" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Telefon</label><input type="text" id="buyerPhone" placeholder="0733000000" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">E-mail</label><input type="email" id="buyerEmail" placeholder="cumparator@email.ro" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs" style="text-transform: none;"></div>
-                    </div>
-                    <div class="flex space-x-2 mt-4" id="btnGroupStep2">
-                        <button type="button" id="btnPrevStep2" onclick="prevStepAuto(2)" class="w-1/3 bg-slate-200 dark:bg-slate-800 font-bold p-3 rounded-xl text-xs">&larr; Înapoi</button>
-                        <button type="button" onclick="nextStepAuto(2)" class="w-2/3 bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs">Înainte &rarr;</button>
-                    </div>
-                    <div id="buyerActions" style="display:none;" class="mt-4">
-                        <button type="button" onclick="salvareDateCumparatorSiFinalizare()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold p-3 rounded-xl text-xs">✅ Trimite Datele Către Vânzător</button>
-                    </div>
-                </div>
-
-                <!-- STEP 3: VEHICUL ȘI PREȚ -->
-                <div class="step-content hidden" id="step3">
-                    <div class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase mb-3 border-b border-slate-200 dark:border-slate-800 pb-2" id="titleStep3">Pasul 3: Vehiculul și Prețul</div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Marcă</label><input type="text" id="make" placeholder="AUDI" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Tipul</label><input type="text" id="type" placeholder="A4 B8" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div class="col-span-2"><label class="text-[10px] text-slate-500 block mb-1">Număr de Identificare (VIN)</label><input type="text" id="chassisSeries" placeholder="WAUZZZ8K1FA123456" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Serie Motor</label><input type="text" id="motorSeries" placeholder="CAGA123456" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Cilindree (cm³)</label><input type="text" id="cilCapacity" placeholder="1968" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Greutate Maximă (KG)</label><input type="text" id="maxWeight" placeholder="1800" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Nr. Înmatriculare</label><input type="text" id="regNumber" placeholder="VS12XYZ" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Data Expirare ITP</label><input type="text" id="ITPExpirationDate" placeholder="12.10.2027" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Număr C.I.V.</label><input type="text" id="vehicleIDCardNumber" placeholder="B123456" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">An Fabricație</label><input type="text" id="productionYear" placeholder="2012" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Normă Euro</label><input type="text" id="euroStandard" placeholder="EURO 5" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Preț în Cifre</label><input type="text" id="figurePrice" placeholder="8.500 EUR" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                        <div class="col-span-2"><label class="text-[10px] text-slate-500 block mb-1">Preț în Litere</label><input type="text" id="lettersPrice" placeholder="OPT MII CINCI SUTE EURO" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl text-xs"></div>
-                    </div>
-                    <div class="flex space-x-2 mt-4">
-                        <button type="button" onclick="prevStepAuto(3)" class="w-1/3 bg-slate-200 dark:bg-slate-800 font-bold p-3 rounded-xl text-xs">&larr; Înapoi</button>
-                        <button type="button" onclick="nextStepAuto(3)" class="w-2/3 bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs">Finalizare & Opțiuni &rarr;</button>
-                    </div>
-                </div>
-
-                <!-- STEP 4: FINALIZARE -->
-                <div class="step-content hidden" id="step4">
-                    <div class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase mb-3 border-b border-slate-200 dark:border-slate-800 pb-2" id="titleStep4">Pasul 4: Finalizare Contract</div>
-                    <p id="step4Desc" class="text-xs text-slate-500 mb-4 text-center">Sistemul este pregătit pentru generarea contractului oficial ITL 054.</p>
-                    
-                    <div id="localActions">
-                        <button type="button" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold p-3.5 rounded-xl text-xs shadow-lg glow-btn mb-3" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cumpărător (Mod Distanță)</button>
-                        <button type="button" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold p-3.5 rounded-xl text-xs shadow-lg" onclick="deschidePlataAuto()">💳 Achită 25 RON și Generează Contractul Oficial</button>
-                    </div>
-
-                    <div id="waitingAnimationContainer" style="display:none;" class="waiting-animation-box">
-                        <div class="spinner"></div>
-                        <h4 style="color: #d97706; font-weight: bold; font-size: 14px; margin-bottom: 5px;">Sesiune securizată creată!</h4>
-                        <p style="font-size: 11px; color: #64748b; margin-bottom: 12px;">Trimite linkul de mai jos cumpărătorului:</p>
-                        <div style="text-align: center; margin-bottom: 10px;"><div id="qrcode" style="display: inline-block; background: white; padding: 6px; border-radius: 6px;"></div></div>
-                        <div id="shareLinkContainer" style="font-size: 10px; color: #475569; word-break: break-all; background: white; padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: bold;"></div>
-                        <div class="flex space-x-2 mt-3">
-                            <button type="button" onclick="copiazaLinkul()" class="w-1/2 bg-slate-700 text-white p-2.5 rounded-xl text-xs font-bold">📋 Copiază</button>
-                            <button type="button" onclick="trimitePeWhatsApp()" class="w-1/2 bg-emerald-600 text-white p-2.5 rounded-xl text-xs font-bold">💬 WhatsApp</button>
-                        </div>
-                    </div>
-
-                    <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 15px;">
-                        <button type="button" onclick="deschidePlataAuto()" class="w-full bg-emerald-600 text-white font-bold p-3.5 rounded-xl text-xs shadow-lg">📥 Achită 25 RON și Descarcă Contractul Oficial PDF</button>
-                    </div>
-
-                    <div class="flex space-x-2 mt-4" id="btnGroupBackFinal">
-                        <button type="button" onclick="prevStepAuto(4)" class="w-full bg-slate-200 dark:bg-slate-800 font-bold p-3 rounded-xl text-xs">&larr; Înapoi la Modificare</button>
-                    </div>
-                </div>
-            `;
-            selecteazaModSiPorneste('local');
+                if(elNume && !elNume.value) elNume.value = saved.nume;
+                if(elCnp && !elCnp.value) elCnp.value = saved.cif;
+                if(elJudet && !elJudet.value) elJudet.value = saved.judet;
+                if(elAdresa && !elAdresa.value) elAdresa.value = saved.adresa;
+            }
         }
 
-        // ================= CONSTRUIRE FORMULAR GENERIC PENTRU ALTE ACTE =================
-        function construiesteFormularGeneric(idAct) {
+        function comutaTipParte(numarParte, tip) {
+            const containerPersoana = document.getElementById(`container-persoana-${numarParte}`);
+            const containerFirma = document.getElementById(`container-firma-${numarParte}`);
+            const btnPersoana = document.getElementById(`btn-tip-persoana-${numarParte}`);
+            const btnFirma = document.getElementById(`btn-tip-firma-${numarParte}`);
+
+            if (tip === 'persoana') {
+                containerPersoana.classList.remove('hidden');
+                containerFirma.classList.add('hidden');
+                btnPersoana.className = "w-1/2 bg-cyan-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs transition-all shadow-sm";
+                btnFirma.className = "w-1/2 bg-slate-800 text-slate-300 font-bold p-2.5 rounded-xl text-xs transition-all";
+            } else {
+                containerPersoana.classList.add('hidden');
+                containerFirma.classList.remove('hidden');
+                btnFirma.className = "w-1/2 bg-cyan-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs transition-all shadow-sm";
+                btnPersoana.className = "w-1/2 bg-slate-800 text-slate-300 font-bold p-2.5 rounded-xl text-xs transition-all";
+            }
+            valideazaPasCurent();
+        }
+
+        function construiesteFormularDinamic(id) {
             const container = document.getElementById('form-dynamic-content');
-            container.innerHTML = `
+            let html = `<form id="contractForm" class="space-y-5" onsubmit="return false;">`;
+
+            if (id === 'vanzare_auto') html += renderFormVanzareAutoITL();
+            else if (id.includes('auto')) html += renderFormAuto();
+            else if (id.includes('imobil')) html += renderFormImobil();
+            else if (id === 'imprumut_bani' || id === 'chitanta_avans') html += renderFormImprumut();
+            else if (id === 'declaratie_proprie') html += renderFormDeclaratie();
+            else if (id === 'cerere_demisie') html += renderFormDemisie();
+            else if (id === 'cerere_concediu' || id === 'cerere_adeverinta') html += renderFormCerereGenerica();
+            else if (id === 'prestari_servicii' || id === 'contract_colaborare') html += renderFormPrestari();
+            else if (id === 'procura_generala' || id === 'proces_verbal') html += renderFormNotarial();
+
+            html += `</form>`;
+            container.innerHTML = html;
+        }
+
+        function renderFormVanzareAutoITL() {
+            return `
+                <div id="form-step-1" class="form-step space-y-4">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">👤</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 1: Date Vânzător (Model ITL 054)</h3>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="full-width"><label class="text-[10px] text-slate-400 block mb-1">Nume și Prenume *</label><input type="text" id="sellerName" oninput="valideazaPasCurent()" placeholder="DRAGUSANU MARIO" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Județ *</label><input type="text" id="sellerCounty" oninput="valideazaPasCurent()" placeholder="VASLUI" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Oraș *</label><input type="text" id="sellerCity" oninput="valideazaPasCurent()" placeholder="BARLAD" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Stradă *</label><input type="text" id="sellerStreet" oninput="valideazaPasCurent()" placeholder="REPUBLICII" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Număr *</label><input type="text" id="sellerStreetNo" oninput="valideazaPasCurent()" placeholder="10" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Seria CI / Număr *</label><input type="text" id="seller_ci_serie" oninput="valideazaPasCurent()" placeholder="VS" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Număr CI *</label><input type="text" id="seller_ci_number" oninput="valideazaPasCurent()" placeholder="123456" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">C.N.P. (13 cifre) *</label><input type="text" id="seller_ci_cnp" maxlength="13" oninput="valideazaPasCurent()" placeholder="5040101..." class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">E-mail *</label><input type="email" id="seller_email" oninput="valideazaPasCurent()" placeholder="client@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                    </div>
+                    <button type="button" id="btn-next-1" onclick="schimbaPas(2)" class="w-full bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
+                </div>
+                <div id="form-step-2" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">🤝</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 2: Date Cumpărător (ITL 054)</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Nume și Prenume *</label><input type="text" id="buyerName" oninput="valideazaPasCurent()" placeholder="IONESCU MARIA" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Județ *</label><input type="text" id="buyer_judet" oninput="valideazaPasCurent()" placeholder="BUCURESTI" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Oraș *</label><input type="text" id="buyer_city" oninput="valideazaPasCurent()" placeholder="BUCURESTI" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Stradă *</label><input type="text" id="buyerStreet" oninput="valideazaPasCurent()" placeholder="VICTORIEI" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Număr *</label><input type="text" id="buyerStreetNo" oninput="valideazaPasCurent()" placeholder="5" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Seria și Act *</label><input type="text" id="buyerCISeries" oninput="valideazaPasCurent()" placeholder="CI RX" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Număr Act *</label><input type="text" id="buyerCINumber" oninput="valideazaPasCurent()" placeholder="654321" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">C.N.P. (13 cifre) *</label><input type="text" id="buyerCNP" maxlength="13" oninput="valideazaPasCurent()" placeholder="2950505..." class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">E-mail *</label><input type="email" id="buyerEmail" oninput="valideazaPasCurent()" placeholder="cumparator@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(1)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" id="btn-next-2" onclick="schimbaPas(3)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
+                    </div>
+                </div>
+                <div id="form-step-3" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">🚗</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 3: Vehicul & Preț (ITL 054)</h3>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Marcă *</label><input type="text" id="make" oninput="valideazaPasCurent()" placeholder="AUDI" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Tipul *</label><input type="text" id="type" oninput="valideazaPasCurent()" placeholder="A4 B8" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Serie Șasiu / VIN (17 caractere) *</label><input type="text" id="chassisSeries" maxlength="17" oninput="valideazaPasCurent()" placeholder="WAUZZZ8K..." class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Capacitate Cilindrică *</label><input type="text" id="cilCapacity" oninput="valideazaPasCurent()" placeholder="1968" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Număr Înmatriculare *</label><input type="text" id="regNumber" oninput="valideazaPasCurent()" placeholder="VS12XYZ" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Preț în Cifre *</label><input type="text" id="figurePrice" oninput="valideazaPasCurent()" placeholder="8.500 EUR" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Preț în Litere *</label><input type="text" id="lettersPrice" oninput="valideazaPasCurent()" placeholder="opt mii cinci sute euro" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(2)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" id="btn-next-3" onclick="schimbaPas(4)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Spre Semnătură &rarr;</button>
+                    </div>
+                </div>
+                ${renderStepSemnaturiSingle()}
+            `;
+        }
+
+        function renderFormDemisie() {
+            return `
+                <div id="form-step-1" class="form-step space-y-4">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">👤</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 1: Datele Solicitantului (Salariat)</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Nume și Prenume *</label><input type="text" id="p1_nume" oninput="valideazaPasCurent()" placeholder="ex: Popescu Ion" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">C.N.P. *</label><input type="text" id="p1_cnp" maxlength="13" oninput="valideazaPasCurent()" placeholder="13 cifre" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Funcție / Meserie *</label><input type="text" id="dem_functie" oninput="valideazaPasCurent()" placeholder="ex: Frizer" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Adresă E-mail *</label><input type="email" id="client_email" oninput="valideazaPasCurent()" placeholder="client@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Adresă Domiciliu *</label><input type="text" id="p1_adresa" oninput="valideazaPasCurent()" placeholder="str. Republicii nr. 10" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                    </div>
+                    <button type="button" id="btn-next-1" onclick="schimbaPas(2)" class="w-full bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
+                </div>
+                <div id="form-step-2" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">🏢</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 2: Datele Angajatorului</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Nume Firmă *</label><input type="text" id="p2_nume" oninput="valideazaPasCurent()" placeholder="SC BarberHub SRL" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">C.I.F. Firmă *</label><input type="text" id="p2_cnp" oninput="valideazaPasCurent()" placeholder="RO12345678" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Administrator *</label><input type="text" id="dem_admin" oninput="valideazaPasCurent()" placeholder="Ionescu Maria" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(1)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" id="btn-next-2" onclick="schimbaPas(3)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
+                    </div>
+                </div>
+                <div id="form-step-3" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">📅</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 3: Detalii Preaviz</h3>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Ultima zi de lucru *</label><input type="text" id="dem_data_ultima" oninput="valideazaPasCurent()" placeholder="22.09.2026" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Zile preaviz *</label><input type="text" id="dem_preaviz" oninput="valideazaPasCurent()" placeholder="20 zile lucratoare" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(2)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" id="btn-next-3" onclick="schimbaPas(4)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Spre Semnătură &rarr;</button>
+                    </div>
+                </div>
+                ${renderStepSemnaturiSingle()}
+            `;
+        }
+
+        function renderFormCerereGenerica() {
+            return `
+                <div id="form-step-1" class="form-step space-y-4">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">👤</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 1: Date Solicitant</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Nume și Prenume *</label><input type="text" id="p1_nume" oninput="valideazaPasCurent()" placeholder="Popescu Ion" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">E-mail *</label><input type="email" id="client_email" oninput="valideazaPasCurent()" placeholder="client@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                    </div>
+                    <button type="button" id="btn-next-1" onclick="schimbaPas(2)" class="w-full bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
+                </div>
+                <div id="form-step-2" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">🏢</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 2: Către Angajator</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Nume Firmă *</label><input type="text" id="p2_nume" oninput="valideazaPasCurent()" placeholder="SC Firma SRL" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(1)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" id="btn-next-2" onclick="schimbaPas(3)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
+                    </div>
+                </div>
+                <div id="form-step-3" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">📝</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 3: Motiv Solicitare</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Detalii cerere *</label><textarea id="dec_text" rows="4" oninput="valideazaPasCurent()" placeholder="Solicit acordarea a 5 zile de concediu..." class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none resize-none"></textarea></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(2)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" id="btn-next-3" onclick="schimbaPas(4)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Spre Semnătură &rarr;</button>
+                    </div>
+                </div>
+                ${renderStepSemnaturiSingle()}
+            `;
+        }
+
+        function renderFormAuto() {
+            return `
                 <div id="form-step-1" class="form-step space-y-4">
                     <div class="glass-card p-5 rounded-2xl space-y-4">
-                        <h3 class="text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">Informații Solicitant / Parte</h3>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Nume și Prenume *</label><input type="text" id="p1_nume" placeholder="ex: POPESCU ION" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">C.N.P. *</label><input type="text" id="p1_cnp" maxlength="13" placeholder="13 cifre" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 rounded-xl text-xs"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">E-mail *</label><input type="email" id="client_email" placeholder="client@exemplu.ro" class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 rounded-xl text-xs" style="text-transform: none;"></div>
-                        <div><label class="text-[10px] text-slate-500 block mb-1">Detalii Specifice / Obiect *</label><textarea id="dec_text" rows="3" placeholder="Introduceți detaliile necesare..." class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 rounded-xl text-xs resize-none"></textarea></div>
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">👤</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 1: Date Locator / Vânzător</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Nume și Prenume *</label><input type="text" id="p1_nume" oninput="valideazaPasCurent()" placeholder="Popescu Ion" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">E-mail *</label><input type="email" id="client_email" oninput="valideazaPasCurent()" placeholder="client@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Adresă *</label><input type="text" id="p1_adresa" oninput="valideazaPasCurent()" placeholder="str. Republicii nr. 10" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
                     </div>
-                    <button type="button" onclick="deschidePlata()" class="w-full bg-amber-500 text-slate-950 font-bold p-3.5 rounded-xl text-sm shadow-lg glow-btn">Continuă spre Plată (25 RON) &rarr;</button>
+                    <button type="button" id="btn-next-1" onclick="schimbaPas(2)" class="w-full bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
+                </div>
+                <div id="form-step-2" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-4">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">🤝</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 2: Date Locatar / Cumpărător</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Nume și Prenume *</label><input type="text" id="p2_nume" oninput="valideazaPasCurent()" placeholder="Ionescu Maria" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Adresă *</label><input type="text" id="p2_adresa" oninput="valideazaPasCurent()" placeholder="str. Victoriei nr. 5" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(1)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" id="btn-next-2" onclick="schimbaPas(3)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Următorul Pas &rarr;</button>
+                    </div>
+                </div>
+                <div id="form-step-3" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex items-center space-x-2 pb-1 border-b border-slate-800">
+                            <span class="text-lg">🚗</span>
+                            <h3 class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 3: Detalii Auto & Preț</h3>
+                        </div>
+                        <div><label class="text-[10px] text-slate-400 block mb-1">Marcă și Model *</label><input type="text" id="auto_marca" oninput="valideazaPasCurent()" placeholder="Audi A4 B8 2.0 TDI" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Nr. Înmatriculare *</label><input type="text" id="auto_numar" oninput="valideazaPasCurent()" placeholder="VS12XYZ" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none uppercase"></div>
+                            <div><label class="text-[10px] text-slate-400 block mb-1">Tarif / Preț *</label><input type="text" id="auto_tarif" oninput="valideazaPasCurent()" placeholder="50 Euro / zi" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs text-slate-200 outline-none"></div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(2)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" id="btn-next-3" onclick="schimbaPas(4)" class="w-2/3 bg-cyan-500 opacity-50 cursor-not-allowed text-slate-950 font-bold p-3.5 rounded-xl text-xs transition-all shadow-md" disabled>Spre Semnătură &rarr;</button>
+                    </div>
+                </div>
+                ${renderStepSemnaturi()}
+            `;
+        }
+
+        function renderFormImobil() { return renderFormAuto(); }
+        function renderFormImprumut() { return renderFormAuto(); }
+        function renderFormPrestari() { return renderFormAuto(); }
+        function renderFormNotarial() { return renderFormAuto(); }
+
+        function renderStepSemnaturi() {
+            return `
+                <div id="form-step-4" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex justify-between items-center pb-1 border-b border-slate-800">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg">✍️</span>
+                                <h3 id="sig-title" class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 4: Semnătură Digitală Partea I</h3>
+                            </div>
+                            <button type="button" onclick="clearSig()" class="text-xs text-slate-400 underline">Șterge</button>
+                        </div>
+                        <div class="border border-slate-700 rounded-xl overflow-hidden bg-slate-950 relative shadow-inner">
+                            <canvas id="sigCanvas" class="w-full h-36 cursor-crosshair touch-none"></canvas>
+                        </div>
+                        <button type="button" onclick="salveazaSemnaturaCurenta()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold py-2.5 rounded-xl text-xs border border-cyan-500/20 transition-colors">
+                            Confirmă Semnătura și Treci la Următoarea &rarr;
+                        </button>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl space-y-2">
+                        <div class="flex items-start space-x-2">
+                            <input type="checkbox" id="check_gdpr" onchange="valideazaPasCurent()" class="mt-1 accent-cyan-400">
+                            <label class="text-[11px] text-slate-300">Declar pe propria răspundere că datele sunt reale conform <a href="#" onclick="deschideTermeni(); return false;" class="text-cyan-400 underline">Termenilor și Condițiilor</a>.</label>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(3)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" onclick="deschidePlata()" id="btn-submit" class="w-2/3 bg-cyan-500 text-slate-950 font-extrabold p-3.5 rounded-xl text-xs shadow-lg opacity-50 cursor-not-allowed transition-all" disabled>
+                            Continuă spre Plată (25 RON)
+                        </button>
+                    </div>
                 </div>
             `;
         }
 
-        // ================= LOGICA FLUXULUI AUTO (LOCAL vs REMOTE) =================
-        function resetAndShowModeSelector() {
-            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('modeSelectorContainer').style.display = 'block';
-            document.getElementById('roleBanner').style.display = 'none';
-            currentStep = 1;
+        function renderStepSemnaturiSingle() {
+            return `
+                <div id="form-step-4" class="form-step space-y-4 hidden">
+                    <div class="glass-card p-5 rounded-2xl space-y-3">
+                        <div class="flex justify-between items-center pb-1 border-b border-slate-800">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg">✍️</span>
+                                <h3 id="sig-title" class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Pasul 4: Semnătură Digitală</h3>
+                            </div>
+                            <button type="button" onclick="clearSig()" class="text-xs text-slate-400 underline">Șterge</button>
+                        </div>
+                        <div class="border border-slate-700 rounded-xl overflow-hidden bg-slate-950 relative shadow-inner">
+                            <canvas id="sigCanvas" class="w-full h-36 cursor-crosshair touch-none"></canvas>
+                        </div>
+                        <button type="button" onclick="salveazaSemnaturaCurentaSingle()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold py-2.5 rounded-xl text-xs border border-cyan-500/20 transition-colors">
+                            Confirmă Semnătura
+                        </button>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl space-y-2">
+                        <div class="flex items-start space-x-2">
+                            <input type="checkbox" id="check_gdpr" onchange="valideazaPasCurent()" class="mt-1 accent-cyan-400">
+                            <label class="text-[11px] text-slate-300">Confirm că datele sunt corecte conform <a href="#" onclick="deschideTermeni(); return false;" class="text-cyan-400 underline">Termenilor și Condițiilor</a>.</label>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="schimbaPas(3)" class="w-1/3 bg-slate-800 text-white font-bold p-3.5 rounded-xl text-xs">&larr; Înapoi</button>
+                        <button type="button" onclick="deschidePlata()" id="btn-submit" class="w-2/3 bg-cyan-500 text-slate-950 font-extrabold p-3.5 rounded-xl text-xs shadow-lg opacity-50 cursor-not-allowed transition-all" disabled>
+                            Continuă spre Plată (25 RON)
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
-        function selecteazaModSiPorneste(mod) {
-            modLucru = mod;
-            document.getElementById('modeSelectorContainer').style.display = 'none';
-            currentStep = 1;
-            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('step1').classList.remove('hidden');
-        }
-
-        function nextStepAuto(step) {
-            document.getElementById('step' + step).classList.add('hidden');
-            if (modLucru === 'remote' && userRole === 'vanzator' && step === 1) {
-                currentStep = 3;
-            } else {
-                currentStep = step + 1;
+        function schimbaPas(pas) {
+            document.querySelectorAll('.form-step').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`form-step-${pas}`);
+            if(target) target.classList.remove('hidden');
+            
+            document.getElementById('progress-bar-fill').style.width = `${(pas / 4) * 100}%`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (pas === 4) {
+                setTimeout(initCanvas, 50);
+                valideazaPasCurent();
             }
-            document.getElementById('step' + currentStep).classList.remove('hidden');
         }
 
-        function prevStepAuto(step) {
-            document.getElementById('step' + step).classList.add('hidden');
-            if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) {
-                currentStep = 1;
-            } else {
-                currentStep = step - 1;
-            }
-            document.getElementById('step' + currentStep).classList.remove('hidden');
-        }
+        function valideazaPasCurent() {
+            const pasCurentEl = document.querySelector('.form-step:not(.hidden)');
+            if (!pasCurentEl) return;
 
-        function colecteazaDateAuto() {
-            let date = {};
-            elementeFormularAuto.forEach(id => {
-                const el = document.getElementById(id);
-                date[id] = el ? String(el.value || '').toUpperCase().trim() : '';
-            });
-            if (date['seller_email']) date['seller_email'] = document.getElementById('seller_email').value.trim();
-            if (date['buyerEmail']) date['buyerEmail'] = document.getElementById('buyerEmail').value.trim();
-            date['acquiredAct'] = 'CONTRACT DE VANZARE-CUMPARARE';
-            return date;
-        }
+            const idPas = pasCurentEl.id;
 
-        async function pornesteFluxRemote() {
-            const d = colecteazaDateAuto();
-            arataNotificare("Se generează sesiunea securizată în cloud...", "⏳");
+            if (['form-step-1', 'form-step-2', 'form-step-3'].includes(idPas)) {
+                const inputs = pasCurentEl.querySelectorAll('input:not([type="hidden"]), textarea');
+                let completateToate = true;
 
-            try {
-                const response = await fetch('/api/creeaza-tranzactie', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(d)
+                inputs.forEach(input => {
+                    if (!input.value.trim()) completateToate = false;
                 });
-                const result = await response.json();
 
-                if (result.success) {
-                    globalSessionId = result.sessionId;
-                    linkCumparatorGlobal = `${window.location.origin}/?sessionId=${globalSessionId}`;
-                    
-                    document.getElementById('localActions').style.display = 'none';
-                    document.getElementById('waitingAnimationContainer').style.display = 'block';
-                    document.getElementById('step4Desc').innerText = "Sesiune creată cu succes în cloud.";
-
-                    document.getElementById('qrcode').innerHTML = "";
-                    new QRCode(document.getElementById('qrcode'), {
-                        text: linkCumparatorGlobal,
-                        width: 120,
-                        height: 120
-                    });
-
-                    document.getElementById('shareLinkContainer').innerText = linkCumparatorGlobal;
-                    pornesteAscultareaLive();
-                }
-            } catch (err) {
-                arataNotificare("Eroare server la generarea sesiunii.", "❌");
-            }
-        }
-
-        function copiazaLinkul() {
-            navigator.clipboard.writeText(linkCumparatorGlobal).then(() => {
-                arataNotificare("📋 Linkul a fost copiat!");
-            });
-        }
-
-        function trimitePeWhatsApp() {
-            const mesaj = encodeURIComponent(`Salut! Accesează acest link securizat pentru a completa datele tale de cumpărător la contractul auto: ${linkCumparatorGlobal}`);
-            window.open(`https://api.whatsapp.com/send?text=${mesaj}`, '_blank');
-        }
-
-        function pornesteAscultareaLive() {
-            if (pollInterval) clearInterval(pollInterval);
-            pollInterval = setInterval(async () => {
-                try {
-                    const response = await fetch(`/api/obtine-tranzactie/${globalSessionId}`);
-                    const result = await response.json();
-                    if (result.success && result.data.status === 'COMPLETAT_GATA_CONTRACT') {
-                        clearInterval(pollInterval);
-                        document.getElementById('waitingAnimationContainer').style.display = 'none';
-                        document.getElementById('finalDownloadContainer').style.display = 'block';
-                        document.getElementById('stepsCompletedBanner').style.display = 'block';
-                        document.getElementById('step4Desc').innerHTML = "<b style='color:#16a34a;'>Tranzacția este complet sincronizată.</b>";
-                        
-                        for (const key in result.data) {
-                            if (document.getElementById(key)) {
-                                document.getElementById(key).value = (result.data[key] || '').toUpperCase();
-                            }
-                        }
-                    }
-                } catch (e) {
-                    console.error("Eroare live:", e);
-                }
-            }, 4000);
-        }
-
-        async function salvareDateCumparatorSiFinalizare() {
-            const d = colecteazaDateAuto();
-            try {
-                const response = await fetch(`/api/actualizeaza-tranzactie/${globalSessionId}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(d)
-                });
-                const result = await response.json();
-                if (result.success) {
-                    arataNotificare("Datele au fost salvate și trimise vânzătorului!", "✅");
-                    document.getElementById('buyerActions').style.display = 'none';
-                    document.getElementById('stepsCompletedBanner').style.display = 'block';
-                    document.getElementById('titleStep4').innerText = "Tranzacție Finalizată";
-                    document.getElementById('step4Desc').innerText = "Contractul oficial este pregătit pentru descărcare.";
-
-                    let dlBtnBuyer = document.getElementById('buyerDownloadBtn');
-                    if (!dlBtnBuyer) {
-                        dlBtnBuyer = document.createElement('button');
-                        dlBtnBuyer.id = 'buyerDownloadBtn';
-                        dlBtnBuyer.className = 'w-full bg-emerald-600 text-white font-bold p-3.5 rounded-xl text-xs mt-3';
-                        dlBtnBuyer.innerText = '💳 Achită 25 RON și Descarcă Contractul Oficial PDF';
-                        dlBtnBuyer.onclick = deschidePlataAuto;
-                        document.getElementById('step4').appendChild(dlBtnBuyer);
+                const pasNumar = idPas.replace('form-step-', '');
+                const btnNext = document.getElementById(`btn-next-${pasNumar}`);
+                if (btnNext) {
+                    if (completateToate) {
+                        btnNext.disabled = false;
+                        btnNext.classList.remove('opacity-50', 'cursor-not-allowed');
+                        btnNext.classList.add('glow-btn');
+                    } else {
+                        btnNext.disabled = true;
+                        btnNext.classList.add('opacity-50', 'cursor-not-allowed');
+                        btnNext.classList.remove('glow-btn');
                     }
                 }
-            } catch (err) {
-                arataNotificare("Eroare la salvarea datelor.", "❌");
+            } else if (idPas === 'form-step-4') {
+                const gdpr = document.getElementById('check_gdpr')?.checked;
+                const btnSubmit = document.getElementById('btn-submit');
+                if (btnSubmit) {
+                    if (sigDataP1 && gdpr) {
+                        btnSubmit.disabled = false;
+                        btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                        btnSubmit.classList.add('glow-btn');
+                    } else {
+                        btnSubmit.disabled = true;
+                        btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
+                        btnSubmit.classList.remove('glow-btn');
+                    }
+                }
             }
         }
 
-        function deschidePlataAuto() {
+        let canvas, ctx, drawing = false;
+
+        function initCanvas() {
+            canvas = document.getElementById('sigCanvas');
+            if(!canvas) return;
+            ctx = canvas.getContext('2d');
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            ctx.strokeStyle = '#22d3ee';
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            const getPos = (e) => {
+                const r = canvas.getBoundingClientRect();
+                if (e.touches && e.touches[0]) {
+                    return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+                }
+                return { x: e.clientX - r.left, y: e.clientY - r.top };
+            };
+
+            canvas.onmousedown = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); };
+            canvas.onmousemove = (e) => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); };
+            canvas.onmouseup = () => { drawing = false; };
+            canvas.onmouseleave = () => { drawing = false; };
+
+            canvas.addEventListener('touchstart', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); }, { passive: false });
+            canvas.addEventListener('touchmove', (e) => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); }, { passive: false });
+            canvas.addEventListener('touchend', () => { drawing = false; }, { passive: false });
+        }
+
+        function clearSig() { if(ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+        function salveazaSemnaturaCurenta() {
+            const dataURL = canvas.toDataURL('image/png');
+            if (pasSemnatura === 1) {
+                sigDataP1 = dataURL;
+                pasSemnatura = 2;
+                clearSig();
+                document.getElementById('sig-title').innerText = "Pasul 4: Semnătură Digitală Partea II";
+            } else {
+                sigDataP2 = dataURL;
+                document.getElementById('sig-title').innerText = "✅ Ambele semnături înregistrate";
+            }
+            valideazaPasCurent();
+        }
+
+        function salveazaSemnaturaCurentaSingle() {
+            sigDataP1 = canvas.toDataURL('image/png');
+            sigDataP2 = sigDataP1;
+            document.getElementById('sig-title').innerText = "✅ Semnătură înregistrată";
+            valideazaPasCurent();
+        }
+
+        function deschidePlata() {
             document.getElementById('plata-titlu-act').innerText = titluActCurent;
             document.getElementById('modal-plata').classList.remove('hidden');
         }
@@ -945,111 +1049,144 @@
             document.getElementById('modal-plata').classList.add('hidden');
         }
 
-        // ================= PLATA ȘI GENERARE CONTRACT OFICIAL ITL 054 =================
         async function confirmaPlataCuCardul() {
             inchidePlata();
             try {
                 const acum = new Date();
                 timestampGenerare = acum.toLocaleDateString('ro-RO') + ' ' + acum.toLocaleTimeString('ro-RO');
-                amprentaHash = 'HASH-' + Math.random().toString(36).substring(2, 10).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
+                amprentaHash = 'HASH-' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
-                let pdfBytes;
-                if (tipActCurent === 'vanzare_auto') {
-                    pdfBytes = await genereazaContractOficialPDFITL054();
-                } else {
-                    pdfBytes = await genereazaPDFSpecificDupaTip();
-                }
-
+                const pdfBytes = await genereazaPDFSpecificDupaTip();
                 const chitantaBytes = await creeazaObiectChitanta();
-                let p1 = document.getElementById('sellerName')?.value || document.getElementById('p1_nume')?.value || 'Client';
-                let emailClient = document.getElementById('seller_email')?.value || document.getElementById('client_email')?.value || 'client@exemplu.ro';
+                let p1 = document.getElementById('p1_nume')?.value || document.getElementById('sellerName')?.value || 'Client';
+                let emailClient = document.getElementById('client_email')?.value || document.getElementById('seller_email')?.value || 'client@exemplu.ro';
 
                 ultimulPdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-                ultimulNumeFisier = `Contract_ITL_054_${numarUnicAct}.pdf`;
+                ultimulNumeFisier = `Contract_${tipActCurent}_${numarUnicAct}.pdf`;
 
                 ultimaChitantaBlob = new Blob([chitantaBytes], { type: 'application/pdf' });
                 ultimulNumeChitanta = `Chitanta_Fiscala_${numarUnicAct}.pdf`;
 
-                // Trimitere opțională prin EmailJS
-                const templateParams = {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    const readerChit = new FileReader();
+                    readerChit.onloadend = function() {
+                        salveazaInIstoric({
+                            id: numarUnicAct,
+                            data: new Date().toLocaleDateString('ro-RO'),
+                            tip: tipActCurent.toUpperCase(),
+                            nume: p1,
+                            pdfBase64: reader.result,
+                            numeFisier: ultimulNumeFisier,
+                            chitantaBase64: readerChit.result,
+                            numeChitanta: ultimulNumeChitanta
+                        });
+                    };
+                    readerChit.readAsDataURL(ultimaChitantaBlob);
+                };
+                reader.readAsDataURL(ultimulPdfBlob);
+
+                emailjs.send("service_5epmvz9", "template_krf7x8j", {
                     to_email: emailClient,
                     nume_client: p1,
                     nume_act: titluActCurent,
                     id_act: numarUnicAct,
                     data_generare: timestampGenerare,
-                    mesaj: `Bună ziua, ${p1},\n\nPlata a fost procesată cu succes! Documentul oficial (${titluActCurent}) cu ID-ul ${numarUnicAct} a fost generat și descărcat pe dispozitiv.\n\nVă mulțumim că ați folosit platforma ActPeLoc!`
-                };
-                emailjs.send("service_5epmvz9", "template_krf7x8j", templateParams).catch(() => {});
+                    mesaj: `Plata a fost procesată cu succes! Documentul ${titluActCurent} (${numarUnicAct}) a fost generat.`
+                });
 
-                document.getElementById('succes-desc-email').innerText = `Plata a fost procesată cu succes! Contractul și chitanța au fost descărcate pe dispozitivul tău, iar notificarea a fost trimisă la: ${emailClient}`;
+                document.getElementById('succes-desc-email').innerText = `Plată reușită! Contractul și chitanța au fost descărcate și trimise la: ${emailClient}`;
                 document.getElementById('modal-succes').classList.remove('hidden');
             } catch (err) {
                 arataNotificare("Eroare la generare: " + err.message, "❌");
             }
         }
 
-        const curataTextPdf = (text) => {
+        function curataTextPdf(text) {
             if (!text) return '';
-            return String(text)
-                .toUpperCase()
-                .replace(/Ă/g, 'A').replace(/Â/g, 'A').replace(/Î/g, 'I')
-                .replace(/Ș/g, 'S').replace(/Ş/g, 'S')
-                .replace(/Ț/g, 'T').replace(/Ţ/g, 'T')
-                .replace(/€/g, 'EURO')
+            return text.toString()
+                .replace(/ă/g, 'a').replace(/Ă/g, 'A')
+                .replace(/â/g, 'a').replace(/Â/g, 'A')
+                .replace(/î/g, 'i').replace(/Î/g, 'I')
+                .replace(/ș/g, 's').replace(/Ș/g, 'S')
+                .replace(/ț/g, 't').replace(/Ț/g, 'T')
+                .replace(/€/g, 'Euro')
                 .replace(/[^ -~]/g, '');
-        };
+        }
 
-        // ================= GENERATOR ȘABLON OFICIAL ITL 054 =================
-        async function genereazaContractOficialPDFITL054() {
-            const d = colecteazaDateAuto();
-            const responseTemplate = await fetch('contract-instrainare-dobandire-auto-model-2026-ITL-054.pdf');
-            if (!responseTemplate.ok) {
-                // Fallback direct în cazul în care fișierul fizic lipsește în directoriu
-                return await genereazaPDFSpecificDupaTip();
-            }
-            const templateBytes = await responseTemplate.arrayBuffer();
-
-            const { PDFDocument, StandardFonts } = PDFLib;
-            const pdfDoc = await PDFDocument.load(templateBytes);
-            const form = pdfDoc.getForm();
-            const fontNegru = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
-            const seteazaCamp = (numeCamp, valoare) => {
-                try {
-                    const field = form.getTextField(numeCamp);
-                    if (field && valoare) {
-                        let valoareFinala = String(valoare).toUpperCase();
-                        if (numeCamp === 'maxWeight') {
-                            const valLower = valoareFinala.toLowerCase();
-                            if (!valLower.includes('kg') && !valLower.includes('tone')) {
-                                valoareFinala = valoareFinala.trim() + ' KG';
-                            }
-                        }
-                        field.setText("    " + curataTextPdf(valoareFinala));
-                        field.setFont(fontNegru);
-                        field.setFontSize(7.5);
-                    }
-                } catch (e) {}
-            };
-
-            for (const key in d) {
-                seteazaCamp(key, d[key]);
-            }
-            seteazaCamp('acquiredAct', d.acquiredAct);
-
-            return await pdfDoc.save();
+        function extrageBinarSemnatura(dataUrl) {
+            const base64 = dataUrl.split(',')[1];
+            const stringBinar = window.atob(base64);
+            const bytes = new Uint8Array(stringBinar.length);
+            for (let i = 0; i < stringBinar.length; i++) bytes[i] = stringBinar.charCodeAt(i);
+            return bytes;
         }
 
         async function genereazaPDFSpecificDupaTip() {
             const { PDFDocument, rgb, StandardFonts } = PDFLib;
             const pdfDoc = await PDFDocument.create();
-            let page = pdfDoc.addPage([595.28, 841.89]);
             const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
             const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            const getVal = (id) => curataTextPdf(document.getElementById(id)?.value || '');
 
-            page.drawText(curataTextPdf(titluActCurent), { x: 50, y: 780, size: 14, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
-            page.drawText(curataTextPdf(`ID Unic: ${numarUnicAct} | Data: ${timestampGenerare}`), { x: 50, y: 760, size: 9, font: font, color: rgb(0.4, 0.4, 0.4) });
-            page.drawText(curataTextPdf(`Amprentă securizată: ${amprentaHash}`), { x: 50, y: 745, size: 9, font: font, color: rgb(0.4, 0.4, 0.4) });
+            let numeP1 = getVal('p1_nume') || getVal('sellerName') || 'N/A';
+            let cifP1 = getVal('p1_cnp') || getVal('seller_ci_cnp') || 'N/A';
+            let adresaP1 = getVal('p1_adresa') || getVal('sellerStreet') || 'N/A';
+
+            let numeP2 = getVal('p2_nume') || getVal('buyerName') || 'N/A';
+            let cifP2 = getVal('p2_cnp') || getVal('buyerCNP') || 'N/A';
+            let adresaP2 = getVal('p2_adresa') || getVal('buyerStreet') || 'N/A';
+
+            let page = pdfDoc.addPage([595.28, 841.89]);
+            let y = 710;
+
+            const deseneazaAntet = (nrPag) => {
+                page.drawRectangle({ x: 35, y: 30, width: 525.28, height: 781.89, borderColor: rgb(0.2, 0.2, 0.2), borderWidth: 0.75 });
+                page.drawText(curataTextPdf(`ACTPELOC TECH | ID: ${numarUnicAct}`), { x: 48, y: 795, size: 7.5, font: fontBold, color: rgb(0.4, 0.4, 0.4) });
+                page.drawText(curataTextPdf(`Pagina ${nrPag}`), { x: 515, y: 795, size: 7.5, font: font, color: rgb(0.4, 0.4, 0.4) });
+            };
+
+            deseneazaAntet(1);
+
+            const scrieRand = (txt, isB = false, mar = 8.5, spatiu = 13) => {
+                if (y < 75) {
+                    page = pdfDoc.addPage([595.28, 841.89]);
+                    deseneazaAntet(pdfDoc.getPageCount());
+                    y = 710;
+                }
+                page.drawText(curataTextPdf(txt), { x: 48, y: y, size: mar, font: isB ? fontBold : font, color: rgb(0.15, 0.15, 0.15) });
+                y -= spatiu;
+            };
+
+            scrieRand(`${titluActCurent.toUpperCase()}`, true, 11, 18);
+
+            if (tipActCurent === 'vanzare_auto') {
+                scrieRand("1. DATE VÂNZĂTOR:", true, 9.5, 14);
+                scrieRand(`Nume: ${numeP1}, CNP: ${cifP1}, Adresă: ${adresaP1}`);
+                y -= 5;
+                scrieRand("2. DATE CUMPĂRĂTOR:", true, 9.5, 14);
+                scrieRand(`Nume: ${numeP2}, CNP: ${cifP2}, Adresă: ${adresaP2}`);
+                y -= 5;
+                scrieRand("3. DATE VEHICUL & PREȚ:", true, 9.5, 14);
+                scrieRand(`Marcă: ${getVal('make')} | Tip: ${getVal('type')} | VIN: ${getVal('chassisSeries')}`);
+                scrieRand(`Capacitate cilindrică: ${getVal('cilCapacity')} cmc | Număr înmatriculare: ${getVal('regNumber')}`);
+                scrieRand(`Preț înstrăinare: ${getVal('figurePrice')} (${getVal('lettersPrice')})`);
+            } else {
+                scrieRand(`Părți contractante: ${numeP1} și ${numeP2}`);
+                scrieRand(`Detalii specifice înregistrate și validate prin platforma ActPeLoc.`);
+            }
+
+            y -= 25;
+            scrieRand(`Amprentă criptografică: ${amprentaHash} | Data: ${timestampGenerare}`, false, 8, 12);
+
+            let ySemn = Math.max(y - 20, 75);
+            try {
+                if (sigDataP1) {
+                    const img1 = await pdfDoc.embedPng(extrageBinarSemnatura(sigDataP1));
+                    page.drawImage(img1, { x: 50, y: ySemn, width: 120, height: 40 });
+                }
+            } catch(e) {}
+            page.drawText(curataTextPdf("SEMNĂTURA DIGITALĂ OFICIALĂ"), { x: 50, y: ySemn - 12, size: 8.5, font: fontBold, color: rgb(0.2, 0.2, 0.2) });
 
             return await pdfDoc.save();
         }
@@ -1065,18 +1202,18 @@
             let y = 330;
 
             page.drawRectangle({ x: 30, y: 25, width: 535.28, height: 350, borderColor: rgb(0.2, 0.2, 0.2), borderWidth: 0.75 });
-            page.drawText(curataTextPdf("CHITANȚĂ FISCALĂ DE ÎNCASARE PFA"), { x: 45, y: y, size: 13, font: fontBold, color: rgb(0.85, 0.6, 0.1) });
-            page.drawText(curataTextPdf(`Seria și Nr: CH-${numarUnicAct}`), { x: 390, y: y, size: 9, font: fontBold, color: rgb(0.4, 0.4, 0.4) });
+            page.drawText("CHITANȚĂ FISCALĂ DIGITALĂ", { x: 45, y: y, size: 13, font: fontBold, color: rgb(0, 0.7, 0.8) });
+            page.drawText(`Seria: CH-${numarUnicAct}`, { x: 410, y: y, size: 9, font: fontBold, color: rgb(0.4, 0.4, 0.4) });
             y -= 30;
-            page.drawText(curataTextPdf(`Data emiterii: ${timestampGenerare}`), { x: 45, y: y, size: 9, font: font, color: rgb(0.3, 0.3, 0.3) });
-            y -= 25;
-            page.drawText(curataTextPdf(`Emitent: ${emitent.nume || 'ActPeLoc PFA'} | CUI: ${emitent.cif || 'RO39999999'}`), { x: 45, y: y, size: 9, font: fontBold, color: rgb(0.2, 0.2, 0.2) });
-            y -= 35;
-            page.drawText(curataTextPdf("Explicație: Taxa unică de emitere document oficial complet"), { x: 45, y: y, size: 9, font: font, color: rgb(0.2, 0.2, 0.2) });
-            y -= 25;
-            page.drawText(curataTextPdf("Suma încasată: 25.00 RON (douăzeci și cinci lei)"), { x: 45, y: y, size: 11, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+
+            page.drawText(`Emitent: ${emitent.nume || 'ActPeLoc Tech PFA'} | CUI: ${emitent.cif || 'RO39999999'}`, { x: 45, y: y, size: 9, font: fontBold, color: rgb(0.2, 0.2, 0.2) });
+            y -= 20;
+            page.drawText(`Data emiterii: ${timestampGenerare}`, { x: 45, y: y, size: 9, font: font, color: rgb(0.3, 0.3, 0.3) });
             y -= 30;
-            page.drawText(curataTextPdf("Modalitate: Card bancar (Procesor Securizat Stripe)"), { x: 45, y: y, size: 9, font: font, color: rgb(0.4, 0.4, 0.4) });
+
+            page.drawText("Explicație: Taxa unică generare document oficial", { x: 45, y: y, size: 9, font: font, color: rgb(0.2, 0.2, 0.2) });
+            y -= 25;
+            page.drawText("Suma încasată: 25.00 RON (douăzeci și cinci lei)", { x: 45, y: y, size: 11, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
 
             return await pdfDoc.save();
         }
@@ -1124,7 +1261,6 @@
             let istoric = JSON.parse(localStorage.getItem('actpeloc_istoric_general') || '[]');
             const sec = document.getElementById('istoric-section');
             const lista = document.getElementById('lista-istoric');
-            if(!lista || !sec) return;
             lista.innerHTML = '';
 
             let istoricFiltrat = istoric.filter(item => 
@@ -1135,40 +1271,27 @@
 
             if (istoric.length > 0) {
                 sec.classList.remove('hidden');
-                if (istoricFiltrat.length > 0) {
-                    istoricFiltrat.forEach(item => {
-                        lista.innerHTML += `
-                            <div class="bg-white/80 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 p-3 rounded-xl flex justify-between items-center text-xs shadow-sm">
-                                <div>
-                                    <div class="font-bold text-slate-900 dark:text-white">[${item.tip}] ${item.nume}</div>
-                                    <div class="text-slate-500 dark:text-slate-400 text-[10px]">${item.data} | ID: ${item.id}</div>
-                                </div>
-                                <div class="flex space-x-1.5">
-                                    ${item.pdfBase64 ? `
-                                        <button onclick="descarcaDinArhiva('${item.pdfBase64}', '${item.numeFisier}')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition-colors">
-                                            📥 Contract
-                                        </button>
-                                    ` : ''}
-                                    ${item.chitantaBase64 ? `
-                                        <button onclick="descarcaDinArhiva('${item.chitantaBase64}', '${item.numeChitanta}')" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition-colors">
-                                            🧾 Chitanță
-                                        </button>
-                                    ` : ''}
-                                </div>
+                istoricFiltrat.forEach(item => {
+                    lista.innerHTML += `
+                        <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl flex justify-between items-center text-xs shadow-sm">
+                            <div>
+                                <div class="font-bold text-white">[${item.tip}] ${item.nume}</div>
+                                <div class="text-slate-400 text-[10px]">${item.data} | ID: ${item.id}</div>
                             </div>
-                        `;
-                    });
-                } else {
-                    lista.innerHTML = `<div class="text-center text-slate-400 dark:text-slate-500 text-xs py-2">Nu s-a găsit niciun act conform căutării.</div>`;
-                }
+                            <div class="flex space-x-1.5">
+                                ${item.pdfBase64 ? `<button onclick="descarcaDinArhiva('${item.pdfBase64}', '${item.numeFisier}')" class="bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-2.5 py-1.5 rounded-lg text-[10px] font-bold">📥 Contract</button>` : ''}
+                                ${item.chitantaBase64 ? `<button onclick="descarcaDinArhiva('${item.chitantaBase64}', '${item.numeChitanta}')" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1.5 rounded-lg text-[10px] font-bold">🧾 Chitanță</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
             } else {
                 sec.classList.add('hidden');
             }
         }
 
         function filtreazaIstoric() {
-            const textCautare = document.getElementById('input-cautare').value;
-            incarcaIstoricGeneral(textCautare);
+            incarcaIstoricGeneral(document.getElementById('input-cautare').value);
         }
 
         function stergeIstoric() {
