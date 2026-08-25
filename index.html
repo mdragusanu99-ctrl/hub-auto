@@ -318,10 +318,10 @@
                 <div>
                     <label>Tipul Actului Anterior de Dobândire</label>
                     <select id="acquiredActType">
-                        <option value="Contract de vânzare-cumpărare">Contract de vânzare-cumpărare</option>
-                        <option value="Factură fiscală">Factură fiscală</option>
-                        <option value="Certificat de moștenitor">Certificat de moștenitor</option>
-                        <option value="Contract de donație">Contract de donație</option>
+                        <option value="Contract de vanzare-cumparare">Contract de vanzare-cumparare</option>
+                        <option value="Factura fiscala">Factura fiscala</option>
+                        <option value="Certificat de mostenitor">Certificat de mostenitor</option>
+                        <option value="Contract de donatie">Contract de donatie</option>
                     </select>
                 </div>
                 <div>
@@ -556,12 +556,10 @@
                 date[id] = el ? el.value : '';
             });
 
-            // Combinăm tipul de act selectat cu detaliile introduse
-            const tipAct = document.getElementById('acquiredActType')?.value || 'Contract de vânzare-cumpărare';
+            const tipAct = document.getElementById('acquiredActType')?.value || 'Contract de vanzare-cumparare';
             const detaliiAct = document.getElementById('acquiredActDetails')?.value || '';
             date['acquiredAct'] = `${tipAct} ${detaliiAct}`.trim();
 
-            // Gestiune Domiciliu Fiscal
             if (!domiciliuFiscalDiferit) {
                 date['sellerFiscalCounty'] = date['sellerCounty'];
                 date['sellerFiscalPostalCode'] = date['sellerPostalCode'];
@@ -686,10 +684,21 @@
             }
         }
 
-        // GENERATORUL FINAL NATIV CU 4 SPAȚII GOALE ÎNAINTEA FIECĂRUI TEXT
+        // FUNCȚIE PENTRU CURĂȚAREA DIACRITICELOR ȘI PREVENIREA ERORILOR PDF
+        const curataDiacritice = (text) => {
+            if (!text) return '';
+            return String(text)
+                .replace(/ă/g, 'a').replace(/Ă/g, 'A')
+                .replace(/â/g, 'a').replace(/Â/g, 'A')
+                .replace(/î/g, 'i').replace(/Î/g, 'I')
+                .replace(/ș/g, 's').replace(/Ș/g, 'S').replace(/ş/g, 's').replace(/Ş/g, 'S')
+                .replace(/ț/g, 't').replace(/Ț/g, 'T').replace(/ţ/g, 't').replace(/Ţ/g, 'T');
+        };
+
+        // GENERATORUL FINAL NATIV CU CURĂȚARE DIACRITICE ȘI 4 SPAȚII GOALE
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
-            statusEl.innerText = "Se generează contractul oficial complet cu spații de siguranță...";
+            statusEl.innerText = "Se generează contractul oficial complet...";
             statusEl.style.color = "#d97706";
 
             try {
@@ -711,8 +720,8 @@
                     try {
                         const field = form.getTextField(numeCamp);
                         if (field && valoare) {
-                            // Adăugăm exact 4 spații goale în față ca datele să nu se lipească
-                            const valoareCuSpatii = "    " + String(valoare);
+                            const valoareCurata = curataDiacritice(valoare);
+                            const valoareCuSpatii = "    " + valoareCurata;
                             field.setText(valoareCuSpatii);
                             field.setFont(fontNegru);
                             field.setFontSize(7.5);
@@ -723,7 +732,6 @@
                 };
 
                 // --- MAPARE COMPLETĂ NATIVĂ ---
-                // 1. Vânzător
                 seteazaCamp('sellerName', d.sellerName);
                 seteazaCamp('sellerCounty', d.sellerCounty);
                 seteazaCamp('sellerPostalCode', d.sellerPostalCode);
@@ -741,7 +749,6 @@
                 seteazaCamp('seller_phone', d.seller_phone);
                 seteazaCamp('seller_email', d.seller_email);
 
-                // Domiciliu fiscal vânzător
                 seteazaCamp('sellerFiscalCounty', d.sellerFiscalCounty);
                 seteazaCamp('sellerFiscalPostalCode', d.sellerFiscalPostalCode);
                 seteazaCamp('sellerFiscalCity', d.sellerFiscalCity);
@@ -749,7 +756,6 @@
                 seteazaCamp('sellerFiscalStreet', d.sellerFiscalStreet);
                 seteazaCamp('sellerFiscalStreetNo', d.sellerFiscalStreetNo);
 
-                // Firmă / Reprezentant vânzător
                 seteazaCamp('sellerRepresentant', d.sellerRepresentant);
                 seteazaCamp('sellerQuality', d.sellerQuality);
                 seteazaCamp('reprCISeries', d.reprCISeries);
@@ -758,7 +764,6 @@
                 seteazaCamp('reprPhone', d.reprPhone);
                 seteazaCamp('reprEmail', d.reprEmail);
 
-                // 2. Cumpărător
                 seteazaCamp('buyerName', d.buyerName);
                 seteazaCamp('buyer_judet', d.buyer_judet);
                 seteazaCamp('buyerPostalCode', d.buyerPostalCode);
@@ -776,7 +781,6 @@
                 seteazaCamp('buyerPhone', d.buyerPhone);
                 seteazaCamp('buyerEmail', d.buyerEmail);
 
-                // 3. Obiectul contractului (Vehiculul)
                 seteazaCamp('make', d.make);
                 seteazaCamp('type', d.type);
                 seteazaCamp('chassisSeries', d.chassisSeries);
@@ -791,7 +795,6 @@
                 seteazaCamp('acquiredDate', d.acquiredDate);
                 seteazaCamp('acquiredAct', d.acquiredAct);
 
-                // 4. Prețul
                 seteazaCamp('figurePrice', d.figurePrice);
                 seteazaCamp('lettersPrice', d.lettersPrice);
 
