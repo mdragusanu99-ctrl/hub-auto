@@ -55,6 +55,19 @@
         .btn-share { background-color: #d97706; color: white; width: 100%; margin-top: 10px; }
         .btn-share:hover { background-color: #b45309; }
 
+        /* Stil animat pentru butonul blocat în așteptare */
+        .btn.btn-waiting {
+            background-color: #e2e8f0 !important;
+            color: #64748b !important;
+            cursor: not-allowed;
+            animation: pulseAnimation 1.5s infinite;
+        }
+        @keyframes pulseAnimation {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.99); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
         .qr-box { text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 12px; margin-top: 15px; }
         #qrcode { display: inline-block; margin-top: 10px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .share-link-text { font-size: 12px; color: #64748b; word-break: break-all; margin-top: 10px; background: white; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; }
@@ -286,8 +299,8 @@
                     <input type="text" id="cilCapacity" placeholder="ex: 1968">
                 </div>
                 <div>
-                    <label>Greutate Maximă Admisă</label>
-                    <input type="text" id="maxWeight" placeholder="ex: 1800 kg">
+                    <label>Greutate Maximă Admisă (fără kg)</label>
+                    <input type="text" id="maxWeight" placeholder="ex: 1800">
                 </div>
                 <div>
                     <label>Număr Înmatriculare</label>
@@ -314,7 +327,7 @@
                     <input type="text" id="acquiredDate" placeholder="ex: 15.05.2020">
                 </div>
 
-                <!-- ACTUL ANTERIOR DE DOBÂNDIRE (SELECTOR + DATĂ) -->
+                <!-- ACTUL ANTERIOR DE DOBÂNDIRE -->
                 <div>
                     <label>Tipul Actului Anterior de Dobândire</label>
                     <select id="acquiredActType">
@@ -598,6 +611,18 @@
                     
                     document.getElementById('qrBoxContainer').style.display = 'block';
                     document.getElementById('waitingText').style.display = 'block';
+                    
+                    // Transformăm butonul de descărcare în stare de așteptare animată
+                    const btnDescarcaLocal = document.querySelector('#localActions .btn-success');
+                    if (btnDescarcaLocal) {
+                        btnDescarcaLocal.className = 'btn btn-waiting';
+                        btnDescarcaLocal.innerHTML = "⏳ Așteptare completare date cumpărător...";
+                        btnDescarcaLocal.onclick = function(e) {
+                            e.preventDefault();
+                            alert("Te rugăm să aștepți ca cumpărătorul să își completeze datele pe linkul trimis!");
+                        };
+                    }
+
                     document.getElementById('qrcode').innerHTML = "";
                     new QRCode(document.getElementById('qrcode'), {
                         text: buyerUrl,
@@ -606,7 +631,7 @@
                     });
 
                     document.getElementById('shareLinkContainer').innerHTML = `Link Cumpărător: <a href="${buyerUrl}" target="_blank">${buyerUrl}</a>`;
-                    document.getElementById('status').innerText = "Sesiune activă! Așteptăm ca cumpărătorul să își completeze datele...";
+                    document.getElementById('status').innerText = "Sesiune activă! Trimite linkul cumpărătorului și așteaptă finalizarea.";
                     document.getElementById('status').style.color = "#16a34a";
 
                     pornesteAscultareaLive();
@@ -627,7 +652,7 @@
                     if (result.success && result.data.status === 'COMPLETAT_GATA_CONTRACT') {
                         clearInterval(pollInterval);
                         document.getElementById('waitingText').style.display = 'none';
-                        document.getElementById('status').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele! Contractul este gata.</b>";
+                        document.getElementById('status').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele! Contractul este deblocat.</b>";
                         
                         for (const key in result.data) {
                             if (document.getElementById(key)) {
@@ -635,14 +660,12 @@
                             }
                         }
 
-                        let dlBtn = document.getElementById('autoDownloadBtn');
-                        if (!dlBtn) {
-                            dlBtn = document.createElement('button');
-                            dlBtn.id = 'autoDownloadBtn';
-                            dlBtn.className = 'btn btn-success';
-                            dlBtn.innerText = '📥 Descarcă Contractul Oficial PDF';
-                            dlBtn.onclick = genereazaContractOficialPDF;
-                            document.getElementById('qrBoxContainer').appendChild(dlBtn);
+                        // Readucem butonul de descărcare la viață (verde și funcțional)
+                        const btnDescarcaLocal = document.querySelector('#localActions .btn-waiting');
+                        if (btnDescarcaLocal) {
+                            btnDescarcaLocal.className = 'btn btn-success';
+                            btnDescarcaLocal.innerHTML = "📥 Descarcă Contractul Oficial PDF (Complet)";
+                            btnDescarcaLocal.onclick = genereazaContractOficialPDF;
                         }
                     }
                 } catch (e) {
@@ -684,7 +707,7 @@
             }
         }
 
-        // FUNCȚIE PENTRU CURĂȚAREA DIACRITICELOR ȘI PREVENIREA ERORILOR PDF
+        // FUNCȚIE PENTRU CURĂȚAREA DIACRITICELOR
         const curataDiacritice = (text) => {
             if (!text) return '';
             return String(text)
@@ -695,7 +718,7 @@
                 .replace(/ț/g, 't').replace(/Ț/g, 'T').replace(/ţ/g, 't').replace(/Ţ/g, 'T');
         };
 
-        // GENERATORUL FINAL NATIV CU CURĂȚARE DIACRITICE ȘI 4 SPAȚII GOALE
+        // GENERATORUL FINAL NATIV CU SUFIX AUTOMAT LA GREUTATE, DIACRITICE ȘI SPAȚII
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
             statusEl.innerText = "Se generează contractul oficial complet...";
@@ -720,7 +743,17 @@
                     try {
                         const field = form.getTextField(numeCamp);
                         if (field && valoare) {
-                            const valoareCurata = curataDiacritice(valoare);
+                            let valoareFinala = String(valoare);
+                            
+                            // Dacă este câmpul de greutate, adăugăm automat " kg" dacă nu are sufix
+                            if (numeCamp === 'maxWeight') {
+                                const valLower = valoareFinala.toLowerCase();
+                                if (!valLower.includes('kg') && !valLower.includes('tone')) {
+                                    valoareFinala = valoareFinala.trim() + ' kg';
+                                }
+                            }
+
+                            const valoareCurata = curataDiacritice(valoareFinala);
                             const valoareCuSpatii = "    " + valoareCurata;
                             field.setText(valoareCuSpatii);
                             field.setFont(fontNegru);
