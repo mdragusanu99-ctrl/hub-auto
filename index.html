@@ -93,7 +93,7 @@
         <div id="roleBanner" class="role-banner" style="display:none;"></div>
 
         <!-- NOTIFICARE TOAST FINĂ -->
-        <div id="toastNotification">Linkul a fost copiat în portieră!</div>
+        <div id="toastNotification">Linkul a fost copiat!</div>
 
         <!-- ECRAN DE SELECTARE INIȚIALĂ -->
         <div id="modeSelectorContainer" style="display:block;">
@@ -617,7 +617,6 @@
         function nextStepBuyer(step) {
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
 
-            // Ascundem bannerul de bun venit după primul pas al cumpărătorului
             const banner = document.getElementById('roleBanner');
             if (banner) banner.style.display = 'none';
 
@@ -643,7 +642,7 @@
                 buyerCurrentStep = 1;
                 document.getElementById('step2').classList.add('active');
                 document.getElementById('titleStep2').innerText = "Pasul 1: Datele Cumpărătorului";
-                if (banner) banner.style.display = 'block'; // Readucem bannerul doar dacă se întoarce la pasul 1
+                if (banner) banner.style.display = 'block';
             } else if (step === 3) {
                 buyerCurrentStep = 2;
                 document.getElementById('step3').classList.add('active');
@@ -795,7 +794,7 @@
 
         function copiazaLinkul() {
             navigator.clipboard.writeText(linkCumparatorGlobal).then(() => {
-                arataNotificare("📋 Linkul a fost copiat în portieră!");
+                arataNotificare("📋 Linkul a fost copiat!");
             });
         }
 
@@ -865,7 +864,9 @@
                         completedBanner.style.display = 'block';
                     }
 
-                    document.getElementById('step4Desc').innerText = "Contractul oficial este generat. Apasă butonul de mai jos pentru a-l descărca.";
+                    // Schimbăm titlul și textul de pe ecranul final al cumpărătorului, eliminând referința la pași
+                    document.getElementById('titleStep4').innerText = "Tranzacție Finalizată";
+                    document.getElementById('step4Desc').innerText = "Contractul oficial este generat. Apasă pe butonul de mai jos pentru a-l descărca.";
 
                     let dlBtnBuyer = document.getElementById('buyerDownloadBtn');
                     if (!dlBtnBuyer) {
