@@ -687,9 +687,11 @@
                     try {
                         const field = form.getTextField(numeCamp);
                         if (field && valoare) {
-                            field.setText(String(valoare));
+                            // Adăugăm exact 4 spații goale în față pentru a depărta textul de marginea căsuței
+                            const valoareCuSpatii = "    " + String(valoare);
+                            field.setText(valoareCuSpatii);
                             field.setFont(fontNegru);
-                            field.setFontSize(7.5);
+                            field.setFontSize(7.5); // Păstrăm dimensiunea ta preferată
                         }
                     } catch (e) {
                         console.log(`Câmpul ${numeCamp} nu a fost găsit.`);
