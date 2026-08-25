@@ -38,7 +38,7 @@
         label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
         input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border 0.2s; background: white; }
         input:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        input:read-only { background-color: #f1f5f9; color: #64748b; border-color: #e2e8f0; cursor: not-allowed; }
+        input:read-only, select:disabled { background-color: #f1f5f9; color: #64748b; border-color: #e2e8f0; cursor: not-allowed; }
         
         .fiscal-toggle-btn { background-color: #f8fafc; border: 2px dashed #cbd5e1; color: #1e3a8a; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; transition: all 0.2s; margin-top: 10px; width: 100%; }
         .fiscal-toggle-btn:hover { background-color: #eff6ff; border-color: #2563eb; }
@@ -52,21 +52,15 @@
         .btn-next:hover, .btn-generate:hover { background-color: #1d4ed8; }
         .btn-success { background-color: #16a34a; color: white; width: 100%; margin-top: 15px; }
         .btn-success:hover { background-color: #15803d; }
-        .btn-share { background-color: #d97706; color: white; width: 100%; margin-top: 10px; }
-        .btn-share:hover { background-color: #b45309; }
+        
+        /* Buton modern pentru trimitere la distanță */
+        .btn-share-modern { background: linear-gradient(135deg, #d97706, #b45309); color: white; width: 100%; padding: 16px; font-size: 16px; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3); transition: all 0.2s; }
+        .btn-share-modern:hover { background: linear-gradient(135deg, #b45309, #92400e); transform: translateY(-1px); }
 
-        /* Stil animat pentru butonul blocat în așteptare */
-        .btn.btn-waiting {
-            background-color: #e2e8f0 !important;
-            color: #64748b !important;
-            cursor: not-allowed;
-            animation: pulseAnimation 1.5s infinite;
-        }
-        @keyframes pulseAnimation {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.99); }
-            100% { opacity: 1; transform: scale(1); }
-        }
+        /* Animație de încărcare / așteptare elegantă */
+        .waiting-animation-box { text-align: center; background: #f8fafc; border: 2px dashed #cbd5e1; padding: 30px; border-radius: 16px; margin-top: 20px; }
+        .spinner { width: 45px; height: 45px; border: 4px solid #e2e8f0; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .qr-box { text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 12px; margin-top: 15px; }
         #qrcode { display: inline-block; margin-top: 10px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -360,25 +354,32 @@
         <!-- STEP 4: FINALIZARE -->
         <div class="step-content" id="step4">
             <div class="section-title">Pasul 4: Finalizare & Sincronizare Cloud</div>
-            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Poți descărca contractul oficial completat nativ.</p>
+            <p id="step4Desc" style="font-size: 13px; color: #475569; text-align: center;">Sistemul este pregătit. Poți trimite linkul securizat către cumpărător.</p>
             
             <div id="localActions">
-                <button class="btn btn-success" onclick="genereazaContractOficialPDF()">📥 Descarcă Contractul Oficial PDF (Nativ & Negru)</button>
-                <button class="btn btn-share" onclick="pornesteFluxRemote()">📤 Trimite Către Cumpărător (Mod Distanță)</button>
+                <!-- Doar butonul frumos de trimis linkul în mod distanță -->
+                <button class="btn-share-modern" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cumpărător (Mod Distanță)</button>
             </div>
 
             <div id="buyerActions" style="display:none;">
                 <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Salvează Datele & Notifică Vânzătorul</button>
             </div>
 
-            <div class="qr-box" id="qrBoxContainer" style="display:none;">
-                <label style="color: #1e3a8a; font-weight: bold; margin-bottom: 8px;">🔗 Link Securizat Generat pentru Cumpărător</label>
+            <!-- Animația de încărcare în loc de pași după trimitere -->
+            <div id="waitingAnimationContainer" style="display:none;" class="waiting-animation-box">
+                <div class="spinner"></div>
+                <h4 style="color: #1e3a8a; margin: 0 0 8px 0;">Se așteaptă completarea datelor...</h4>
+                <p style="font-size: 13px; color: #64748b; margin: 0 0 15px 0;">Cumpărătorul a primit linkul și își completează datele pe telefonul lui. Această pagină se va actualiza automat în momentul în care finalizează!</p>
                 <div id="qrcode"></div>
                 <div id="shareLinkContainer" class="share-link-text"></div>
-                <p id="waitingText" style="font-size: 12px; color: #d97706; margin-top: 10px; font-weight: bold; display:none;">Așteptare activă: Pagina va detecta automat când cumpărătorul își completează datele...</p>
             </div>
 
-            <div class="btn-group" style="margin-top: 20px;">
+            <!-- Containerul care aparține cumpărătorului când finalizează pe același dispozitiv sau cloud -->
+            <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
+                <button class="btn btn-success" onclick="genereazaContractOficialPDF()" style="padding: 16px; font-size: 16px;">📥 Descarcă Contractul Oficial PDF (Completat)</button>
+            </div>
+
+            <div class="btn-group" id="btnGroupBackFinal" style="margin-top: 20px;">
                 <button class="btn btn-prev" onclick="prevStep(4)">⬅ Înapoi la Modificare</button>
             </div>
         </div>
@@ -534,20 +535,29 @@
                             }
                         }
 
+                        // Când cumpărătorul deschide linkul, îl ducem direct pe Pasul 2 (Datele Cumpărătorului)
+                        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+                        document.getElementById('step2').classList.add('active');
+                        currentStep = 2;
+
                         document.getElementById('modeSelectorContainer').style.display = 'none';
                         const banner = document.getElementById('roleBanner');
                         banner.style.display = 'block';
                         banner.className = 'role-banner buyer';
-                        banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate. Completează datele tale și finalizează.";
+                        banner.innerHTML = "🔒 <b>Mod Cumpărător:</b> Verifică datele introduse de vânzător, completează datele tale la acest pas și finalizează.";
 
-                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="repr"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"]');
+                        // Blocăm complet toate câmpurile vânzătorului și ale vehiculului (inclusiv selectul actului)
+                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="repr"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"], #acquiredActType');
                         inputsVanzatorSiMasina.forEach(input => {
                             input.setAttribute('readonly', true);
+                            if(input.tagName === 'SELECT') {
+                                input.setAttribute('disabled', true);
+                            }
                         });
 
                         document.getElementById('localActions').style.display = 'none';
                         document.getElementById('buyerActions').style.display = 'block';
-                        document.getElementById('step4Desc').innerText = "Verifică datele, completează-ți datele și apasă butonul de finalizare.";
+                        document.getElementById('step4Desc').innerText = "Verifică datele, completează-ți datele și apasă butonul de finalizare pentru a genera contractul.";
                     }
                 } catch (e) {
                     console.error("Eroare la sincronizare:", e);
@@ -609,19 +619,10 @@
                     globalSessionId = result.sessionId;
                     const buyerUrl = `${window.location.origin}/?sessionId=${globalSessionId}`;
                     
-                    document.getElementById('qrBoxContainer').style.display = 'block';
-                    document.getElementById('waitingText').style.display = 'block';
-                    
-                    // Transformăm butonul de descărcare în stare de așteptare animată
-                    const btnDescarcaLocal = document.querySelector('#localActions .btn-success');
-                    if (btnDescarcaLocal) {
-                        btnDescarcaLocal.className = 'btn btn-waiting';
-                        btnDescarcaLocal.innerHTML = "⏳ Așteptare completare date cumpărător...";
-                        btnDescarcaLocal.onclick = function(e) {
-                            e.preventDefault();
-                            alert("Te rugăm să aștepți ca cumpărătorul să își completeze datele pe linkul trimis!");
-                        };
-                    }
+                    // Ascundem butonul de trimis și descărcarea locală veche, afișăm animația de încărcare/așteptare
+                    document.getElementById('localActions').style.display = 'none';
+                    document.getElementById('waitingAnimationContainer').style.display = 'block';
+                    document.getElementById('step4Desc').innerText = "Linkul a fost generat cu succes. Se așteaptă ca cumpărătorul să își completeze datele.";
 
                     document.getElementById('qrcode').innerHTML = "";
                     new QRCode(document.getElementById('qrcode'), {
@@ -631,7 +632,7 @@
                     });
 
                     document.getElementById('shareLinkContainer').innerHTML = `Link Cumpărător: <a href="${buyerUrl}" target="_blank">${buyerUrl}</a>`;
-                    document.getElementById('status').innerText = "Sesiune activă! Trimite linkul cumpărătorului și așteaptă finalizarea.";
+                    document.getElementById('status').innerText = "Sesiune activă în cloud!";
                     document.getElementById('status').style.color = "#16a34a";
 
                     pornesteAscultareaLive();
@@ -651,21 +652,17 @@
                     const result = await response.json();
                     if (result.success && result.data.status === 'COMPLETAT_GATA_CONTRACT') {
                         clearInterval(pollInterval);
-                        document.getElementById('waitingText').style.display = 'none';
-                        document.getElementById('status').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele! Contractul este deblocat.</b>";
+                        
+                        // Când cumpărătorul a completat datele, ascundem animația și afișăm butonul de descărcare finală
+                        document.getElementById('waitingAnimationContainer').style.display = 'none';
+                        document.getElementById('finalDownloadContainer').style.display = 'block';
+                        document.getElementById('step4Desc').innerHTML = "🎉 <b style='color:#16a34a;'>Cumpărătorul și-a completat datele cu succes! Contractul este gata de descărcare.</b>";
+                        document.getElementById('status').innerText = "Tranzacție finalizată cu succes!";
                         
                         for (const key in result.data) {
                             if (document.getElementById(key)) {
                                 document.getElementById(key).value = result.data[key];
                             }
-                        }
-
-                        // Readucem butonul de descărcare la viață (verde și funcțional)
-                        const btnDescarcaLocal = document.querySelector('#localActions .btn-waiting');
-                        if (btnDescarcaLocal) {
-                            btnDescarcaLocal.className = 'btn btn-success';
-                            btnDescarcaLocal.innerHTML = "📥 Descarcă Contractul Oficial PDF (Complet)";
-                            btnDescarcaLocal.onclick = genereazaContractOficialPDF;
                         }
                     }
                 } catch (e) {
@@ -689,6 +686,7 @@
 
                 if (result.success) {
                     document.getElementById('status').innerHTML = "✅ <b style='color:#16a34a;'>Datele tale au fost trimise vânzătorului cu succes!</b>";
+                    document.getElementById('buyerActions').style.display = 'none';
                     
                     let dlBtnBuyer = document.getElementById('buyerDownloadBtn');
                     if (!dlBtnBuyer) {
@@ -696,6 +694,8 @@
                         dlBtnBuyer.id = 'buyerDownloadBtn';
                         dlBtnBuyer.className = 'btn btn-success';
                         dlBtnBuyer.style.marginTop = '15px';
+                        dlBtnBuyer.style.padding = '16px';
+                        dlBtnBuyer.style.fontSize = '16px';
                         dlBtnBuyer.innerText = '📥 Descarcă Contractul Oficial PDF';
                         dlBtnBuyer.onclick = genereazaContractOficialPDF;
                         document.getElementById('step4').appendChild(dlBtnBuyer);
@@ -707,7 +707,6 @@
             }
         }
 
-        // FUNCȚIE PENTRU CURĂȚAREA DIACRITICELOR
         const curataDiacritice = (text) => {
             if (!text) return '';
             return String(text)
@@ -718,7 +717,6 @@
                 .replace(/ț/g, 't').replace(/Ț/g, 'T').replace(/ţ/g, 't').replace(/Ţ/g, 'T');
         };
 
-        // GENERATORUL FINAL NATIV CU SUFIX AUTOMAT LA GREUTATE, DIACRITICE ȘI SPAȚII
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
             statusEl.innerText = "Se generează contractul oficial complet...";
@@ -745,7 +743,6 @@
                         if (field && valoare) {
                             let valoareFinala = String(valoare);
                             
-                            // Dacă este câmpul de greutate, adăugăm automat " kg" dacă nu are sufix
                             if (numeCamp === 'maxWeight') {
                                 const valLower = valoareFinala.toLowerCase();
                                 if (!valLower.includes('kg') && !valLower.includes('tone')) {
@@ -764,7 +761,6 @@
                     }
                 };
 
-                // --- MAPARE COMPLETĂ NATIVĂ ---
                 seteazaCamp('sellerName', d.sellerName);
                 seteazaCamp('sellerCounty', d.sellerCounty);
                 seteazaCamp('sellerPostalCode', d.sellerPostalCode);
