@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub Tranzacții Auto - Contract Oficial ITL 054 (2026)</title>
+    <title>ActPeLoc - Contract Oficial ITL 054 (2026)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -38,9 +38,8 @@
         label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
         input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border 0.2s; }
         input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        input:read-only { background-color: #f1f5f9; color: #64748b; border-color: #e2e8f0; cursor: not-allowed; }
         
-        .fiscal-toggle-btn { background-color: #f8fafc; border: 2px dashed #cbd5f1; color: #1e3a8a; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; transition: all 0.2s; margin-top: 10px; width: 100%; }
+        .fiscal-toggle-btn { background-color: #f8fafc; border: 2px dashed #cbd5e1; color: #1e3a8a; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; transition: all 0.2s; margin-top: 10px; width: 100%; }
         .fiscal-toggle-btn:hover { background-color: #eff6ff; border-color: #2563eb; }
         .fiscal-section { display: none; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #cbd5e1; margin-top: 10px; }
 
@@ -65,8 +64,8 @@
 <body>
 
     <div class="container">
-        <h2>Hub Tranzacții Auto</h2>
-        <div class="subtitle">Sistem Cloud High-Tech • Contract Oficial ITL 054 (2026)</div>
+        <h2>ActPeLoc - Hub Tranzacții Auto</h2>
+        <div class="subtitle">Contract Oficial ITL 054 (2026)</div>
         <div id="roleBanner" class="role-banner" style="display:none;"></div>
 
         <div id="modeSelectorContainer" style="display:block;">
@@ -159,21 +158,39 @@
                     <input type="text" id="seller_email" placeholder="ex: dragusanumario@gmail.com">
                 </div>
 
-                <!-- BUTON EXTEXTIBIL PENTRU DOMICILIU FISCAL DIFERIT -->
+                <!-- BUTON DOMICILIU FISCAL DIFERIT -->
                 <div class="full-width">
                     <button type="button" class="fiscal-toggle-btn" id="btnToggleFiscal" onclick="comutaDomiciliuFiscal()">
                         ➕ Adaugă Domiciliu Fiscal Diferit (Opțional)
                     </button>
-                    
                     <div id="sectiuneFiscala" class="fiscal-section">
                         <div class="form-grid">
-                            <div class="full-width"><strong style="color: #1e3a8a; font-size: 13px;">Specificați Datele Domiciliului Fiscal</strong></div>
-                            <div><label>Județ Fiscal</label><input type="text" id="sellerFiscalCounty" placeholder="ex: Vaslui"></div>
-                            <div><label>Cod Poștal Fiscal</label><input type="text" id="sellerFiscalPostalCode" placeholder="ex: 731184"></div>
-                            <div><label>Localitate Fiscală</label><input type="text" id="sellerFiscalCity" placeholder="ex: Bârlad"></div>
-                            <div><label>Sector / Sat Fiscal</label><input type="text" id="sellerFiscalSector" placeholder="ex: -"></div>
-                            <div><label>Stradă Fiscală</label><input type="text" id="sellerFiscalStreet" placeholder="ex: Str. Principală"></div>
-                            <div><label>Număr Fiscal</label><input type="text" id="sellerFiscalStreetNo" placeholder="ex: 10"></div>
+                            <div class="full-width"><strong style="color: #1e3a8a; font-size: 13px;">Date Domiciliu Fiscal</strong></div>
+                            <div><label>Județ Fiscal</label><input type="text" id="sellerFiscalCounty"></div>
+                            <div><label>Cod Poștal Fiscal</label><input type="text" id="sellerFiscalPostalCode"></div>
+                            <div><label>Localitate Fiscală</label><input type="text" id="sellerFiscalCity"></div>
+                            <div><label>Sector / Sat Fiscal</label><input type="text" id="sellerFiscalSector"></div>
+                            <div><label>Stradă Fiscală</label><input type="text" id="sellerFiscalStreet"></div>
+                            <div><label>Număr Fiscal</label><input type="text" id="sellerFiscalStreetNo"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BUTON FIRMĂ / REPREZENTANT LEGAL -->
+                <div class="full-width">
+                    <button type="button" class="fiscal-toggle-btn" id="btnToggleFirma" onclick="comutaFirma()">
+                        🏢 Vânzarea se face prin Firmă / Mandatar (Opțional)
+                    </button>
+                    <div id="sectiuneFirma" class="fiscal-section">
+                        <div class="form-grid">
+                            <div class="full-width"><strong style="color: #1e3a8a; font-size: 13px;">Date Reprezentant / Firmă</strong></div>
+                            <div><label>Reprezentată prin (Nume)</label><input type="text" id="sellerRepresentant" placeholder="ex: Ionescu Ion"></div>
+                            <div><label>În calitate de</label><input type="text" id="sellerQuality" placeholder="ex: Administrator / Mandatar"></div>
+                            <div><label>Seria Act Reprezentant</label><input type="text" id="reprCISeries" placeholder="ex: RX"></div>
+                            <div><label>Număr Act Reprezentant</label><input type="text" id="reprCINumber" placeholder="ex: 654321"></div>
+                            <div class="full-width"><label>CNP / CIF Reprezentant</label><input type="text" id="reprCNP" placeholder="ex: 1800000000000"></div>
+                            <div><label>Telefon Reprezentant</label><input type="text" id="reprPhone" placeholder="ex: 0722000000"></div>
+                            <div><label>E-mail Reprezentant</label><input type="text" id="reprEmail" placeholder="ex: firma@email.com"></div>
                         </div>
                     </div>
                 </div>
@@ -346,6 +363,7 @@
         let userRole = 'vanzator';
         let pollInterval = null;
         let domiciliuFiscalDiferit = false;
+        let esteFirmaSauMandatar = false;
 
         function selecteazaMod(mod) {
             modLucru = mod;
@@ -370,7 +388,6 @@
             }
         }
 
-        // Funcție pentru deschiderea/închiderea secțiunii de domiciliu fiscal diferit prin buton
         function comutaDomiciliuFiscal() {
             domiciliuFiscalDiferit = !domiciliuFiscalDiferit;
             const sectiune = document.getElementById('sectiuneFiscala');
@@ -384,6 +401,24 @@
             } else {
                 sectiune.style.display = 'none';
                 buton.innerHTML = "➕ Adaugă Domiciliu Fiscal Diferit (Opțional)";
+                buton.style.borderColor = "#cbd5e1";
+                buton.style.backgroundColor = "#f8fafc";
+            }
+        }
+
+        function comutaFirma() {
+            esteFirmaSauMandatar = !esteFirmaSauMandatar;
+            const sectiune = document.getElementById('sectiuneFirma');
+            const buton = document.getElementById('btnToggleFirma');
+
+            if (esteFirmaSauMandatar) {
+                sectiune.style.display = 'block';
+                buton.innerHTML = "➖ Ascunde Datele Firmă / Mandatar";
+                buton.style.borderColor = "#2563eb";
+                buton.style.backgroundColor = "#eff6ff";
+            } else {
+                sectiune.style.display = 'none';
+                buton.innerHTML = "🏢 Vânzarea se face prin Firmă / Mandatar (Opțional)";
                 buton.style.borderColor = "#cbd5e1";
                 buton.style.backgroundColor = "#f8fafc";
             }
@@ -456,7 +491,7 @@
                         banner.className = 'role-banner buyer';
                         banner.innerHTML = "🔒 <b>Mod Cumpărător Securizat:</b> Datele vânzătorului și ale vehiculului sunt blocate. Completează datele tale și finalizează.";
 
-                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"]');
+                        const inputsVanzatorSiMasina = document.querySelectorAll('[id^="seller"], [id^="repr"], [id^="make"], [id^="type"], [id^="chassis"], [id^="motor"], [id^="cil"], [id^="max"], [id^="reg"], [id^="ITP"], [id^="vehicle"], [id^="production"], [id^="euro"], [id^="acquired"], [id^="figure"], [id^="letters"]');
                         inputsVanzatorSiMasina.forEach(input => {
                             input.setAttribute('readonly', true);
                         });
@@ -474,6 +509,7 @@
         function colecteazaDate() {
             const elemente = [
                 'sellerName', 'sellerCounty', 'sellerPostalCode', 'sellerCity', 'seller_sector', 'sellerStreet', 'sellerStreetNo', 'sellerBlock', 'sellerBuilding', 'sellerFloor', 'sellerApartment', 'seller_ci_serie', 'seller_ci_number', 'seller_ci_cnp', 'seller_phone', 'seller_email',
+                'sellerRepresentant', 'sellerQuality', 'reprCISeries', 'reprCINumber', 'reprCNP', 'reprPhone', 'reprEmail',
                 'buyerName', 'buyer_judet', 'buyerPostalCode', 'buyer_city', 'buyer_sector', 'buyerStreet', 'buyerStreetNo', 'buyerBlock', 'buyerBuilding', 'buyerFloor', 'buyerApartment', 'buyerCISeries', 'buyerCINumber', 'buyerCNP', 'buyerPhone', 'buyerEmail',
                 'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredAct', 'figurePrice', 'lettersPrice'
             ];
@@ -484,8 +520,7 @@
                 date[id] = el ? el.value : '';
             });
 
-            // Logica inteligentă pentru Domiciliul Fiscal: 
-            // Dacă secțiunea nu este deschisă (utilizatorul nu a apăsat butonul), copiem automat adresa principală.
+            // Gestiune Domiciliu Fiscal
             if (!domiciliuFiscalDiferit) {
                 date['sellerFiscalCounty'] = date['sellerCounty'];
                 date['sellerFiscalPostalCode'] = date['sellerPostalCode'];
@@ -610,7 +645,7 @@
             }
         }
 
-        // GENERATORUL FINAL NATIV CU TOATE CÂMPURILE ȘI TEXT NEGRU INTENS
+        // GENERATORUL FINAL NATIV CU TOATE CÂMPURIle, INCLUSIV REPREZENTANT / FIRMĂ
         async function genereazaContractOficialPDF() {
             const statusEl = document.getElementById('status');
             statusEl.innerText = "Se generează contractul oficial complet cu text negru...";
@@ -671,6 +706,15 @@
                 seteazaCamp('sellerFiscalStreet', d.sellerFiscalStreet);
                 seteazaCamp('sellerFiscalStreetNo', d.sellerFiscalStreetNo);
 
+                // Firmă / Reprezentant vânzător
+                seteazaCamp('sellerRepresentant', d.sellerRepresentant);
+                seteazaCamp('sellerQuality', d.sellerQuality);
+                seteazaCamp('reprCISeries', d.reprCISeries);
+                seteazaCamp('reprCINumber', d.reprCINumber);
+                seteazaCamp('reprCNP', d.reprCNP);
+                seteazaCamp('reprPhone', d.reprPhone);
+                seteazaCamp('reprEmail', d.reprEmail);
+
                 // 2. Cumpărător
                 seteazaCamp('buyerName', d.buyerName);
                 seteazaCamp('buyer_judet', d.buyer_judet);
@@ -712,7 +756,7 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_Complet_Negru.pdf";
+                link.download = "Contract_ITL_054_Complet_ActPeLoc.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
