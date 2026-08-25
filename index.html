@@ -47,7 +47,7 @@
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .full-width { grid-column: span 2; }
         label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border 0.2s; background: white; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border 0.2s; background: white; text-transform: uppercase; }
         input:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
         input:read-only, select:disabled { background-color: #f1f5f9; color: #64748b; border-color: #e2e8f0; cursor: not-allowed; }
         
@@ -355,10 +355,10 @@
                 <div>
                     <label>Tipul Actului Anterior de Dobândire</label>
                     <select id="acquiredActType">
-                        <option value="Contract de vanzare-cumparare">Contract de vanzare-cumparare</option>
-                        <option value="Factura fiscala">Factura fiscala</option>
-                        <option value="Certificat de mostenitor">Certificat de mostenitor</option>
-                        <option value="Contract de donatie">Contract de donatie</option>
+                        <option value="CONTRACT DE VANZARE-CUMPARARE">Contract de vanzare-cumparare</option>
+                        <option value="FACTURA FISCALA">Factura fiscala</option>
+                        <option value="CERTIFICAT DE MOSTENITOR">Certificat de mostenitor</option>
+                        <option value="CONTRACT DE DONATIE">Contract de donatie</option>
                     </select>
                 </div>
                 <div>
@@ -675,7 +675,7 @@
                     if (result.success) {
                         for (const key in result.data) {
                             if (document.getElementById(key)) {
-                                document.getElementById(key).value = result.data[key];
+                                document.getElementById(key).value = (result.data[key] || '').toUpperCase();
                             }
                         }
 
@@ -722,12 +722,13 @@
             let date = {};
             elemente.forEach(id => {
                 const el = document.getElementById(id);
-                date[id] = el ? el.value : '';
+                // Forțăm convertirea automată în litere mari (toUpperCase) pentru absolut fiecare valoare
+                date[id] = el ? String(el.value || '').toUpperCase().trim() : '';
             });
 
-            const tipAct = document.getElementById('acquiredActType')?.value || 'Contract de vanzare-cumparare';
+            const tipAct = document.getElementById('acquiredActType')?.value || 'CONTRACT DE VANZARE-CUMPARARE';
             const detaliiAct = document.getElementById('acquiredActDetails')?.value || '';
-            date['acquiredAct'] = `${tipAct} ${detaliiAct}`.trim();
+            date['acquiredAct'] = `${tipAct} ${detaliiAct}`.toUpperCase().trim();
 
             if (!domiciliuFiscalDiferit) {
                 date['sellerFiscalCounty'] = date['sellerCounty'];
@@ -737,12 +738,12 @@
                 date['sellerFiscalStreet'] = date['sellerStreet'];
                 date['sellerFiscalStreetNo'] = date['sellerStreetNo'];
             } else {
-                date['sellerFiscalCounty'] = document.getElementById('sellerFiscalCounty')?.value || '';
-                date['sellerFiscalPostalCode'] = document.getElementById('sellerFiscalPostalCode')?.value || '';
-                date['sellerFiscalCity'] = document.getElementById('sellerFiscalCity')?.value || '';
-                date['sellerFiscalSector'] = document.getElementById('sellerFiscalSector')?.value || '';
-                date['sellerFiscalStreet'] = document.getElementById('sellerFiscalStreet')?.value || '';
-                date['sellerFiscalStreetNo'] = document.getElementById('sellerFiscalStreetNo')?.value || '';
+                date['sellerFiscalCounty'] = (document.getElementById('sellerFiscalCounty')?.value || '').toUpperCase().trim();
+                date['sellerFiscalPostalCode'] = (document.getElementById('sellerFiscalPostalCode')?.value || '').toUpperCase().trim();
+                date['sellerFiscalCity'] = (document.getElementById('sellerFiscalCity')?.value || '').toUpperCase().trim();
+                date['sellerFiscalSector'] = (document.getElementById('sellerFiscalSector')?.value || '').toUpperCase().trim();
+                date['sellerFiscalStreet'] = (document.getElementById('sellerFiscalStreet')?.value || '').toUpperCase().trim();
+                date['sellerFiscalStreetNo'] = (document.getElementById('sellerFiscalStreetNo')?.value || '').toUpperCase().trim();
             }
 
             return date;
@@ -827,7 +828,7 @@
                         
                         for (const key in result.data) {
                             if (document.getElementById(key)) {
-                                document.getElementById(key).value = result.data[key];
+                                document.getElementById(key).value = (result.data[key] || '').toUpperCase();
                             }
                         }
                     }
@@ -864,7 +865,6 @@
                         completedBanner.style.display = 'block';
                     }
 
-                    // Schimbăm titlul și textul de pe ecranul final al cumpărătorului, eliminând referința la pași
                     document.getElementById('titleStep4').innerText = "Tranzacție Finalizată";
                     document.getElementById('step4Desc').innerText = "Contractul oficial este generat. Apasă pe butonul de mai jos pentru a-l descărca.";
 
@@ -887,11 +887,12 @@
         const curataDiacritice = (text) => {
             if (!text) return '';
             return String(text)
-                .replace(/ă/g, 'a').replace(/Ă/g, 'A')
-                .replace(/â/g, 'a').replace(/Â/g, 'A')
-                .replace(/î/g, 'i').replace(/Î/g, 'I')
-                .replace(/ș/g, 's').replace(/Ș/g, 'S').replace(/ş/g, 's').replace(/Ş/g, 'S')
-                .replace(/ț/g, 't').replace(/Ț/g, 'T').replace(/ţ/g, 't').replace(/Ţ/g, 'T');
+                .toUpperCase()
+                .replace(/Ă/g, 'A')
+                .replace(/Â/g, 'A')
+                .replace(/Î/g, 'I')
+                .replace(/Ș/g, 'S').replace(/Ş/g, 'S')
+                .replace(/Ț/g, 'T').replace(/Ţ/g, 'T');
         };
 
         async function genereazaContractOficialPDF() {
@@ -918,12 +919,12 @@
                     try {
                         const field = form.getTextField(numeCamp);
                         if (field && valoare) {
-                            let valoareFinala = String(valoare);
+                            let valoareFinala = String(valoare).toUpperCase();
                             
                             if (numeCamp === 'maxWeight') {
                                 const valLower = valoareFinala.toLowerCase();
                                 if (!valLower.includes('kg') && !valLower.includes('tone')) {
-                                    valoareFinala = valoareFinala.trim() + ' kg';
+                                    valoareFinala = valoareFinala.trim() + ' KG';
                                 }
                             }
 
@@ -1009,7 +1010,7 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Contract_ITL_054_ActPeLoc.pdf";
+                link.download = "CONTRACT_ITL_054_ACTPELOC.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
