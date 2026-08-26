@@ -505,7 +505,7 @@
             </div>
 
             <!-- ========================================== -->
-            <!-- FLUX CONTRACT ÎNCHIRIERE IMOBILIARĂ COMPLET-->
+            <!-- FLUX CONTRACT ÎNCHIRIERE IMOBILIARĂ MODEL UNIC -->
             <!-- ========================================== -->
             <div class="step-content" id="imobilStep1">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -880,7 +880,7 @@
         function stergeSemnaturaChirias() { ctxChirias.clearRect(0, 0, 280, 140); }
 
         async function genereazaContractImobiliarPDF() {
-            arataNotificare("Se generează contractul imobiliar complet...");
+            arataNotificare("Se generează contractul imobiliar oficial model unic...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
                 const pdfDoc = await PDFDocument.create();
@@ -890,76 +890,110 @@
                 let page = pdfDoc.addPage([595.28, 841.89]);
                 let y = 780;
 
-                const deseneazaTitlu = (text) => {
-                    if (y < 60) { page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(text, { x: 45, y, size: 11, font: fontBold });
-                    y -= 20;
+                const adaugaLogoSiAntet = () => {
+                    page.drawText("ActPeLoc™", { x: 480, y: 810, size: 14, font: fontBold });
                 };
 
-                const deseneazaLinie = (text) => {
-                    if (y < 60) { page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(text, { x: 45, y, size: 9, font });
-                    y -= 15;
+                adaugaLogoSiAntet();
+
+                const deseneazaTitluSectiune = (text) => {
+                    if (y < 80) { 
+                        page = pdfDoc.addPage([595.28, 841.89]); 
+                        y = 780; 
+                        adaugaLogoSiAntet();
+                    }
+                    page.drawText(text, { x: 45, y, size: 10, font: fontBold });
+                    y -= 16;
                 };
 
-                deseneazaTitlu("CONTRACT DE INCHIRIERE LOCUINTA (PROPRIETATE PRIVATA)");
-                deseneazaLinie(`Incheiat astazi ${new Date().toLocaleDateString('ro-RO')}`);
-                y -= 5;
+                const deseneazaParagraf = (text) => {
+                    if (y < 80) { 
+                        page = pdfDoc.addPage([595.28, 841.89]); 
+                        y = 780; 
+                        adaugaLogoSiAntet();
+                    }
+                    page.drawText(text, { x: 45, y, size: 8.5, font });
+                    y -= 14;
+                };
 
-                deseneazaTitlu("ARTICOLUL 1: PARTILE CONTRACTANTE");
-                deseneazaLinie(`1. Locator (Proprietar): ${curataDiacritice(document.getElementById('proprietarNume').value)},`);
-                deseneazaLinie(`CNP: ${document.getElementById('proprietarCnp').value}, CI: ${curataDiacritice(document.getElementById('proprietarAct').value)},`);
-                deseneazaLinie(`Domiciliul: ${curataDiacritice(document.getElementById('proprietarAdresa').value)}.`);
-                y -= 5;
-                deseneazaLinie(`2. Locatar (Chirias): ${curataDiacritice(document.getElementById('chiriasNume').value)},`);
-                deseneazaLinie(`CNP: ${document.getElementById('chiriasCnp').value}, CI: ${curataDiacritice(document.getElementById('chiriasAct').value)}.`);
-                y -= 10;
-
-                deseneazaTitlu("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
-                deseneazaLinie(`Locatorul inchiriaza Locatarului imobilul situat in:`);
-                deseneazaLinie(`${curataDiacritice(document.getElementById('imobilAdresa').value)}.`);
-                deseneazaLinie(`Destinatia imobilului este exclusiva de locuinta pentru chirias si familia sa.`);
-                y -= 10;
-
-                deseneazaTitlu("ARTICOLUL 3: DURATA CONTRACTULUI");
-                deseneazaLinie(`Prezentul contract se incheie pe o perioada de ${curataDiacritice(document.getElementById('imobilDurata').value)},`);
-                deseneazaLinie(`incepand cu data de ${document.getElementById('imobilDataStart').value}.`);
-                y -= 10;
-
-                deseneazaTitlu("ARTICOLUL 4: CHIRIA, GARANTIA SI MODALITATEA DE PLATA");
-                deseneazaLinie(`1. Chiria lunara este in cuantum de ${curataDiacritice(document.getElementById('imobilChirie').value)}.`);
-                deseneazaLinie(`2. La semnarea contractului, chiriasul achita o garantie de ${curataDiacritice(document.getElementById('imobilGarantie').value)}.`);
-                y -= 10;
-
-                deseneazaTitlu("ARTICOLUL 5: DISPOZITII FINALE SI FISCALE (ANAF)");
-                deseneazaLinie(`Prezentul contract constituie titlu executoriu conform legii civile in vigoare.`);
-                deseneazaLinie(`Locatorul are obligatia legala de inregistrare a contractului la organul fiscal (ANAF)`);
-                deseneazaLinie(`in termen de cel mult 30 de zile de la data incheierii acestuia.`);
+                // Antet Document
+                page.drawText("CONTRACT DE INCHIRIERE LOCUINTA (MODEL UNIC OFICIAL)", { x: 45, y, size: 12, font: fontBold });
+                y -= 18;
+                page.drawText(`Incheiat astazi ${new Date().toLocaleDateString('ro-RO')} conform Codului Civil in vigoare`, { x: 45, y, size: 9, font });
                 y -= 25;
 
-                if (y < 180) { page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                // ARTICOLUL 1
+                deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
+                deseneazaParagraf(`1.1. Locator (Proprietar): ${curataDiacritice(document.getElementById('proprietarNume').value || '....................................')},`);
+                deseneazaParagraf(`CNP: ${document.getElementById('proprietarCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('proprietarAct').value || '........')},`);
+                deseneazaParagraf(`cu domiciliul in: ${curataDiacritice(document.getElementById('proprietarAdresa').value || '................................................................................')}.`);
+                y -= 4;
+                deseneazaParagraf(`1.2. Locatar (Chirias): ${curataDiacritice(document.getElementById('chiriasNume').value || '....................................')},`);
+                deseneazaParagraf(`CNP: ${document.getElementById('chiriasCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('chiriasAct').value || '........')}.`);
+                y -= 12;
+
+                // ARTICOLUL 2
+                deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
+                deseneazaParagraf(`2.1. Locatorul inchiriaza Locatarului imobilul cu destinatia exclusiva de locuinta, situat in:`);
+                deseneazaParagraf(`${curataDiacritice(document.getElementById('imobilAdresa').value || '..................................................................................................................')}.`);
+                deseneazaParagraf(`2.2. Imobilul este predat in stare buna de utilicare, dotat cu instalatiile si echipamentele aferente.`);
+                y -= 12;
+
+                // ARTICOLUL 3
+                deseneazaTitluSectiune("ARTICOLUL 3: DURATA CONTRACTULUI");
+                deseneazaParagraf(`3.1. Prezentul contract se incheie pe o perioada de ${curataDiacritice(document.getElementById('imobilDurata').value || '12 LUNI')},`);
+                deseneazaParagraf(`incepand cu data de ${document.getElementById('imobilDataStart').value || '01.09.2026'} si pana la data de ${document.getElementById('imobilDataStart').value || '01.09.2027'}.`);
+                deseneazaParagraf(`3.2. Contractul poate fi prelungit prin acordul scris al ambelor parti, exprimat cu cel putin 30 zile inainte.`);
+                y -= 12;
+
+                // ARTICOLUL 4
+                deseneazaTitluSectiune("ARTICOLUL 4: CHIRIA, GARANTIA SI MODALITATEA DE PLATA");
+                deseneazaParagraf(`4.1. Chiria lunara stabilita de parti este in cuantum de ${curataDiacritice(document.getElementById('imobilChirie').value || '350 EUR')}.`);
+                deseneazaParagraf(`4.2. Plata chiriei se efectueaza in numerar sau prin virament bancar in avans, pana la data de 5 a fiecarei luni.`);
+                deseneazaParagraf(`4.3. Cu titlu de garantie pentru eventuale daune sau neplati, Locatarul achita la semnare suma de ${curataDiacritice(document.getElementById('imobilGarantie').value || '350 EUR')}.`);
+                y -= 12;
+
+                // ARTICOLUL 5
+                deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIILE PARTILOR");
+                deseneazaParagraf(`5.1. Locatorul se obliga sa predea imobilul in stare de curatenie si siguranta si sa asigure folosinta acestuia.`);
+                deseneazaParagraf(`5.2. Locatarul se obliga sa achite la termen chiria, utilitatile consumate (energie, gaze, apa) si sa foloseasca bunul ca un bun proprietar.`);
+                deseneazaParagraf(`5.3. Subinchirierea totala sau partiala catre terti este strict interzisa fara acordul scris al Locatorului.`);
+                y -= 12;
+
+                // ARTICOLUL 6
+                deseneazaTitluSectiune("ARTICOLUL 6: DISPOZITII FINALE SI FISCALE (ANAF)");
+                deseneazaParagraf(`6.1. Prezentul contract constituie titlu executoriu conform dispozitiilor Codului de Procedura Civila.`);
+                deseneazaParagraf(`6.2. Locatorul are obligatia legala de inregistrare a prezentului contract la organul fiscal competent (ANAF)`);
+                deseneazaParagraf(`in termen de cel mult 30 de zile de la data incheierii, conform Codului Fiscal.`);
+                y -= 20;
+
+                if (y < 160) { 
+                    page = pdfDoc.addPage([595.28, 841.89]); 
+                    y = 780; 
+                    adaugaLogoSiAntet();
+                }
                 
-                deseneazaTitlu("SEMNATURILE PARTILOR:");
+                deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
                 y -= 5;
 
                 const sigPImageBytes = await pdfDoc.embedPng(document.getElementById('sigProprietarCanvas').toDataURL('image/png'));
                 const sigCImageBytes = await pdfDoc.embedPng(document.getElementById('sigChiriasCanvas').toDataURL('image/png'));
 
-                page.drawImage(sigPImageBytes, { x: 45, y: y - 70, width: 160, height: 60 });
-                page.drawImage(sigCImageBytes, { x: 310, y: y - 70, width: 160, height: 60 });
+                page.drawImage(sigPImageBytes, { x: 45, y: y - 65, width: 150, height: 55 });
+                page.drawImage(sigCImageBytes, { x: 310, y: y - 65, width: 150, height: 55 });
 
-                page.drawText("Semnatura Proprietar (Locator)", { x: 45, y: y - 85, size: 8.5, font: fontBold });
-                page.drawText("Semnatura Chirias (Locatar)", { x: 310, y: y - 85, size: 8.5, font: fontBold });
+                page.drawText("Semnatura Proprietar (Locator)", { x: 45, y: y - 80, size: 8, font: fontBold });
+                page.drawText("Semnatura Chirias (Locatar)", { x: 310, y: y - 80, size: 8, font: fontBold });
 
                 const bytes = await pdfDoc.save();
                 const blob = new Blob([bytes], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url; a.download = "CONTRACT_INCHIRIERE_OFICIAL.pdf";
+                a.href = url; a.download = "CONTRACT_INCHIRIERE_ACTPELOC.pdf";
                 a.click();
 
-                salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), detalii: 'Contract Inchiriere - ' + curataDiacritice(document.getElementById('chiriasNume').value) });
-                arataNotificare("✅ Contract imobiliar complet generat cu succes!");
+                salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), detalii: 'Contract Imobiliar Model Unic - ' + curataDiacritice(document.getElementById('chiriasNume').value || 'Client') });
+                arataNotificare("✅ Modelul unic de contract imobiliar a fost generat!");
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
 
