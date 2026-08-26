@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ActPeLoc - Platformă Oficială Generare Contracte & Dashboard</title>
+    <title>ActPeLoc - Platformă Oficială Generare Contracte & Dashboard 2026</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -37,18 +37,21 @@
 
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-main); margin: 0; padding: 20px; color: var(--text-main); transition: background 0.3s, color 0.3s; }
         
-        /* SPLASH SCREEN */
+        /* SPLASH SCREEN DINAMIC 2026 CU SLIDER/TIMER */
         #welcomeSplash {
-            position: fixed; inset: 0; background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            position: fixed; inset: 0; background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+            background-size: 200% 200%; animation: gradientAnimation 8s ease infinite;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 9999; color: white; text-align: center; padding: 20px;
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
+        @keyframes gradientAnimation { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         #welcomeSplash.fade-out { opacity: 0; transform: scale(1.05); pointer-events: none; }
-        .splash-title { font-size: 38px; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; }
-        .splash-banner { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); padding: 16px 30px; border-radius: 14px; font-size: 18px; font-weight: 600; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .splash-title { font-size: 42px; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .splash-banner { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); padding: 16px 30px; border-radius: 14px; font-size: 18px; font-weight: 600; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .btn-splash { background: white; color: #1e3a8a; border: none; padding: 14px 32px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .btn-splash:hover { background: #f8fafc; transform: translateY(-2px); }
+        .splash-timer-text { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 15px; }
 
         /* MODAL AUTENTIFICARE / ÎNREGISTRARE */
         #authModal {
@@ -63,8 +66,8 @@
         .auth-switch-text span { color: var(--primary); font-weight: 600; cursor: pointer; text-decoration: underline; }
         .auth-switch-text span:hover { color: var(--primary-dark); }
 
-        /* BUTOANE SELECTARE PACHETE LA ÎNREGISTRARE */
-        .packages-selector-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 5px; }
+        /* CELE 3 BUTOANE ATRACTIVE PENTRU PACHETE */
+        .packages-selector-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 8px; }
         .package-option-card { border: 2px solid var(--border-color); border-radius: 10px; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; background: rgba(0,0,0,0.01); }
         .package-option-card:hover { border-color: var(--primary); background: rgba(37,99,235,0.04); }
         .package-option-card.selected { border-color: var(--primary); background: rgba(37,99,235,0.1); box-shadow: 0 0 0 2px rgba(37,99,235,0.2); }
@@ -96,6 +99,7 @@
         
         .role-banner { background: rgba(37, 99, 235, 0.1); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 18px; border-radius: 10px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; }
         .role-banner.buyer { background: rgba(22, 163, 74, 0.1); color: var(--success); }
+        .referral-alert-banner { background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(180, 83, 9, 0.25)); border: 1px solid #d97706; color: #d97706; padding: 12px 18px; border-radius: 10px; font-size: 13px; text-align: center; margin-bottom: 20px; font-weight: 600; }
 
         /* NOTIFICARE TOAST MODERNĂ */
         #toastNotification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: #16a34a; color: white; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 25px rgba(22, 163, 74, 0.3); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; pointer-events: none; }
@@ -125,6 +129,10 @@
         .contract-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
         .contract-table th, .contract-table td { border: 1px solid var(--border-color); padding: 10px; text-align: left; }
         .contract-table th { background: rgba(0,0,0,0.03); color: var(--text-main); }
+
+        /* PANOUL DE REFERRAL DIN DASHBOARD */
+        .referral-box { background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(30,58,138,0.1)); border: 2px solid var(--primary); border-radius: 14px; padding: 20px; margin-top: 15px; }
+        .referral-link-display { background: var(--card-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--text-main); word-break: break-all; margin: 10px 0; }
 
         .mode-selector { display: flex; gap: 20px; margin-top: 20px; }
         .mode-card { flex: 1; border: 2px solid var(--border-color); padding: 25px 20px; border-radius: 16px; cursor: pointer; text-align: center; transition: all 0.25s ease; background: rgba(0,0,0,0.01); }
@@ -192,12 +200,13 @@
 </head>
 <body data-theme="light">
 
-    <!-- SPLASH SCREEN ANIMAT -->
+    <!-- SPLASH SCREEN DINAMIC 2026 CU SLIDER/TIMER AUTOMAT -->
     <div id="welcomeSplash">
         <h1 class="splash-title">⚡ ActPeLoc</h1>
         <div class="splash-banner">„Noi îți generăm actul de care ai nevoie”</div>
         <p style="font-size: 14px; margin-bottom: 25px; opacity: 0.9;">Platformă oficială inteligentă pentru contracte și documente juridice rapide.</p>
         <button class="btn-splash" onclick="inchideSplash()">Începe Acum ➔</button>
+        <div class="splash-timer-text" id="splashTimerText">Se deschide automat în 4 secunde...</div>
     </div>
 
     <!-- MODAL AUTENTIFICARE / ÎNREGISTRARE -->
@@ -205,10 +214,10 @@
         <div class="auth-box">
             <span class="auth-close" onclick="inchideModalAuth()">✕</span>
             <h3 id="authModalTitle" style="color: var(--text-main); margin-top: 0; text-align: center;">Autentificare Cont</h3>
-            <p id="authModalSubtitle" style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Introdu datele pentru a te loga în contul tău.</p>
+            <p id="authModalSubtitle" style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Introdu e-mailul și parola unică pentru a te loga.</p>
             
             <div class="form-grid">
-                <!-- CÂMPURI UNICE LA ÎNREGISTRARE (PACHETE SELECTABILE CU 3 BUTOANE) -->
+                <!-- CÂMPURI UNICE LA ÎNREGISTRARE (3 BUTOANE PACHETE) -->
                 <div class="full-width reg-field" style="display: none;">
                     <label>Tip Profil</label>
                     <select id="authTipProfil" style="text-transform: none; margin-bottom: 12px;">
@@ -277,7 +286,8 @@
                 <div id="profileDropdownMenu" class="profile-dropdown-menu">
                     <div class="dropdown-header">Conectat ca:<br><strong id="dropdownEmailText">-</strong></div>
                     <a class="dropdown-item" onclick="acceseazaDashboardTab('arhiva')">📊 Mergi la Dashboard</a>
-                    <a class="dropdown-item" onclick="acceseazaDashboardTab('setari')">⚙️ Setări Cont (Schimbă E-mail)</a>
+                    <a class="dropdown-item" onclick="acceseazaDashboardTab('afiliere')">🎁 Program Afiliere & Puncte</a>
+                    <a class="dropdown-item" onclick="acceseazaDashboardTab('setari')">⚙️ Setări Cont</a>
                     <a class="dropdown-item logout" onclick="deconectareUtilizator()">🚪 Deconectare</a>
                 </div>
             </div>
@@ -291,14 +301,13 @@
         <h2>ActPeLoc - Hub Documente</h2>
         <div class="subtitle">Sistem Oficial Avansat & Completare Rapidă</div>
         <div id="roleBanner" class="role-banner" style="display:none;"></div>
+        <div id="referralAlertBanner" class="referral-alert-banner" style="display:none;">🎁 Ai fost invitat! Ai 35% reducere activă la generarea contractelor tale.</div>
 
         <!-- NOTIFICARE TOAST MODERNĂ -->
         <div id="toastNotification">Acțiune realizată cu succes!</div>
 
-        <!-- PAGINA PRINCIPALĂ (ONBOARDING FĂRĂ BUTOANE + CATEGORII) -->
+        <!-- PAGINA PRINCIPALĂ -->
         <div id="mainMenuContainer" style="display:block;">
-            
-            <!-- ONBOARDING WIDGET (FĂRĂ BUTOANE) -->
             <div class="onboarding-welcome">
                 <h3>👋 Bun venit pe ActPeLoc!</h3>
                 <p>Platforma ta unică de generare contracte și acte oficiale în câteva secunde. Ce dorești să realizezi astăzi?</p>
@@ -342,12 +351,13 @@
                 <button class="dash-tab-btn active" onclick="schimbaTabDash('arhiva', this)">📁 Arhivă Contracte</button>
                 <button class="dash-tab-btn" onclick="schimbaTabDash('nou', this)">➕ Creează Contract Nou</button>
                 <button class="dash-tab-btn" onclick="schimbaTabDash('abonament', this)">💳 Abonamentul Meu</button>
+                <button class="dash-tab-btn" onclick="schimbaTabDash('afiliere', this)">🎁 Afiliere & Puncte</button>
                 <button class="dash-tab-btn" onclick="schimbaTabDash('setari', this)">⚙️ Setări Cont</button>
             </div>
 
             <!-- Tab 1: Arhivă Unică per Client -->
             <div id="dashTabArhiva" class="dash-section active">
-                <h4 style="font-size: 14px; color: var(--text-main); margin-top: 0;">Istoricul Documentelor Generate pentru Contul Tău</h4>
+                <h4 style="font-size: 14px; color: var(--text-main); margin-top: 0;">Istoricul Documentelor Generate</h4>
                 <div style="max-height: 280px; overflow-y: auto;">
                     <table class="contract-table">
                         <thead>
@@ -380,7 +390,7 @@
                 </div>
             </div>
 
-            <!-- Tab 3: Abonamentul Meu Unic -->
+            <!-- Tab 3: Abonamentul Meu -->
             <div id="dashTabAbonament" class="dash-section">
                 <h4 style="font-size: 14px; color: var(--text-main); margin-top: 0;">Detalii Abonament Activ</h4>
                 <div style="background: rgba(0,0,0,0.02); border: 1px solid var(--border-color); padding: 15px; border-radius: 10px; font-size: 13px;">
@@ -391,7 +401,27 @@
                 </div>
             </div>
 
-            <!-- Tab 4: Setări Cont (Schimbă E-mail) -->
+            <!-- Tab 4: Program Afiliere & Puncte Referral -->
+            <div id="dashTabAfiliere" class="dash-section">
+                <h4 style="font-size: 14px; color: var(--text-main); margin-top: 0;">Programul de Afiliere ActPeLoc</h4>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">Trimite linkul tău unic prietenilor sau partenerilor. Ei primesc <b>35% reducere</b> la înregistrare, iar tu primești <b>+1 punct</b> pentru fiecare cont creat, fiecare punct oferindu-ți <b>30% reducere</b> pentru atâtea contracte câte puncte ai acumulat!</p>
+                
+                <div class="referral-box">
+                    <label style="color: var(--primary);">Linkul tău unic de recomandare:</label>
+                    <div class="referral-link-display" id="myReferralLinkText">-</div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button class="btn btn-next" style="padding: 10px; font-size: 13px;" onclick="copiazaLinkAfiliere()">📋 Copiază Linkul</button>
+                        <button class="btn btn-success" style="padding: 10px; font-size: 13px; margin:0;" onclick="trimiteAfiliereWhatsApp()">💬 Trimite pe WhatsApp</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; background: rgba(0,0,0,0.02); border: 1px solid var(--border-color); padding: 15px; border-radius: 10px; font-size: 13px;">
+                    <p><b>Puncte Acumulate:</b> <span id="infoPuncteAfiliere" style="color: #d97706; font-weight: bold;">0 puncte</span></p>
+                    <p><b>Reducere Activă Curentă:</b> <span id="infoReducereAfiliere" style="color: var(--success); font-weight: bold;">0% pe următoarele contracte</span></p>
+                </div>
+            </div>
+
+            <!-- Tab 5: Setări Cont -->
             <div id="dashTabSetari" class="dash-section">
                 <h4 style="font-size: 14px; color: var(--text-main); margin-top: 0;">Setări Cont & Date Personale</h4>
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Poți modifica adresa de e-mail asociată contului tău ActPeLoc:</p>
@@ -749,10 +779,37 @@
         let esteFirmaSauMandatar = false;
         let linkCumparatorGlobal = "";
 
-        let profilCurent = null; // Stochează obiectul utilizatorului logat
-        let modAuthCurent = 'logare'; // 'logare' sau 'inregistrare'
-        let pachetSelectatInregistrare = 'GRATUIT'; // Pachetul selectat implicit
+        let profilCurent = null;
+        let modAuthCurent = 'logare';
+        let pachetSelectatInregistrare = 'GRATUIT';
+        let codReferralPrimit = null; // Codul de referral cu care a intrat utilizatorul nou
+        let splashTimerInterval = null;
 
+        // SISTEM SLIDER / TIMER AUTOMAT SPLASH SCREEN (4 SECUNDE)
+        function initSplashTimer() {
+            let secundeRamase = 4;
+            const timerText = document.getElementById('splashTimerText');
+            
+            splashTimerInterval = setInterval(() => {
+                secundeRamase--;
+                if (timerText) timerText.innerText = `Se deschide automat în ${secundeRamase} secunde...`;
+                if (secundeRamase <= 0) {
+                    clearInterval(splashTimerInterval);
+                    inchideSplash();
+                }
+            }, 1000);
+        }
+
+        function inchideSplash() {
+            if (splashTimerInterval) clearInterval(splashTimerInterval);
+            const splash = document.getElementById('welcomeSplash');
+            if (splash) {
+                splash.classList.add('fade-out');
+                setTimeout(() => { splash.style.display = 'none'; }, 800);
+            }
+        }
+
+        // SISTEM TEMĂ (DARK / LIGHT MODE)
         function comutaTema() {
             const body = document.body;
             const btn = document.getElementById('themeToggleBtn');
@@ -841,7 +898,7 @@
             }
         });
 
-        // BAZĂ DE DATE LOCALĂ REALĂ PENTRU CONTURI
+        // BAZĂ DE DATE LOCALĂ REALĂ PENTRU CONTURI & REFERRAL
         function obtineBazaDeDateConturi() {
             return JSON.parse(localStorage.getItem('act_peloc_baza_utilizatori') || '{}');
         }
@@ -881,15 +938,22 @@
                 const pachet = pachetSelectatInregistrare;
                 let ramase = (pachet === 'STANDARD') ? 400 : (pachet === 'BUSINESS' ? 1200 : 3);
 
-                // Creare cont nou cu baza lui de date unică
+                // Creare cont nou cu bază privată și sistem referral
                 dbConturi[email] = {
                     email: email,
                     parola: parola,
                     tip: tip,
                     pachet: pachet,
                     ramase: ramase,
+                    puncteAfiliere: 0,
+                    reducereInvitat35: codReferralPrimit ? true : false,
                     arhivaContracte: []
                 };
+
+                // Dacă s-a înregistrat pe un link de referral valid, dăm +1 punct celui care l-a invitat!
+                if (codReferralPrimit && dbConturi[codReferralPrimit]) {
+                    dbConturi[codReferralPrimit].puncteAfiliere += 1;
+                }
 
                 salveazaBazaDeDateConturi(dbConturi);
                 profilCurent = dbConturi[email];
@@ -913,7 +977,6 @@
 
                 acceseazaDashboardTab('arhiva');
             } else {
-                // Mod Logare cu date unice verificate în baza de date
                 if (!dbConturi[email] || dbConturi[email].parola !== parola) {
                     arataNotificare("❌ E-mail sau parolă incorecte! Verifică datele introduse.", true);
                     return;
@@ -963,8 +1026,10 @@
             incarcaDateDashboard();
 
             if (tabName === 'arhiva') schimbaTabDash('arhiva', document.querySelectorAll('.dash-tab-btn')[0]);
+            if (tabName === 'abonament') schimbaTabDash('abonament', document.querySelectorAll('.dash-tab-btn')[2]);
+            if (tabName === 'afiliere') schimbaTabDash('afiliere', document.querySelectorAll('.dash-tab-btn')[3]);
             if (tabName === 'setari') {
-                schimbaTabDash('setari', document.querySelectorAll('.dash-tab-btn')[3]);
+                schimbaTabDash('setari', document.querySelectorAll('.dash-tab-btn')[4]);
                 document.getElementById('settingsNewEmail').value = profilCurent.email;
             }
         }
@@ -978,6 +1043,7 @@
             if (tabName === 'arhiva') document.getElementById('dashTabArhiva').classList.add('active');
             if (tabName === 'nou') document.getElementById('dashTabNou').classList.add('active');
             if (tabName === 'abonament') document.getElementById('dashTabAbonament').classList.add('active');
+            if (tabName === 'afiliere') document.getElementById('dashTabAfiliere').classList.add('active');
             if (tabName === 'setari') document.getElementById('dashTabSetari').classList.add('active');
 
             if (btnEl) btnEl.classList.add('active');
@@ -996,7 +1062,6 @@
                 return;
             }
 
-            // Actualizăm cheia în baza de date
             let vechiEmail = profilCurent.email;
             profilCurent.email = emailNou;
             dbConturi[emailNou] = profilCurent;
@@ -1027,6 +1092,15 @@
             document.getElementById('infoDashPachet').innerText = profilCurent.pachet;
             document.getElementById('infoDashRamase').innerText = profilCurent.ramase;
 
+            // Puncte și Afiliere
+            const puncte = profilCurent.puncteAfiliere || 0;
+            const reducereProcent = puncte * 30; // Fiecare punct = 30% reducere
+            document.getElementById('infoPuncteAfiliere').innerText = `${puncte} punct${puncte !== 1 ? 'e' : ''}`;
+            document.getElementById('infoReducereAfiliere').innerText = `${reducereProcent}% reducere pentru următoarele ${puncte} contracte`;
+
+            const linkAfiliere = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(profilCurent.email)}`;
+            document.getElementById('myReferralLinkText').innerText = linkAfiliere;
+
             const lista = document.getElementById('dashboardContracteLista');
             lista.innerHTML = '';
 
@@ -1048,6 +1122,17 @@
                     </tr>
                 `;
             });
+        }
+
+        function copiazaLinkAfiliere() {
+            const link = document.getElementById('myReferralLinkText').innerText;
+            navigator.clipboard.writeText(link).then(() => { arataNotificare("📋 Linkul de afiliere a fost copiat!"); });
+        }
+
+        function trimiteAfiliereWhatsApp() {
+            const link = document.getElementById('myReferralLinkText').innerText;
+            const mesaj = encodeURIComponent(`Salut! Folosește platforma ActPeLoc pentru a genera contracte oficiale instant și ai 35% reducere dacă te înregistrezi prin acest link: ${link}`);
+            window.open(`https://api.whatsapp.com/send?text=${mesaj}`, '_blank');
         }
 
         function salveazaInArhivaprivata(item) {
@@ -1087,12 +1172,6 @@
             link.href = url;
             link.download = "CHITANTA_FISCALA_ACTPELOC.pdf";
             link.click();
-        }
-
-        function inchideSplash() {
-            const splash = document.getElementById('welcomeSplash');
-            splash.classList.add('fade-out');
-            setTimeout(() => { splash.style.display = 'none'; }, 800);
         }
 
         function deschideMeniuPrincipal() {
@@ -1312,8 +1391,18 @@
 
         window.onload = async function() {
             initAutoSave();
+            initSplashTimer();
 
             const params = new URLSearchParams(window.location.search);
+
+            // Verificăm dacă utilizatorul vine pe un link de referral
+            if (params.has('ref')) {
+                codReferralPrimit = decodeURIComponent(params.get('ref'));
+                document.getElementById('referralAlertBanner').style.display = 'block';
+                // Deschidem automat modalul de înregistrare pentru a profita de reducere
+                setTimeout(() => { deschideModalAuth('inregistrare'); }, 1500);
+            }
+
             if (params.has('sessionId')) {
                 globalSessionId = params.get('sessionId');
                 userRole = 'cumparator';
@@ -1411,7 +1500,7 @@
 
                 if (result.success) {
                     globalSessionId = result.sessionId;
-                    linkCumparatorGlobal = `${window.location.origin}/?sessionId=${globalSessionId}`;
+                    linkCumparatorGlobal = `${window.location.origin}${window.location.pathname}?sessionId=${globalSessionId}`;
                     
                     document.getElementById('localActions').style.display = 'none';
                     document.getElementById('waitingAnimationContainer').style.display = 'block';
