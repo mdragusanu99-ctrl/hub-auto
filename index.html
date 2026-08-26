@@ -35,13 +35,18 @@
         .btn-splash { background: white; color: #1e3a8a; border: none; padding: 14px 32px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .btn-splash:hover { background: #f8fafc; transform: translateY(-2px); }
 
-        /* MODAL AUTENTIFICARE / PROFIL */
+        /* MODAL AUTENTIFICARE / ÎNREGISTRARE MODERN */
         #authModal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
             display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;
         }
-        .auth-box { background: white; width: 100%; max-width: 440px; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
-        .auth-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+        .auth-box { background: white; width: 100%; max-width: 440px; padding: 35px 30px; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; animation: modalPop 0.3s ease-out; }
+        @keyframes modalPop { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .auth-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: var(--text-muted); transition: color 0.2s; }
+        .auth-close:hover { color: var(--text-main); }
+        .auth-switch-text { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+        .auth-switch-text span { color: var(--primary); font-weight: 600; cursor: pointer; text-decoration: underline; }
+        .auth-switch-text span:hover { color: var(--primary-dark); }
 
         /* NAVBAR */
         .top-nav { display: flex; justify-content: space-between; align-items: center; max-width: 760px; margin: 0 auto 20px auto; background: white; padding: 12px 25px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
@@ -162,22 +167,25 @@
         <button class="btn-splash" onclick="inchideSplash()">Începe Acum ➔</button>
     </div>
 
-    <!-- MODAL AUTENTIFICARE / PROFIL -->
+    <!-- MODAL AUTENTIFICARE / ÎNREGISTRARE DINAMIC -->
     <div id="authModal">
         <div class="auth-box">
             <span class="auth-close" onclick="inchideModalAuth()">✕</span>
-            <h3 style="color: #1e3a8a; margin-top: 0; text-align: center;">Profil & Înregistrare ActPeLoc</h3>
-            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Creează contul sau autentifică-te pentru a accesa Dashboard-ul.</p>
+            
+            <!-- TITLU DINAMIC -->
+            <h3 id="authModalTitle" style="color: #1e3a8a; margin-top: 0; text-align: center;">Autentificare Cont</h3>
+            <p id="authModalSubtitle" style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Introdu datele pentru a te loga în contul tău.</p>
             
             <div class="form-grid">
-                <div class="full-width">
+                <!-- CÂMPURI SPECIFICE PENTRU ÎNREGISTRARE (Ascunse la logare) -->
+                <div class="full-width reg-field" style="display: none;">
                     <label>Tip Profil</label>
                     <select id="authTipProfil" style="text-transform: none;">
                         <option value="PERSOANA_FIZICA">👤 Persoană Fizică</option>
                         <option value="BUSINESS">🏢 Business (Dealer / PFA)</option>
                     </select>
                 </div>
-                <div class="full-width">
+                <div class="full-width reg-field" style="display: none;">
                     <label>Alege Pachetul</label>
                     <select id="authPachet" style="text-transform: none;">
                         <option value="GRATUIT">Gratuit (Fără abonament)</option>
@@ -185,13 +193,31 @@
                         <option value="BUSINESS">Pachet Business - 299 RON (1200 contracte)</option>
                     </select>
                 </div>
+
+                <!-- CÂMPURI COMUNE (LOGARE & ÎNREGISTRARE) -->
                 <div class="full-width">
                     <label>Adresă E-mail</label>
                     <input type="email" id="authEmail" placeholder="exemplu@email.ro" style="text-transform: none;">
                 </div>
+                <div class="full-width">
+                    <label>Parolă</label>
+                    <input type="password" id="authPassword" placeholder="••••••••" style="text-transform: none;">
+                </div>
+
+                <!-- CONFIRMARE PAROLĂ (Doar la înregistrare) -->
+                <div class="full-width reg-field" style="display: none;">
+                    <label>Confirmă Parola</label>
+                    <input type="password" id="authPasswordConfirm" placeholder="••••••••" style="text-transform: none;">
+                </div>
             </div>
 
-            <button class="btn btn-next" style="width: 100%; margin-top: 20px;" onclick="inregistreazaUtilizator()">🚀 Creează Cont & Trimite E-mail</button>
+            <!-- BUTON ACȚIUNE DINAMIC -->
+            <button id="authSubmitBtn" class="btn btn-next" style="width: 100%; margin-top: 20px;" onclick="gestioneazaAutentificareSauInregistrare()">🔑 Intră în Cont</button>
+
+            <!-- COMUTATOR TEXT (LOGARE <-> ÎNREGISTRARE) -->
+            <div id="authSwitchContainer" class="auth-switch-text">
+                Nu ai un cont? <span onclick="schimbaModulAuth('inregistrare')">Creează-ți unul chiar acum</span>
+            </div>
         </div>
     </div>
 
@@ -199,7 +225,7 @@
     <div class="top-nav">
         <div><strong style="color: #1e3a8a;">⚡ ActPeLoc</strong> <span style="font-size: 11px; color: var(--text-muted);">| Ediția 2026</span></div>
         <div style="display: flex; gap: 10px; align-items: center;">
-            <span class="user-badge" id="userStatusBadge" onclick="deschideModalAuth()">👤 Profilul Meu</span>
+            <span class="user-badge" id="userStatusBadge" onclick="deschideModalAuth('logare')">👤 Contul Meu</span>
             <span class="user-badge" id="dashNavBtn" onclick="acceseazaDashboard()" style="background: #dcfce7; color: #166534; border-color: #bbf7d0;">📊 Dashboard</span>
             <button class="btn-change-mode" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
         </div>
@@ -255,7 +281,7 @@
                             <li>✔️ Generare PDF & Chitanțe</li>
                             <li>✔️ Arhivă digitală sigură</li>
                         </ul>
-                        <button class="btn-change-mode" style="width:100%;" onclick="deschideModalAuth()">Alege Standard</button>
+                        <button class="btn-change-mode" style="width:100%;" onclick="deschideModalAuth('inregistrare')">Alege Standard</button>
                     </div>
 
                     <div class="pricing-card featured">
@@ -266,7 +292,7 @@
                             <li>✔️ Mod completare la distanță</li>
                             <li>✔️ Suport prioritar & Dealer auto</li>
                         </ul>
-                        <button class="btn btn-next" style="width:100%; padding:8px; font-size:12px;" onclick="deschideModalAuth()">Alege Business</button>
+                        <button class="btn btn-next" style="width:100%; padding:8px; font-size:12px;" onclick="deschideModalAuth('inregistrare')">Alege Business</button>
                     </div>
                 </div>
             </div>
@@ -323,7 +349,7 @@
             <!-- Tab 3: Abonamentul Meu -->
             <div id="dashTabAbonament" class="dash-section">
                 <h4 style="font-size: 14px; color: #1e3a8a; margin-top: 0;">Detalii Abonament Activ</h4>
-                <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 10px; font-size: 13px; space-y: 8px;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 10px; font-size: 13px;">
                     <p><b>E-mail Cont:</b> <span id="infoDashEmail">-</span></p>
                     <p><b>Tip Profil:</b> <span id="infoDashProfil">-</span></p>
                     <p><b>Pachet Activ:</b> <span id="infoDashPachet">-</span></p>
@@ -676,20 +702,117 @@
         let esteFirmaSauMandatar = false;
         let linkCumparatorGlobal = "";
 
-        let profilCurent = null; // null înseamnă neautentificat
+        let profilCurent = null; // null = neautentificat
+        let modAuthCurent = 'logare'; // 'logare' sau 'inregistrare'
 
-        function deschideModalAuth() { document.getElementById('authModal').style.display = 'flex'; }
-        function inchideModalAuth() { document.getElementById('authModal').style.display = 'none'; }
+        function deschideModalAuth(mod = 'logare') {
+            modAuthCurent = mod;
+            aplicăModAuth();
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function inchideModalAuth() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function schimbaModulAuth(mod) {
+            modAuthCurent = mod;
+            aplicăModAuth();
+        }
+
+        function aplicăModAuth() {
+            const title = document.getElementById('authModalTitle');
+            const subtitle = document.getElementById('authModalSubtitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const switchContainer = document.getElementById('authSwitchContainer');
+            const regFields = document.querySelectorAll('.reg-field');
+
+            if (modAuthCurent === 'logare') {
+                title.innerText = "Autentificare Cont";
+                subtitle.innerText = "Introdu datele pentru a te loga în contul tău.";
+                submitBtn.innerText = "🔑 Intră în Cont";
+                regFields.forEach(el => el.style.display = 'none');
+                switchContainer.innerHTML = `Nu ai un cont? <span onclick="schimbaModulAuth('inregistrare')">Creează-ți unul chiar acum</span>`;
+            } else {
+                title.innerText = "Creare Cont Nou";
+                subtitle.innerText = "Completează datele de mai jos pentru a te înregistra.";
+                submitBtn.innerText = "🚀 Creează Cont & Trimite E-mail";
+                regFields.forEach(el => el.style.display = 'block');
+                switchContainer.innerHTML = `Ai deja un cont? <span onclick="schimbaModulAuth('logare')">Autentifică-te aici</span>`;
+            }
+        }
+
+        async function gestioneazaAutentificareSauInregistrare() {
+            const email = document.getElementById('authEmail').value.trim();
+            const parola = document.getElementById('authPassword').value;
+
+            if (!email || !email.includes('@')) {
+                arataNotificare("Introduceți o adresă de e-mail validă!", true);
+                return;
+            }
+            if (!parola || parola.length < 6) {
+                arataNotificare("Parola trebuie să conțină cel puțin 6 caractere!", true);
+                return;
+            }
+
+            if (modAuthCurent === 'inregistrare') {
+                const confirmParola = document.getElementById('authPasswordConfirm').value;
+                if (parola !== confirmParola) {
+                    arataNotificare("Parolele introduse nu coincid!", true);
+                    return;
+                }
+
+                const tip = document.getElementById('authTipProfil').value;
+                const pachet = document.getElementById('authPachet').value;
+                let ramase = (pachet === 'STANDARD') ? 400 : (pachet === 'BUSINESS' ? 1200 : 3);
+
+                profilCurent = { email, tip, pachet, ramase };
+                localStorage.setItem('act_peloc_profil', JSON.stringify(profilCurent));
+
+                document.getElementById('userStatusBadge').innerText = `👤 ${email.split('@')[0]} (${tip === 'BUSINESS' ? 'Business' : 'Fizică'})`;
+                
+                arataNotificare("Cont creat cu succes! Se trimite e-mailul de confirmare...");
+                inchideModalAuth();
+
+                try {
+                    await emailjs.send("service_5epmvz9", "template_krf7x8j", {
+                        to_email: email,
+                        nume_client: email.split('@')[0],
+                        nume_act: `Cont Nou ActPeLoc (${tip})`,
+                        id_act: "CONT-" + Math.floor(1000 + Math.random() * 9000),
+                        data_generare: new Date().toLocaleString('ro-RO')
+                    });
+                    arataNotificare("📧 E-mailul de confirmare a fost trimis cu succes!");
+                } catch (err) {
+                    console.error("Eroare trimitere e-mail:", err);
+                }
+
+                acceseazaDashboard();
+            } else {
+                // Mod Logare
+                // Pentru demonstrație, simulăm logarea cu e-mailul introdus sau un profil salvat anterior
+                let salvat = localStorage.getItem('act_peloc_profil');
+                if (salvat) {
+                    profilCurent = JSON.parse(salvat);
+                } else {
+                    profilCurent = { email, tip: 'PERSOANA_FIZICA', pachet: 'GRATUIT', ramase: 3 };
+                }
+
+                document.getElementById('userStatusBadge').innerText = `👤 ${email.split('@')[0]} (${profilCurent.tip === 'BUSINESS' ? 'Business' : 'Fizică'})`;
+                arataNotificare("Autentificare reușită!");
+                inchideModalAuth();
+                acceseazaDashboard();
+            }
+        }
 
         // Control acces Dashboard
         function acceseazaDashboard() {
             if (!profilCurent) {
                 alert("⚠️ Înainte de a accesa Dashboard-ul, vă rugăm să vă autentificați sau să vă creați un cont!");
-                deschideModalAuth();
+                deschideModalAuth('logare');
                 return;
             }
 
-            // Ascundem tot și afișăm secțiunea de Dashboard dedicată
             document.getElementById('mainMenuContainer').style.display = 'none';
             document.getElementById('modeSelectorContainer').style.display = 'none';
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
@@ -709,46 +832,6 @@
             if (tabName === 'abonament') document.getElementById('dashTabAbonament').classList.add('active');
 
             btnEl.classList.add('active');
-        }
-
-        // Înregistrare cu E-mail de Confirmare prin EmailJS
-        async function inregistreazaUtilizator() {
-            const email = document.getElementById('authEmail').value;
-            const tip = document.getElementById('authTipProfil').value;
-            const pachet = document.getElementById('authPachet').value;
-
-            if (!email || !email.includes('@')) {
-                arataNotificare("Introduceți o adresă de e-mail validă!", true);
-                return;
-            }
-
-            let ramase = 0;
-            if (pachet === 'STANDARD') ramase = 400;
-            if (pachet === 'BUSINESS') ramase = 1200;
-
-            profilCurent = { email, tip, pachet, ramase };
-            localStorage.setItem('act_peloc_profil', JSON.stringify(profilCurent));
-
-            document.getElementById('userStatusBadge').innerText = `👤 ${email.split('@')[0]} (${tip === 'BUSINESS' ? 'Business' : 'Fizică'})`;
-            
-            arataNotificare("Cont creat cu succes! Se trimite e-mailul de confirmare...");
-            inchideModalAuth();
-
-            // Trimitere e-mail de confirmare prin EmailJS
-            try {
-                await emailjs.send("service_5epmvz9", "template_krf7x8j", {
-                    to_email: email,
-                    nume_client: email.split('@')[0],
-                    nume_act: `Cont Nou ActPeLoc (${tip})`,
-                    id_act: "CONT-" + Math.floor(1000 + Math.random() * 9000),
-                    data_generare: new Date().toLocaleString('ro-RO')
-                });
-                arataNotificare("📧 E-mailul de confirmare a fost trimis cu succes!");
-            } catch (err) {
-                console.error("Eroare trimitere e-mail:", err);
-            }
-
-            acceseazaDashboard();
         }
 
         function incarcaProfilSalvat() {
@@ -796,7 +879,7 @@
         }
 
         function redescarcaPDF(idAct) {
-            arataNotificare(`Se redescărcă contractul ${idAct}...`);
+            arataNotificare(`Se redescărca contractul ${idAct}...`);
             genereazaContractOficialPDF();
         }
 
