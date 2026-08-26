@@ -883,9 +883,8 @@
 
         function stergeSemnaturaProprietar() { ctxProprietar.clearRect(0, 0, 280, 140); }
         function stergeSemnaturaChirias() { ctxChirias.clearRect(0, 0, 280, 140); }
-
- async function genereazaContractImobiliarPDF() {
-            arataNotificare("Se generează contractul imobiliar complet, suprem și detaliat...");
+async function genereazaContractImobiliarPDF() {
+            arataNotificare("Se generează contractul imobiliar cu inventar opțional...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
                 const pdfDoc = await PDFDocument.create();
@@ -944,7 +943,13 @@
                 deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
                 deseneazaParagraf(`2.1. Locatorul inchiriaza Locatarului imobilul cu destinatia exclusiva de locuinta, situat in:`);
                 deseneazaParagraf(`${curataDiacritice(document.getElementById('imobilAdresa').value || '..................................................................................................................')}.`);
-                deseneazaParagraf(`2.2. Imobilul este predat in stare buna de utilizare, impreuna cu inventarul complet de bunuri si electrocasnice.`);
+                
+                const inventarInput = document.getElementById('imobilInventar').value.trim();
+                if (inventarInput) {
+                    deseneazaParagraf(`2.2. Imobilul se preda utilat si mobilat, urmatorul inventar fiind preluat in buna stare: ${curataDiacritice(inventarInput)}.`);
+                } else {
+                    deseneazaParagraf(`2.2. Imobilul este predat in stare buna de utilizare, conform intelegerii prealabile a partilor.`);
+                }
                 y -= 4;
 
                 // ARTICOLUL 3
@@ -961,7 +966,7 @@
                 y -= 4;
 
                 // ARTICOLUL 5
-                deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIILE PARTILOR");
+                deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIIle PARTILOR");
                 deseneazaParagraf(`5.1. Locatorul garanteaza linistita folosinta a imobilului si nu poate interveni in spatiu fara notificare prealabila.`);
                 deseneazaParagraf(`5.2. Locatarul se obliga sa achite la termen chiria, cotele de intretinere, consumul de energie, gaze si apa pe baza contoarelor.`);
                 deseneazaParagraf(`5.3. Subinchirierea totala sau partiala catre terti, precum si desfasurarea de activitati comerciale sunt strict interzise.`);
@@ -995,7 +1000,7 @@
                 // ARTICOLUL 10
                 deseneazaTitluSectiune("ARTICOLUL 10: DISPOZITII FINALE SI FISCALE (ANAF)");
                 deseneazaParagraf(`10.1. Prezentul contract constituie titlu executoriu conform dispozitiilor Codului de Procedura Civila.`);
-                deseneazaParagraf(`10.2. Locatorul are obligatia legala de inregistrare a contractului la organul fiscal competent (ANAF) in termen de 30 zile.`);
+                deseneazaParagraf(`10.2. Locatorul are obligatia legala de inregistrare a contractului la organul fiscal competent (ANAF) în termen de 30 zile.`);
                 y -= 15;
 
                 if (y < 160) { 
@@ -1029,8 +1034,8 @@
                 a.href = url; a.download = "CONTRACT_INCHIRIERE_ACTPELOC.pdf";
                 a.click();
 
-                salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), detalii: 'Contract Imobiliar Suprem - ' + curataDiacritice(document.getElementById('chiriasNume').value || 'Client') });
-                arataNotificare("✅ Contract imobiliar complet și complet blindat generat!");
+                salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), detalii: 'Contract Imobiliar Suprem cu Inventar - ' + curataDiacritice(document.getElementById('chiriasNume').value || 'Client') });
+                arataNotificare("✅ Contract imobiliar generat cu succes cu tot cu inventar!");
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
         window.onload = function() { incarcaProfilSalvat(); incarcaTemaSalvata(); initSplashTimer(); };
