@@ -879,7 +879,7 @@
         function stergeSemnaturaProprietar() { ctxProprietar.clearRect(0, 0, 280, 140); }
         function stergeSemnaturaChirias() { ctxChirias.clearRect(0, 0, 280, 140); }
 
-      async function genereazaContractImobiliarPDF() {
+    async function genereazaContractImobiliarPDF() {
             arataNotificare("Se generează contractul imobiliar oficial...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
@@ -920,11 +920,12 @@
                     y -= 15;
                 };
 
-                // Antet Document
-                page.drawText("CONTRACT DE INCHIRIERE LOCUINTA", { x: 45, y, size: 13, font: fontBold });
-                y -= 18;
-                page.drawText(`Incheiat astazi ${new Date().toLocaleDateString('ro-RO')} conform Codului Civil in vigoare`, { x: 45, y, size: 9, font });
-                y -= 25;
+                // TITLU CENTRAT PE MIJLOC
+                const titluText = "CONTRACT DE INCHIRIERE LOCUINTA";
+                const textWidth = fontBold.widthOfTextAtSize(titluText, 13);
+                const centerX = (595.28 - textWidth) / 2;
+                page.drawText(titluText, { x: centerX, y, size: 13, font: fontBold });
+                y -= 30;
 
                 // ARTICOLUL 1
                 deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
@@ -970,11 +971,15 @@
                 deseneazaParagraf(`in termen de cel mult 30 de zile de la data incheierii, conform Codului Fiscal.`);
                 y -= 25;
 
-                if (y < 180) { 
+                if (y < 200) { 
                     deseneazaFooter();
                     page = pdfDoc.addPage([595.28, 841.89]); 
                     y = 780; 
                 }
+
+                // DATA INCHEIERII PLASATĂ DEASUPRA SEMNĂTURILOR
+                page.drawText(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale, conform Codului Civil.`, { x: 45, y, size: 9, font: fontBold });
+                y -= 35;
                 
                 deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
                 y -= 5;
