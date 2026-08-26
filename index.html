@@ -1008,7 +1008,7 @@
 
         function stergeSemnaturaDemisie() { ctxDemisie.clearRect(0, 0, 280, 140); hasDrawnD = false; }
 
-    async function genereazaCerereDemisiePDF() {
+   async function genereazaCerereDemisiePDF() {
             if (!hasDrawnD) {
                 arataNotificare("❌ Vă rugăm să semnați cererea pe ecran!", true);
                 return;
@@ -1022,7 +1022,7 @@
 
             let success = salveazaInArhivaprivata({ 
                 idAct: 'DEM-' + Math.floor(1000 + Math.random()*9000), 
-                detalii: 'Cerere Demisie Oficială - ' + document.getElementById('demisieAngajatNume').value 
+                detalii: 'Cerere Demisie Oficială - ' + curataDiacritice(document.getElementById('demisieAngajatNume').value) 
             });
 
             if (!success) return;
@@ -1036,18 +1036,19 @@
                 
                 let page = pdfDoc.addPage([595.28, 841.89]);
                 let y = 760;
-                const maxWidth = 510; // lățimea maximă utilă în pagină (margini de 45pt)
+                const maxWidth = 510;
 
                 const deseneazaFooter = () => {
-                    page.drawText("Generat prin ActPeLoc.ro — Document oficial generat electronic", { 
+                    page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Document oficial generat electronic"), { 
                         x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
                     });
                 };
 
-                // Funcție inteligentă care taie textul lung pe rânduri noi (Word Wrap)
+                // Funcție cu spargere automată a rândurilor și curățare automată de diacritice
                 const deseneazaParagrafLiniar = (text, isBold = false, size = 10, lineSpacing = 16) => {
+                    const textCurat = curataDiacritice(text);
                     const currentFont = isBold ? fontBold : font;
-                    const words = text.split(' ');
+                    const words = textCurat.split(' ');
                     let linieCurenta = '';
 
                     for (let i = 0; i < words.length; i++) {
@@ -1071,7 +1072,7 @@
                 };
 
                 // NUMĂR DE ÎNREGISTRARE / ANTET DREAPTA
-                page.drawText("Inregistrat la Societate cu Nr: ............ / Data: ....................", { x: 240, y, size: 8.5, font: fontBold });
+                page.drawText(curataDiacritice("Inregistrat la Societate cu Nr: ............ / Data: ...................."), { x: 240, y, size: 8.5, font: fontBold });
                 y -= 35;
 
                 // ANTET CĂTRE ANGAJATOR
@@ -1089,7 +1090,7 @@
                 deseneazaParagrafLiniar(`- Departament / Structura: ${document.getElementById('demisieAngajatDept').value || 'General'}`, false, 10, 35);
 
                 // TITLU CENTRAT
-                const titluText = "CERERE DE INCETARE A CONTRACTULUI DE MUNCA PRIN DEMISIE";
+                const titluText = curataDiacritice("CERERE DE INCETARE A CONTRACTULUI DE MUNCA PRIN DEMISIE");
                 const textWidth = fontBold.widthOfTextAtSize(titluText, 11);
                 page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 11, font: fontBold });
                 y -= 35;
@@ -1103,7 +1104,7 @@
                 deseneazaParagrafLiniar(`Subsemnatul(a) ${numeAngajat}, salariat(a) al(a) unitatii dumneavoastra in cadrul functiei de ${functieAngajat}, in temeiul dispozitiilor art. 81 din Legea nr. 53/2003 - Codul Muncii, republicata, cu modificarile si completarile ulterioare, prin prezenta formula:`, false, 10, 16);
                 y -= 10;
 
-                const subTitlu = "NOTIFICARE DE DEMISIE";
+                const subTitlu = curataDiacritice("NOTIFICARE DE DEMISIE");
                 const subWidth = fontBold.widthOfTextAtSize(subTitlu, 10.5);
                 page.drawText(subTitlu, { x: (595.28 - subWidth) / 2, y, size: 10.5, font: fontBold });
                 y -= 25;
@@ -1112,7 +1113,8 @@
                 deseneazaParagrafLiniar(`In conformitate cu prevederile legale in vigoare, termenul legal de preaviz de ${zilePreaviz} zile lucrătoare curge incepand a doua zi dupa data inregistrarii acestei notificari la registratura unitatii.`, false, 10, 18);
                 deseneazaParagrafLiniar(`Astfel, ultima zi in care imi voi desfasura activitatea si in care raporturile de munca vor înceta va fi data de ${ultimaZi}.`, true, 10, 25);
 
-                deseneazaParagrafLiniar(`Totodata, solicit angajatorului ca la data incetarii contractului individual de munca sa imi achite drepturile salariale cuvenite la zi, sa efectueze compensarea in bani a concediului de odihna neefectuat (daca este cazul) si sa imi elibereze adeverinta de vechime, carnetul de munca (daca se aplica) si celelalte documente legale prevazute de legislatia muncii.`, false, 10, 30);
+                deseneazaParagrafLiniar(`Totodata, solicit angajatorului ca la data incetarii contractului individual de munca sa imi achite drepturile salariale cuvenite la zi, sa efectueze compensarea in bani a concediului de odihna neefectuat (daca este cazul)
+                 si sa imi elibereze adeverinta de vechime, carnetul de munca (daca se aplica) si celelalte documente legale prevazute de legislatia muncii.`, false, 10, 30);
 
                 deseneazaParagrafLiniar("Prezenta cerere a fost intocmita in 2 (doua) exemplare originale, cate unul pentru fiecare parte.", false, 9.5, 35);
 
@@ -1135,7 +1137,6 @@
                 arataNotificare("✅ Cerere de demisie generată impecabil! (-1 credit)");
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
-
         /* VALIDARE INTELIGENTĂ FORMULAR IMOBILIAR */
         function valideazaSiTreciLaSemnaturaImobil() {
             const propNume = document.getElementById('proprietarNume').value.trim();
