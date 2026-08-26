@@ -879,7 +879,7 @@
         function stergeSemnaturaProprietar() { ctxProprietar.clearRect(0, 0, 280, 140); }
         function stergeSemnaturaChirias() { ctxChirias.clearRect(0, 0, 280, 140); }
 
-       async function genereazaContractImobiliarPDF() {
+      async function genereazaContractImobiliarPDF() {
             arataNotificare("Se generează contractul imobiliar oficial...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
@@ -891,7 +891,13 @@
                 let y = 780;
 
                 const deseneazaFooter = () => {
-                    page.drawText("Generat prin ActPeLoc.ro — Toate drepturile rezervate", { x: 45, y: 35, size: 8, font, color: rgb(0.5, 0.5, 0.5) });
+                    page.drawText("Generat prin ActPeLoc.ro — Toate drepturile rezervate", { 
+                        x: 45, 
+                        y: 35, 
+                        size: 8, 
+                        font, 
+                        color: PDFLib.rgb(0.5, 0.5, 0.5) 
+                    });
                 };
 
                 const deseneazaTitluSectiune = (text) => {
@@ -914,7 +920,7 @@
                     y -= 15;
                 };
 
-                // Antet Document (Curățat, fără „model unic oficial”)
+                // Antet Document
                 page.drawText("CONTRACT DE INCHIRIERE LOCUINTA", { x: 45, y, size: 13, font: fontBold });
                 y -= 18;
                 page.drawText(`Incheiat astazi ${new Date().toLocaleDateString('ro-RO')} conform Codului Civil in vigoare`, { x: 45, y, size: 9, font });
@@ -951,7 +957,7 @@
                 y -= 14;
 
                 // ARTICOLUL 5
-                deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIIle PARTILOR");
+                deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIILE PARTILOR");
                 deseneazaParagraf(`5.1. Locatorul se obliga sa predea imobilul in stare de curatenie si siguranta si sa asigure folosinta acestuia.`);
                 deseneazaParagraf(`5.2. Locatarul se obliga sa achite la termen chiria, utilitatile consumate (energie, gaze, apa) si sa foloseasca bunul ca un bun proprietar.`);
                 deseneazaParagraf(`5.3. Subinchirierea totala sau partiala catre terti este strict interzisa fara acordul scris al Locatorului.`);
