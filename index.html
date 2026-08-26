@@ -799,11 +799,11 @@
             const btn = document.getElementById('themeToggleBtn');
             if (body.getAttribute('data-theme') === 'light') {
                 body.setAttribute('data-theme', 'dark');
-                btn.innerText = "☀️";
+                if (btn) btn.innerText = "☀️";
                 localStorage.setItem('act_peloc_theme', 'dark');
             } else {
                 body.setAttribute('data-theme', 'light');
-                btn.innerText = "🌙";
+                if (btn) btn.innerText = "🌙";
                 localStorage.setItem('act_peloc_theme', 'light');
             }
         }
@@ -811,7 +811,8 @@
         function incarcaTemaSalvata() {
             if (localStorage.getItem('act_peloc_theme') === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
-                document.getElementById('themeToggleBtn').innerText = "☀️";
+                const btn = document.getElementById('themeToggleBtn');
+                if (btn) btn.innerText = "☀️";
             }
         }
 
@@ -823,8 +824,18 @@
             });
         }
 
-        function deschideModalAuth(mod = 'logare') { modAuthCurent = mod; aplicăModAuth(); document.getElementById('authModal').style.display = 'flex'; }
-        function inchideModalAuth() { document.getElementById('authModal').style.display = 'none'; }
+        function deschideModalAuth(mod = 'logare') { 
+            modAuthCurent = mod; 
+            aplicăModAuth(); 
+            const modal = document.getElementById('authModal');
+            if (modal) modal.style.display = 'flex'; 
+        }
+
+        function inchideModalAuth() { 
+            const modal = document.getElementById('authModal');
+            if (modal) modal.style.display = 'none'; 
+        }
+
         function schimbaModulAuth(mod) { modAuthCurent = mod; aplicăModAuth(); }
 
         function aplicăModAuth() {
@@ -835,23 +846,26 @@
             const regFields = document.querySelectorAll('.reg-field');
 
             if (modAuthCurent === 'logare') {
-                title.innerText = "Autentificare Cont";
-                subtitle.innerText = "Introdu e-mailul și parola unică pentru a te loga.";
-                btn.innerText = "🔑 Intră în Cont";
+                if (title) title.innerText = "Autentificare Cont";
+                if (subtitle) subtitle.innerText = "Introdu e-mailul și parola unică pentru a te loga.";
+                if (btn) btn.innerText = "🔑 Intră în Cont";
                 regFields.forEach(el => el.style.display = 'none');
-                switchCont.innerHTML = `Nu ai un cont? <span style="color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline;" onclick="schimbaModulAuth('inregistrare')">Creează-ți unul chiar acum</span>`;
+                if (switchCont) switchCont.innerHTML = `Nu ai un cont? <span style="color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline;" onclick="schimbaModulAuth('inregistrare')">Creează-ți unul chiar acum</span>`;
             } else {
-                title.innerText = "Creare Cont Nou";
-                subtitle.innerText = "Alege pachetul și setează datele tale de acces.";
-                btn.innerText = "🚀 Creează Cont & Activează";
+                if (title) title.innerText = "Creare Cont Nou";
+                if (subtitle) subtitle.innerText = "Alege pachetul și setează datele tale de acces.";
+                if (btn) btn.innerText = "🚀 Creează Cont & Activează";
                 regFields.forEach(el => el.style.display = 'block');
-                switchCont.innerHTML = `Ai deja un cont? <span style="color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline;" onclick="schimbaModulAuth('logare')">Autentifică-te aici</span>`;
+                if (switchCont) switchCont.innerHTML = `Ai deja un cont? <span style="color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline;" onclick="schimbaModulAuth('logare')">Autentifică-te aici</span>`;
             }
         }
 
         function gestioneazaClickContulMeu() {
             if (!profilCurent) { deschideModalAuth('logare'); }
-            else { const menu = document.getElementById('profileDropdownMenu'); menu.style.display = (menu.style.display === 'block') ? 'none' : 'block'; }
+            else { 
+                const menu = document.getElementById('profileDropdownMenu'); 
+                if (menu) menu.style.display = (menu.style.display === 'block') ? 'none' : 'block'; 
+            }
         }
 
         window.addEventListener('click', (e) => {
@@ -864,19 +878,25 @@
         function salveazaBazaConturi(db) { localStorage.setItem('act_peloc_baza_utilizatori', JSON.stringify(db)); }
 
         async function gestioneazaAutentificareSauInregistrare() {
-            const email = document.getElementById('authEmail').value.trim().toLowerCase();
-            const parola = document.getElementById('authPassword').value;
+            const emailInput = document.getElementById('authEmail');
+            const passInput = document.getElementById('authPassword');
+            if (!emailInput || !passInput) return;
+
+            const email = emailInput.value.trim().toLowerCase();
+            const parola = passInput.value;
 
             if (!email || !email.includes('@')) { arataNotificare("Introduceți o adresă de e-mail validă!", true); return; }
             if (!parola || parola.length < 6) { arataNotificare("Parola trebuie să aibă minim 6 caractere!", true); return; }
 
             let db = obtineBazaConturi();
             if (modAuthCurent === 'inregistrare') {
-                const confirmP = document.getElementById('authPasswordConfirm').value;
+                const confirmInput = document.getElementById('authPasswordConfirm');
+                const confirmP = confirmInput ? confirmInput.value : '';
                 if (parola !== confirmP) { arataNotificare("Parolele nu coincid!", true); return; }
                 if (db[email]) { arataNotificare("Acest e-mail este deja înregistrat!", true); return; }
 
-                const tip = document.getElementById('authTipProfil').value;
+                const tipEl = document.getElementById('authTipProfil');
+                const tip = tipEl ? tipEl.value : 'PERSOANA_FIZICA';
                 const pachet = pachetSelectatInregistrare;
                 let ramase = 99999;
 
@@ -902,52 +922,73 @@
 
         function actualizeazaUIAvanced() {
             if (!profilCurent) return;
-            document.getElementById('userStatusText').innerText = profilCurent.email.split('@')[0];
-            document.getElementById('userAvatarText').innerText = profilCurent.email.charAt(0).toUpperCase();
-            document.getElementById('dropdownEmailText').innerText = profilCurent.email;
-            document.getElementById('dashNavBtn').style.display = 'inline-flex';
+            const statusText = document.getElementById('userStatusText');
+            const avatarText = document.getElementById('userAvatarText');
+            const dropdownEmail = document.getElementById('dropdownEmailText');
+            const dashBtn = document.getElementById('dashNavBtn');
+
+            if (statusText) statusText.innerText = profilCurent.email.split('@')[0];
+            if (avatarText) avatarText.innerText = profilCurent.email.charAt(0).toUpperCase();
+            if (dropdownEmail) dropdownEmail.innerText = profilCurent.email;
+            if (dashBtn) dashBtn.style.display = 'inline-flex';
         }
 
         function deconectareUtilizator() {
             localStorage.removeItem('act_peloc_utilizator_activ');
             profilCurent = null;
-            document.getElementById('userStatusText').innerText = "Contul Meu";
-            document.getElementById('userAvatarText').innerText = "👤";
-            document.getElementById('dashNavBtn').style.display = 'none';
-            document.getElementById('profileDropdownMenu').style.display = 'none';
+            const statusText = document.getElementById('userStatusText');
+            const avatarText = document.getElementById('userAvatarText');
+            const dashBtn = document.getElementById('dashNavBtn');
+            const menu = document.getElementById('profileDropdownMenu');
+
+            if (statusText) statusText.innerText = "Contul Meu";
+            if (avatarText) avatarText.innerText = "👤";
+            if (dashBtn) dashBtn.style.display = 'none';
+            if (menu) menu.style.display = 'none';
             arataNotificare("V-ați deconectat cu succes!");
             deschideMeniuPrincipal();
         }
 
         function acceseazaDashboardTab(tabName) {
-            document.getElementById('profileDropdownMenu').style.display = 'none';
+            const menu = document.getElementById('profileDropdownMenu');
+            if (menu) menu.style.display = 'none';
             if (!profilCurent) { deschideModalAuth('logare'); return; }
-            document.getElementById('mainMenuContainer').style.display = 'none';
-            document.getElementById('modeSelectorContainer').style.display = 'none';
-            document.getElementById('imobilModeSelectorContainer').style.display = 'none';
-            document.getElementById('muncaMenuContainer').style.display = 'none';
-            document.getElementById('autoMenuContainer').style.display = 'none';
+            
+            const containers = ['mainMenuContainer', 'modeSelectorContainer', 'imobilModeSelectorContainer', 'muncaMenuContainer', 'autoMenuContainer'];
+            containers.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('dashboardView').style.display = 'block';
+            const dashView = document.getElementById('dashboardView');
+            if (dashView) dashView.style.display = 'block';
+            
             incarcaDateDashboard();
-            if (tabName === 'arhiva') schimbaTabDash('arhiva', document.querySelectorAll('.dash-tab-btn')[0]);
-            if (tabName === 'abonament') schimbaTabDash('abonament', document.querySelectorAll('.dash-tab-btn')[1]);
-            if (tabName === 'afiliere') schimbaTabDash('afiliere', document.querySelectorAll('.dash-tab-btn')[2]);
-            if (tabName === 'setari') { schimbaTabDash('setari', document.querySelectorAll('.dash-tab-btn')[3]); document.getElementById('settingsNewEmail').value = profilCurent.email; }
+            const btns = document.querySelectorAll('.dash-tab-btn');
+            if (tabName === 'arhiva' && btns[0]) schimbaTabDash('arhiva', btns[0]);
+            if (tabName === 'abonament' && btns[1]) schimbaTabDash('abonament', btns[1]);
+            if (tabName === 'afiliere' && btns[2]) schimbaTabDash('afiliere', btns[2]);
+            if (tabName === 'setari' && btns[3]) { 
+                schimbaTabDash('setari', btns[3]); 
+                const setMail = document.getElementById('settingsNewEmail');
+                if (setMail) setMail.value = profilCurent.email; 
+            }
         }
 
         function schimbaTabDash(tabName, btnEl) {
             document.querySelectorAll('.dash-section').forEach(el => { if (el.id.startsWith('dashTab')) el.classList.remove('active'); });
             document.querySelectorAll('.dash-tab-btn').forEach(b => b.classList.remove('active'));
-            if (tabName === 'arhiva') document.getElementById('dashTabArhiva').classList.add('active');
-            if (tabName === 'abonament') document.getElementById('dashTabAbonament').classList.add('active');
-            if (tabName === 'afiliere') document.getElementById('dashTabAfiliere').classList.add('active');
-            if (tabName === 'setari') document.getElementById('dashTabSetari').classList.add('active');
+            
+            const targetTab = document.getElementById('dashTab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+            if (targetTab) targetTab.classList.add('active');
             if (btnEl) btnEl.classList.add('active');
         }
 
         function actualizeazaEmailCont() {
-            const nouEmail = document.getElementById('settingsNewEmail').value.trim().toLowerCase();
+            const emailInput = document.getElementById('settingsNewEmail');
+            if (!emailInput) return;
+            const nouEmail = emailInput.value.trim().toLowerCase();
             if (!nouEmail || !nouEmail.includes('@')) { arataNotificare("E-mail invalid!", true); return; }
             let db = obtineBazaConturi();
             let vechi = profilCurent.email;
@@ -984,14 +1025,23 @@
 
         function incarcaDateDashboard() {
             if (!profilCurent) return;
-            document.getElementById('infoDashEmail').innerText = profilCurent.email;
-            document.getElementById('infoDashProfil').innerText = profilCurent.tip;
-            document.getElementById('infoDashPachet').innerText = profilCurent.pachet;
-            document.getElementById('infoDashRamase').innerText = "∞ (Nelimitat - Mod Creator)";
-            const linkRef = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(profilCurent.email)}`;
-            document.getElementById('myReferralLinkText').innerText = linkRef;
+            const emailEl = document.getElementById('infoDashEmail');
+            const profilEl = document.getElementById('infoDashProfil');
+            const pachetEl = document.getElementById('infoDashPachet');
+            const ramaseEl = document.getElementById('infoDashRamase');
+            const linkRefEl = document.getElementById('myReferralLinkText');
+
+            if (emailEl) emailEl.innerText = profilCurent.email;
+            if (profilEl) profilEl.innerText = profilCurent.tip;
+            if (pachetEl) pachetEl.innerText = profilCurent.pachet;
+            if (ramaseEl) ramaseEl.innerText = "∞ (Nelimitat - Mod Creator)";
+            
+            if (linkRefEl) {
+                linkRefEl.innerText = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(profilCurent.email)}`;
+            }
 
             const lista = document.getElementById('dashboardContracteLista');
+            if (!lista) return;
             lista.innerHTML = '';
             let istoric = profilCurent.arhivaContracte || [];
             if (istoric.length === 0) { lista.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat momentan.</td></tr>`; return; }
@@ -1025,8 +1075,18 @@
             arataNotificare(`📥 Se descarcă documentul ${item.idAct}...`);
         }
 
-        function copiazaLinkAfiliere() { navigator.clipboard.writeText(document.getElementById('myReferralLinkText').innerText).then(() => { arataNotificare("📋 Copiat!"); }); }
-        function trimiteAfiliereWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(document.getElementById('myReferralLinkText').innerText)}`, '_blank'); }
+        function copiazaLinkAfiliere() { 
+            const linkText = document.getElementById('myReferralLinkText');
+            if (linkText) {
+                navigator.clipboard.writeText(linkText.innerText).then(() => { arataNotificare("📋 Copiat!"); }); 
+            }
+        }
+        function trimiteAfiliereWhatsApp() { 
+            const linkText = document.getElementById('myReferralLinkText');
+            if (linkText) {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(linkText.innerText)}`, '_blank'); 
+            }
+        }
 
         function salveazaInArhivaprivata(item, pdfBytes) {
             if (!profilCurent) return true;
@@ -1052,72 +1112,95 @@
 
         function deschideMeniuPrincipal() {
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('progressBarContainer').style.display = 'none';
-            document.getElementById('modeSelectorContainer').style.display = 'none';
-            document.getElementById('imobilModeSelectorContainer').style.display = 'none';
-            document.getElementById('muncaMenuContainer').style.display = 'none';
-            document.getElementById('autoMenuContainer').style.display = 'none';
-            document.getElementById('dashboardView').style.display = 'none';
-            document.getElementById('mainMenuContainer').style.display = 'block';
+            
+            const idsToHide = ['progressBarContainer', 'modeSelectorContainer', 'imobilModeSelectorContainer', 'muncaMenuContainer', 'autoMenuContainer', 'dashboardView'];
+            idsToHide.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
+            const mainContainer = document.getElementById('mainMenuContainer');
+            if (mainContainer) mainContainer.style.display = 'block';
         }
 
         function selecteazaCategorie(cat) {
+            const mainCont = document.getElementById('mainMenuContainer');
+            if (mainCont) mainCont.style.display = 'none';
+
             if (cat === 'auto') {
-                document.getElementById('mainMenuContainer').style.display = 'none';
-                document.getElementById('autoMenuContainer').style.display = 'block';
+                const autoCont = document.getElementById('autoMenuContainer');
+                if (autoCont) autoCont.style.display = 'block';
             } else if (cat === 'imobiliare') {
-                document.getElementById('mainMenuContainer').style.display = 'none';
-                document.getElementById('imobilModeSelectorContainer').style.display = 'block';
+                const imobCont = document.getElementById('imobilModeSelectorContainer');
+                if (imobCont) imobCont.style.display = 'block';
             } else if (cat === 'munca') {
-                document.getElementById('mainMenuContainer').style.display = 'none';
-                document.getElementById('muncaMenuContainer').style.display = 'block';
+                const muncaCont = document.getElementById('muncaMenuContainer');
+                if (muncaCont) muncaCont.style.display = 'block';
             }
         }
 
         function pornesteFluxDemisie() {
-            document.getElementById('muncaMenuContainer').style.display = 'none';
+            const muncaCont = document.getElementById('muncaMenuContainer');
+            if (muncaCont) muncaCont.style.display = 'none';
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('demisieStep1').classList.add('active');
+            const demStep1 = document.getElementById('demisieStep1');
+            if (demStep1) demStep1.classList.add('active');
         }
 
         function pornesteFluxB2B() {
-            document.getElementById('muncaMenuContainer').style.display = 'none';
+            const muncaCont = document.getElementById('muncaMenuContainer');
+            if (muncaCont) muncaCont.style.display = 'none';
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('b2bStep1').classList.add('active');
+            const b2bStep1 = document.getElementById('b2bStep1');
+            if (b2bStep1) b2bStep1.classList.add('active');
         }
 
         function pornesteFluxComodat() {
-            document.getElementById('autoMenuContainer').style.display = 'none';
+            const autoCont = document.getElementById('autoMenuContainer');
+            if (autoCont) autoCont.style.display = 'none';
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('comodatStep1').classList.add('active');
+            const comodStep1 = document.getElementById('comodatStep1');
+            if (comodStep1) comodStep1.classList.add('active');
         }
 
         function selecteazaModImobiliarSiPorneste(mod) {
             modLucruImobil = mod;
-            document.getElementById('imobilModeSelectorContainer').style.display = 'none';
+            const imobSel = document.getElementById('imobilModeSelectorContainer');
+            if (imobSel) imobSel.style.display = 'none';
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('imobilStep1').classList.add('active');
+            const imobilStep1 = document.getElementById('imobilStep1');
+            if (imobilStep1) imobilStep1.classList.add('active');
         }
 
         function selecteazaModSiPorneste(mod) {
             modLucru = mod;
-            document.getElementById('autoMenuContainer').style.display = 'none';
-            document.getElementById('modeSelectorContainer').style.display = 'block';
-            document.getElementById('progressBarContainer').style.display = 'flex';
+            const autoCont = document.getElementById('autoMenuContainer');
+            const modeSel = document.getElementById('modeSelectorContainer');
+            const progressCont = document.getElementById('progressBarContainer');
+
+            if (autoCont) autoCont.style.display = 'none';
+            if (modeSel) modeSel.style.display = 'block';
+            if (progressCont) progressCont.style.display = 'flex';
+            
             currentStep = 1;
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('step1').classList.add('active');
+            const step1 = document.getElementById('step1');
+            if (step1) step1.classList.add('active');
         }
 
         function nextStep(step) {
-            document.getElementById('step' + step).classList.remove('active');
+            const curr = document.getElementById('step' + step);
+            if (curr) curr.classList.remove('active');
             currentStep = step + 1;
-            document.getElementById('step' + currentStep).classList.add('active');
+            const next = document.getElementById('step' + currentStep);
+            if (next) next.classList.add('active');
         }
         function prevStep(step) {
-            document.getElementById('step' + step).classList.remove('active');
+            const curr = document.getElementById('step' + step);
+            if (curr) curr.classList.remove('active');
             currentStep = step - 1;
-            document.getElementById('step' + currentStep).classList.add('active');
+            const prev = document.getElementById('step' + currentStep);
+            if (prev) prev.classList.add('active');
         }
 
         function arataNotificare(msg, error = false) {
@@ -1153,13 +1236,15 @@
             const ctarNume = document.getElementById('comodatarNume');
             const ctarCnp = document.getElementById('comodatarCnp');
 
-            if (!comNume.value.trim()) { marcheazaEroreInput('comodantNume'); arataNotificare("❌ Introduceți numele proprietarului!", true); return; }
-            if (comCnp.value.trim().length !== 13) { marcheazaEroreInput('comodantCnp'); arataNotificare("❌ CNP comodant invalid (13 cifre)!", true); return; }
-            if (!ctarNume.value.trim()) { marcheazaEroreInput('comodatarNume'); arataNotificare("❌ Introduceți numele comodatarului!", true); return; }
-            if (ctarCnp.value.trim().length !== 13) { marcheazaEroreInput('comodatarCnp'); arataNotificare("❌ CNP comodatar invalid (13 cifre)!", true); return; }
+            if (!comNume || !comNume.value.trim()) { marcheazaEroreInput('comodantNume'); arataNotificare("❌ Introduceți numele proprietarului!", true); return; }
+            if (!comCnp || comCnp.value.trim().length !== 13) { marcheazaEroreInput('comodantCnp'); arataNotificare("❌ CNP comodant invalid (13 cifre)!", true); return; }
+            if (!ctarNume || !ctarNume.value.trim()) { marcheazaEroreInput('comodatarNume'); arataNotificare("❌ Introduceți numele comodatarului!", true); return; }
+            if (!ctarCnp || ctarCnp.value.trim().length !== 13) { marcheazaEroreInput('comodatarCnp'); arataNotificare("❌ CNP comodatar invalid (13 cifre)!", true); return; }
 
-            document.getElementById('comodatStep1').classList.remove('active');
-            document.getElementById('comodatStep2').classList.add('active');
+            const step1 = document.getElementById('comodatStep1');
+            const step2 = document.getElementById('comodatStep2');
+            if (step1) step1.classList.remove('active');
+            if (step2) step2.classList.add('active');
         }
 
         function valideazaPasComodat2() {
@@ -1167,12 +1252,14 @@
             const vin = document.getElementById('comodVin');
             const reg = document.getElementById('comodReg');
 
-            if (!make.value.trim()) { marcheazaEroreInput('comodMake'); arataNotificare("❌ Introduceți marca vehiculului!", true); return; }
-            if (!vin.value.trim()) { marcheazaEroreInput('comodVin'); arataNotificare("❌ Introduceți seria de șasiu (VIN)!", true); return; }
-            if (!reg.value.trim()) { marcheazaEroreInput('comodReg'); arataNotificare("❌ Introduceți numărul de înmatriculare!", true); return; }
+            if (!make || !make.value.trim()) { marcheazaEroreInput('comodMake'); arataNotificare("❌ Introduceți marca vehiculului!", true); return; }
+            if (!vin || !vin.value.trim()) { marcheazaEroreInput('comodVin'); arataNotificare("❌ Introduceți seria de șasiu (VIN)!", true); return; }
+            if (!reg || !reg.value.trim()) { marcheazaEroreInput('comodReg'); arataNotificare("❌ Introduceți numărul de înmatriculare!", true); return; }
 
-            document.getElementById('comodatStep2').classList.remove('active');
-            document.getElementById('comodatStep3').classList.add('active');
+            const step2 = document.getElementById('comodatStep2');
+            const step3 = document.getElementById('comodatStep3');
+            if (step2) step2.classList.remove('active');
+            if (step3) step3.classList.add('active');
             initCanvasesComodat();
         }
 
@@ -1195,8 +1282,8 @@
             canvasCtar.onmouseup = () => { isDrawingComodatar = false; };
         }
 
-        function stergeSemnaturaComodant() { ctxComodant.clearRect(0, 0, 280, 130); hasDrawnComodant = false; }
-        function stergeSemnaturaComodatar() { ctxComodatar.clearRect(0, 0, 280, 130); hasDrawnComodatar = false; }
+        function stergeSemnaturaComodant() { if(ctxComodant) ctxComodant.clearRect(0, 0, 280, 130); hasDrawnComodant = false; }
+        function stergeSemnaturaComodatar() { if(ctxComodatar) ctxComodatar.clearRect(0, 0, 280, 130); hasDrawnComodatar = false; }
 
         async function genereazaContractComodatPDF() {
             if (!hasDrawnComodant || !hasDrawnComodatar) {
@@ -1243,28 +1330,30 @@
                 page.drawText(curataDiacritice(titluText), { x: (595.28 - textWidth) / 2, y, size: 10.5, font: fontBold });
                 y -= 22;
 
+                const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+
                 deseneazaTitluSectiune("ARTICOLUL 1: PĂRȚILE CONTRACTANTE");
-                deseneazaParagraf(`1.1. Comodant (Proprietar): ${document.getElementById('comodantNume').value}, CNP: ${document.getElementById('comodantCnp').value},`);
-                deseneazaParagraf(`posesor al CI seria ${document.getElementById('comodantAct').value}, cu domiciliul in ${document.getElementById('comodantAdresa').value}.`);
-                deseneazaParagraf(`1.2. Comodatar (Utilizator): ${document.getElementById('comodatarNume').value}, CNP: ${document.getElementById('comodatarCnp').value},`);
-                deseneazaParagraf(`posesor al CI seria ${document.getElementById('comodatarAct').value}, cu domiciliul in ${document.getElementById('comodatarAdresa').value}.`);
+                deseneazaParagraf(`1.1. Comodant (Proprietar): ${getVal('comodantNume')}, CNP: ${getVal('comodantCnp')},`);
+                deseneazaParagraf(`posesor al CI seria ${getVal('comodantAct')}, cu domiciliul in ${getVal('comodantAdresa')}.`);
+                deseneazaParagraf(`1.2. Comodatar (Utilizator): ${getVal('comodatarNume')}, CNP: ${getVal('comodatarCnp')},`);
+                deseneazaParagraf(`posesor al CI seria ${getVal('comodatarAct')}, cu domiciliul in ${getVal('comodatarAdresa')}.`);
                 y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI");
                 deseneazaParagraf(`2.1. Comodantul da in folosinta gratuita Comodatarului autovehiculul avand urmatoarele date tehnice:`);
-                deseneazaParagraf(`- Marca si Model: ${document.getElementById('comodMake').value} ${document.getElementById('comodType').value}`);
-                deseneazaParagraf(`- Numar de inmatriculare: ${document.getElementById('comodReg').value} | Serie Sasiu (VIN): ${document.getElementById('comodVin').value}`);
-                deseneazaParagraf(`- Serie Motor: ${document.getElementById('comodMotor').value} | Capacitate: ${document.getElementById('comodCmc').value} cmc`);
-                deseneazaParagraf(`- Numar CIV: ${document.getElementById('comodCiv').value}`);
+                deseneazaParagraf(`- Marca si Model: ${getVal('comodMake')} ${getVal('comodType')}`);
+                deseneazaParagraf(`- Numar de inmatriculare: ${getVal('comodReg')} | Serie Sasiu (VIN): ${getVal('comodVin')}`);
+                deseneazaParagraf(`- Serie Motor: ${getVal('comodMotor')} | Capacitate: ${getVal('comodCmc')} cmc`);
+                deseneazaParagraf(`- Numar CIV: ${getVal('comodCiv')}`);
                 y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 3: DURATA SI SCOPUL");
-                deseneazaParagraf(`3.1. Prezentul contract se incheie pe perioada de ${document.getElementById('comodDurata').value || '1 AN'}, incepand de la data semnarii.`);
+                deseneazaParagraf(`3.1. Prezentul contract se incheie pe perioada de ${getVal('comodDurata') || '1 AN'}, incepand de la data semnarii.`);
                 deseneazaParagraf(`3.2. Autovehiculul este dat in folosinta pentru uz personal si deplasari curente.`);
-                deseneazaParagraf(`3.3. ${document.getElementById('comodExtern').value || 'Cu drept de circulatie pe teritoriul Romaniei si in afara tarii (UE).'}`);
+                deseneazaParagraf(`3.3. ${getVal('comodExtern') || 'Cu drept de circulatie pe teritoriul Romaniei si in afara tarii (UE).'}`);
                 y -= 4;
 
-                deseneazaTitluSectiune("ARTICOLUL 4: OBLIGATIILE COMODATARULUI");
+                deseneazaTitluSectiune("ARTICOLUL 4: OBLIGATIIle COMODATARULUI");
                 deseneazaParagraf(`4.1. Comodatarul suporta toate cheltuielile de intretinere, combustibil, revizii, rovinieta si valabilitatea politei RCA.`);
                 deseneazaParagraf(`4.2. Comodatarul raspunde integral pentru amenzile contraventionale primite in perioada in care utilizeaza autovehiculul.`);
                 y -= 15;
@@ -1277,8 +1366,12 @@
                 deseneazaTitluSectiune("SEMNATURILE PĂRȚILOR:");
                 y -= 4;
 
-                const sigComBytes = await pdfDoc.embedPng(document.getElementById('sigComodantCanvas').toDataURL('image/png'));
-                const sigCtarBytes = await pdfDoc.embedPng(document.getElementById('sigComodatarCanvas').toDataURL('image/png'));
+                const sigComCanvas = document.getElementById('sigComodantCanvas');
+                const sigCtarCanvas = document.getElementById('sigComodatarCanvas');
+                if (!sigComCanvas || !sigCtarCanvas) return;
+
+                const sigComBytes = await pdfDoc.embedPng(sigComCanvas.toDataURL('image/png'));
+                const sigCtarBytes = await pdfDoc.embedPng(sigCtarCanvas.toDataURL('image/png'));
 
                 page.drawImage(sigComBytes, { x: 45, y: y - 50, width: 120, height: 38 });
                 page.drawImage(sigCtarBytes, { x: 310, y: y - 50, width: 120, height: 38 });
@@ -1292,7 +1385,7 @@
 
                 salveazaInArhivaprivata({ 
                     idAct: 'COMODAT-' + Math.floor(1000 + Math.random()*9000), 
-                    detalii: 'Contract Comodat Auto - ' + curataDiacritice(document.getElementById('comodMake').value) 
+                    detalii: 'Contract Comodat Auto - ' + curataDiacritice(getVal('comodMake')) 
                 }, bytes);
 
                 const blob = new Blob([bytes], { type: 'application/pdf' });
@@ -1311,13 +1404,13 @@
             if (pas === 1) {
                 const nume = document.getElementById('sellerName');
                 const cnp = document.getElementById('seller_ci_cnp');
-                if (!nume.value.trim()) { marcheazaEroreInput('sellerName'); arataNotificare("❌ Introduceți numele vânzătorului!", true); return; }
-                if (cnp.value.trim().length !== 13) { marcheazaEroreInput('seller_ci_cnp'); arataNotificare("❌ CNP vânzător invalid (13 cifre)!", true); return; }
+                if (!nume || !nume.value.trim()) { marcheazaEroreInput('sellerName'); arataNotificare("❌ Introduceți numele vânzătorului!", true); return; }
+                if (!cnp || cnp.value.trim().length !== 13) { marcheazaEroreInput('seller_ci_cnp'); arataNotificare("❌ CNP vânzător invalid (13 cifre)!", true); return; }
             } else if (pas === 2) {
                 const nume = document.getElementById('buyerName');
                 const cnp = document.getElementById('buyerCNP');
-                if (!nume.value.trim()) { marcheazaEroreInput('buyerName'); arataNotificare("❌ Introduceți numele cumpărătorului!", true); return; }
-                if (cnp.value.trim().length !== 13) { marcheazaEroreInput('buyerCNP'); arataNotificare("❌ CNP cumpărător invalid (13 cifre)!", true); return; }
+                if (!nume || !nume.value.trim()) { marcheazaEroreInput('buyerName'); arataNotificare("❌ Introduceți numele cumpărătorului!", true); return; }
+                if (!cnp || cnp.value.trim().length !== 13) { marcheazaEroreInput('buyerCNP'); arataNotificare("❌ CNP cumpărător invalid (13 cifre)!", true); return; }
             }
             nextStep(pas);
         }
@@ -1345,6 +1438,8 @@
                     y -= 16;
                 };
 
+                const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+
                 const deseneazaRand = (label, valoare) => {
                     if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
                     page.drawText(curataDiacritice(`${label}: ${valoare || '-'}`), { x: 45, y, size: 8.5, font });
@@ -1357,26 +1452,26 @@
                 y -= 30;
 
                 deseneazaTitlu("1. DATE DESPRE VÂNZĂTOR");
-                deseneazaRand("Nume / Denumire", document.getElementById('sellerName').value);
-                deseneazaRand("Domiciliu / Sediu", `${document.getElementById('sellerCity').value}, Jud. ${document.getElementById('sellerCounty').value}, Str. ${document.getElementById('sellerStreet').value} Nr. ${document.getElementById('sellerStreetNo').value}`);
-                deseneazaRand("Act Identitate", `Seria ${document.getElementById('seller_ci_serie').value} Nr. ${document.getElementById('seller_ci_number').value} | CNP/CIF: ${document.getElementById('seller_ci_cnp').value}`);
+                deseneazaRand("Nume / Denumire", getVal('sellerName'));
+                deseneazaRand("Domiciliu / Sediu", `${getVal('sellerCity')}, Jud. ${getVal('sellerCounty')}, Str. ${getVal('sellerStreet')} Nr. ${getVal('sellerStreetNo')}`);
+                deseneazaRand("Act Identitate", `Seria ${getVal('seller_ci_serie')} Nr. ${getVal('seller_ci_number')} | CNP/CIF: ${getVal('seller_ci_cnp')}`);
                 y -= 10;
 
                 deseneazaTitlu("2. DATE DESPRE CUMPĂRĂTOR");
-                deseneazaRand("Nume / Denumire", document.getElementById('buyerName').value);
-                deseneazaRand("Domiciliu / Sediu", `${document.getElementById('buyer_city').value}, Jud. ${document.getElementById('buyer_judet').value}, Str. ${document.getElementById('buyerStreet').value} Nr. ${document.getElementById('buyerStreetNo').value}`);
-                deseneazaRand("Act Identitate", `CI: ${document.getElementById('buyerCISeries').value} | CNP/CIF: ${document.getElementById('buyerCNP').value}`);
+                deseneazaRand("Nume / Denumire", getVal('buyerName'));
+                deseneazaRand("Domiciliu / Sediu", `${getVal('buyer_city')}, Jud. ${getVal('buyer_judet')}, Str. ${getVal('buyerStreet')} Nr. ${getVal('buyerStreetNo')}`);
+                deseneazaRand("Act Identitate", `CI: ${getVal('buyerCISeries')} | CNP/CIF: ${getVal('buyerCNP')}`);
                 y -= 10;
 
                 deseneazaTitlu("3. DATE DESPRE VEHICUL");
-                deseneazaRand("Marca si Tip", `${document.getElementById('make').value} ${document.getElementById('type').value}`);
-                deseneazaRand("Numar de Identificare (VIN)", document.getElementById('chassisSeries').value);
-                deseneazaRand("Serie Motor / Capacitate", `${document.getElementById('motorSeries').value} / ${document.getElementById('cilCapacity').value} cmc`);
-                deseneazaRand("Numar de Inmatriculare", document.getElementById('regNumber').value);
+                deseneazaRand("Marca si Tip", `${getVal('make')} ${getVal('type')}`);
+                deseneazaRand("Numar de Identificare (VIN)", getVal('chassisSeries'));
+                deseneazaRand("Serie Motor / Capacitate", `${getVal('motorSeries')} / ${getVal('cilCapacity')} cmc`);
+                deseneazaRand("Numar de Inmatriculare", getVal('regNumber'));
                 y -= 10;
 
                 deseneazaTitlu("4. PREȚUL ÎNSTRĂINĂRII");
-                deseneazaRand("Pret in cifre si litere", `${document.getElementById('figurePrice').value} (${document.getElementById('lettersPrice').value})`);
+                deseneazaRand("Pret in cifre si litere", `${getVal('figurePrice')} (${getVal('lettersPrice')})`);
                 y -= 20;
 
                 page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`), { x: 45, y, size: 9, font: fontBold });
@@ -1387,7 +1482,7 @@
 
                 salveazaInArhivaprivata({ 
                     idAct: 'AUTO-' + Math.floor(1000 + Math.random()*9000), 
-                    detalii: 'Contract Auto ITL 054 - ' + curataDiacritice(document.getElementById('make').value) 
+                    detalii: 'Contract Auto ITL 054 - ' + curataDiacritice(getVal('make')) 
                 }, bytes);
 
                 const blob = new Blob([bytes], { type: 'application/pdf' });
@@ -1407,12 +1502,14 @@
             const cnpEl = document.getElementById('demisieAngajatCnp');
             const functieEl = document.getElementById('demisieAngajatFunctie');
 
-            if (!numeEl.value.trim()) { arataNotificare("❌ Introduceți numele angajatului!", true); marcheazaEroreInput('demisieAngajatNume'); return; }
-            if (cnpEl.value.trim().length !== 13) { arataNotificare("❌ CNP-ul angajatului trebuie să aibă exact 13 cifre!", true); marcheazaEroreInput('demisieAngajatCnp'); return; }
-            if (!functieEl.value.trim()) { arataNotificare("❌ Introduceți funcția angajatului!", true); marcheazaEroreInput('demisieAngajatFunctie'); return; }
+            if (!numeEl || !numeEl.value.trim()) { arataNotificare("❌ Introduceți numele angajatului!", true); marcheazaEroreInput('demisieAngajatNume'); return; }
+            if (!cnpEl || cnpEl.value.trim().length !== 13) { arataNotificare("❌ CNP-ul angajatului trebuie să aibă exact 13 cifre!", true); marcheazaEroreInput('demisieAngajatCnp'); return; }
+            if (!functieEl || !functieEl.value.trim()) { arataNotificare("❌ Introduceți funcția angajatului!", true); marcheazaEroreInput('demisieAngajatFunctie'); return; }
 
-            document.getElementById('demisieStep1').classList.remove('active');
-            document.getElementById('demisieStep2').classList.add('active');
+            const s1 = document.getElementById('demisieStep1');
+            const s2 = document.getElementById('demisieStep2');
+            if (s1) s1.classList.remove('active');
+            if (s2) s2.classList.add('active');
             initCanvasDemisie();
         }
 
@@ -1426,7 +1523,7 @@
             canvasD.onmouseup = () => { isDrawingD = false; };
         }
 
-        function stergeSemnaturaDemisie() { ctxDemisie.clearRect(0, 0, 280, 140); hasDrawnD = false; }
+        function stergeSemnaturaDemisie() { if(ctxDemisie) ctxDemisie.clearRect(0, 0, 280, 140); hasDrawnD = false; }
 
         async function genereazaCerereDemisiePDF() {
             if (!hasDrawnD) { arataNotificare("❌ Vă rugăm să semnați cererea pe ecran!", true); return; }
@@ -1473,30 +1570,32 @@
                     }
                 };
 
+                const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+
                 page.drawText(curataDiacritice("Inregistrat la Societate cu Nr: ............ / Data: ...................."), { x: 240, y, size: 8.5, font: fontBold });
                 y -= 25;
 
-                const compNume = document.getElementById('demisieCompanieNume').value.trim();
-                const compAdresa = document.getElementById('demisieCompanieAdresa').value.trim();
+                const compNume = getVal('demisieCompanieNume').trim();
+                const compAdresa = getVal('demisieCompanieAdresa').trim();
                 
                 deseneazaParagrafLiniar(`Catre Conducerea: ${compNume || 'Societatii Comerciale'}`, true, 10, 15);
                 deseneazaParagrafLiniar(`Sediul / Punct de lucru: ${compAdresa || 'Conform contractului individual de munca'}`, false, 9, 22);
 
                 deseneazaParagrafLiniar("Datele Salariatului (Titularul demisiei):", true, 9, 13);
-                deseneazaParagrafLiniar(`- Nume si Prenume: ${document.getElementById('demisieAngajatNume').value}`, false, 9, 14);
-                deseneazaParagrafLiniar(`- Cod Numeric Personal (CNP): ${document.getElementById('demisieAngajatCnp').value}`, false, 9, 14);
-                deseneazaParagrafLiniar(`- Functia / Ocupatia: ${document.getElementById('demisieAngajatFunctie').value}`, false, 9, 14);
-                deseneazaParagrafLiniar(`- Departament / Structura: ${document.getElementById('demisieAngajatDept').value || 'General'}`, false, 9, 22);
+                deseneazaParagrafLiniar(`- Nume si Prenume: ${getVal('demisieAngajatNume')}`, false, 9, 14);
+                deseneazaParagrafLiniar(`- Cod Numeric Personal (CNP): ${getVal('demisieAngajatCnp')}`, false, 9, 14);
+                deseneazaParagrafLiniar(`- Functia / Ocupatia: ${getVal('demisieAngajatFunctie')}`, false, 9, 14);
+                deseneazaParagrafLiniar(`- Departament / Structura: ${getVal('demisieAngajatDept') || 'General'}`, false, 9, 22);
 
                 const titluText = curataDiacritice("CERERE DE INCETARE A CONTRACTULUI DE MUNCA PRIN DEMISIE");
                 const textWidth = fontBold.widthOfTextAtSize(titluText, 10.5);
                 page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 10.5, font: fontBold });
                 y -= 22;
 
-                const zilePreaviz = document.getElementById('demisieTipPreaviz').value;
-                const ultimaZi = document.getElementById('demisieDataUltima').value || '[Data ultimei zile]';
-                const numeAngajat = document.getElementById('demisieAngajatNume').value;
-                const functieAngajat = document.getElementById('demisieAngajatFunctie').value;
+                const zilePreaviz = getVal('demisieTipPreaviz') || '20';
+                const ultimaZi = getVal('demisieDataUltima') || '[Data ultimei zile]';
+                const numeAngajat = getVal('demisieAngajatNume');
+                const functieAngajat = getVal('demisieAngajatFunctie');
 
                 deseneazaParagrafLiniar(`Subsemnatul(a) ${numeAngajat}, salariat(a) al(a) unitatii dumneavoastra in cadrul functiei de ${functieAngajat}, in temeiul dispozitiilor art. 81 din Legea nr. 53/2003 - Codul Muncii, republicata, cu modificarile si completarile ulterioare, prin prezenta formula:`, false, 9, 13.5);
                 y -= 6;
@@ -1517,8 +1616,11 @@
                 deseneazaParagrafLiniar(`Data intocmirii: ${new Date().toLocaleDateString('ro-RO')}`, false, 9, 18);
                 deseneazaParagrafLiniar("Semnatura Salariatului,", true, 9, 12);
 
-                const sigDImageBytes = await pdfDoc.embedPng(document.getElementById('sigDemisieCanvas').toDataURL('image/png'));
-                page.drawImage(sigDImageBytes, { x: 45, y: y - 42, width: 110, height: 38 });
+                const sigDCanvas = document.getElementById('sigDemisieCanvas');
+                if (sigDCanvas) {
+                    const sigDImageBytes = await pdfDoc.embedPng(sigDCanvas.toDataURL('image/png'));
+                    page.drawImage(sigDImageBytes, { x: 45, y: y - 42, width: 110, height: 38 });
+                }
 
                 deseneazaFooter();
 
@@ -1526,7 +1628,7 @@
                 
                 salveazaInArhivaprivata({ 
                     idAct: 'DEM-' + Math.floor(1000 + Math.random()*9000), 
-                    detalii: 'Cerere Demisie Oficială - ' + curataDiacritice(document.getElementById('demisieAngajatNume').value) 
+                    detalii: 'Cerere Demisie Oficială - ' + curataDiacritice(getVal('demisieAngajatNume')) 
                 }, bytes);
 
                 const blob = new Blob([bytes], { type: 'application/pdf' });
@@ -1551,17 +1653,19 @@
             const imobilAdresa = document.getElementById('imobilAdresa');
             const imobilChirie = document.getElementById('imobilChirie');
 
-            if (!propNume.value.trim()) { marcheazaEroreInput('proprietarNume'); arataNotificare("❌ Introduceți numele proprietarului!", true); return; }
-            if (propCnp.value.trim().length !== 13) { marcheazaEroreInput('proprietarCnp'); arataNotificare("❌ CNP Proprietar invalid (13 cifre)!", true); return; }
-            if (!propAdresa.value.trim()) { marcheazaEroreInput('proprietarAdresa'); arataNotificare("❌ Introduceți adresa proprietarului!", true); return; }
+            if (!propNume || !propNume.value.trim()) { marcheazaEroreInput('proprietarNume'); arataNotificare("❌ Introduceți numele proprietarului!", true); return; }
+            if (!propCnp || propCnp.value.trim().length !== 13) { marcheazaEroreInput('proprietarCnp'); arataNotificare("❌ CNP Proprietar invalid (13 cifre)!", true); return; }
+            if (!propAdresa || !propAdresa.value.trim()) { marcheazaEroreInput('proprietarAdresa'); arataNotificare("❌ Introduceți adresa proprietarului!", true); return; }
             
-            if (!chirNume.value.trim()) { marcheazaEroreInput('chiriasNume'); arataNotificare("❌ Introduceți numele chiriașului!", true); return; }
-            if (chirCnp.value.trim().length !== 13) { marcheazaEroreInput('chiriasCnp'); arataNotificare("❌ CNP Chiriaș invalid (13 cifre)!", true); return; }
-            if (!imobilAdresa.value.trim()) { marcheazaEroreInput('imobilAdresa'); arataNotificare("❌ Introduceți adresa imobilului!", true); return; }
-            if (!imobilChirie.value.trim()) { marcheazaEroreInput('imobilChirie'); arataNotificare("❌ Introduceți valoarea chiriei!", true); return; }
+            if (!chirNume || !chirNume.value.trim()) { marcheazaEroreInput('chiriasNume'); arataNotificare("❌ Introduceți numele chiriașului!", true); return; }
+            if (!chirCnp || chirCnp.value.trim().length !== 13) { marcheazaEroreInput('chiriasCnp'); arataNotificare("❌ CNP Chiriaș invalid (13 cifre)!", true); return; }
+            if (!imobilAdresa || !imobilAdresa.value.trim()) { marcheazaEroreInput('imobilAdresa'); arataNotificare("❌ Introduceți adresa imobilului!", true); return; }
+            if (!imobilChirie || !imobilChirie.value.trim()) { marcheazaEroreInput('imobilChirie'); arataNotificare("❌ Introduceți valoarea chiriei!", true); return; }
 
-            document.getElementById('imobilStep1').classList.remove('active');
-            document.getElementById('imobilStep2').classList.add('active');
+            const s1 = document.getElementById('imobilStep1');
+            const s2 = document.getElementById('imobilStep2');
+            if (s1) s1.classList.remove('active');
+            if (s2) s2.classList.add('active');
             
             const localCont = document.getElementById('imobilLocalContainer');
             const remoteCont = document.getElementById('imobilRemoteContainer');
@@ -1569,17 +1673,18 @@
             const subtitle = document.getElementById('imobilStep2Subtitle');
 
             if (modLucruImobil === 'local') {
-                localCont.style.display = 'block';
-                remoteCont.style.display = 'none';
-                title.innerText = "Semnătură Digitală Duală (Local)";
-                subtitle.innerText = "Ambele părți trebuie să semneze mai jos pentru a valida contractul:";
+                if (localCont) localCont.style.display = 'block';
+                if (remoteCont) remoteCont.style.display = 'none';
+                if (title) title.innerText = "Semnătură Digitală Duală (Local)";
+                if (subtitle) subtitle.innerText = "Ambele părți trebuie să semneze mai jos pentru a valida contractul:";
                 initCanvasesLocal();
             } else {
-                localCont.style.display = 'none';
-                remoteCont.style.display = 'block';
-                title.innerText = "Semnătură Digitală la Distanță";
-                subtitle.innerText = "Semnați ca proprietar, apoi trimiteți linkul chiriașului.";
-                document.getElementById('imobilRemoteLinkBox').innerText = `${window.location.origin}${window.location.pathname}?sign_imob=${Math.random().toString(36).substring(2)}`;
+                if (localCont) localCont.style.display = 'none';
+                if (remoteCont) remoteCont.style.display = 'block';
+                if (title) title.innerText = "Semnătură Digitală la Distanță";
+                if (subtitle) subtitle.innerText = "Semnați ca proprietar, apoi trimiteți linkul chiriașului.";
+                const linkBox = document.getElementById('imobilRemoteLinkBox');
+                if (linkBox) linkBox.innerText = `${window.location.origin}${window.location.pathname}?sign_imob=${Math.random().toString(36).substring(2)}`;
                 initCanvasesRemote();
             }
         }
@@ -1613,12 +1718,22 @@
             canvasPR.onmouseup = () => { isDrawingPR = false; };
         }
 
-        function stergeSemnaturaProprietar() { ctxProprietar.clearRect(0, 0, 280, 140); hasDrawnP = false; }
-        function stergeSemnaturaChirias() { ctxChirias.clearRect(0, 0, 280, 140); hasDrawnC = false; }
-        function stergeSemnaturaProprietarRemote() { ctxProprietarRemote.clearRect(0, 0, 280, 140); hasDrawnPR = false; }
+        function stergeSemnaturaProprietar() { if(ctxProprietar) ctxProprietar.clearRect(0, 0, 280, 140); hasDrawnP = false; }
+        function stergeSemnaturaChirias() { if(ctxChirias) ctxChirias.clearRect(0, 0, 280, 140); hasDrawnC = false; }
+        function stergeSemnaturaProprietarRemote() { if(ctxProprietarRemote) ctxProprietarRemote.clearRect(0, 0, 280, 140); hasDrawnPR = false; }
 
-        function copiazaLinkImobilRemote() { navigator.clipboard.writeText(document.getElementById('imobilRemoteLinkBox').innerText).then(() => { arataNotificare("📋 Link copiat!"); }); }
-        function trimiteImobilRemoteWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Salut! Vă rog să accesați acest link securizat pentru semnarea contractului de închiriere: " + document.getElementById('imobilRemoteLinkBox').innerText)}`, '_blank'); }
+        function copiazaLinkImobilRemote() { 
+            const linkBox = document.getElementById('imobilRemoteLinkBox');
+            if (linkBox) {
+                navigator.clipboard.writeText(linkBox.innerText).then(() => { arataNotificare("📋 Link copiat!"); }); 
+            }
+        }
+        function trimiteImobilRemoteWhatsApp() { 
+            const linkBox = document.getElementById('imobilRemoteLinkBox');
+            if (linkBox) {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Salut! Vă rog să accesați acest link securizat pentru semnarea contractului de închiriere: " + linkBox.innerText)}`, '_blank'); 
+            }
+        }
 
         async function genereazaContractImobiliarPDF() {
             if (modLucruImobil === 'local' && (!hasDrawnP || !hasDrawnC)) { arataNotificare("❌ Atât Proprietarul cât și Chiriașul trebuie să semneze!", true); return; }
@@ -1653,23 +1768,25 @@
                     y -= 11;
                 };
 
+                const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+
                 const titluText = "CONTRACT DE INCHIRIERE LOCUINTA";
                 const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
                 page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 12, font: fontBold });
                 y -= 20;
 
                 deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
-                deseneazaParagraf(`1.1. Locator (Proprietar): ${curataDiacritice(document.getElementById('proprietarNume').value)},`);
-                deseneazaParagraf(`CNP: ${document.getElementById('proprietarCnp').value}, CI seria: ${curataDiacritice(document.getElementById('proprietarAct').value)}, cu domiciliul in: ${curataDiacritice(document.getElementById('proprietarAdresa').value)}.`);
-                deseneazaParagraf(`1.2. Locatar (Chirias): ${curataDiacritice(document.getElementById('chiriasNume').value)},`);
-                deseneazaParagraf(`CNP: ${document.getElementById('chiriasCnp').value}, CI seria: ${curataDiacritice(document.getElementById('chiriasAct').value)}.`);
+                deseneazaParagraf(`1.1. Locator (Proprietar): ${curataDiacritice(getVal('proprietarNume'))},`);
+                deseneazaParagraf(`CNP: ${getVal('proprietarCnp')}, CI seria: ${curataDiacritice(getVal('proprietarAct'))}, cu domiciliul in: ${curataDiacritice(getVal('proprietarAdresa'))}.`);
+                deseneazaParagraf(`1.2. Locatar (Chirias): ${curataDiacritice(getVal('chiriasNume'))},`);
+                deseneazaParagraf(`CNP: ${getVal('chiriasCnp')}, CI seria: ${curataDiacritice(getVal('chiriasAct'))}.`);
                 y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
                 deseneazaParagraf(`2.1. Locatorul inchiriaza Locatarului imobilul cu destinatia exclusiva de locuinta, situat in:`);
-                deseneazaParagraf(`${curataDiacritice(document.getElementById('imobilAdresa').value)}.`);
+                deseneazaParagraf(`${curataDiacritice(getVal('imobilAdresa'))}.`);
                 
-                const inventarInput = document.getElementById('imobilInventar').value.trim();
+                const inventarInput = getVal('imobilInventar').trim();
                 if (inventarInput) {
                     deseneazaParagraf(`2.2. Imobilul se preda utilat si mobilat, urmatorul inventar fiind preluat in buna stare: ${curataDiacritice(inventarInput)}.`);
                 } else {
@@ -1678,12 +1795,12 @@
                 y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 3: DURATA CONTRACTULUI");
-                deseneazaParagraf(`3.1. Prezentul contract se incheie pe o perioada de ${curataDiacritice(document.getElementById('imobilDurata').value || '12 LUNI')}, incepand cu data de ${document.getElementById('imobilDataStart').value || '01.09.2026'}.`);
+                deseneazaParagraf(`3.1. Prezentul contract se incheie pe o perioada de ${curataDiacritice(getVal('imobilDurata') || '12 LUNI')}, incepand cu data de ${getVal('imobilDataStart') || '01.09.2026'}.`);
                 y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 4: CHIRIA, GARANTIA SI MODALITATEA DE PLATA");
-                deseneazaParagraf(`4.1. Chiria lunara stabilita este in cuantum de ${curataDiacritice(document.getElementById('imobilChirie').value)}, achitata in avans pana la data de 5 a fiecarei luni.`);
-                deseneazaParagraf(`4.2. Cu titlu de garantie, Locatarul achita la semnare suma de ${curataDiacritice(document.getElementById('imobilGarantie').value || document.getElementById('imobilChirie').value)}.`);
+                deseneazaParagraf(`4.1. Chiria lunara stabilita este in cuantum de ${curataDiacritice(getVal('imobilChirie'))}, achitata in avans pana la data de 5 a fiecarei luni.`);
+                deseneazaParagraf(`4.2. Cu titlu de garantie, Locatarul achita la semnare suma de ${curataDiacritice(getVal('imobilGarantie') || getVal('imobilChirie'))}.`);
                 y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIIle PARTILOR");
@@ -1704,15 +1821,24 @@
 
                 let sigPImageBytes, sigCImageBytes;
                 if (modLucruImobil === 'local') {
-                    sigPImageBytes = await pdfDoc.embedPng(document.getElementById('sigProprietarCanvas').toDataURL('image/png'));
-                    sigCImageBytes = await pdfDoc.embedPng(document.getElementById('sigChiriasCanvas').toDataURL('image/png'));
+                    const canvasP = document.getElementById('sigProprietarCanvas');
+                    const canvasC = document.getElementById('sigChiriasCanvas');
+                    if (canvasP && canvasC) {
+                        sigPImageBytes = await pdfDoc.embedPng(canvasP.toDataURL('image/png'));
+                        sigCImageBytes = await pdfDoc.embedPng(canvasC.toDataURL('image/png'));
+                    }
                 } else {
-                    sigPImageBytes = await pdfDoc.embedPng(document.getElementById('sigProprietarRemoteCanvas').toDataURL('image/png'));
-                    sigCImageBytes = await pdfDoc.embedPng(document.getElementById('sigProprietarRemoteCanvas').toDataURL('image/png'));
+                    const canvasPR = document.getElementById('sigProprietarRemoteCanvas');
+                    if (canvasPR) {
+                        sigPImageBytes = await pdfDoc.embedPng(canvasPR.toDataURL('image/png'));
+                        sigCImageBytes = await pdfDoc.embedPng(canvasPR.toDataURL('image/png'));
+                    }
                 }
 
-                page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
-                page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
+                if (sigPImageBytes && sigCImageBytes) {
+                    page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
+                    page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
+                }
 
                 page.drawText("Semnatura Proprietar (Locator)", { x: 45, y: y - 62, size: 7, font: fontBold });
                 page.drawText("Semnatura Chirias (Locatar)", { x: 310, y: y - 62, size: 7, font: fontBold });
@@ -1723,7 +1849,7 @@
 
                 salveazaInArhivaprivata({ 
                     idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), 
-                    detalii: 'Contract Închiriere (' + modLucruImobil.toUpperCase() + ') - ' + curataDiacritice(document.getElementById('chiriasNume').value) 
+                    detalii: 'Contract Închiriere (' + modLucruImobil.toUpperCase() + ') - ' + curataDiacritice(getVal('chiriasNume')) 
                 }, bytes);
 
                 const blob = new Blob([bytes], { type: 'application/pdf' });
