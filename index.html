@@ -55,13 +55,21 @@
             position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
             display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;
         }
-        .auth-box { background: var(--card-bg); width: 100%; max-width: 440px; padding: 35px 30px; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; animation: modalPop 0.3s ease-out; }
+        .auth-box { background: var(--card-bg); width: 100%; max-width: 480px; padding: 35px 30px; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; animation: modalPop 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
         @keyframes modalPop { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .auth-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: var(--text-muted); transition: color 0.2s; }
         .auth-close:hover { color: var(--text-main); }
         .auth-switch-text { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
         .auth-switch-text span { color: var(--primary); font-weight: 600; cursor: pointer; text-decoration: underline; }
         .auth-switch-text span:hover { color: var(--primary-dark); }
+
+        /* BUTOANE SELECTARE PACHETE LA ÎNREGISTRARE */
+        .packages-selector-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 5px; }
+        .package-option-card { border: 2px solid var(--border-color); border-radius: 10px; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; background: rgba(0,0,0,0.01); }
+        .package-option-card:hover { border-color: var(--primary); background: rgba(37,99,235,0.04); }
+        .package-option-card.selected { border-color: var(--primary); background: rgba(37,99,235,0.1); box-shadow: 0 0 0 2px rgba(37,99,235,0.2); }
+        .pkg-title { font-weight: bold; font-size: 13px; color: var(--text-main); }
+        .pkg-desc { font-size: 11px; color: var(--text-muted); }
 
         /* DROPDOWN MENIU PROFIL */
         .profile-dropdown-container { position: relative; display: inline-block; }
@@ -94,13 +102,10 @@
         #toastNotification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         #toastNotification.error { background: #dc2626; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3); }
 
-        /* ONBOARDING WIDGET (BANNER DE ÎNTÂMPINARE) */
+        /* ONBOARDING WIDGET (FĂRĂ BUTOANE) */
         .onboarding-welcome { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 22px 25px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(37,99,235,0.2); }
         .onboarding-welcome h3 { margin: 0 0 8px 0; font-size: 20px; }
-        .onboarding-welcome p { margin: 0 0 15px 0; font-size: 13px; opacity: 0.9; }
-        .onboarding-quick-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .chip-action { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; color: white; }
-        .chip-action:hover { background: rgba(255,255,255,0.35); }
+        .onboarding-welcome p { margin: 0; font-size: 13px; opacity: 0.9; line-height: 1.5; }
 
         /* CATEGORII */
         .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px; }
@@ -109,15 +114,6 @@
         .category-card .icon { font-size: 28px; margin-bottom: 8px; }
         .category-card h4 { margin: 0 0 5px 0; font-size: 16px; color: var(--text-main); }
         .category-card p { margin: 0; font-size: 12px; color: var(--text-muted); }
-
-        /* LISTARE PACHETE PE PAGINA PRINCIPALĂ (MARKETING) */
-        .pricing-section { margin-top: 35px; border-top: 2px solid var(--border-color); padding-top: 25px; }
-        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .pricing-card { background: rgba(0,0,0,0.02); border: 2px solid var(--border-color); border-radius: 14px; padding: 20px; text-align: center; position: relative; transition: all 0.2s; }
-        .pricing-card.featured { border-color: var(--primary); background: rgba(37, 99, 235, 0.05); }
-        .pricing-card h4 { margin: 0 0 8px 0; color: var(--text-main); font-size: 16px; }
-        .pricing-card .price { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 12px; }
-        .pricing-card ul { list-style: none; padding: 0; margin: 0 0 15px 0; font-size: 12px; color: var(--text-muted); line-height: 1.6; text-align: left; }
 
         /* PAGINĂ SPECIALĂ DASHBOARD */
         #dashboardView { display: none; }
@@ -190,8 +186,6 @@
         .share-link-text { font-size: 12px; color: var(--text-main); word-break: break-all; margin-top: 8px; background: var(--card-bg); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: 600; }
         
         #status { text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
-
-        /* BUTON THEME TOGGLE */
         .theme-toggle-btn { background: none; border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
         .theme-toggle-btn:hover { background: rgba(0,0,0,0.05); }
     </style>
@@ -214,24 +208,42 @@
             <p id="authModalSubtitle" style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Introdu datele pentru a te loga în contul tău.</p>
             
             <div class="form-grid">
+                <!-- CÂMPURI UNICE LA ÎNREGISTRARE (PACHETE SELECTABILE CU 3 BUTOANE) -->
                 <div class="full-width reg-field" style="display: none;">
                     <label>Tip Profil</label>
-                    <select id="authTipProfil" style="text-transform: none;">
+                    <select id="authTipProfil" style="text-transform: none; margin-bottom: 12px;">
                         <option value="PERSOANA_FIZICA">👤 Persoană Fizică</option>
                         <option value="BUSINESS">🏢 Business (Dealer / PFA)</option>
                     </select>
-                </div>
-                <div class="full-width reg-field" style="display: none;">
-                    <label>Alege Pachetul</label>
-                    <select id="authPachet" style="text-transform: none;">
-                        <option value="GRATUIT">Gratuit (Fără abonament)</option>
-                        <option value="STANDARD">Pachet Standard - 169 RON (400 contracte)</option>
-                        <option value="BUSINESS">Pachet Business - 299 RON (1200 contracte)</option>
-                    </select>
+
+                    <label style="margin-bottom: 6px;">Alege Pachetul Dorit</label>
+                    <div class="packages-selector-grid">
+                        <div class="package-option-card selected" id="pkg_GRATUIT" onclick="selecteazaPachetModal('GRATUIT')">
+                            <div>
+                                <div class="pkg-title">🟢 Fără Abonament (Gratuit)</div>
+                                <div class="pkg-desc">3 contracte incluse</div>
+                            </div>
+                            <b>0 RON</b>
+                        </div>
+                        <div class="package-option-card" id="pkg_STANDARD" onclick="selecteazaPachetModal('STANDARD')">
+                            <div>
+                                <div class="pkg-title">🔵 Pachet Standard</div>
+                                <div class="pkg-desc">400 contracte / lună</div>
+                            </div>
+                            <b>169 RON</b>
+                        </div>
+                        <div class="package-option-card" id="pkg_BUSINESS" onclick="selecteazaPachetModal('BUSINESS')">
+                            <div>
+                                <div class="pkg-title">🟣 Pachet Business / Pro</div>
+                                <div class="pkg-desc">1200 contracte / lună + Suport</div>
+                            </div>
+                            <b>299 RON</b>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="full-width">
-                    <label>Adresă E-mail</label>
+                <div class="full-width" style="margin-top: 5px;">
+                    <label>Adresă E-mail Unică</label>
                     <input type="email" id="authEmail" placeholder="exemplu@email.ro" style="text-transform: none;">
                 </div>
                 <div class="full-width">
@@ -257,11 +269,8 @@
     <div class="top-nav">
         <div><strong style="color: var(--text-main);">⚡ ActPeLoc</strong> <span style="font-size: 11px; color: var(--text-muted);">| Ediția 2026</span></div>
         <div style="display: flex; gap: 8px; align-items: center;">
-            
-            <!-- BUTTON THEME TOGGLE -->
             <button class="theme-toggle-btn" id="themeToggleBtn" onclick="comutaTema()" title="Schimbă tema vizuală">🌙</button>
 
-            <!-- BUTON CONTUL MEU / DROPDOWN -->
             <div class="profile-dropdown-container">
                 <span class="user-badge" id="userStatusBadge" onclick="gestioneazaClickContulMeu()">👤 Contul Meu</span>
                 
@@ -286,18 +295,13 @@
         <!-- NOTIFICARE TOAST MODERNĂ -->
         <div id="toastNotification">Acțiune realizată cu succes!</div>
 
-        <!-- PAGINA PRINCIPALĂ (ONBOARDING + MENIU + MARKETING) -->
+        <!-- PAGINA PRINCIPALĂ (ONBOARDING FĂRĂ BUTOANE + CATEGORII) -->
         <div id="mainMenuContainer" style="display:block;">
             
-            <!-- ONBOARDING WIDGET INTELIGENT -->
+            <!-- ONBOARDING WIDGET (FĂRĂ BUTOANE) -->
             <div class="onboarding-welcome">
                 <h3>👋 Bun venit pe ActPeLoc!</h3>
                 <p>Platforma ta unică de generare contracte și acte oficiale în câteva secunde. Ce dorești să realizezi astăzi?</p>
-                <div class="onboarding-quick-actions">
-                    <div class="chip-action" onclick="selecteazaCategorie('auto')">🚗 Vânzare Auto</div>
-                    <div class="chip-action" onclick="acceseazaDashboardTab('arhiva')">📁 Istoricul meu</div>
-                    <div class="chip-action" onclick="alert('Funcție disponibilă în curând!')">🏠 Închiriere Imobil</div>
-                </div>
             </div>
 
             <h3 style="color: var(--text-main); text-align: center; margin-bottom: 5px;">Alege categoria dorită</h3>
@@ -309,50 +313,20 @@
                     <h4>Auto & Transport</h4>
                     <p>Contracte vânzare-cumpărare auto (ITL 054), închiriere, comodat.</p>
                 </div>
-                <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele lunare!', true)">
+                <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând!', true)">
                     <div class="icon">🏠</div>
                     <h4>Imobiliare</h4>
                     <p>Contracte de închiriere locuințe, comodat spații și terenuri.</p>
                 </div>
-                <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele lunare!', true)">
+                <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând!', true)">
                     <div class="icon">💼</div>
                     <h4>Muncă & PFA</h4>
                     <p>Cereri demisie, contracte prestări servicii și colaborare B2B.</p>
                 </div>
-                <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele lunare!', true)">
+                <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând!', true)">
                     <div class="icon">📋</div>
                     <h4>Diverse</h4>
                     <p>Declarații pe propria răspundere, chitanțe de avans și împuterniciri.</p>
-                </div>
-            </div>
-
-            <!-- PREZENTARE ATRACTIVĂ PACHETE (MARKETING) -->
-            <div class="pricing-section">
-                <h3 style="text-align: center; color: var(--text-main); margin-bottom: 5px;">Abonamente Lunare ActPeLoc</h3>
-                <p style="text-align: center; color: var(--text-muted); font-size: 12px; margin-bottom: 15px;">Soluții dedicate pentru persoane fizice și volume mari de business.</p>
-                
-                <div class="pricing-grid">
-                    <div class="pricing-card">
-                        <h4>Pachet Standard</h4>
-                        <div class="price">169 RON <span style="font-size: 11px; color: var(--text-muted);">/ lună</span></div>
-                        <ul>
-                            <li>✔️ <b>400 contracte</b> incluse</li>
-                            <li>✔️ Generare PDF & Chitanțe</li>
-                            <li>✔️ Arhivă digitală sigură</li>
-                        </ul>
-                        <button class="btn-change-mode" style="width:100%;" onclick="deschideModalAuth('inregistrare')">Alege Standard</button>
-                    </div>
-
-                    <div class="pricing-card featured">
-                        <h4>Pachet Business</h4>
-                        <div class="price">299 RON <span style="font-size: 11px; color: var(--text-muted);">/ lună</span></div>
-                        <ul>
-                            <li>✔️ <b>1200 contracte</b> incluse</li>
-                            <li>✔️ Mod completare la distanță</li>
-                            <li>✔️ Suport prioritar & Dealer auto</li>
-                        </ul>
-                        <button class="btn btn-next" style="width:100%; padding:8px; font-size:12px;" onclick="deschideModalAuth('inregistrare')">Alege Business</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -371,9 +345,9 @@
                 <button class="dash-tab-btn" onclick="schimbaTabDash('setari', this)">⚙️ Setări Cont</button>
             </div>
 
-            <!-- Tab 1: Arhivă -->
+            <!-- Tab 1: Arhivă Unică per Client -->
             <div id="dashTabArhiva" class="dash-section active">
-                <h4 style="font-size: 14px; color: var(--text-main); margin-top: 0;">Istoricul Documentelor Generate</h4>
+                <h4 style="font-size: 14px; color: var(--text-main); margin-top: 0;">Istoricul Documentelor Generate pentru Contul Tău</h4>
                 <div style="max-height: 280px; overflow-y: auto;">
                     <table class="contract-table">
                         <thead>
@@ -384,7 +358,7 @@
                             </tr>
                         </thead>
                         <tbody id="dashboardContracteLista">
-                            <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat momentan.</td></tr>
+                            <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat în acest cont momentan.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -406,7 +380,7 @@
                 </div>
             </div>
 
-            <!-- Tab 3: Abonamentul Meu -->
+            <!-- Tab 3: Abonamentul Meu Unic -->
             <div id="dashTabAbonament" class="dash-section">
                 <h4 style="font-size: 14px; color: var(--text-main); margin-top: 0;">Detalii Abonament Activ</h4>
                 <div style="background: rgba(0,0,0,0.02); border: 1px solid var(--border-color); padding: 15px; border-radius: 10px; font-size: 13px;">
@@ -775,10 +749,10 @@
         let esteFirmaSauMandatar = false;
         let linkCumparatorGlobal = "";
 
-        let profilCurent = null;
-        let modAuthCurent = 'logare';
+        let profilCurent = null; // Stochează obiectul utilizatorului logat
+        let modAuthCurent = 'logare'; // 'logare' sau 'inregistrare'
+        let pachetSelectatInregistrare = 'GRATUIT'; // Pachetul selectat implicit
 
-        // SISTEM TEMĂ (DARK / LIGHT MODE)
         function comutaTema() {
             const body = document.body;
             const btn = document.getElementById('themeToggleBtn');
@@ -800,6 +774,17 @@
                 document.body.setAttribute('data-theme', 'dark');
                 document.getElementById('themeToggleBtn').innerText = "☀️";
             }
+        }
+
+        function selecteazaPachetModal(pachet) {
+            pachetSelectatInregistrare = pachet;
+            ['GRATUIT', 'STANDARD', 'BUSINESS'].forEach(p => {
+                const card = document.getElementById('pkg_' + p);
+                if (card) {
+                    if (p === pachet) card.classList.add('selected');
+                    else card.classList.remove('selected');
+                }
+            });
         }
 
         function deschideModalAuth(mod = 'logare') {
@@ -826,14 +811,14 @@
 
             if (modAuthCurent === 'logare') {
                 title.innerText = "Autentificare Cont";
-                subtitle.innerText = "Introdu datele pentru a te loga în contul tău.";
+                subtitle.innerText = "Introdu e-mailul și parola unică pentru a te loga.";
                 submitBtn.innerText = "🔑 Intră în Cont";
                 regFields.forEach(el => el.style.display = 'none');
                 switchContainer.innerHTML = `Nu ai un cont? <span onclick="schimbaModulAuth('inregistrare')">Creează-ți unul chiar acum</span>`;
             } else {
                 title.innerText = "Creare Cont Nou";
-                subtitle.innerText = "Completează datele de mai jos pentru a te înregistra.";
-                submitBtn.innerText = "🚀 Creează Cont & Trimite E-mail";
+                subtitle.innerText = "Alege pachetul și setează datele tale unice de acces.";
+                submitBtn.innerText = "🚀 Creează Cont & Activează";
                 regFields.forEach(el => el.style.display = 'block');
                 switchContainer.innerHTML = `Ai deja un cont? <span onclick="schimbaModulAuth('logare')">Autentifică-te aici</span>`;
             }
@@ -849,13 +834,24 @@
         }
 
         window.addEventListener('click', function(e) {
-            if (!document.getElementById('userStatusBadge').contains(e.target) && !document.getElementById('profileDropdownMenu').contains(e.target)) {
-                document.getElementById('profileDropdownMenu').style.display = 'none';
+            const badge = document.getElementById('userStatusBadge');
+            const menu = document.getElementById('profileDropdownMenu');
+            if (badge && menu && !badge.contains(e.target) && !menu.contains(e.target)) {
+                menu.style.display = 'none';
             }
         });
 
+        // BAZĂ DE DATE LOCALĂ REALĂ PENTRU CONTURI
+        function obtineBazaDeDateConturi() {
+            return JSON.parse(localStorage.getItem('act_peloc_baza_utilizatori') || '{}');
+        }
+
+        function salveazaBazaDeDateConturi(db) {
+            localStorage.setItem('act_peloc_baza_utilizatori', JSON.stringify(db));
+        }
+
         async function gestioneazaAutentificareSauInregistrare() {
-            const email = document.getElementById('authEmail').value.trim();
+            const email = document.getElementById('authEmail').value.trim().toLowerCase();
             const parola = document.getElementById('authPassword').value;
 
             if (!email || !email.includes('@')) {
@@ -867,6 +863,8 @@
                 return;
             }
 
+            let dbConturi = obtineBazaDeDateConturi();
+
             if (modAuthCurent === 'inregistrare') {
                 const confirmParola = document.getElementById('authPasswordConfirm').value;
                 if (parola !== confirmParola) {
@@ -874,15 +872,31 @@
                     return;
                 }
 
+                if (dbConturi[email]) {
+                    arataNotificare("⚠️ Acest e-mail este deja înregistrat! Folosește modul de logare.", true);
+                    return;
+                }
+
                 const tip = document.getElementById('authTipProfil').value;
-                const pachet = document.getElementById('authPachet').value;
+                const pachet = pachetSelectatInregistrare;
                 let ramase = (pachet === 'STANDARD') ? 400 : (pachet === 'BUSINESS' ? 1200 : 3);
 
-                profilCurent = { email, tip, pachet, ramase };
-                localStorage.setItem('act_peloc_profil', JSON.stringify(profilCurent));
+                // Creare cont nou cu baza lui de date unică
+                dbConturi[email] = {
+                    email: email,
+                    parola: parola,
+                    tip: tip,
+                    pachet: pachet,
+                    ramase: ramase,
+                    arhivaContracte: []
+                };
+
+                salveazaBazaDeDateConturi(dbConturi);
+                profilCurent = dbConturi[email];
+                localStorage.setItem('act_peloc_utilizator_activ', email);
 
                 actualizeazaUIAutentificat();
-                arataNotificare("Cont creat cu succes! Se trimite e-mailul de confirmare...");
+                arataNotificare("✅ Cont creat cu succes! S-a trimis e-mailul de confirmare.");
                 inchideModalAuth();
 
                 try {
@@ -893,21 +907,20 @@
                         id_act: "CONT-" + Math.floor(1000 + Math.random() * 9000),
                         data_generare: new Date().toLocaleString('ro-RO')
                     });
-                    arataNotificare("📧 E-mailul de confirmare a fost trimis cu succes!");
                 } catch (err) {
-                    console.error("Eroare trimitere e-mail:", err);
+                    console.error("Eroare e-mail:", err);
                 }
 
                 acceseazaDashboardTab('arhiva');
             } else {
-                let salvat = localStorage.getItem('act_peloc_profil');
-                if (salvat) {
-                    profilCurent = JSON.parse(salvat);
-                    profilCurent.email = email;
-                } else {
-                    profilCurent = { email, tip: 'PERSOANA_FIZICA', pachet: 'GRATUIT', ramase: 3 };
+                // Mod Logare cu date unice verificate în baza de date
+                if (!dbConturi[email] || dbConturi[email].parola !== parola) {
+                    arataNotificare("❌ E-mail sau parolă incorecte! Verifică datele introduse.", true);
+                    return;
                 }
-                localStorage.setItem('act_peloc_profil', JSON.stringify(profilCurent));
+
+                profilCurent = dbConturi[email];
+                localStorage.setItem('act_peloc_utilizator_activ', email);
 
                 actualizeazaUIAutentificat();
                 arataNotificare("Autentificare reușită!");
@@ -924,7 +937,7 @@
         }
 
         function deconectareUtilizator() {
-            localStorage.removeItem('act_peloc_profil');
+            localStorage.removeItem('act_peloc_utilizator_activ');
             profilCurent = null;
             document.getElementById('userStatusBadge').innerText = "👤 Contul Meu";
             document.getElementById('dashNavBtn').style.display = 'none';
@@ -971,23 +984,39 @@
         }
 
         function actualizeazaEmailCont() {
-            const emailNou = document.getElementById('settingsNewEmail').value.trim();
+            const emailNou = document.getElementById('settingsNewEmail').value.trim().toLowerCase();
             if (!emailNou || !emailNou.includes('@')) {
                 arataNotificare("Introduceți o adresă de e-mail validă!", true);
                 return;
             }
 
+            let dbConturi = obtineBazaDeDateConturi();
+            if (dbConturi[emailNou] && emailNou !== profilCurent.email) {
+                arataNotificare("⚠️ Această adresă de e-mail este deja folosită de alt cont!", true);
+                return;
+            }
+
+            // Actualizăm cheia în baza de date
+            let vechiEmail = profilCurent.email;
             profilCurent.email = emailNou;
-            localStorage.setItem('act_peloc_profil', JSON.stringify(profilCurent));
+            dbConturi[emailNou] = profilCurent;
+            if (vechiEmail !== emailNou) delete dbConturi[vechiEmail];
+
+            salveazaBazaDeDateConturi(dbConturi);
+            localStorage.setItem('act_peloc_utilizator_activ', emailNou);
+
             actualizeazaUIAutentificat();
             arataNotificare("✅ Adresa de e-mail a fost actualizată cu succes!");
         }
 
         function incarcaProfilSalvat() {
-            const salvat = localStorage.getItem('act_peloc_profil');
-            if (salvat) {
-                profilCurent = JSON.parse(salvat);
-                actualizeazaUIAutentificat();
+            const emailActiv = localStorage.getItem('act_peloc_utilizator_activ');
+            if (emailActiv) {
+                let dbConturi = obtineBazaDeDateConturi();
+                if (dbConturi[emailActiv]) {
+                    profilCurent = dbConturi[emailActiv];
+                    actualizeazaUIAutentificat();
+                }
             }
         }
 
@@ -998,12 +1027,12 @@
             document.getElementById('infoDashPachet').innerText = profilCurent.pachet;
             document.getElementById('infoDashRamase').innerText = profilCurent.ramase;
 
-            let istoric = JSON.parse(localStorage.getItem('act_peloc_arhiva_contracte') || '[]');
             const lista = document.getElementById('dashboardContracteLista');
             lista.innerHTML = '';
 
+            let istoric = profilCurent.arhivaContracte || [];
             if (istoric.length === 0) {
-                lista.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat momentan.</td></tr>`;
+                lista.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat în acest cont momentan.</td></tr>`;
                 return;
             }
 
@@ -1022,9 +1051,13 @@
         }
 
         function salveazaInArhivaprivata(item) {
-            let istoric = JSON.parse(localStorage.getItem('act_peloc_arhiva_contracte') || '[]');
-            istoric.unshift(item);
-            localStorage.setItem('act_peloc_arhiva_contracte', JSON.stringify(istoric));
+            if (!profilCurent) return;
+            if (!profilCurent.arhivaContracte) profilCurent.arhivaContracte = [];
+            profilCurent.arhivaContracte.unshift(item);
+
+            let dbConturi = obtineBazaDeDateConturi();
+            dbConturi[profilCurent.email] = profilCurent;
+            salveazaBazaDeDateConturi(dbConturi);
         }
 
         function redescarcaPDF(idAct) {
@@ -1043,8 +1076,9 @@
             const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
             const page = pdfDoc.addPage([595.28, 400]);
             page.drawText(`CHITANȚĂ FISCALĂ DIGITALĂ - ACTPELOC`, { x: 45, y: 330, size: 12, font });
-            page.drawText(`Pachet activ: ${profilCurent ? profilCurent.pachet : 'GRATUIT'}`, { x: 45, y: 290, size: 10, font });
-            page.drawText(`Status: Achitat / Valabil conform abonamentului`, { x: 45, y: 260, size: 10, font });
+            page.drawText(`Cont utilizator: ${profilCurent ? profilCurent.email : '-'}`, { x: 45, y: 300, size: 10, font });
+            page.drawText(`Pachet activ: ${profilCurent ? profilCurent.pachet : 'GRATUIT'}`, { x: 45, y: 270, size: 10, font });
+            page.drawText(`Status: Achitat / Valabil conform abonamentului`, { x: 45, y: 240, size: 10, font });
 
             const pdfBytes = await pdfDoc.save();
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -1514,7 +1548,7 @@
                 seteazaCamp('acquiredAct', d['acquiredAct']);
 
                 const pdfBytesFinal = await pdfDoc.save();
-                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf'});
+                const blob = new Blob([pdfBytesFinal], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
@@ -1532,11 +1566,14 @@
 
                 if (profilCurent && profilCurent.ramase > 0) {
                     profilCurent.ramase -= 1;
-                    localStorage.setItem('act_peloc_profil', JSON.stringify(profilCurent));
+                    let dbConturi = obtineBazaDeDateConturi();
+                    dbConturi[profilCurent.email] = profilCurent;
+                    salveazaBazaDeDateConturi(dbConturi);
+                    document.getElementById('infoDashRamase').innerText = profilCurent.ramase;
                 }
 
                 stergeSalvareaLocala();
-                arataNotificare("Succes! Contractul complet a fost generat.");
+                arataNotificare("Succes! Contractul complet a fost generat și salvat în contul tău.");
             } catch (err) {
                 arataNotificare("Eroare la generare: " + err.message, true);
             }
