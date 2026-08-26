@@ -1164,60 +1164,6 @@
                 let y = 780;
 
                 const deseneazaFooter = () => {
-                    page.drawText("Generat prin ActPeLoc.ro — Contract Comercial de Prestări Servicii B2B", { 
-                        x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
-                    });
-                };
-
-                const deseneazaTitluSectiune = (text) => {
-                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(text, { x: 45, y, size: 8.5, font: fontBold });
-                    y -= 13;
-                };
-
-                const deseneazaParagraf = (text) => {
-                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(text, { x: 45, y, size: 7, font });
-                    y -= 11;
-                };
-
-                const titluText = "CONTRACT COMERCIAL DE PRESTARI SERVICII B2B";
-                const textWidth = fontBold.widthOfTextAtSize(titluText, 11);
-                page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 11, font: fontBold });
-                y -= 22;
-
-                deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
-                deseneazaParagraf(`1.1. Prestator: ${curataDiacritice(document.getElementById('b2bPrestatorNume').value)}, CUI: ${document.getElementById('b2bPrestatorCui').value},`);
-                deseneazaParagraf(`Nr. Reg. Com.: ${curataDiacritice(document.getElementById('b2bPrestatorReg').value)}, cu sediul in ${curataDiacritice(document.getElementById('b2bPrestatorAdresa').value)},`);
-                deseneazaParagraf(`cont bancar ${document.getElementById('b2bPrestatorIban').value} deschis la ${curataDiacritice(document.getElementById('b2bPrestatorBanca').value)}.`);
-                deseneazaParagraf(`1.2. Beneficiar: ${curataDiacritice(document.getElementById('b2bBeneficiarNume').value)}, CUI: ${document.getElementById('b2bBeneficiarCui').value},`);
-                deseneazaParagraf(`Nr. Reg. Com.: ${curataDiacritice(document.getElementById('b2bBeneficiarReg').value)}, cu sediul in ${curataDiacritice(document.getElementById('b2bBeneficiarAdresa').value)}.`);
-                y -= 4;
-
-                deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI");
-                deseasync function genereazaContractB2B_PDF() {
-            if (!hasDrawnB2B) {
-                arataNotificare("❌ Vă rugăm să semnați contractul pe ecran!", true);
-                return;
-            }
-
-            if (!profilCurent) {
-                arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
-                deschideModalAuth('logare');
-                return;
-            }
-
-            arataNotificare("Se generează contractul de prestări servicii B2B...");
-            try {
-                const { PDFDocument, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 780;
-
-                const deseneazaFooter = () => {
                     page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Contract Comercial de Prestari Servicii B2B"), { 
                         x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
                     });
