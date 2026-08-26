@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ActPeLoc - Platformă Oficială Generare Contracte & Conturi</title>
+    <title>ActPeLoc - Platformă Oficială Generare Contracte & Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <style>
@@ -31,13 +31,20 @@
         .btn-splash { background: white; color: #1e3a8a; border: none; padding: 14px 32px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .btn-splash:hover { background: #f8fafc; transform: translateY(-2px); }
 
-        /* MODAL AUTENTIFICARE / CONTURI */
+        /* MODAL AUTENTIFICARE / PROFILE */
         #authModal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
             display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;
         }
-        .auth-box { background: white; width: 100%; max-width: 420px; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
+        .auth-box { background: white; width: 100%; max-width: 440px; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
         .auth-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+
+        /* DASHBOARD MODAL / CONTAINER */
+        #dashboardModal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;
+        }
+        .dashboard-box { background: white; width: 100%; max-width: 650px; max-height: 85vh; overflow-y: auto; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
 
         /* NAVBAR */
         .top-nav { display: flex; justify-content: space-between; align-items: center; max-width: 760px; margin: 0 auto 20px auto; background: white; padding: 12px 25px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
@@ -125,6 +132,11 @@
         .share-link-text { font-size: 12px; color: #475569; word-break: break-all; margin-top: 8px; background: white; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; font-weight: 600; }
         
         #status { text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
+
+        /* Tabel arhivă contracte în dashboard */
+        .contract-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        .contract-table th, .contract-table td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; }
+        .contract-table th { background: #f8fafc; color: #1e3a8a; }
     </style>
 </head>
 <body>
@@ -137,42 +149,71 @@
         <button class="btn-splash" onclick="inchideSplash()">Începe Acum ➔</button>
     </div>
 
-    <!-- MODAL DE AUTENTIFICARE / CREARE CONT -->
+    <!-- MODAL AUTENTIFICARE CU 2 PROFILE -->
     <div id="authModal">
         <div class="auth-box">
             <span class="auth-close" onclick="inchideModalAuth()">✕</span>
-            <h3 style="color: #1e3a8a; margin-top: 0; text-align: center;">Cont & Pachete Lunare</h3>
-            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Creează un cont sau autentifică-te pentru a gestiona pachetele pentru PFA, Dealer sau Persoană Fizică.</p>
+            <h3 style="color: #1e3a8a; margin-top: 0; text-align: center;">Profil & Pachete ActPeLoc</h3>
+            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Alege profilul tău pentru a gestiona pachetele lunare și arhiva.</p>
             
             <div class="form-grid">
                 <div class="full-width">
-                    <label>Tip Utilizator</label>
-                    <select id="authTipCont" style="text-transform: none;">
-                        <option value="PERSOANA_FIZICA">Persoană Fizică</option>
-                        <option value="PFA">PFA / Cabinet Individual</option>
-                        <option value="DEALER">Dealer Auto / Firmă</option>
+                    <label>Tip Profil</label>
+                    <select id="authTipProfil" style="text-transform: none;">
+                        <option value="PERSOANA_FIZICA">👤 Persoană Fizică</option>
+                        <option value="BUSINESS">🏢 Business (Dealer / PFA)</option>
+                    </select>
+                </div>
+                <div class="full-width">
+                    <label>Alege Pachetul Lunar</label>
+                    <select id="authPachet" style="text-transform: none;">
+                        <option value="GRATUIT">Gratuit (Fără abonament)</option>
+                        <option value="STANDARD">Pachet Standard - 169 RON (400 contracte)</option>
+                        <option value="BUSINESS">Pachet Business - 299 RON (1200 contracte)</option>
                     </select>
                 </div>
                 <div class="full-width">
                     <label>Adresă E-mail</label>
                     <input type="email" id="authEmail" placeholder="exemplu@email.ro" style="text-transform: none;">
                 </div>
-                <div class="full-width">
-                    <label>Parolă</label>
-                    <input type="password" id="authPassword" placeholder="••••••••" style="text-transform: none;">
-                </div>
             </div>
 
-            <button class="btn btn-next" style="width: 100%; margin-top: 20px;" onclick="inregistreazaSauAutentifica()">🔑 Continuă în Cont</button>
-            <p style="font-size: 11px; text-align: center; color: var(--text-muted); margin-top: 15px;">Poți folosi de asemenea platforma ca vizitator fără cont, generând documente rapid.</p>
+            <button class="btn btn-next" style="width: 100%; margin-top: 20px;" onclick="salveazaProfilUtilizator()">💾 Salvează Profilul</button>
         </div>
     </div>
 
-    <!-- NAVBAR / CONT -->
+    <!-- MODAL DASHBOARD / ARHIVĂ CONTRACTE -->
+    <div id="dashboardModal">
+        <div class="dashboard-box">
+            <span class="auth-close" onclick="inchideDashboard()">✕</span>
+            <h3 style="color: #1e3a8a; margin-top: 0;">📊 Dashboard & Istoric Contracte</h3>
+            <div id="dashboardInfoBox" style="background: #eff6ff; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 15px; color: #1e40af;">
+                <b>Profil:</b> <span id="dashProfil">-</span> | <b>Pachet Activ:</b> <span id="dashPachet">-</span> | <b>Contracte Rămase:</b> <span id="dashRămase">0</span>
+            </div>
+            <h4 style="font-size: 14px; color: #1e3a8a; margin-bottom: 5px;">Arhivă Documente Generate</h4>
+            <div style="max-height: 300px; overflow-y: auto;">
+                <table class="contract-table">
+                    <thead>
+                        <tr>
+                            <th>ID Act</th>
+                            <th>Client / Cumpărător</th>
+                            <th>Acțiuni Redescărcare</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboardContracteLista">
+                        <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat momentan.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
     <div class="top-nav">
         <div><strong style="color: #1e3a8a;">⚡ ActPeLoc</strong> <span style="font-size: 11px; color: var(--text-muted);">| Ediția 2026</span></div>
         <div style="display: flex; gap: 10px; align-items: center;">
-            <span class="user-badge" id="userStatusBadge" onclick="deschideModalAuth()">👤 Cont / Înregistrare</span>
+            <span class="user-badge" id="userStatusBadge" onclick="deschideModalAuth()">👤 Profil Vizitator</span>
+            <span class="user-badge" id="dashBtnBadge" style="display:none; background: #dcfce7; color: #166534; border-color: #bbf7d0;" onclick="deschideDashboard()">📊 Dashboard</span>
             <button class="btn-change-mode" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
         </div>
     </div>
@@ -558,21 +599,107 @@
         let esteFirmaSauMandatar = false;
         let linkCumparatorGlobal = "";
 
+        // Gestionare Profile & Dashboard
+        let profilCurent = {
+            email: "vizitator@actpeloc.ro",
+            tip: "PERSOANA_FIZICA",
+            pachet: "GRATUIT",
+            ramase: 3
+        };
+
         function deschideModalAuth() { document.getElementById('authModal').style.display = 'flex'; }
         function inchideModalAuth() { document.getElementById('authModal').style.display = 'none'; }
+        function deschideDashboard() { document.getElementById('dashboardModal').style.display = 'flex'; incarcaArhivaDashboard(); }
+        function inchideDashboard() { document.getElementById('dashboardModal').style.display = 'none'; }
 
-        async function inregistreazaSauAutentifica() {
-            const email = document.getElementById('authEmail').value;
-            const tipCont = document.getElementById('authTipCont').value;
-            if(!email) { arataNotificare("Introduceți un e-mail valid!", true); return; }
+        function salveazaProfilUtilizator() {
+            const email = document.getElementById('authEmail').value || "client@actpeloc.ro";
+            const tip = document.getElementById('authTipProfil').value;
+            const pachet = document.getElementById('authPachet').value;
 
-            // Salvăm local starea contului pentru a o afișa în badge
-            localStorage.setItem('act_peloc_user_email', email);
-            localStorage.setItem('act_peloc_user_type', tipCont);
+            let ramase = 0;
+            if (pachet === 'STANDARD') ramase = 400;
+            if (pachet === 'BUSINESS') ramase = 1200;
 
-            document.getElementById('userStatusBadge').innerText = `👤 ${email} (${tipCont})`;
-            arataNotificare(`Autentificat cu succes ca ${tipCont}!`);
+            profilCurent = { email, tip, pachet, ramase };
+            localStorage.setItem('act_peloc_profil', JSON.stringify(profilCurent));
+
+            document.getElementById('userStatusBadge').innerText = `👤 ${email} (${tip === 'BUSINESS' ? 'Business' : 'Persoană Fizică'})`;
+            document.getElementById('dashBtnBadge').style.display = 'inline-block';
+
+            arataNotificare("Profil și pachet salvate cu succes!");
             inchideModalAuth();
+        }
+
+        function incarcaProfilSalvat() {
+            const salvat = localStorage.getItem('act_peloc_profil');
+            if (salvat) {
+                profilCurent = JSON.parse(salvat);
+                document.getElementById('userStatusBadge').innerText = `👤 ${profilCurent.email} (${profilCurent.tip === 'BUSINESS' ? 'Business' : 'Persoană Fizică'})`;
+                document.getElementById('dashBtnBadge').style.display = 'inline-block';
+            }
+        }
+
+        function incarcaArhivaDashboard() {
+            document.getElementById('dashProfil').innerText = profilCurent.tip;
+            document.getElementById('dashPachet').innerText = profilCurent.pachet;
+            document.getElementById('dashRămase').innerText = profilCurent.ramase;
+
+            let istoric = JSON.parse(localStorage.getItem('act_peloc_arhiva_contracte') || '[]');
+            const lista = document.getElementById('dashboardContracteLista');
+            lista.innerHTML = '';
+
+            if (istoric.length === 0) {
+                lista.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat momentan.</td></tr>`;
+                return;
+            }
+
+            istoric.forEach(item => {
+                lista.innerHTML += `
+                    <tr>
+                        <td><b>${item.idAct}</b></td>
+                        <td>${item.numeClient}</td>
+                        <td>
+                            <button class="btn-change-mode" onclick="redescarcaPDF('${item.idAct}')">📥 Contract</button>
+                            <button class="btn-change-mode" onclick="redescarcaChitanta('${item.idAct}')" style="background:#f0fdf4; color:#166534; border-color:#bbf7d0;">🧾 Chitanță</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function salveazaInArhivaprivata(item) {
+            let istoric = JSON.parse(localStorage.getItem('act_peloc_arhiva_contracte') || '[]');
+            istoric.unshift(item);
+            localStorage.setItem('act_peloc_arhiva_contracte', JSON.stringify(istoric));
+        }
+
+        function redescarcaPDF(idAct) {
+            arataNotificare(`Se redescărca contractul ${idAct}...`);
+            genereazaContractOficialPDF();
+        }
+
+        function redescarcaChitanta(idAct) {
+            arataNotificare(`Se generează chitanța fiscală pentru ${idAct}...`);
+            genereazaChitantaPDF();
+        }
+
+        async function genereazaChitantaPDF() {
+            const { PDFDocument, StandardFonts } = PDFLib;
+            const pdfDoc = await PDFDocument.create();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const page = pdfDoc.addPage([595.28, 400]);
+            page.drawText(`CHITANȚĂ FISCALĂ DIGITALĂ - ACTPELOC`, { x: 45, y: 330, size: 12, font });
+            page.drawText(`Pachet activ: ${profilCurent.pachet} (${profilCurent.tip})`, { x: 45, y: 290, size: 10, font });
+            page.drawText(`Status: Achitat / Valabil conform abonamentului`, { x: 45, y: 260, size: 10, font });
+
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = "CHITANTA_FISCALA_ACTPELOC.pdf";
+            link.click();
         }
 
         function inchideSplash() {
@@ -614,13 +741,7 @@
                 if (valoareSalvata !== null) el.value = valoareSalvata;
                 el.addEventListener('input', () => { localStorage.setItem('act_peloc_' + id, el.value); });
             });
-            
-            // Verificăm dacă există un utilizator logat anterior
-            const savedEmail = localStorage.getItem('act_peloc_user_email');
-            const savedType = localStorage.getItem('act_peloc_user_type');
-            if(savedEmail) {
-                document.getElementById('userStatusBadge').innerText = `👤 ${savedEmail} (${savedType})`;
-            }
+            incarcaProfilSalvat();
         }
 
         function stergeSalvareaLocala() {
@@ -1043,6 +1164,19 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+
+                // Salvăm în arhivele locale/dashboard ale utilizatorului
+                let randomIdAct = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
+                salveazaInArhivaprivata({
+                    idAct: randomIdAct,
+                    numeClient: d['buyerName'] || 'Cumpărător',
+                    data: new Date().toLocaleDateString('ro-RO')
+                });
+
+                if (profilCurent.ramase > 0) {
+                    profilCurent.ramase -= 1;
+                    localStorage.setItem('act_peloc_profil', JSON.stringify(profilCurent));
+                }
 
                 stergeSalvareaLocala();
                 statusEl.innerText = "Succes! Contractul complet a fost generat și descărcat.";
