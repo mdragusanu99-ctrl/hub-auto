@@ -1022,7 +1022,7 @@
 
         function stergeSemnaturaDemisie() { ctxDemisie.clearRect(0, 0, 280, 140); hasDrawnD = false; }
 
-        async function genereazaCerereDemisiePDF() {
+       async function genereazaCerereDemisiePDF() {
             if (!hasDrawnD) {
                 arataNotificare("❌ Vă rugăm să semnați cererea pe ecran!", true);
                 return;
@@ -1041,7 +1041,7 @@
 
             if (!success) return;
 
-            arataNotificare("Se generează cererea de demisie oficială și curată...");
+            arataNotificare("Se generează cererea de demisie compactă și oficială...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
                 const pdfDoc = await PDFDocument.create();
@@ -1049,16 +1049,17 @@
                 const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
                 
                 let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 760;
+                let y = 780; // Începem mai de sus pe pagină
                 const maxWidth = 510;
 
                 const deseneazaFooter = () => {
                     page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Document oficial generat electronic"), { 
-                        x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
+                        x: 45, y: 25, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
                     });
                 };
 
-                const deseneazaParagrafLiniar = (text, isBold = false, size = 10, lineSpacing = 16) => {
+                // Funcție compactă cu spațiere optimizată pentru a încăpea perfect pe o singură pagină
+                const deseneazaParagrafLiniar = (text, isBold = false, size = 9, lineSpacing = 13.5) => {
                     const textCurat = curataDiacritice(text);
                     const currentFont = isBold ? fontBold : font;
                     const words = textCurat.split(' ');
@@ -1069,7 +1070,6 @@
                         let testWidth = currentFont.widthOfTextAtSize(testLinie, size);
                         
                         if (testWidth > maxWidth) {
-                            if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 760; }
                             page.drawText(linieCurenta, { x: 45, y, size, font: currentFont });
                             y -= lineSpacing;
                             linieCurenta = words[i];
@@ -1078,58 +1078,57 @@
                         }
                     }
                     if (linieCurenta !== '') {
-                        if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 760; }
                         page.drawText(linieCurenta, { x: 45, y, size, font: currentFont });
                         y -= lineSpacing;
                     }
                 };
 
                 page.drawText(curataDiacritice("Inregistrat la Societate cu Nr: ............ / Data: ...................."), { x: 240, y, size: 8.5, font: fontBold });
-                y -= 35;
+                y -= 25;
 
                 const compNume = document.getElementById('demisieCompanieNume').value.trim();
                 const compAdresa = document.getElementById('demisieCompanieAdresa').value.trim();
                 
-                deseneazaParagrafLiniar(`Catre Conducerea: ${compNume || 'Societatii Comerciale'}`, true, 11, 18);
-                deseneazaParagrafLiniar(`Sediul / Punct de lucru: ${compAdresa || 'Conform contractului individual de munca'}`, false, 9.5, 30);
+                deseneazaParagrafLiniar(`Catre Conducerea: ${compNume || 'Societatii Comerciale'}`, true, 10, 15);
+                deseneazaParagrafLiniar(`Sediul / Punct de lucru: ${compAdresa || 'Conform contractului individual de munca'}`, false, 9, 22);
 
-                deseneazaParagrafLiniar("Datele Salariatului (Titularul demisiei):", true, 9.5, 15);
-                deseneazaParagrafLiniar(`- Nume si Prenume: ${document.getElementById('demisieAngajatNume').value}`, false, 10, 16);
-                deseneazaParagrafLiniar(`- Cod Numeric Personal (CNP): ${document.getElementById('demisieAngajatCnp').value}`, false, 10, 16);
-                deseneazaParagrafLiniar(`- Functia / Ocupatia: ${document.getElementById('demisieAngajatFunctie').value}`, false, 10, 16);
-                deseneazaParagrafLiniar(`- Departament / Structura: ${document.getElementById('demisieAngajatDept').value || 'General'}`, false, 10, 35);
+                deseneazaParagrafLiniar("Datele Salariatului (Titularul demisiei):", true, 9, 13);
+                deseneazaParagrafLiniar(`- Nume si Prenume: ${document.getElementById('demisieAngajatNume').value}`, false, 9, 14);
+                deseneazaParagrafLiniar(`- Cod Numeric Personal (CNP): ${document.getElementById('demisieAngajatCnp').value}`, false, 9, 14);
+                deseneazaParagrafLiniar(`- Functia / Ocupatia: ${document.getElementById('demisieAngajatFunctie').value}`, false, 9, 14);
+                deseneazaParagrafLiniar(`- Departament / Structura: ${document.getElementById('demisieAngajatDept').value || 'General'}`, false, 9, 22);
 
                 const titluText = curataDiacritice("CERERE DE INCETARE A CONTRACTULUI DE MUNCA PRIN DEMISIE");
-                const textWidth = fontBold.widthOfTextAtSize(titluText, 11);
-                page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 11, font: fontBold });
-                y -= 35;
+                const textWidth = fontBold.widthOfTextAtSize(titluText, 10.5);
+                page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 10.5, font: fontBold });
+                y -= 22;
 
                 const zilePreaviz = document.getElementById('demisieTipPreaviz').value;
                 const ultimaZi = document.getElementById('demisieDataUltima').value || '[Data ultimei zile]';
                 const numeAngajat = document.getElementById('demisieAngajatNume').value;
                 const functieAngajat = document.getElementById('demisieAngajatFunctie').value;
 
-                deseneazaParagrafLiniar(`Subsemnatul(a) ${numeAngajat}, salariat(a) al(a) unitatii dumneavoastra in cadrul functiei de ${functieAngajat}, in temeiul dispozitiilor art. 81 din Legea nr. 53/2003 - Codul Muncii, republicata, cu modificarile si completarile ulterioare, prin prezenta formula:`, false, 10, 16);
-                y -= 10;
+                deseneazaParagrafLiniar(`Subsemnatul(a) ${numeAngajat}, salariat(a) al(a) unitatii dumneavoastra in cadrul functiei de ${functieAngajat}, in temeiul dispozitiilor art. 81 din Legea nr. 53/2003 - Codul Muncii, republicata, cu modificarile si completarile ulterioare, prin prezenta formula:`, false, 9, 13.5);
+                y -= 6;
 
                 const subTitlu = curataDiacritice("NOTIFICARE DE DEMISIE");
-                const subWidth = fontBold.widthOfTextAtSize(subTitlu, 10.5);
-                page.drawText(subTitlu, { x: (595.28 - subWidth) / 2, y, size: 10.5, font: fontBold });
-                y -= 25;
+                const subWidth = fontBold.widthOfTextAtSize(subTitlu, 9.5);
+                page.drawText(subTitlu, { x: (595.28 - subWidth) / 2, y, size: 9.5, font: fontBold });
+                y -= 18;
 
-                deseneazaParagrafLiniar(`Prin prezenta va aduc la cunostinta incetarea contractului individual de munca nr. ......... din data de ...................., din initiativa mea, prin demisie.`, false, 10, 18);
-                deseneazaParagrafLiniar(`In conformitate cu prevederile legale in vigoare, termenul legal de preaviz de ${zilePreaviz} zile lucrătoare curge incepand a doua zi dupa data inregistrarii acestei notificari la registratura unitatii.`, false, 10, 18);
-                deseneazaParagrafLiniar(`Astfel, ultima zi in care imi voi desfasura activitatea si in care raporturile de munca vor înceta va fi data de ${ultimaZi}.`, true, 10, 25);
+                deseneazaParagrafLiniar(`Prin prezenta va aduc la cunostinta incetarea contractului individual de munca nr. ......... din data de ...................., din initiativa mea, prin demisie.`, false, 9, 14);
+                deseneazaParagrafLiniar(`In conformitate cu prevederile legale in vigoare, termenul legal de preaviz de ${zilePreaviz} zile lucrătoare curge incepand a doua zi dupa data inregistrarii acestei notificari la registratura unitatii.`, false, 9, 14);
+                deseneazaParagrafLiniar(`Astfel, ultima zi in care imi voi desfasura activitatea si in care raporturile de munca vor înceta va fi data de ${ultimaZi}.`, true, 9, 18);
 
-                deseneazaParagrafLiniar(`Totodata, solicit angajatorului ca la data incetarii contractului individual de munca sa imi achite drepturile salariale cuvenite la zi, sa efectueze compensarea in bani a concediului de odihna neefectuat (daca este cazul) si sa imi elibereze adeverinta de vechime, carnetul de munca (daca se aplica) si celelalte documente legale prevazute de legislatia muncii.`, false, 10, 30);
+                deseneazaParagrafLiniar(`Totodata, solicit angajatorului ca la data incetarii contractului individual de munca sa imi achite drepturile salariale cuvenite la zi, sa efectueze compensarea in bani a concediului de odihna neefectuat (daca este cazul) si sa imi elibereze adeverinta de vechime, carnetul de munca (daca se aplica) si celelalte documente legale prevazute de legislatia muncii.`, false, 9, 14);
 
-                deseneazaParagrafLiniar("Prezenta cerere a fost intocmita in 2 (doua) exemplare originale, cate unul pentru fiecare parte.", false, 9.5, 35);
+                deseneazaParagrafLiniar("Prezenta cerere a fost intocmita in 2 (doua) exemplare originale, cate unul pentru fiecare parte.", false, 8.5, 20);
 
-                deseneazaParagrafLiniar(`Data intocmirii: ${new Date().toLocaleDateString('ro-RO')}`, false, 10, 25);
-                deseneazaParagrafLiniar("Semnatura Salariatului,", true, 10, 15);
+                deseneazaParagrafLiniar(`Data intocmirii: ${new Date().toLocaleDateString('ro-RO')}`, false, 9, 18);
+                deseneazaParagrafLiniar("Semnatura Salariatului,", true, 9, 12);
 
                 const sigDImageBytes = await pdfDoc.embedPng(document.getElementById('sigDemisieCanvas').toDataURL('image/png'));
-                page.drawImage(sigDImageBytes, { x: 45, y: y - 55, width: 130, height: 45 });
+                page.drawImage(sigDImageBytes, { x: 45, y: y - 42, width: 110, height: 38 });
 
                 deseneazaFooter();
 
@@ -1140,7 +1139,7 @@
                 a.href = url; a.download = "CERERE_DEMISIE_OFICIALA_ACTPELOC.pdf";
                 a.click();
 
-                arataNotificare("✅ Cerere de demisie generată impecabil! (-1 credit)");
+                arataNotificare("✅ Cerere de demisie generată compact pe o singură pagină! (-1 credit)");
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
 
