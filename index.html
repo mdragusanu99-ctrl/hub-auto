@@ -1008,7 +1008,7 @@
 
         function stergeSemnaturaDemisie() { ctxDemisie.clearRect(0, 0, 280, 140); hasDrawnD = false; }
 
-       async function genereazaCerereDemisiePDF() {
+      async function genereazaCerereDemisiePDF() {
             if (!hasDrawnD) {
                 arataNotificare("❌ Vă rugăm să semnați cererea pe ecran!", true);
                 return;
@@ -1038,7 +1038,7 @@
                 let y = 780;
 
                 const deseneazaFooter = () => {
-                    page.drawText("Generat prin ActPeLoc.ro — Document oficial generat electronic", { 
+                    page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Document oficial generat electronic"), { 
                         x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
                     });
                 };
@@ -1049,30 +1049,30 @@
                         page = pdfDoc.addPage([595.28, 841.89]); 
                         y = 780; 
                     }
-                    page.drawText(text, { x: 45, y, size, font: isBold ? fontBold : font });
+                    page.drawText(curataDiacritice(text), { x: 45, y, size, font: isBold ? fontBold : font });
                     y -= lineSpacing;
                 };
 
                 // NUMĂR DE ÎNREGISTRARE / ANTET DREAPTA
-                page.drawText(`Inregistrat la Societate cu Nr: ............ / Data: ....................`, { x: 260, y, size: 8.5, font: fontBold });
+                page.drawText(curataDiacritice("Inregistrat la Societate cu Nr: ............ / Data: ...................."), { x: 230, y, size: 8.5, font: fontBold });
                 y -= 30;
 
                 // ANTET CĂTRE ANGAJATOR
                 const compNume = document.getElementById('demisieCompanieNume').value.trim();
                 const compAdresa = document.getElementById('demisieCompanieAdresa').value.trim();
                 
-                deseneazaParagraf(`Catre Conducerea: ${curataDiacritice(compNume || 'SOCIETATII COMERCIALE')}`, true, 11, 18);
-                deseneazaParagraf(`Sediul / Punct de lucru: ${curataDiacritice(compAdresa || 'Conform contractului individual de munca')}`, false, 9, 30);
+                deseneazaParagraf(`Catre Conducerea: ${compNume || 'SOCIETATII COMERCIALE'}`, true, 11, 18);
+                deseneazaParagraf(`Sediul / Punct de lucru: ${compAdresa || 'Conform contractului individual de munca'}`, false, 9, 30);
 
                 // ANTET SALARIAT
                 deseneazaParagraf(`Datele Salariatului (Titularul demisiei):`, true, 9, 14);
-                deseneazaParagraf(`- Nume si Prenume: ${curataDiacritice(document.getElementById('demisieAngajatNume').value)}`, false, 10, 16);
+                deseneazaParagraf(`- Nume si Prenume: ${document.getElementById('demisieAngajatNume').value}`, false, 10, 16);
                 deseneazaParagraf(`- Cod Numeric Personal (CNP): ${document.getElementById('demisieAngajatCnp').value}`, false, 10, 16);
-                deseneazaParagraf(`- Functia / Ocupatia: ${curataDiacritice(document.getElementById('demisieAngajatFunctie').value)}`, false, 10, 16);
-                deseneazaParagraf(`- Departament / Structura: ${curataDiacritice(document.getElementById('demisieAngajatDept').value || 'GENERAL')}`, false, 10, 35);
+                deseneazaParagraf(`- Functia / Ocupatia: ${document.getElementById('demisieAngajatFunctie').value}`, false, 10, 16);
+                deseneazaParagraf(`- Departament / Structura: ${document.getElementById('demisieAngajatDept').value || 'GENERAL'}`, false, 10, 35);
 
                 // TITLU CENTRAT
-                const titluText = "CERERE DE INCETARE A CONTRACTULUI DE MUNCA PRIN DEMISIE";
+                const titluText = curataDiacritice("CERERE DE INCETARE A CONTRACTULUI DE MUNCA PRIN DEMISIE");
                 const textWidth = fontBold.widthOfTextAtSize(titluText, 11);
                 const centerX = (595.28 - textWidth) / 2;
                 page.drawText(titluText, { x: centerX, y, size: 11, font: fontBold });
@@ -1082,10 +1082,10 @@
                 const zilePreaviz = document.getElementById('demisieTipPreaviz').value;
                 const ultimaZi = document.getElementById('demisieDataUltima').value || '[DATA ULTIMEI ZILE]';
 
-                deseneazaParagraf(`Subsemnatul(a) ${curataDiacritice(document.getElementById('demisieAngajatNume').value)}, salariat(a) al(a) unitatii dumneavoastra in cadrul functiei de ${curataDiacritice(document.getElementById('demisieAngajatFunctie').value)}, in temeiul dispozitiilor art. 81 din Legea nr. 53/2003 - Codul Muncii, republicata, cu modificarile si completarile ulterioare, prin prezenta formula:`, false, 9.5, 16);
+                deseneazaParagraf(`Subsemnatul(a) ${document.getElementById('demisieAngajatNume').value}, salariat(a) al(a) unitatii dumneavoastra in cadrul functiei de ${document.getElementById('demisieAngajatFunctie').value}, in temeiul dispozitiilor art. 81 din Legea nr. 53/2003 - Codul Muncii, republicata, cu modificarile si completarile ulterioare, prin prezenta formula:`, false, 9.5, 16);
                 y -= 10;
 
-                const subTitlu = "NOTIFICARE DE DEMISIE";
+                const subTitlu = curataDiacritice("NOTIFICARE DE DEMISIE");
                 const subWidth = fontBold.widthOfTextAtSize(subTitlu, 10);
                 page.drawText(subTitlu, { x: (595.28 - subWidth) / 2, y, size: 10, font: fontBold });
                 y -= 25;
