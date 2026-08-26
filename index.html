@@ -558,7 +558,7 @@
                     </div>
                 </div>
                 <div style="margin-top: 30px;">
-                    <button class="btn btn-primary" onclick="mergiLaPasulSemnaturaImobil()">Înainte: Semnătură Digitală ➔</button>
+                    <button class="btn btn-primary" onclick="valideazaSiTreciLaSemnaturaImobil()">Înainte: Semnătură Digitală ➔</button>
                 </div>
             </div>
 
@@ -625,6 +625,7 @@
         let sigProprietarCanvas, sigChiriasCanvas, sigProprietarRemoteCanvas;
         let ctxProprietar, ctxChirias, ctxProprietarRemote;
         let isDrawingP = false, isDrawingC = false, isDrawingPR = false;
+        let hasDrawnP = false, hasDrawnC = false, hasDrawnPR = false;
 
         function initSplashTimer() {
             let secunde = 4;
@@ -833,11 +834,21 @@
 
         function salveazaInArhivaprivata(item) {
             if (!profilCurent) return;
+            
+            // Verificare credite rămase (Optimizare SaaS)
+            if (profilCurent.ramase <= 0) {
+                arataNotificare("⚠️ Ați epuizat documentele din pachet. Vă rugăm să faceți upgrade!", true);
+                return false;
+            }
+
+            profilCurent.ramase -= 1; // Scădere automată credit
             if (!profilCurent.arhivaContracte) profilCurent.arhivaContracte = [];
             profilCurent.arhivaContracte.unshift(item);
+
             let db = obtineBazaConturi();
             db[profilCurent.email] = profilCurent;
             salveazaBazaConturi(db);
+            return true;
         }
 
         function deschideMeniuPrincipal() {
@@ -905,8 +916,29 @@
                 .replace(/Ț/g, 'T').replace(/Ţ/g, 'T');
         };
 
-        /* LOGICĂ PENTRU SEMNĂTURĂ IMOBILIARĂ (LOCAL VS DISTANȚĂ) */
-        function mergiLaPasulSemnaturaImobil() {
+        /* VALIDARE INTELIGENTĂ FORMULAR IMOBILIAR */
+        function valideazaSiTreciLaSemnaturaImobil() {
+            const propNume = document.getElementById('proprietarNume').value.trim();
+            const propCnp = document.getElementById('proprietarCnp').value.trim();
+            const propAct = document.getElementById('proprietarAct').value.trim();
+            const propAdresa = document.getElementById('proprietarAdresa').value.trim();
+            
+            const chirNume = document.getElementById('chiriasNume').value.trim();
+            const chirCnp = document.getElementById('chiriasCnp').value.trim();
+            const chirAct = document.getElementById('chiriasAct').value.trim();
+            const imobilAdresa = document.getElementById('imobilAdresa').value.trim();
+            const imobilChirie = document.getElementById('imobilChirie').value.trim();
+
+            if (!propNume || !propAdresa || !chirNume || !imobilAdresa || !imobilChirie) {
+                arataNotificare("❌ Completați toate câmpurile obligatorii!", true);
+                return;
+            }
+
+            if (propCnp.length !== 13 || chirCnp.length !== 13) {
+                arataNotificare("❌ CNP-ul proprietarului și al chiriașului trebuie să aibă exact 13 cifre!", true);
+                return;
+            }
+
             document.getElementById('imobilStep1').classList.remove('active');
             document.getElementById('imobilStep2').classList.add('active');
             
@@ -941,11 +973,11 @@
             ctxProprietar.strokeStyle = '#0f172a'; ctxProprietar.lineWidth = 2;
             ctxChirias.strokeStyle = '#0f172a'; ctxChirias.lineWidth = 2;
 
-            canvasP.onmousedown = (e) => { isDrawingP = true; ctxProprietar.beginPath(); ctxProprietar.moveTo(e.offsetX, e.offsetY); };
+            canvasP.onmousedown = (e) => { isDrawingP = true; hasDrawnP = true; ctxProprietar.beginPath(); ctxProprietar.moveTo(e.offsetX, e.offsetY); };
             canvasP.onmousemove = (e) => { if (isDrawingP) { ctxProprietar.lineTo(e.offsetX, e.offsetY); ctxProprietar.stroke(); } };
             canvasP.onmouseup = () => { isDrawingP = false; };
 
-            canvasC.onmousedown = (e) => { isDrawingC = true; ctxChirias.beginPath(); ctxChirias.moveTo(e.offsetX, e.offsetY); };
+            canvasC.onmousedown = (e) => { isDrawingC = true; hasDrawnC = true; ctxChirias.beginPath(); ctxChirias.moveTo(e.offsetX, e.offsetY); };
             canvasC.onmousemove = (e) => { if (isDrawingC) { ctxChirias.lineTo(e.offsetX, e.offsetY); ctxChirias.stroke(); } };
             canvasC.onmouseup = () => { isDrawingC = false; };
         }
@@ -955,19 +987,43 @@
             if(!canvasPR) return;
             ctxProprietarRemote = canvasPR.getContext('2d');
             ctxProprietarRemote.strokeStyle = '#0f172a'; ctxProprietarRemote.lineWidth = 2;
-            canvasPR.onmousedown = (e) => { isDrawingPR = true; ctxProprietarRemote.beginPath(); ctxProprietarRemote.moveTo(e.offsetX, e.offsetY); };
+            canvasPR.onmousedown = (e) => { isDrawingPR = true; hasDrawnPR = true; ctxProprietarRemote.beginPath(); ctxProprietarRemote.moveTo(e.offsetX, e.offsetY); };
             canvasPR.onmousemove = (e) => { if (isDrawingPR) { ctxProprietarRemote.lineTo(e.offsetX, e.offsetY); ctxProprietarRemote.stroke(); } };
             canvasPR.onmouseup = () => { isDrawingPR = false; };
         }
 
-        function stergeSemnaturaProprietar() { ctxProprietar.clearRect(0, 0, 280, 140); }
-        function stergeSemnaturaChirias() { ctxChirias.clearRect(0, 0, 280, 140); }
-        function stergeSemnaturaProprietarRemote() { ctxProprietarRemote.clearRect(0, 0, 280, 140); }
+        function stergeSemnaturaProprietar() { ctxProprietar.clearRect(0, 0, 280, 140); hasDrawnP = false; }
+        function stergeSemnaturaChirias() { ctxChirias.clearRect(0, 0, 280, 140); hasDrawnC = false; }
+        function stergeSemnaturaProprietarRemote() { ctxProprietarRemote.clearRect(0, 0, 280, 140); hasDrawnPR = false; }
 
         function copiazaLinkImobilRemote() { navigator.clipboard.writeText(document.getElementById('imobilRemoteLinkBox').innerText).then(() => { arataNotificare("📋 Link copiat!"); }); }
         function trimiteImobilRemoteWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Salut! Vă rog să accesați acest link securizat pentru semnarea contractului de închiriere: " + document.getElementById('imobilRemoteLinkBox').innerText)}`, '_blank'); }
 
         async function genereazaContractImobiliarPDF() {
+            // Verificare semnături goale (Optimizare protecție juridică)
+            if (modLucruImobil === 'local' && (!hasDrawnP || !hasDrawnC)) {
+                arataNotificare("❌ Atât Proprietarul cât și Chiriașul trebuie să semneze pe ecran!", true);
+                return;
+            }
+            if (modLucruImobil === 'remote' && !hasDrawnPR) {
+                arataNotificare("❌ Trebuie să semnați ca proprietar înainte de generare!", true);
+                return;
+            }
+
+            // Verificare cont și credite înainte de generare
+            if (!profilCurent) {
+                arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
+                deschideModalAuth('logare');
+                return;
+            }
+
+            let success = salveazaInArhivaprivata({ 
+                idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), 
+                detalii: 'Contract Închiriere (' + modLucruImobil.toUpperCase() + ') - ' + curataDiacritice(document.getElementById('chiriasNume').value) 
+            });
+
+            if (!success) return; // Oprește dacă nu mai are credite
+
             arataNotificare("Se generează contractul imobiliar complet și detaliat...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
@@ -1017,16 +1073,16 @@
 
                 // ARTICOLUL 1
                 deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
-                deseneazaParagraf(`1.1. Locator (Proprietar): ${curataDiacritice(document.getElementById('proprietarNume').value || '....................................')},`);
-                deseneazaParagraf(`CNP: ${document.getElementById('proprietarCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('proprietarAct').value || '........')}, cu domiciliul in: ${curataDiacritice(document.getElementById('proprietarAdresa').value || '................................................................')}.`);
-                deseneazaParagraf(`1.2. Locatar (Chirias): ${curataDiacritice(document.getElementById('chiriasNume').value || '....................................')},`);
-                deseneazaParagraf(`CNP: ${document.getElementById('chiriasCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('chiriasAct').value || '........')}.`);
+                deseneazaParagraf(`1.1. Locator (Proprietar): ${curataDiacritice(document.getElementById('proprietarNume').value)},`);
+                deseneazaParagraf(`CNP: ${document.getElementById('proprietarCnp').value}, CI seria: ${curataDiacritice(document.getElementById('proprietarAct').value)}, cu domiciliul in: ${curataDiacritice(document.getElementById('proprietarAdresa').value)}.`);
+                deseneazaParagraf(`1.2. Locatar (Chirias): ${curataDiacritice(document.getElementById('chiriasNume').value)},`);
+                deseneazaParagraf(`CNP: ${document.getElementById('chiriasCnp').value}, CI seria: ${curataDiacritice(document.getElementById('chiriasAct').value)}.`);
                 y -= 4;
 
                 // ARTICOLUL 2
                 deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
                 deseneazaParagraf(`2.1. Locatorul inchiriaza Locatarului imobilul cu destinatia exclusiva de locuinta, situat in:`);
-                deseneazaParagraf(`${curataDiacritice(document.getElementById('imobilAdresa').value || '..................................................................................................................')}.`);
+                deseneazaParagraf(`${curataDiacritice(document.getElementById('imobilAdresa').value)}.`);
                 
                 const inventarInput = document.getElementById('imobilInventar').value.trim();
                 if (inventarInput) {
@@ -1044,8 +1100,8 @@
 
                 // ARTICOLUL 4
                 deseneazaTitluSectiune("ARTICOLUL 4: CHIRIA, GARANTIA SI MODALITATEA DE PLATA");
-                deseneazaParagraf(`4.1. Chiria lunara stabilita este in cuantum de ${curataDiacritice(document.getElementById('imobilChirie').value || '350 EUR')}, achitata in avans pana la data de 5 a fiecarei luni.`);
-                deseneazaParagraf(`4.2. Cu titlu de garantie, Locatarul achita la semnare suma de ${curataDiacritice(document.getElementById('imobilGarantie').value || '350 EUR')}, destinata acoperirii daunelor sau utilitatilor neachitate.`);
+                deseneazaParagraf(`4.1. Chiria lunara stabilita este in cuantum de ${curataDiacritice(document.getElementById('imobilChirie').value)}, achitata in avans pana la data de 5 a fiecarei luni.`);
+                deseneazaParagraf(`4.2. Cu titlu de garantie, Locatarul achita la semnare suma de ${curataDiacritice(document.getElementById('imobilGarantie').value || document.getElementById('imobilChirie').value)}, destinata acoperirii daunelor sau utilitatilor neachitate.`);
                 deseneazaParagraf(`4.3. Garantia se restituie in termen de cel mult 7 zile calendaristice de la predarea imobilului si achitarea datoriilor.`);
                 y -= 4;
 
@@ -1124,8 +1180,7 @@
                 a.href = url; a.download = "CONTRACT_INCHIRIERE_ACTPELOC.pdf";
                 a.click();
 
-                salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), detalii: 'Contract Imobiliar Suprem (' + modLucruImobil.toUpperCase() + ') - ' + curataDiacritice(document.getElementById('chiriasNume').value || 'Client') });
-                arataNotificare("✅ Contract imobiliar complet generat cu succes!");
+                arataNotificare("✅ Contract imobiliar generat cu succes! (-1 credit)");
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
 
