@@ -181,7 +181,7 @@
         <div class="splash-content">
             <div class="brand-pill">⚡ Ediția Avansată 2026 • SaaS Juridic</div>
             <h1 class="splash-title">Generează Contracte Oficiale <span>În Câteva Secunde</span></h1>
-            <p class="splash-desc">Platforma unică pentru contracte auto, închirieri imobiliare, semnături digitale și arhivă securizată în cloud.</p>
+            <p class="splash-desc">Platforma unică pentru contracte auto, închirieri imobiliare, cereri de demisie, semnături digitale și arhivă securizată în cloud.</p>
             <div class="splash-btn-group">
                 <button class="btn-primary-glow" onclick="inchideSplash()">Începe Acum Gratuit ➔</button>
                 <button class="btn-secondary-glass" onclick="inchideSplash(); deschideModalAuth('inregistrare');">Creează Cont 🚀</button>
@@ -314,10 +314,10 @@
                         <h4>Imobiliare & Locuințe</h4>
                         <p>Contracte de închiriere locuințe proprietate privată, conforme pentru ANAF.</p>
                     </div>
-                    <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând!', true)">
+                    <div class="category-card" onclick="selecteazaCategorie('munca')">
                         <div class="category-icon">💼</div>
                         <h4>Muncă & PFA</h4>
-                        <p>Cereri demisie, contracte prestări servicii și colaborare B2B.</p>
+                        <p>Cereri de demisie oficiale cu preaviz conform Codului Muncii.</p>
                     </div>
                     <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând!', true)">
                         <div class="category-icon">📋</div>
@@ -525,6 +525,62 @@
             </div>
 
             <!-- ========================================== -->
+            <!-- FLUX NOU: CERERE DE DEMISIE (MUNCĂ & PFA)    -->
+            <!-- ========================================== -->
+            <div class="step-content" id="demisieStep1">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="font-size: 18px; font-weight: 800;">Cerere de Demisie (Codul Muncii - Art. 81)</div>
+                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
+                </div>
+                <div class="form-grid">
+                    <div class="full-width"><strong style="font-size: 13px; color: var(--primary);">A. Date Angajat (Salariat)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Angajat</label><input type="text" id="demisieAngajatNume" placeholder="ex: POPESCU ION"></div>
+                    <div><label>CNP Angajat</label><input type="text" id="demisieAngajatCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
+                    <div><label>Funcția / Ocupația</label><input type="text" id="demisieAngajatFunctie" placeholder="ex: SPECIALIST MARKETING"></div>
+                    <div class="full-width"><label>Departament / Punct de Lucru</label><input type="text" id="demisieAngajatDept" placeholder="ex: DEPARTAMENTUL COMERCIAL"></div>
+
+                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--primary);">B. Date Angajator (Companie)</strong></div>
+                    <div class="full-width"><label>Denumire Companie (SRL / SA)</label><input type="text" id="demisieCompanieNume" placeholder="ex: SC GLOBAL TECH SRL"></div>
+                    <div class="full-width"><label>Adresă / Sediu Companie</label><input type="text" id="demisieCompanieAdresa" placeholder="ex: BUCUREȘTI, BD. UNIRII NR. 10"></div>
+                    <div><label>Nume Conducător / Reprezentant HR</label><input type="text" id="demisieHrNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>Funcție Conducător</label><input type="text" id="demisieHrFunctie" placeholder="ex: DIRECTOR GENERAL"></div>
+
+                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--primary);">C. DetALII Preaviz & Încetare</strong></div>
+                    <div>
+                        <label>Tip Funcție (Preaviz Legal)</label>
+                        <select id="demisieTipPreaviz" onchange="actualizeazaZilePreaviz()">
+                            <option value="20">Execuție (20 zile lucrătoare)</option>
+                            <option value="45">Conducere / Management (45 zile lucrătoare)</option>
+                        </select>
+                    </div>
+                    <div><label>Data Ultima Zi de Lucru</label><input type="text" id="demisieDataUltima" placeholder="ex: 30.09.2026"></div>
+                </div>
+                <div style="margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="valideazaSiTreciLaSemnaturaDemisie()">Înainte: Semnătură Digitală ➔</button>
+                </div>
+            </div>
+
+            <!-- PASUL 2 DEMISIE: SEMNĂTURĂ DIGITALĂ -->
+            <div class="step-content" id="demisieStep2">
+                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Cerere de Demisie — Semnătură Digitală Salariat</div>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Semnați mai jos pentru a valida cererea de demisie:</p>
+                
+                <div class="signature-box" style="max-width: 400px; margin: 0 auto 24px auto;">
+                    <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Angajat:</label>
+                    <canvas id="sigDemisieCanvas" width="280" height="140" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
+                    <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaDemisie()">Șterge Semnătura</button>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-success" style="max-width: 400px;" onclick="genereazaCerereDemisiePDF()">📥 Generează & Descarcă Cererea de Demisie PDF</button>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-secondary" style="max-width: 200px;" onclick="document.getElementById('demisieStep2').classList.remove('active'); document.getElementById('demisieStep1').classList.add('active');">⬅ Înapoi</button>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
             <!-- FLUX CONTRACT ÎNCHIRIERE IMOBILIARĂ COMPLET-->
             <!-- ========================================== -->
             <div class="step-content" id="imobilStep1">
@@ -622,10 +678,10 @@
         let pachetSelectatInregistrare = 'GRATUIT';
         let splashTimerInterval = null;
         
-        let sigProprietarCanvas, sigChiriasCanvas, sigProprietarRemoteCanvas;
-        let ctxProprietar, ctxChirias, ctxProprietarRemote;
-        let isDrawingP = false, isDrawingC = false, isDrawingPR = false;
-        let hasDrawnP = false, hasDrawnC = false, hasDrawnPR = false;
+        let sigProprietarCanvas, sigChiriasCanvas, sigProprietarRemoteCanvas, sigDemisieCanvas;
+        let ctxProprietar, ctxChirias, ctxProprietarRemote, ctxDemisie;
+        let isDrawingP = false, isDrawingC = false, isDrawingPR = false, isDrawingD = false;
+        let hasDrawnP = false, hasDrawnC = false, hasDrawnPR = false, hasDrawnD = false;
 
         function initSplashTimer() {
             let secunde = 4;
@@ -835,13 +891,12 @@
         function salveazaInArhivaprivata(item) {
             if (!profilCurent) return;
             
-            // Verificare credite rămase (Optimizare SaaS)
             if (profilCurent.ramase <= 0) {
                 arataNotificare("⚠️ Ați epuizat documentele din pachet. Vă rugăm să faceți upgrade!", true);
                 return false;
             }
 
-            profilCurent.ramase -= 1; // Scădere automată credit
+            profilCurent.ramase -= 1;
             if (!profilCurent.arhivaContracte) profilCurent.arhivaContracte = [];
             profilCurent.arhivaContracte.unshift(item);
 
@@ -867,6 +922,10 @@
             } else if (cat === 'imobiliare') {
                 document.getElementById('mainMenuContainer').style.display = 'none';
                 document.getElementById('imobilModeSelectorContainer').style.display = 'block';
+            } else if (cat === 'munca') {
+                document.getElementById('mainMenuContainer').style.display = 'none';
+                document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+                document.getElementById('demisieStep1').classList.add('active');
             }
         }
 
@@ -907,7 +966,6 @@
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        /* CURĂȚARE DIACRITICE PENTRU PDF */
         const curataDiacritice = (text) => {
             if (!text) return '';
             return String(text).toUpperCase()
@@ -916,8 +974,135 @@
                 .replace(/Ț/g, 'T').replace(/Ţ/g, 'T');
         };
 
+        /* LOGICĂ CERERE DE DEMISIE */
+        function valideazaSiTreciLaSemnaturaDemisie() {
+            const nume = document.getElementById('demisieAngajatNume').value.trim();
+            const cnp = document.getElementById('demisieAngajatCnp').value.trim();
+            const functie = document.getElementById('demisieAngajatFunctie').value.trim();
+            const comp = document.getElementById('demisieCompanieNume').value.trim();
+
+            if (!nume || !cnp || !functie || !comp) {
+                arataNotificare("❌ Completați toate câmpurile obligatorii!", true);
+                return;
+            }
+
+            if (cnp.length !== 13) {
+                arataNotificare("❌ CNP-ul angajatului trebuie să aibă exact 13 cifre!", true);
+                return;
+            }
+
+            document.getElementById('demisieStep1').classList.remove('active');
+            document.getElementById('demisieStep2').classList.add('active');
+            initCanvasDemisie();
+        }
+
+        function initCanvasDemisie() {
+            const canvasD = document.getElementById('sigDemisieCanvas');
+            if(!canvasD) return;
+            ctxDemisie = canvasD.getContext('2d');
+            ctxDemisie.strokeStyle = '#0f172a'; ctxDemisie.lineWidth = 2;
+            canvasD.onmousedown = (e) => { isDrawingD = true; hasDrawnD = true; ctxDemisie.beginPath(); ctxDemisie.moveTo(e.offsetX, e.offsetY); };
+            canvasD.onmousemove = (e) => { if (isDrawingD) { ctxDemisie.lineTo(e.offsetX, e.offsetY); ctxDemisie.stroke(); } };
+            canvasD.onmouseup = () => { isDrawingD = false; };
+        }
+
+        function stergeSemnaturaDemisie() { ctxDemisie.clearRect(0, 0, 280, 140); hasDrawnD = false; }
+
+        async function genereazaCerereDemisiePDF() {
+            if (!hasDrawnD) {
+                arataNotificare("❌ Vă rugăm să semnați cererea pe ecran!", true);
+                return;
+            }
+
+            if (!profilCurent) {
+                arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
+                deschideModalAuth('logare');
+                return;
+            }
+
+            let success = salveazaInArhivaprivata({ 
+                idAct: 'DEM-' + Math.floor(1000 + Math.random()*9000), 
+                detalii: 'Cerere Demisie - ' + curataDiacritice(document.getElementById('demisieAngajatNume').value) 
+            });
+
+            if (!success) return;
+
+            arataNotificare("Se generează cererea de demisie oficială...");
+            try {
+                const { PDFDocument, StandardFonts } = PDFLib;
+                const pdfDoc = await PDFDocument.create();
+                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+                
+                let page = pdfDoc.addPage([595.28, 841.89]);
+                let y = 780;
+
+                const deseneazaFooter = () => {
+                    page.drawText("Generat prin ActPeLoc.ro — Toate drepturile rezervate", { 
+                        x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
+                    });
+                };
+
+                const deseneazaParagraf = (text, isBold = false, size = 10, lineSpacing = 16) => {
+                    if (y < 80) { 
+                        deseneazaFooter();
+                        page = pdfDoc.addPage([595.28, 841.89]); 
+                        y = 780; 
+                    }
+                    page.drawText(text, { x: 45, y, size, font: isBold ? fontBold : font });
+                    y -= lineSpacing;
+                };
+
+                // ANTET CĂTRE ANGAJATOR
+                deseneazaParagraf(`Catre Conducerea: ${curataDiacritice(document.getElementById('demisieCompanieNume').value)}`, true, 11, 20);
+                deseneazaParagraf(`Sediul: ${curataDiacritice(document.getElementById('demisieCompanieAdresa').value || '......................................................')}`, false, 9, 25);
+
+                // ANTET SALARIAT
+                deseneazaParagraf(`Subsemnatul(a): ${curataDiacritice(document.getElementById('demisieAngajatNume').value)},`, true, 10, 16);
+                deseneazaParagraf(`CNP: ${document.getElementById('demisieAngajatCnp').value}, avand functia de: ${curataDiacritice(document.getElementById('demisieAngajatFunctie').value)},`, false, 10, 16);
+                deseneazaParagraf(`in cadrul departamentului: ${curataDiacritice(document.getElementById('demisieAngajatDept').value || 'GENERAL')},`, false, 10, 30);
+
+                // TITLU CENTRAT
+                const titluText = "CERERE DE DEMISIE";
+                const textWidth = fontBold.widthOfTextAtSize(titluText, 14);
+                const centerX = (595.28 - textWidth) / 2;
+                page.drawText(titluText, { x: centerX, y, size: 14, font: fontBold });
+                y -= 35;
+
+                // CONTINUT DEMISIE CONFORM CODULUI MUNCII
+                const zilePreaviz = document.getElementById('demisieTipPreaviz').value;
+                const ultimaZi = document.getElementById('demisieDataUltima').value || ' conform legii';
+
+                deseneazaParagraf(`Prin prezenta, va notific incetarea contractului individual de munca prin demisie,`, false, 10, 18);
+                deseneazaParagraf(`in conformitate cu prevederile Art. 81 din Legea nr. 53/2003 (Codul Muncii).`, false, 10, 18);
+                y -= 10;
+                deseneazaParagraf(`Solicit incetarea raporturilor de munca la data de ${ultimaZi}, respectand`, false, 10, 18);
+                deseneazaParagraf(`termenul legal de preaviz de ${zilePreaviz} zile lucratoare.`, false, 10, 30);
+
+                deseneazaParagraf(`Va rog sa dispuneti masurile necesare pentru eliberarea lichidarii si a actelor de munca.`, false, 10, 40);
+
+                // DATA ȘI SEMNĂTURA
+                deseneazaParagraf(`Data: ${new Date().toLocaleDateString('ro-RO')}`, false, 10, 30);
+                deseneazaParagraf(`Semnatura Salariatului,`, true, 10, 15);
+
+                const sigDImageBytes = await pdfDoc.embedPng(document.getElementById('sigDemisieCanvas').toDataURL('image/png'));
+                page.drawImage(sigDImageBytes, { x: 45, y: y - 55, width: 120, height: 45 });
+
+                deseneazaFooter();
+
+                const bytes = await pdfDoc.save();
+                const blob = new Blob([bytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = "CERERE_DEMISIE_ACTPELOC.pdf";
+                a.click();
+
+                arataNotificare("✅ Cerere de demisie generată cu succes! (-1 credit)");
+            } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
+        }
+
         /* VALIDARE INTELIGENTĂ FORMULAR IMOBILIAR */
-       function valideazaSiTreciLaSemnaturaImobil() {
+        function valideazaSiTreciLaSemnaturaImobil() {
             const propNume = document.getElementById('proprietarNume').value.trim();
             const propCnp = document.getElementById('proprietarCnp').value.trim();
             const propAct = document.getElementById('proprietarAct').value.trim();
@@ -1005,7 +1190,6 @@
         function trimiteImobilRemoteWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Salut! Vă rog să accesați acest link securizat pentru semnarea contractului de închiriere: " + document.getElementById('imobilRemoteLinkBox').innerText)}`, '_blank'); }
 
         async function genereazaContractImobiliarPDF() {
-            // Verificare semnături goale (Optimizare protecție juridică)
             if (modLucruImobil === 'local' && (!hasDrawnP || !hasDrawnC)) {
                 arataNotificare("❌ Atât Proprietarul cât și Chiriașul trebuie să semneze pe ecran!", true);
                 return;
@@ -1015,7 +1199,6 @@
                 return;
             }
 
-            // Verificare cont și credite înainte de generare
             if (!profilCurent) {
                 arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
                 deschideModalAuth('logare');
@@ -1027,7 +1210,7 @@
                 detalii: 'Contract Închiriere (' + modLucruImobil.toUpperCase() + ') - ' + curataDiacritice(document.getElementById('chiriasNume').value) 
             });
 
-            if (!success) return; // Oprește dacă nu mai are credite
+            if (!success) return;
 
             arataNotificare("Se generează contractul imobiliar complet și detaliat...");
             try {
@@ -1041,11 +1224,7 @@
 
                 const deseneazaFooter = () => {
                     page.drawText("Generat prin ActPeLoc.ro — Toate drepturile rezervate", { 
-                        x: 45, 
-                        y: 30, 
-                        size: 8, 
-                        font, 
-                        color: PDFLib.rgb(0.5, 0.5, 0.5) 
+                        x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
                     });
                 };
 
@@ -1069,14 +1248,12 @@
                     y -= 11;
                 };
 
-                // TITLU CENTRAT PE MIJLOC
                 const titluText = "CONTRACT DE INCHIRIERE LOCUINTA";
                 const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
                 const centerX = (595.28 - textWidth) / 2;
                 page.drawText(titluText, { x: centerX, y, size: 12, font: fontBold });
                 y -= 20;
 
-                // ARTICOLUL 1
                 deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
                 deseneazaParagraf(`1.1. Locator (Proprietar): ${curataDiacritice(document.getElementById('proprietarNume').value)},`);
                 deseneazaParagraf(`CNP: ${document.getElementById('proprietarCnp').value}, CI seria: ${curataDiacritice(document.getElementById('proprietarAct').value)}, cu domiciliul in: ${curataDiacritice(document.getElementById('proprietarAdresa').value)}.`);
@@ -1084,7 +1261,6 @@
                 deseneazaParagraf(`CNP: ${document.getElementById('chiriasCnp').value}, CI seria: ${curataDiacritice(document.getElementById('chiriasAct').value)}.`);
                 y -= 4;
 
-                // ARTICOLUL 2
                 deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
                 deseneazaParagraf(`2.1. Locatorul inchiriaza Locatarului imobilul cu destinatia exclusiva de locuinta, situat in:`);
                 deseneazaParagraf(`${curataDiacritice(document.getElementById('imobilAdresa').value)}.`);
@@ -1097,20 +1273,17 @@
                 }
                 y -= 4;
 
-                // ARTICOLUL 3
                 deseneazaTitluSectiune("ARTICOLUL 3: DURATA CONTRACTULUI");
                 deseneazaParagraf(`3.1. Prezentul contract se incheie pe o perioada de ${curataDiacritice(document.getElementById('imobilDurata').value || '12 LUNI')}, incepand cu data de ${document.getElementById('imobilDataStart').value || '01.09.2026'}.`);
                 deseneazaParagraf(`3.2. La expirarea termenului, contractul poate fi prelungit prin acordul scris al ambelor parti.`);
                 y -= 4;
 
-                // ARTICOLUL 4
                 deseneazaTitluSectiune("ARTICOLUL 4: CHIRIA, GARANTIA SI MODALITATEA DE PLATA");
                 deseneazaParagraf(`4.1. Chiria lunara stabilita este in cuantum de ${curataDiacritice(document.getElementById('imobilChirie').value)}, achitata in avans pana la data de 5 a fiecarei luni.`);
                 deseneazaParagraf(`4.2. Cu titlu de garantie, Locatarul achita la semnare suma de ${curataDiacritice(document.getElementById('imobilGarantie').value || document.getElementById('imobilChirie').value)}, destinata acoperirii daunelor sau utilitatilor neachitate.`);
                 deseneazaParagraf(`4.3. Garantia se restituie in termen de cel mult 7 zile calendaristice de la predarea imobilului si achitarea datoriilor.`);
                 y -= 4;
 
-                // ARTICOLUL 5
                 deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIIle PARTILOR");
                 deseneazaParagraf(`5.1. Locatorul garanteaza linistita folosinta a imobilului si nu poate interveni in spatiu fara notificare prealabila.`);
                 deseneazaParagraf(`5.2. Locatarul se obliga sa achite la termen chiria, cotele de intretinere, consumul de energie, gaze si apa pe baza contoarelor.`);
@@ -1118,31 +1291,26 @@
                 deseneazaParagraf(`5.4. Reparatiile capitale cad in sarcina Locatorului, in timp ce reparatiile curente si intretinerea locuintei revin Locatarului.`);
                 y -= 4;
 
-                // ARTICOLUL 6
                 deseneazaTitluSectiune("ARTICOLUL 6: REGULI SPECIALE (ANIMALE DE COMPANIE SI FUMAT)");
                 deseneazaParagraf(`6.1. Detinerea de animale de companie in imobil este permisa doar cu acordul prealabil scris al Locatorului.`);
                 deseneazaParagraf(`6.2. Fumatul in interiorul imobilului este strict interzis, eventualele daune sau mirosuri persistente fiind suportate integral de Locatar.`);
                 y -= 4;
 
-                // ARTICOLUL 7
                 deseneazaTitluSectiune("ARTICOLUL 7: MODIFICARI STRUCTURALE SI INSPECTIA IMOBILULUI");
                 deseneazaParagraf(`7.1. Locatarul nu poate efectua modificari structurale, zugraveli majore sau interventii la instalatii fara acordul scris al Locatorului.`);
                 deseneazaParagraf(`7.2. Locatorul are dreptul de a inspecta starea imobilului cu o notificare prealabila de minim 48 de ore adresata Locatarului.`);
                 y -= 4;
 
-                // ARTICOLUL 8
                 deseneazaTitluSectiune("ARTICOLUL 8: INCETAREA SI REZILIEREA ANTICIPATA");
                 deseneazaParagraf(`8.1. Prezentul contract poate fi denuntat unilateral de oricare dintre parti, cu un preaviz scris de minim 60 de zile.`);
                 deseneazaParagraf(`8.2. Nerespectarea obligatiilor contractuale de catre una dintre parti atrage rezilierea de plin drept si plata de daune-interese.`);
                 y -= 4;
 
-                // ARTICOLUL 9
                 deseneazaTitluSectiune("ARTICOLUL 9: FORTA MAJORA SI LITIGII");
                 deseneazaParagraf(`9.1. Forta majora exonereaza de raspundere partea care o invoca, in conditiile legii.`);
                 deseneazaParagraf(`9.2. Litigiile decurgand din acest contract se vor solutiona pe cale amiabila sau, in caz de esec, de instantele judecatoresti competente.`);
                 y -= 4;
 
-                // ARTICOLUL 10
                 deseneazaTitluSectiune("ARTICOLUL 10: DISPOZITII FINALE SI FISCALE (ANAF)");
                 deseneazaParagraf(`10.1. Prezentul contract constituie titlu executoriu conform dispozitiilor Codului de Procedura Civila.`);
                 deseneazaParagraf(`10.2. Locatorul are obligatia legala de inregistrare a contractului la organul fiscal competent (ANAF) în termen de 30 zile.`);
@@ -1154,7 +1322,6 @@
                     y = 780; 
                 }
 
-                // DATA INCHEIERII ȘI SEMNĂTURILE
                 page.drawText(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale, conform Codului Civil.`, { x: 45, y, size: 7.5, font: fontBold });
                 y -= 22;
                 
