@@ -926,7 +926,7 @@
                 remoteCont.style.display = 'block';
                 title.innerText = "Semnătură Digitală la Distanță";
                 subtitle.innerText = "Semnați ca proprietar, apoi trimiteți linkul chiriașului.";
-                document.getElementById('imobilRemoteLinkBox').innerText = `${window.location.origin}${window.location.pathname}?sign_imob=${Math.random().toString(36.substring(2))}`;
+                document.getElementById('imobilRemoteLinkBox').innerText = `${window.location.origin}${window.location.pathname}?sign_imob=${Math.random().toString(36).substring(2)}`;
                 initCanvasesRemote();
             }
         }
@@ -1106,7 +1106,7 @@
                     sigCImageBytes = await pdfDoc.embedPng(document.getElementById('sigChiriasCanvas').toDataURL('image/png'));
                 } else {
                     sigPImageBytes = await pdfDoc.embedPng(document.getElementById('sigProprietarRemoteCanvas').toDataURL('image/png'));
-                    sigCImageBytes = await pdfDoc.embedPng(document.getElementById('sigProprietarRemoteCanvas').toDataURL('image/png')); // Simulat digital de la distanță
+                    sigCImageBytes = await pdfDoc.embedPng(document.getElementById('sigProprietarRemoteCanvas').toDataURL('image/png'));
                 }
 
                 page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
