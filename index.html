@@ -182,7 +182,7 @@
         <div class="splash-content">
             <div class="brand-pill">⚡ Ediția Avansată 2026 • SaaS Juridic</div>
             <h1 class="splash-title">Generează Contracte Oficiale <span>În Câteva Secunde</span></h1>
-            <p class="splash-desc">Platforma unică pentru contracte auto, închirieri imobiliare, cereri de demisie, prestări servicii B2B Enterprise și arhivă securizată în cloud.</p>
+            <p class="splash-desc">Platforma unică pentru contracte auto, comodat auto, închirieri imobiliare, cereri de demisie, prestări servicii B2B și arhivă în cloud.</p>
             <div class="splash-btn-group">
                 <button class="btn-primary-glow" onclick="inchideSplash()">Începe Acum Gratuit ➔</button>
                 <button class="btn-secondary-glass" onclick="inchideSplash(); deschideModalAuth('inregistrare');">Creează Cont 🚀</button>
@@ -308,7 +308,7 @@
                     <div class="category-card" onclick="selecteazaCategorie('auto')">
                         <div class="category-icon">🚗</div>
                         <h4>Auto & Transport</h4>
-                        <p>Contracte de vânzare-cumpărare auto oficiale ITL 054 și închiriere.</p>
+                        <p>Contracte de vânzare-cumpărare auto, Comodat Auto și închirieri.</p>
                     </div>
                     <div class="category-card" onclick="selecteazaCategorie('imobiliare')">
                         <div class="category-icon">🏠</div>
@@ -399,6 +399,26 @@
                 </div>
             </div>
 
+            <!-- MENIU SELECTARE TIP DOCUMENT CATEGORIE AUTO -->
+            <div id="autoMenuContainer" style="display:none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="font-size: 18px; font-weight: 800;">Alege Documentul Dorit (Auto & Transport)</div>
+                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
+                </div>
+                <div class="categories-grid" style="margin-top: 0;">
+                    <div class="category-card" onclick="selecteazaModSiPorneste('local')">
+                        <div class="category-icon">🚗</div>
+                        <h4>Contract Vânzare-Cumpărare Auto</h4>
+                        <p>Formular oficial ITL 054 pentru înmatriculare la Direcția Taxe și Impozite.</p>
+                    </div>
+                    <div class="category-card" onclick="pornesteFluxComodat()">
+                        <div class="category-icon">🔑</div>
+                        <h4>Contract de Comodat Auto</h4>
+                        <p>Darea în folosință gratuită a unui autovehicul către o altă persoană.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- MENIU SELECTARE TIP DOCUMENT CATEGORIE MUNCĂ -->
             <div id="muncaMenuContainer" style="display:none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -420,81 +440,78 @@
             </div>
 
             <!-- ========================================== -->
-            <!-- FLUX CONTRACT PRESTĂRI SERVICII B2B        -->
+            <!-- FLUX CONTRACT COMODAT AUTO                 -->
             <!-- ========================================== -->
-            <div class="step-content" id="b2bStep1">
+            <div class="step-content" id="comodatStep1">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract B2B Enterprise — Pasul 1/2 (Părți)</div>
+                    <div style="font-size: 18px; font-weight: 800;">Contract Comodat Auto — Pasul 1/3 (Părți)</div>
                     <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
                 </div>
                 <div class="form-grid">
-                    <div class="full-width"><strong style="font-size: 13px; color: var(--primary);">A. Date Prestator (Cine oferă serviciul)</strong></div>
-                    <div class="full-width"><label>Denumire Firmă / PFA</label><input type="text" id="b2bPrestatorNume" placeholder="ex: SC DEV STUDIO SRL / POPESCU PFA"></div>
-                    <div><label>CUI / CIF</label><input type="text" id="b2bPrestatorCui" placeholder="ex: RO12345678"></div>
-                    <div><label>Nr. Reg. Comerțului</label><input type="text" id="b2bPrestatorReg" placeholder="ex: J40/1234/2025"></div>
-                    <div class="full-width"><label>Adresă Sediu Social</label><input type="text" id="b2bPrestatorAdresa" placeholder="ex: BUCUREȘTI, STR. LUNCA NR. 5"></div>
-                    <div><label>Bancă</label><input type="text" id="b2bPrestatorBanca" placeholder="ex: BANCA TRANSILVANIA"></div>
-                    <div><label>Cont IBAN</label><input type="text" id="b2bPrestatorIban" placeholder="ex: RO49BTRL0000123456789012"></div>
+                    <div class="full-width"><strong style="font-size: 13px; color: var(--primary);">A. Date Comodant (Proprietarul Mașinii)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Proprietar</label><input type="text" id="comodantNume" placeholder="ex: POPESCU ION"></div>
+                    <div><label>CNP Proprietar</label><input type="text" id="comodantCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie & Nr)</label><input type="text" id="comodantAct" placeholder="ex: RX 123456"></div>
+                    <div class="full-width"><label>Domiciliu Comodant</label><input type="text" id="comodantAdresa" placeholder="ex: BÂRLAD, STR. REPUBLICII NR. 12"></div>
 
-                    <div class="full-width" style="margin-top: 15px;"><strong style="font-size: 13px; color: var(--primary);">B. Date Beneficiar (Cine achită serviciul)</strong></div>
-                    <div class="full-width"><label>Denumire Companie Beneficiară</label><input type="text" id="b2bBeneficiarNume" placeholder="ex: SC GLOBAL CLIENT SRL"></div>
-                    <div><label>CUI / CIF Beneficiar</label><input type="text" id="b2bBeneficiarCui" placeholder="ex: RO87654321"></div>
-                    <div><label>Nr. Reg. Comerțului Beneficiar</label><input type="text" id="b2bBeneficiarReg" placeholder="ex: J35/987/2024"></div>
-                    <div class="full-width"><label>Adresă Sediu Beneficiar</label><input type="text" id="b2bBeneficiarAdresa" placeholder="ex: CLUJ-NAPOCA, BD. EROILOR NR. 12"></div>
+                    <div class="full-width" style="margin-top: 15px;"><strong style="font-size: 13px; color: var(--primary);">B. Date Comodatar (Cel care preia mașina)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Comodatar</label><input type="text" id="comodatarNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>CNP Comodatar</label><input type="text" id="comodatarCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie & Nr)</label><input type="text" id="comodatarAct" placeholder="ex: DZ 654321"></div>
+                    <div class="full-width"><label>Domiciliu Comodatar</label><input type="text" id="comodatarAdresa" placeholder="ex: BUCUREȘTI, BD. EROILOR NR. 5"></div>
                 </div>
                 <div style="margin-top: 30px;">
-                    <button class="btn btn-primary" onclick="valideazaPasB2B1()">Înainte: Obiect, Garanție & Semnături ➔</button>
+                    <button class="btn btn-primary" onclick="valideazaPasComodat1()">Înainte: Date Vehicul ➔</button>
                 </div>
             </div>
 
-            <!-- PASUL 2 B2B: OBIECT, PREȚ ȘI SEMNĂTURĂ DUALĂ -->
-            <div class="step-content" id="b2bStep2">
+            <!-- PASUL 2 COMODAT: DATE VEHICUL & DURATĂ -->
+            <div class="step-content" id="comodatStep2">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract B2B Enterprise — Pasul 2/2 (Detalii & Semnături)</div>
+                    <div style="font-size: 18px; font-weight: 800;">Contract Comodat Auto — Pasul 2/3 (Vehicul & Condiții)</div>
                     <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
                 </div>
                 <div class="form-grid">
-                    <div class="full-width"><label>Obiectul Contractului (Descriere detaliată a serviciilor)</label><textarea id="b2bObiect" rows="3" placeholder="ex: Servicii de consultanță IT, mentenanță web și dezvoltare de module software personalizate."></textarea></div>
-                    <div><label>Valoare / Preț (în cifre și monedă)</label><input type="text" id="b2bPret" placeholder="ex: 1.500 EUR + TVA"></div>
-                    <div><label>Termen de Execuție / Predare</label><input type="text" id="b2bTermen" placeholder="ex: 30 de zile calendaristice"></div>
+                    <div><label>Marcă</label><input type="text" id="comodMake" placeholder="ex: VOLKSWAGEN"></div>
+                    <div><label>Model / Tip</label><input type="text" id="comodType" placeholder="ex: PASSAT B7"></div>
+                    <div class="full-width"><label>Număr de Identificare (VIN / Șasiu)</label><input type="text" id="comodVin" placeholder="ex: WVWZZZ3CZEE123456"></div>
+                    <div><label>Număr Înmatriculare</label><input type="text" id="comodReg" placeholder="ex: VS09ABC"></div>
+                    <div><label>Serie Motor</label><input type="text" id="comodMotor" placeholder="ex: CFF123456"></div>
+                    <div><label>Capacitate Cilindrică (cmc)</label><input type="text" id="comodCmc" placeholder="ex: 1968"></div>
+                    <div><label>Număr CIV (Carte Identitate Vehicul)</label><input type="text" id="comodCiv" placeholder="ex: B123456"></div>
+                    <div><label>Durata Comodatului</label><input type="text" id="comodDurata" placeholder="ex: 3 ANI (SAU NEDETERMINATĂ)"></div>
+                    <div class="full-width"><label>Mențiune Circulație Externă (Țări UE)</label><input type="text" id="comodExtern" placeholder="ex: Cu drept de circulație în afara țării (UE)"></div>
                 </div>
+                <div style="margin-top: 30px; display: flex; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="document.getElementById('comodatStep2').classList.remove('active'); document.getElementById('comodatStep1').classList.add('active');">⬅ Înapoi</button>
+                    <button class="btn btn-primary" onclick="valideazaPasComodat2()">Înainte: Semnături ➔</button>
+                </div>
+            </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px;">
+            <!-- PASUL 3 COMODAT: SEMNĂTURI DUBLE -->
+            <div class="step-content" id="comodatStep3">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="font-size: 18px; font-weight: 800;">Contract Comodat Auto — Pasul 3/3 (Semnături Digitale)</div>
+                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
+                </div>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Ambele părți trebuie să semneze mai jos pentru a valida contractul de comodat:</p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
                     <div class="signature-box">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Prestator:</label>
-                        <canvas id="sigB2BPrestatorCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaB2BPrestator()">Șterge</button>
+                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Comodant (Proprietar):</label>
+                        <canvas id="sigComodantCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
+                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaComodant()">Șterge</button>
                     </div>
                     <div class="signature-box">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Beneficiar:</label>
-                        <canvas id="sigB2BBeneCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaB2BBene()">Șterge</button>
+                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Comodatar (Utilizator):</label>
+                        <canvas id="sigComodatarCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
+                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaComodatar()">Șterge</button>
                     </div>
                 </div>
 
                 <div style="margin-top: 24px; display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="document.getElementById('b2bStep2').classList.remove('active'); document.getElementById('b2bStep1').classList.add('active');">⬅ Înapoi</button>
-                    <button class="btn btn-success" onclick="genereazaContractB2B_PDF()">📥 Generează & Descarcă Contract B2B Enterprise PDF</button>
-                </div>
-            </div>
-
-            <!-- ECRAN SELECTARE MOD IMOBILIAR (LOCAL VS DISTANȚĂ) -->
-            <div id="imobilModeSelectorContainer" style="display:none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Mod de Lucru - Contract Închiriere Locuință</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
-                </div>
-                <div class="categories-grid" style="margin-top: 0;">
-                    <div class="category-card" onclick="selecteazaModImobiliarSiPorneste('local')">
-                        <div class="category-icon">💻</div>
-                        <h4>Completare Locală</h4>
-                        <p>Completați datele și semnați ambele părți față-în-față pe acest dispozitiv.</p>
-                    </div>
-                    <div class="category-card" onclick="selecteazaModImobiliarSiPorneste('remote')">
-                        <div class="category-icon">📱</div>
-                        <h4>Completare la Distanță</h4>
-                        <p>Completați datele proprietarului și trimiteți linkul securizat chiriașului pentru semnătură.</p>
-                    </div>
+                    <button class="btn btn-secondary" onclick="document.getElementById('comodatStep3').classList.remove('active'); document.getElementById('comodatStep2').classList.add('active');">⬅ Înapoi</button>
+                    <button class="btn btn-success" onclick="genereazaContractComodatPDF()">📥 Generează & Descarcă Contract Comodat Auto PDF</button>
                 </div>
             </div>
 
@@ -756,10 +773,10 @@
         let pachetSelectatInregistrare = 'GRATUIT';
         let splashTimerInterval = null;
         
-        let sigProprietarCanvas, sigChiriasCanvas, sigProprietarRemoteCanvas, sigDemisieCanvas, sigB2BPrestatorCanvas, sigB2BBeneCanvas;
-        let ctxProprietar, ctxChirias, ctxProprietarRemote, ctxDemisie, ctxB2BP, ctxB2BB;
-        let isDrawingP = false, isDrawingC = false, isDrawingPR = false, isDrawingD = false, isDrawingB2BP = false, isDrawingB2BB = false;
-        let hasDrawnP = false, hasDrawnC = false, hasDrawnPR = false, hasDrawnD = false, hasDrawnB2BP = false, hasDrawnB2BB = false;
+        let sigProprietarCanvas, sigChiriasCanvas, sigProprietarRemoteCanvas, sigDemisieCanvas, sigComodantCanvas, sigComodatarCanvas;
+        let ctxProprietar, ctxChirias, ctxProprietarRemote, ctxDemisie, ctxComodant, ctxComodatar;
+        let isDrawingP = false, isDrawingC = false, isDrawingPR = false, isDrawingD = false, isDrawingComodant = false, isDrawingComodatar = false;
+        let hasDrawnP = false, hasDrawnC = false, hasDrawnPR = false, hasDrawnD = false, hasDrawnComodant = false, hasDrawnComodatar = false;
 
         function initSplashTimer() {
             let secunde = 4;
@@ -909,6 +926,7 @@
             document.getElementById('modeSelectorContainer').style.display = 'none';
             document.getElementById('imobilModeSelectorContainer').style.display = 'none';
             document.getElementById('muncaMenuContainer').style.display = 'none';
+            document.getElementById('autoMenuContainer').style.display = 'none';
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
             document.getElementById('dashboardView').style.display = 'block';
             incarcaDateDashboard();
@@ -1038,6 +1056,7 @@
             document.getElementById('modeSelectorContainer').style.display = 'none';
             document.getElementById('imobilModeSelectorContainer').style.display = 'none';
             document.getElementById('muncaMenuContainer').style.display = 'none';
+            document.getElementById('autoMenuContainer').style.display = 'none';
             document.getElementById('dashboardView').style.display = 'none';
             document.getElementById('mainMenuContainer').style.display = 'block';
         }
@@ -1045,7 +1064,7 @@
         function selecteazaCategorie(cat) {
             if (cat === 'auto') {
                 document.getElementById('mainMenuContainer').style.display = 'none';
-                document.getElementById('modeSelectorContainer').style.display = 'block';
+                document.getElementById('autoMenuContainer').style.display = 'block';
             } else if (cat === 'imobiliare') {
                 document.getElementById('mainMenuContainer').style.display = 'none';
                 document.getElementById('imobilModeSelectorContainer').style.display = 'block';
@@ -1067,6 +1086,12 @@
             document.getElementById('b2bStep1').classList.add('active');
         }
 
+        function pornesteFluxComodat() {
+            document.getElementById('autoMenuContainer').style.display = 'none';
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('comodatStep1').classList.add('active');
+        }
+
         function selecteazaModImobiliarSiPorneste(mod) {
             modLucruImobil = mod;
             document.getElementById('imobilModeSelectorContainer').style.display = 'none';
@@ -1076,8 +1101,8 @@
 
         function selecteazaModSiPorneste(mod) {
             modLucru = mod;
-            document.getElementById('mainMenuContainer').style.display = 'none';
-            document.getElementById('modeSelectorContainer').style.display = 'none';
+            document.getElementById('autoMenuContainer').style.display = 'none';
+            document.getElementById('modeSelectorContainer').style.display = 'block';
             document.getElementById('progressBarContainer').style.display = 'flex';
             currentStep = 1;
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
@@ -1121,46 +1146,61 @@
             }
         }
 
-        /* VALIDARE & FLUX CONTRACT B2B ENTERPRISE */
-        function valideazaPasB2B1() {
-            const prestNume = document.getElementById('b2bPrestatorNume');
-            const prestCui = document.getElementById('b2bPrestatorCui');
-            const benefNume = document.getElementById('b2bBeneficiarNume');
+        /* VALIDARE & FLUX COMODAT AUTO */
+        function valideazaPasComodat1() {
+            const comNume = document.getElementById('comodantNume');
+            const comCnp = document.getElementById('comodantCnp');
+            const ctarNume = document.getElementById('comodatarNume');
+            const ctarCnp = document.getElementById('comodatarCnp');
 
-            if (!prestNume.value.trim()) { marcheazaEroreInput('b2bPrestatorNume'); arataNotificare("❌ Introduceți numele prestatorului!", true); return; }
-            if (!prestCui.value.trim()) { marcheazaEroreInput('b2bPrestatorCui'); arataNotificare("❌ Introduceți CUI-ul prestatorului!", true); return; }
-            if (!benefNume.value.trim()) { marcheazaEroreInput('b2bBeneficiarNume'); arataNotificare("❌ Introduceți numele beneficiarului!", true); return; }
+            if (!comNume.value.trim()) { marcheazaEroreInput('comodantNume'); arataNotificare("❌ Introduceți numele proprietarului!", true); return; }
+            if (comCnp.value.trim().length !== 13) { marcheazaEroreInput('comodantCnp'); arataNotificare("❌ CNP comodant invalid (13 cifre)!", true); return; }
+            if (!ctarNume.value.trim()) { marcheazaEroreInput('comodatarNume'); arataNotificare("❌ Introduceți numele comodatarului!", true); return; }
+            if (ctarCnp.value.trim().length !== 13) { marcheazaEroreInput('comodatarCnp'); arataNotificare("❌ CNP comodatar invalid (13 cifre)!", true); return; }
 
-            document.getElementById('b2bStep1').classList.remove('active');
-            document.getElementById('b2bStep2').classList.add('active');
-            initCanvasesB2B();
+            document.getElementById('comodatStep1').classList.remove('active');
+            document.getElementById('comodatStep2').classList.add('active');
         }
 
-        function initCanvasesB2B() {
-            const canvasP = document.getElementById('sigB2BPrestatorCanvas');
-            const canvasB = document.getElementById('sigB2BBeneCanvas');
-            if(!canvasP || !canvasB) return;
+        function valideazaPasComodat2() {
+            const make = document.getElementById('comodMake');
+            const vin = document.getElementById('comodVin');
+            const reg = document.getElementById('comodReg');
 
-            ctxB2BP = canvasP.getContext('2d');
-            ctxB2BB = canvasB.getContext('2d');
-            ctxB2BP.strokeStyle = '#0f172a'; ctxB2BP.lineWidth = 2;
-            ctxB2BB.strokeStyle = '#0f172a'; ctxB2BB.lineWidth = 2;
+            if (!make.value.trim()) { marcheazaEroreInput('comodMake'); arataNotificare("❌ Introduceți marca vehiculului!", true); return; }
+            if (!vin.value.trim()) { marcheazaEroreInput('comodVin'); arataNotificare("❌ Introduceți seria de șasiu (VIN)!", true); return; }
+            if (!reg.value.trim()) { marcheazaEroreInput('comodReg'); arataNotificare("❌ Introduceți numărul de înmatriculare!", true); return; }
 
-            canvasP.onmousedown = (e) => { isDrawingB2BP = true; hasDrawnB2BP = true; ctxB2BP.beginPath(); ctxB2BP.moveTo(e.offsetX, e.offsetY); };
-            canvasP.onmousemove = (e) => { if (isDrawingB2BP) { ctxB2BP.lineTo(e.offsetX, e.offsetY); ctxB2BP.stroke(); } };
-            canvasP.onmouseup = () => { isDrawingB2BP = false; };
-
-            canvasB.onmousedown = (e) => { isDrawingB2BB = true; hasDrawnB2BB = true; ctxB2BB.beginPath(); ctxB2BB.moveTo(e.offsetX, e.offsetY); };
-            canvasB.onmousemove = (e) => { if (isDrawingB2BB) { ctxB2BB.lineTo(e.offsetX, e.offsetY); ctxB2BB.stroke(); } };
-            canvasB.onmouseup = () => { isDrawingB2BB = false; };
+            document.getElementById('comodatStep2').classList.remove('active');
+            document.getElementById('comodatStep3').classList.add('active');
+            initCanvasesComodat();
         }
 
-        function stergeSemnaturaB2BPrestator() { ctxB2BP.clearRect(0, 0, 280, 130); hasDrawnB2BP = false; }
-        function stergeSemnaturaB2BBene() { ctxB2BB.clearRect(0, 0, 280, 130); hasDrawnB2BB = false; }
+        function initCanvasesComodat() {
+            const canvasCom = document.getElementById('sigComodantCanvas');
+            const canvasCtar = document.getElementById('sigComodatarCanvas');
+            if(!canvasCom || !canvasCtar) return;
 
-        async function genereazaContractB2B_PDF() {
-            if (!hasDrawnB2BP || !hasDrawnB2BB) {
-                arataNotificare("❌ Atât Prestatorul cât și Beneficiarul trebuie să semneze pe ecran!", true);
+            ctxComodant = canvasCom.getContext('2d');
+            ctxComodatar = canvasCtar.getContext('2d');
+            ctxComodant.strokeStyle = '#0f172a'; ctxComodant.lineWidth = 2;
+            ctxComodatar.strokeStyle = '#0f172a'; ctxComodatar.lineWidth = 2;
+
+            canvasCom.onmousedown = (e) => { isDrawingComodant = true; hasDrawnComodant = true; ctxComodant.beginPath(); ctxComodant.moveTo(e.offsetX, e.offsetY); };
+            canvasCom.onmousemove = (e) => { if (isDrawingComodant) { ctxComodant.lineTo(e.offsetX, e.offsetY); ctxComodant.stroke(); } };
+            canvasCom.onmouseup = () => { isDrawingComodant = false; };
+
+            canvasCtar.onmousedown = (e) => { isDrawingComodatar = true; hasDrawnComodatar = true; ctxComodatar.beginPath(); ctxComodatar.moveTo(e.offsetX, e.offsetY); };
+            canvasCtar.onmousemove = (e) => { if (isDrawingComodatar) { ctxComodatar.lineTo(e.offsetX, e.offsetY); ctxComodatar.stroke(); } };
+            canvasCtar.onmouseup = () => { isDrawingComodatar = false; };
+        }
+
+        function stergeSemnaturaComodant() { ctxComodant.clearRect(0, 0, 280, 130); hasDrawnComodant = false; }
+        function stergeSemnaturaComodatar() { ctxComodatar.clearRect(0, 0, 280, 130); hasDrawnComodatar = false; }
+
+        async function genereazaContractComodatPDF() {
+            if (!hasDrawnComodant || !hasDrawnComodatar) {
+                arataNotificare("❌ Atât Comodantul cât și Comodatarul trebuie să semneze pe ecran!", true);
                 return;
             }
 
@@ -1170,7 +1210,7 @@
                 return;
             }
 
-            arataNotificare("Se generează contractul B2B Enterprise complex...");
+            arataNotificare("Se generează contractul de comodat auto oficial...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
                 const pdfDoc = await PDFDocument.create();
@@ -1181,7 +1221,7 @@
                 let y = 780;
 
                 const deseneazaFooter = () => {
-                    page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Contract Comercial Enterprise de Prestari Servicii B2B"), { 
+                    page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Contract de Comodat Auto oficial"), { 
                         x: 45, y: 30, size: 7.5, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
                     });
                 };
@@ -1194,87 +1234,74 @@
 
                 const deseneazaParagraf = (text) => {
                     if (y < 70) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(curataDiacritice(text), { x: 45, y, size: 6.8, font });
-                    y -= 10;
+                    page.drawText(curataDiacritice(text), { x: 45, y, size: 7, font });
+                    y -= 11;
                 };
 
-                const titluText = "CONTRACT COMERCIAL DE PRESTARI SERVICII B2B - ENTERPRISE";
-                const textWidth = fontBold.widthOfTextAtSize(curataDiacritice(titluText), 10);
-                page.drawText(curataDiacritice(titluText), { x: (595.28 - textWidth) / 2, y, size: 10, font: fontBold });
-                y -= 20;
+                const titluText = "CONTRACT DE COMODAT AUTO (FOLOSINȚĂ GRATUITĂ)";
+                const textWidth = fontBold.widthOfTextAtSize(curataDiacritice(titluText), 10.5);
+                page.drawText(curataDiacritice(titluText), { x: (595.28 - textWidth) / 2, y, size: 10.5, font: fontBold });
+                y -= 22;
 
-                deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
-                deseneazaParagraf(`1.1. Prestator: ${document.getElementById('b2bPrestatorNume').value}, CUI: ${document.getElementById('b2bPrestatorCui').value},`);
-                deseneazaParagraf(`Nr. Reg. Com.: ${document.getElementById('b2bPrestatorReg').value}, cu sediul in ${document.getElementById('b2bPrestatorAdresa').value},`);
-                deseneazaParagraf(`cont bancar ${document.getElementById('b2bPrestatorIban').value} deschis la ${document.getElementById('b2bPrestatorBanca').value}.`);
-                deseneazaParagraf(`1.2. Beneficiar: ${document.getElementById('b2bBeneficiarNume').value}, CUI: ${document.getElementById('b2bBeneficiarCui').value},`);
-                deseneazaParagraf(`Nr. Reg. Com.: ${document.getElementById('b2bBeneficiarReg').value}, cu sediul in ${document.getElementById('b2bBeneficiarAdresa').value}.`);
-                y -= 2;
+                deseneazaTitluSectiune("ARTICOLUL 1: PĂRȚILE CONTRACTANTE");
+                deseneazaParagraf(`1.1. Comodant (Proprietar): ${document.getElementById('comodantNume').value}, CNP: ${document.getElementById('comodantCnp').value},`);
+                deseneazaParagraf(`posesor al CI seria ${document.getElementById('comodantAct').value}, cu domiciliul in ${document.getElementById('comodantAdresa').value}.`);
+                deseneazaParagraf(`1.2. Comodatar (Utilizator): ${document.getElementById('comodatarNume').value}, CNP: ${document.getElementById('comodatarCnp').value},`);
+                deseneazaParagraf(`posesor al CI seria ${document.getElementById('comodatarAct').value}, cu domiciliul in ${document.getElementById('comodatarAdresa').value}.`);
+                y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI");
-                deseneazaParagraf(`2.1. Prestatorul se obliga sa presteze in favoarea Beneficiarului serviciile constand in:`);
-                deseneazaParagraf(`${document.getElementById('b2bObiect').value}.`);
-                y -= 2;
+                deseneazaParagraf(`2.1. Comodantul da in folosinta gratuita Comodatarului autovehiculul avand urmatoarele date tehnice:`);
+                deseneazaParagraf(`- Marca si Model: ${document.getElementById('comodMake').value} ${document.getElementById('comodType').value}`);
+                deseneazaParagraf(`- Numar de inmatriculare: ${document.getElementById('comodReg').value} | Serie Sasiu (VIN): ${document.getElementById('comodVin').value}`);
+                deseneazaParagraf(`- Serie Motor: ${document.getElementById('comodMotor').value} | Capacitate: ${document.getElementById('comodCmc').value} cmc`);
+                deseneazaParagraf(`- Numar CIV: ${document.getElementById('comodCiv').value}`);
+                y -= 4;
 
-                deseneazaTitluSectiune("ARTICOLUL 3: PRETUL SI MODALITATEA DE PLATA");
-                deseneazaParagraf(`3.1. Valoarea totala a serviciilor este de ${document.getElementById('b2bPret').value || 'Conform ofertei'}, achitata pe baza facturii fiscale emise.`);
-                deseneazaParagraf(`3.2. Termenul de plata este de 15 zile calendaristice de la emiterea facturii. Intarzierile atrag penalitati de 0.5% pe zi.`);
-                y -= 2;
+                deseneazaTitluSectiune("ARTICOLUL 3: DURATA SI SCOPUL");
+                deseneazaParagraf(`3.1. Prezentul contract se incheie pe perioada de ${document.getElementById('comodDurata').value || '1 AN'}, incepand de la data semnarii.`);
+                deseneazaParagraf(`3.2. Autovehiculul este dat in folosinta pentru uz personal si deplasari curente.`);
+                deseneazaParagraf(`3.3. ${document.getElementById('comodExtern').value || 'Cu drept de circulatie pe teritoriul Romaniei si in afara tarii (UE).'}`);
+                y -= 4;
 
-                deseneazaTitluSectiune("ARTICOLUL 4: DURATA SI TERMENUL DE PREDARE");
-                deseneazaParagraf(`4.1. Prezentul contract intra in vigoare la data semnarii si are termen de executie de ${document.getElementById('b2bTermen').value || '30 zile'}.`);
-                y -= 2;
-
-                deseneazaTitluSectiune("ARTICOLUL 5: RECEPTIA SI GARANTIA CALITATII");
-                deseneazaParagraf(`5.1. Predarea-primirea se face prin proces-verbal sau acceptare tacita in termen de 3 zile de la livrare.`);
-                deseneazaParagraf(`5.2. Prestatorul ofera garantie pentru serviciile prestate si remediaza orice deficiente semnalate in 48h fara costuri.`);
-                y -= 2;
-
-                deseneazaTitluSectiune("ARTICOLUL 6: PROPRIETATEA INTELECTUALA");
-                deseneazaParagraf(`6.1. Drepturile de proprietate intelectuala asupra rezultatelor muncii se transmit Beneficiarului la achitarea integrala.`);
-                y -= 2;
-
-                deseneazaTitluSectiune("ARTICOLUL 7: CONFIDENTIALITATEA (NDA) SI GDPR");
-                deseneazaParagraf(`7.1. Partile pastreaza confidentialitatea informatiilor comerciale si respecta normele GDPR privind datele prelucrate.`);
-                y -= 2;
-
-                deseneazaTitluSectiune("ARTICOLUL 8: FORTA MAJORA SI LITIGII");
-                deseneazaParagraf(`8.1. Forta majora exonereaza partile de raspundere. Litigiile se solutioneaza amiabil sau la sediul Prestatorului.`);
-                y -= 14;
+                deseneazaTitluSectiune("ARTICOLUL 4: OBLIGATIILE COMODATARULUI");
+                deseneazaParagraf(`4.1. Comodatarul suporta toate cheltuielile de intretinere, combustibil, revizii, rovinieta si valabilitatea politei RCA.`);
+                deseneazaParagraf(`4.2. Comodatarul raspunde integral pentru amenzile contraventionale primite in perioada in care utilizeaza autovehiculul.`);
+                y -= 15;
 
                 if (y < 140) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
 
                 page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`), { x: 45, y, size: 7.5, font: fontBold });
-                y -= 20;
+                y -= 22;
 
-                deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
+                deseneazaTitluSectiune("SEMNATURILE PĂRȚILOR:");
                 y -= 4;
 
-                const sigPBytes = await pdfDoc.embedPng(document.getElementById('sigB2BPrestatorCanvas').toDataURL('image/png'));
-                const sigBBytes = await pdfDoc.embedPng(document.getElementById('sigB2BBeneCanvas').toDataURL('image/png'));
+                const sigComBytes = await pdfDoc.embedPng(document.getElementById('sigComodantCanvas').toDataURL('image/png'));
+                const sigCtarBytes = await pdfDoc.embedPng(document.getElementById('sigComodatarCanvas').toDataURL('image/png'));
 
-                page.drawImage(sigPBytes, { x: 45, y: y - 50, width: 120, height: 38 });
-                page.drawImage(sigBBytes, { x: 310, y: y - 50, width: 120, height: 38 });
+                page.drawImage(sigComBytes, { x: 45, y: y - 50, width: 120, height: 38 });
+                page.drawImage(sigCtarBytes, { x: 310, y: y - 50, width: 120, height: 38 });
 
-                page.drawText(curataDiacritice("Reprezentant Prestator"), { x: 45, y: y - 62, size: 7, font: fontBold });
-                page.drawText(curataDiacritice("Reprezentant Beneficiar"), { x: 310, y: y - 62, size: 7, font: fontBold });
+                page.drawText(curataDiacritice("Semnatura Comodant (Proprietar)"), { x: 45, y: y - 62, size: 7, font: fontBold });
+                page.drawText(curataDiacritice("Semnatura Comodatar (Utilizator)"), { x: 310, y: y - 62, size: 7, font: fontBold });
 
                 deseneazaFooter();
 
                 const bytes = await pdfDoc.save();
 
                 salveazaInArhivaprivata({ 
-                    idAct: 'B2B-' + Math.floor(1000 + Math.random()*9000), 
-                    detalii: 'Contract B2B Enterprise - ' + curataDiacritice(document.getElementById('b2bBeneficiarNume').value) 
+                    idAct: 'COMODAT-' + Math.floor(1000 + Math.random()*9000), 
+                    detalii: 'Contract Comodat Auto - ' + curataDiacritice(document.getElementById('comodMake').value) 
                 }, bytes);
 
                 const blob = new Blob([bytes], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url; a.download = "CONTRACT_PRESTARI_SERVICII_B2B_ENTERPRISE.pdf";
+                a.href = url; a.download = "CONTRACT_COMODAT_AUTO.pdf";
                 a.click();
 
-                arataNotificare("✅ Contract B2B Enterprise generat și salvat în arhivă!");
+                arataNotificare("✅ Contract Comodat Auto generat și salvat în arhivă!");
                 deschideMeniuPrincipal();
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
