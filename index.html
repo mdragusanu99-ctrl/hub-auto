@@ -899,8 +899,14 @@
             const link = document.getElementById('imobilLinkDistanta').innerText;
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Salut! Te rog accesează acest link pentru a semna contractul de închiriere locuință: " + link)}`, '_blank');
         }
-
-        async function genereazaContractImobiliarPDF() {
+const curataDiacritice = (text) => {
+            if (!text) return '';
+            return String(text).toUpperCase()
+                .replace(/Ă/g, 'A').replace(/Â/g, 'A').replace(/Î/g, 'I')
+                .replace(/Ș/g, 'S').replace(/Ş/g, 'S')
+                .replace(/Ț/g, 'T').replace(/Ţ/g, 'T');
+        };
+       async function genereazaContractImobiliarPDF() {
             arataNotificare("Se generează contractul de închiriere imobiliar PDF...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
@@ -910,20 +916,31 @@
                 const page = pdfDoc.addPage([595.28, 841.89]); // A4
 
                 let y = 800;
-                page.drawText("CONTRACT DE ÎNCHIRIERE LOCUINȚĂ (PROPRIETATE PRIVATĂ)", { x: 45, y, size: 14, font: fontBold });
+                page.drawText("CONTRACT DE INCHIRIERE LOCUINTA (PROPRIETATE PRIVATA)", { x: 45, y, size: 14, font: fontBold });
                 y -= 30;
-                page.drawText(`Proprietar: ${document.getElementById('proprietarNume').value.toUpperCase()} (CNP: ${document.getElementById('proprietarCnp').value})`, { x: 45, y, size: 10, font });
+                
+                const propNume = curataDiacritice(document.getElementById('proprietarNume').value);
+                const propCnp = document.getElementById('proprietarCnp').value;
+                const chirNume = curataDiacritice(document.getElementById('chiriasNume').value);
+                const chirCnp = document.getElementById('chiriasCnp').value;
+                const imobilAdr = curataDiacritice(document.getElementById('imobilAdresa').value);
+                const imobilChir = curataDiacritice(document.getElementById('imobilChirie').value);
+                const imobilGar = curataDiacritice(document.getElementById('imobilGarantie').value);
+                const imobilStart = document.getElementById('imobilDataStart').value;
+                const imobilDur = curataDiacritice(document.getElementById('imobilDurata').value);
+
+                page.drawText(`Proprietar: ${propNume} (CNP: ${propCnp})`, { x: 45, y, size: 10, font });
                 y -= 18;
-                page.drawText(`Chiriaș: ${document.getElementById('chiriasNume').value.toUpperCase()} (CNP: ${document.getElementById('chiriasCnp').value})`, { x: 45, y, size: 10, font });
+                page.drawText(`Chirias: ${chirNume} (CNP: ${chirCnp})`, { x: 45, y, size: 10, font });
                 y -= 18;
-                page.drawText(`Imobil închiriat: ${document.getElementById('imobilAdresa').value.toUpperCase()}`, { x: 45, y, size: 10, font });
+                page.drawText(`Imobil inchiriat: ${imobilAdr}`, { x: 45, y, size: 10, font });
                 y -= 18;
-                page.drawText(`Chiria lunară: ${document.getElementById('imobilChirie').value.toUpperCase()} | Garanție: ${document.getElementById('imobilGarantie').value.toUpperCase()}`, { x: 45, y, size: 10, font });
+                page.drawText(`Chiria lunara: ${imobilChir} | Garantie: ${imobilGar}`, { x: 45, y, size: 10, font });
                 y -= 18;
-                page.drawText(`Perioada: de la ${document.getElementById('imobilDataStart').value} pe o durată de ${document.getElementById('imobilDurata').value}`, { x: 45, y, size: 10, font });
+                page.drawText(`Perioada: de la ${imobilStart} pe o durata de ${imobilDur}`, { x: 45, y, size: 10, font });
                 
                 y -= 40;
-                page.drawText("Conform legislației fiscale, prezentul contract se înregistrează la ANAF în termen de 30 de zile.", { x: 45, y, size: 9, font });
+                page.drawText("Conform legislatiei fiscale, prezentul contract se inregistreaza la ANAF in termen de 30 de zile.", { x: 45, y, size: 9, font });
 
                 const bytes = await pdfDoc.save();
                 const blob = new Blob([bytes], { type: 'application/pdf' });
@@ -932,11 +949,10 @@
                 a.href = url; a.download = "CONTRACT_INCHIRIERE_LOCUINTA.pdf";
                 a.click();
 
-                salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), detalii: 'Închiriere Locuință - ' + document.getElementById('chiriasNume').value.toUpperCase() });
+                salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), detalii: 'Inchiriere Locuinta - ' + chirNume });
                 arataNotificare("✅ Contract imobiliar generat și descărcat cu succes!");
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
-
         window.onload = function() { incarcaProfilSalvat(); incarcaTemaSalvata(); initSplashTimer(); };
     </script>
 </body>
