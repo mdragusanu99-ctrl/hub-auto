@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ActPeLoc - Platformă Oficială Generare Contracte</title>
+    <title>ActPeLoc - Platformă Oficială Generare Contracte & Conturi</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <style>
@@ -18,24 +18,30 @@
 
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-main); margin: 0; padding: 20px; color: var(--text-main); }
         
-        /* SPLASH / WELCOME SCREEN ANIMAT */
+        /* SPLASH SCREEN */
         #welcomeSplash {
             position: fixed; inset: 0; background: linear-gradient(135deg, #1e3a8a, #2563eb);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 9999; color: white; text-align: center; padding: 20px;
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        #welcomeSplash.fade-out {
-            opacity: 0; transform: scale(1.05); pointer-events: none;
-        }
+        #welcomeSplash.fade-out { opacity: 0; transform: scale(1.05); pointer-events: none; }
         .splash-title { font-size: 38px; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; }
         .splash-banner { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); padding: 16px 30px; border-radius: 14px; font-size: 18px; font-weight: 600; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .btn-splash { background: white; color: #1e3a8a; border: none; padding: 14px 32px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .btn-splash:hover { background: #f8fafc; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .btn-splash:hover { background: #f8fafc; transform: translateY(-2px); }
 
-        /* HEADER & NAVBAR UTILIZATOR */
+        /* MODAL AUTENTIFICARE / CONTURI */
+        #authModal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;
+        }
+        .auth-box { background: white; width: 100%; max-width: 420px; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
+        .auth-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+
+        /* NAVBAR */
         .top-nav { display: flex; justify-content: space-between; align-items: center; max-width: 760px; margin: 0 auto 20px auto; background: white; padding: 12px 25px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-        .user-badge { font-size: 13px; font-weight: 600; color: var(--text-muted); background: #f8fafc; padding: 6px 14px; border-radius: 8px; border: 1px solid #e2e8f0; cursor: pointer; }
+        .user-badge { font-size: 13px; font-weight: 600; color: var(--primary); background: #eff6ff; padding: 6px 14px; border-radius: 8px; border: 1px solid #bfdbfe; cursor: pointer; }
         
         .container { max-width: 760px; margin: 0 auto; background: white; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); position: relative; }
         h2 { color: #1e3a8a; text-align: center; margin-bottom: 5px; font-size: 24px; }
@@ -49,7 +55,7 @@
         #toastNotification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         #toastNotification.error { background: #dc2626; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3); }
 
-        /* MENIU CATEGORII FRIENDLY */
+        /* CATEGORII */
         .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px; }
         .category-card { border: 2px solid #e2e8f0; padding: 20px; border-radius: 14px; cursor: pointer; text-align: center; transition: all 0.2s ease; background: #fafafa; }
         .category-card:hover { border-color: var(--primary); background: #eff6ff; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(37, 99, 235, 0.08); }
@@ -123,7 +129,7 @@
 </head>
 <body>
 
-    <!-- SPLASH SCREEN / WELCOME ANIMAT -->
+    <!-- SPLASH SCREEN ANIMAT -->
     <div id="welcomeSplash">
         <h1 class="splash-title">⚡ ActPeLoc</h1>
         <div class="splash-banner">„Noi îți generăm actul de care ai nevoie”</div>
@@ -131,11 +137,42 @@
         <button class="btn-splash" onclick="inchideSplash()">Începe Acum ➔</button>
     </div>
 
-    <!-- NAVBAR / MOD UTILIZATOR / CONTURI -->
+    <!-- MODAL DE AUTENTIFICARE / CREARE CONT -->
+    <div id="authModal">
+        <div class="auth-box">
+            <span class="auth-close" onclick="inchideModalAuth()">✕</span>
+            <h3 style="color: #1e3a8a; margin-top: 0; text-align: center;">Cont & Pachete Lunare</h3>
+            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Creează un cont sau autentifică-te pentru a gestiona pachetele pentru PFA, Dealer sau Persoană Fizică.</p>
+            
+            <div class="form-grid">
+                <div class="full-width">
+                    <label>Tip Utilizator</label>
+                    <select id="authTipCont" style="text-transform: none;">
+                        <option value="PERSOANA_FIZICA">Persoană Fizică</option>
+                        <option value="PFA">PFA / Cabinet Individual</option>
+                        <option value="DEALER">Dealer Auto / Firmă</option>
+                    </select>
+                </div>
+                <div class="full-width">
+                    <label>Adresă E-mail</label>
+                    <input type="email" id="authEmail" placeholder="exemplu@email.ro" style="text-transform: none;">
+                </div>
+                <div class="full-width">
+                    <label>Parolă</label>
+                    <input type="password" id="authPassword" placeholder="••••••••" style="text-transform: none;">
+                </div>
+            </div>
+
+            <button class="btn btn-next" style="width: 100%; margin-top: 20px;" onclick="inregistreazaSauAutentifica()">🔑 Continuă în Cont</button>
+            <p style="font-size: 11px; text-align: center; color: var(--text-muted); margin-top: 15px;">Poți folosi de asemenea platforma ca vizitator fără cont, generând documente rapid.</p>
+        </div>
+    </div>
+
+    <!-- NAVBAR / CONT -->
     <div class="top-nav">
         <div><strong style="color: #1e3a8a;">⚡ ActPeLoc</strong> <span style="font-size: 11px; color: var(--text-muted);">| Ediția 2026</span></div>
         <div style="display: flex; gap: 10px; align-items: center;">
-            <span class="user-badge" id="userStatusBadge" onclick="schimbaTipCont()">👤 Vizitator (Fără Cont)</span>
+            <span class="user-badge" id="userStatusBadge" onclick="deschideModalAuth()">👤 Cont / Înregistrare</span>
             <button class="btn-change-mode" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
         </div>
     </div>
@@ -148,7 +185,7 @@
         <!-- NOTIFICARE TOAST -->
         <div id="toastNotification">Linkul a fost copiat!</div>
 
-        <!-- MENIUL PRINCIPAL FRIENDLY (CATEGORII) -->
+        <!-- MENIUL PRINCIPAL (CATEGORII) -->
         <div id="mainMenuContainer" style="display:block;">
             <h3 style="color: #1e3a8a; text-align: center; margin-bottom: 5px;">Alege categoria dorită</h3>
             <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 25px;">Selectează tipul de document pe care vrei să îl generezi:</p>
@@ -177,7 +214,7 @@
             </div>
         </div>
 
-        <!-- ECRAN DE SELECTARE MOD AUTO (LOCAL vs DISTANȚĂ) -->
+        <!-- ECRAN SELECTARE MOD AUTO -->
         <div id="modeSelectorContainer" style="display:none;">
             <div class="step-header-row">
                 <div class="section-title">Mod de lucru - Contract Auto ITL 054</div>
@@ -521,14 +558,21 @@
         let esteFirmaSauMandatar = false;
         let linkCumparatorGlobal = "";
 
-        // Tipuri cont (Vizitator fara cont / Persoana Fizica / Dealer / PFA)
-        let tipuriCont = ["👤 Vizitator (Fără Cont)", "👤 Persoană Fizică", "🏢 Dealer Auto", "📋 PFA / Firmă"];
-        let contCurentIndex = 0;
+        function deschideModalAuth() { document.getElementById('authModal').style.display = 'flex'; }
+        function inchideModalAuth() { document.getElementById('authModal').style.display = 'none'; }
 
-        function schimbaTipCont() {
-            contCurentIndex = (contCurentIndex + 1) % tipuriCont.length;
-            document.getElementById('userStatusBadge').innerText = tipuriCont[contCurentIndex];
-            arataNotificare("Mod cont schimbat: " + tipuriCont[contCurentIndex]);
+        async function inregistreazaSauAutentifica() {
+            const email = document.getElementById('authEmail').value;
+            const tipCont = document.getElementById('authTipCont').value;
+            if(!email) { arataNotificare("Introduceți un e-mail valid!", true); return; }
+
+            // Salvăm local starea contului pentru a o afișa în badge
+            localStorage.setItem('act_peloc_user_email', email);
+            localStorage.setItem('act_peloc_user_type', tipCont);
+
+            document.getElementById('userStatusBadge').innerText = `👤 ${email} (${tipCont})`;
+            arataNotificare(`Autentificat cu succes ca ${tipCont}!`);
+            inchideModalAuth();
         }
 
         function inchideSplash() {
@@ -570,6 +614,13 @@
                 if (valoareSalvata !== null) el.value = valoareSalvata;
                 el.addEventListener('input', () => { localStorage.setItem('act_peloc_' + id, el.value); });
             });
+            
+            // Verificăm dacă există un utilizator logat anterior
+            const savedEmail = localStorage.getItem('act_peloc_user_email');
+            const savedType = localStorage.getItem('act_peloc_user_type');
+            if(savedEmail) {
+                document.getElementById('userStatusBadge').innerText = `👤 ${savedEmail} (${savedType})`;
+            }
         }
 
         function stergeSalvareaLocala() {
@@ -754,7 +805,6 @@
                 globalSessionId = params.get('sessionId');
                 userRole = 'cumparator';
 
-                // Ascundem splash-ul imediat dacă suntem în mod cumpărător la distanță
                 const splash = document.getElementById('welcomeSplash');
                 if (splash) splash.style.display = 'none';
 
