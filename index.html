@@ -531,6 +531,11 @@
                     <div><label>Data Începere Contract</label><input type="text" id="imobilDataStart" placeholder="ex: 01.09.2026"></div>
                     <div><label>Durata Contractului</label><input type="text" id="imobilDurata" placeholder="ex: 12 LUNI"></div>
                 </div>
+                <div class="full-width" style="margin-top: 15px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                        <label style="color: var(--primary); margin-bottom: 8px;">D. Inventar Bunuri / Electrocasnice (Opțional)</label>
+                        <input type="text" id="imobilInventar" placeholder="ex: Centrala termica, Frigider Arctic, Masina spalat Samsung, TV LG">
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Dacă imobilul este mobilat/utilat, menționați scurt principalele bunuri predate. Dacă este gol, lăsați gol.</div>
+                    </div>
                 <div style="margin-top: 30px;">
                     <button class="btn btn-primary" onclick="mergiLaPasulSemnaturaImobil()">Înainte: Semnătură Digitală ➔</button>
                 </div>
@@ -956,7 +961,7 @@
                 y -= 4;
 
                 // ARTICOLUL 5
-                deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIIle PARTILOR");
+                deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIILE PARTILOR");
                 deseneazaParagraf(`5.1. Locatorul garanteaza linistita folosinta a imobilului si nu poate interveni in spatiu fara notificare prealabila.`);
                 deseneazaParagraf(`5.2. Locatarul se obliga sa achite la termen chiria, cotele de intretinere, consumul de energie, gaze si apa pe baza contoarelor.`);
                 deseneazaParagraf(`5.3. Subinchirierea totala sau partiala catre terti, precum si desfasurarea de activitati comerciale sunt strict interzise.`);
