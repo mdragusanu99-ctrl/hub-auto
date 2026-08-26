@@ -917,7 +917,7 @@
         };
 
         /* VALIDARE INTELIGENTĂ FORMULAR IMOBILIAR */
-        function valideazaSiTreciLaSemnaturaImobil() {
+       function valideazaSiTreciLaSemnaturaImobil() {
             const propNume = document.getElementById('proprietarNume').value.trim();
             const propCnp = document.getElementById('proprietarCnp').value.trim();
             const propAct = document.getElementById('proprietarAct').value.trim();
@@ -934,8 +934,13 @@
                 return;
             }
 
-            if (propCnp.length !== 13 || chirCnp.length !== 13) {
-                arataNotificare("❌ CNP-ul proprietarului și al chiriașului trebuie să aibă exact 13 cifre!", true);
+            if (propCnp.length !== 13) {
+                arataNotificare("❌ CNP-ul Proprietarului trebuie să aibă exact 13 cifre!", true);
+                return;
+            }
+
+            if (chirCnp.length !== 13) {
+                arataNotificare("❌ CNP-ul Chiriașului trebuie să aibă exact 13 cifre!", true);
                 return;
             }
 
