@@ -987,7 +987,7 @@
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        function selecteazaModSiPorneste(mod) {
+       function selecteazaModSiPorneste(mod) {
             modLucru = mod;
             document.getElementById('mainMenuContainer').style.display = 'none';
             document.getElementById('dashboardView').style.display = 'none';
@@ -995,14 +995,27 @@
             document.getElementById('progressBarContainer').style.display = 'flex';
             
             const p2 = document.getElementById('p2'), p3 = document.getElementById('p3'), p4 = document.getElementById('p4');
+            
             if (mod === 'local') {
                 if(p2) p2.style.display = 'flex';
                 if(p3) p3.innerText = '3';
                 if(p4) { p4.innerText = '4'; p4.style.display = 'flex'; }
+                
+                // PENTRU MODUL LOCAL: Ascundem elementele de distanță și arătăm direct opțiunea de finalizare/plată
+                document.getElementById('localActions').style.display = 'none';
+                document.getElementById('waitingAnimationContainer').style.display = 'none';
+                document.getElementById('finalDownloadContainer').style.display = 'block';
+                document.getElementById('step4Desc').innerText = "Toate datele au fost completate local. Puteți achita și descărca documentul oficial.";
             } else {
                 if(p2) p2.style.display = 'none';
                 if(p3) p3.innerText = '2';
                 if(p4) { p4.innerText = '3'; p4.style.display = 'flex'; }
+
+                // PENTRU MODUL LA DISTANȚĂ
+                document.getElementById('localActions').style.display = 'block';
+                document.getElementById('waitingAnimationContainer').style.display = 'none';
+                document.getElementById('finalDownloadContainer').style.display = 'none';
+                document.getElementById('step4Desc').innerText = "Generați linkul securizat pentru a-l trimite cumpărătorului.";
             }
 
             currentStep = 1;
@@ -1033,13 +1046,25 @@
             }
         }
 
-        function nextStep(step) {
+       function nextStep(step) {
             document.getElementById('step' + step).classList.remove('active');
+            
             if (modLucru === 'remote' && userRole === 'vanzator' && step === 1) {
                 currentStep = 3;
             } else {
                 currentStep = step + 1;
             }
+
+            // Dacă am ajuns la pasul 4 în modul local, ne asigurăm că butonul de descărcare/plată este vizibil
+            if (currentStep === 4) {
+                if (modLucru === 'local') {
+                    document.getElementById('localActions').style.display = 'none';
+                    document.getElementById('waitingAnimationContainer').style.display = 'none';
+                    document.getElementById('finalDownloadContainer').style.display = 'block';
+                    document.getElementById('step4Desc').innerText = "Tranzacție locală pregătită. Confirmați pentru descărcare și consumare credit.";
+                }
+            }
+
             document.getElementById('step' + currentStep).classList.add('active');
             updateProgress();
         }
