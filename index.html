@@ -784,16 +784,30 @@
                         <button class="btn btn-success" style="font-size: 13px; padding: 10px;" onclick="trimitePeWhatsApp()">💬 Trimite pe WhatsApp</button>
                     </div>
                 </div>
-
-                <!-- ZONĂ PLATĂ & DESCĂRCARE LA PASUL 4 (PENTRU IMOBILIARE) -->
-                <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">💳 Status Plată: <span>Credit Gratuit Disponibil</span></div>
-                        <p style="font-size: 12px; color: var(--text-muted);">Apăsați butonul de mai jos pentru a genera și descărca actul oficial.</p>
+<!-- PAGINĂ DEDICATĂ DE PLATĂ & CHECKOUT LA ULTIMUL PAS -->
+                <div id="paymentStepContainer" style="display: none; text-align: center; padding: 10px 0;">
+                    <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
+                    
+                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); max-width: 400px; margin: 0 auto 20px auto; text-align: left;">
+                        <p style="font-size: 13px; margin-bottom: 8px;"><strong>Document:</strong> Contract Oficial Generat</p>
+                        <p style="font-size: 13px;"><strong>Cost generare:</strong> <span style="color: var(--primary); font-weight: bold;">19.00 RON</span> (sau 1 Credit)</p>
                     </div>
-                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()">📥 Plătește & Descarcă Documentul Oficial PDF</button>
+
+                    <button class="btn btn-primary" style="padding: 14px 20px; font-size: 15px; width: 100%; max-width: 400px;" onclick="proceseazaPlataSiDescarca()">
+                        💳 Plătește cu Cardul & Descarcă PDF
+                    </button>
                 </div>
 
+                <!-- ZONĂ CONFIRMARE / DESCĂRCARE DUPĂ PLATĂ -->
+                <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
+                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">✅ Plată Efectuată cu Succes!</div>
+                        <p style="font-size: 12px; color: var(--text-muted);">Documentul tău a fost generat, criptat și salvat în arhivă.</p>
+                    </div>
+                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()">📥 Descarcă Din Nou Documentul PDF</button>
+                </div>
+                
                 <div style="margin-top: 20px; display: flex; gap: 12px;">
                     <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button>
                     <button class="btn btn-primary" id="btnNextStep4" onclick="nextStep(4)" style="display:none;">Continuă spre Plată ➔</button>

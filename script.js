@@ -378,11 +378,19 @@ function activeazaPasulUI(stepNum) {
         if (imobContainer) imobContainer.style.display = 'none';
     }
 
-    if (estePasPlataDescarcare) {
-        if (finalDownloadContainer) finalDownloadContainer.style.display = 'block';
-        const titleFinal = document.getElementById('titleStep' + stepNum);
-        if (titleFinal) titleFinal.innerText = `Pasul ${stepNum}: Plată & Descărcare Document Oficial`;
+   if (estePasPlataDescarcare) {
+        const paymentContainer = document.getElementById('paymentStepContainer');
+        const finalDownloadContainer = document.getElementById('finalDownloadContainer');
+        
+        // La începutul pasului final, arătăm ecranul de plată și ascundem containerul de succes/descărcare
+        if (paymentContainer) paymentContainer.style.display = 'block';
+        if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
+
+        const titleFinal = document.getElementById('titleStep' + stepNum) || document.getElementById('titleStep4') || document.getElementById('titleStep5');
+        if (titleFinal) titleFinal.innerText = `Pasul ${stepNum}: Finalizare și Plată`;
     } else {
+        const paymentContainer = document.getElementById('paymentStepContainer');
+        if (paymentContainer) paymentContainer.style.display = 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
     }
 
@@ -514,13 +522,34 @@ function trimitePeWhatsApp() {
 }
 
 // Descărcarea finală PDF / Punct de Plată
-function ruleazaDescarcareaFinala() {
+// Când utilizatorul apasă butonul de plată din formularul final de checkout
+function proceseazaPlataSiDescarca() {
     if (!profilCurent || (profilCurent.ramase <= 0 && profilCurent.pachet === 'GRATUIT')) {
         arataNotificare("⚠️ Ați epuizat numărul de contracte gratuite din cont!", true);
         deschideDashboard();
         return;
     }
 
+    arataNotificare("Se procesează plata securizată...");
+
+    // Simulare procesare plată cu cardul / gateway
+    setTimeout(() => {
+        arataNotificare("✅ Plată efectuată cu succes!");
+
+        // Ascundem ecranul de plată și afișăm mesajul de succes cu opțiunea de descărcare
+        const paymentContainer = document.getElementById('paymentStepContainer');
+        const finalDownloadContainer = document.getElementById('finalDownloadContainer');
+        if (paymentContainer) paymentContainer.style.display = 'none';
+        if (finalDownloadContainer) finalDownloadContainer.style.display = 'block';
+
+        // Declanșăm efectiv generarea și descărcarea PDF-ului
+        ruleazaDescarcareaFinala();
+
+    }, 1000);
+}
+
+// Generarea efectivă a PDF-ului și salvarea în arhivă
+function ruleazaDescarcareaFinala() {
     if (tipContractCurent === 'auto') {
         if (typeof genereazaContractOficialPDF === 'function') genereazaContractOficialPDF();
     } else if (tipContractCurent === 'imobiliare') {
