@@ -344,6 +344,7 @@ function activeazaPasulUI(stepNum) {
     }
 
     // Gestionare Semnături și Pasul Final
+    // Gestionare Semnături și Pasul Final
     let estePasSemnatura = false;
     let estePasPlataDescarcare = false;
 
@@ -352,6 +353,9 @@ function activeazaPasulUI(stepNum) {
         estePasPlataDescarcare = (stepNum === 4);
     } else if (maxStepsTotal === 4 && tipContractCurent === 'auto') {
         estePasPlataDescarcare = (stepNum === 4);
+    } else if (maxStepsTotal === 3) {
+        // Pentru documente cu 3 pași (Prestări Servicii, Comodat, Demisie): Pasul 3 este pasul final de Plată & Descărcare
+        estePasPlataDescarcare = (stepNum === 3);
     } else {
         estePasSemnatura = (stepNum === maxStepsTotal - 1);
         estePasPlataDescarcare = (stepNum === maxStepsTotal);
@@ -360,11 +364,13 @@ function activeazaPasulUI(stepNum) {
     const imobContainer = document.getElementById('imobiliareSemnaturiContainer');
     const localAct = document.getElementById('localActions');
     const finalDownloadContainer = document.getElementById('finalDownloadContainer');
+    const paymentContainer = document.getElementById('paymentStepContainer');
 
     if (estePasSemnatura) {
         if (imobContainer) imobContainer.style.display = 'block';
         if (localAct) localAct.style.display = (modLucru === 'remote') ? 'block' : 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
+        if (paymentContainer) paymentContainer.style.display = 'none';
 
         if (tipContractCurent === 'imobiliare') {
             if (document.getElementById('labelPart1Sign')) document.getElementById('labelPart1Sign').innerText = "Semnătură Proprietar (Locator)";
@@ -378,18 +384,19 @@ function activeazaPasulUI(stepNum) {
         if (imobContainer) imobContainer.style.display = 'none';
     }
 
-   if (estePasPlataDescarcare) {
-        const paymentContainer = document.getElementById('paymentStepContainer');
-        const finalDownloadContainer = document.getElementById('finalDownloadContainer');
-        
-        // La începutul pasului final, arătăm ecranul de plată și ascundem containerul de succes/descărcare
+    if (estePasPlataDescarcare) {
         if (paymentContainer) paymentContainer.style.display = 'block';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
 
-        const titleFinal = document.getElementById('titleStep' + stepNum) || document.getElementById('titleStep4') || document.getElementById('titleStep5');
-        if (titleFinal) titleFinal.innerText = `Pasul ${stepNum}: Finalizare și Plată`;
+        // Ascundem formularele de completare de la ultimul pas ca să nu se suprapună peste plată
+        if (fPrest3) fPrest3.style.display = 'none';
+        if (fComod3) fComod3.style.display = 'none';
+        const demisSign = document.getElementById('demisSignBoxContainer');
+        if (demisSign) demisSign.style.display = 'none';
+
+        const titleFinal = document.getElementById('titleStep' + stepNum) || document.getElementById('titleStep3') || document.getElementById('titleStep4') || document.getElementById('titleStep5');
+        if (titleFinal) titleFinal.innerText = `Pasul ${stepNum}: Finalizare și Plată Securizată`;
     } else {
-        const paymentContainer = document.getElementById('paymentStepContainer');
         if (paymentContainer) paymentContainer.style.display = 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
     }
@@ -404,6 +411,9 @@ function activeazaPasulUI(stepNum) {
 function nextStep(current) {
     if (current < maxStepsTotal) {
         activeazaPasulUI(current + 1);
+    } else {
+        // Dacă suntem la ultimul pas, declanșăm procesul de plată
+        proceseazaPlataSiDescarca();
     }
 }
 
