@@ -96,7 +96,6 @@
         .main-wrapper { width: 100%; max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; }
         .card-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-card); position: relative; transition: all 0.3s; }
         
-        /* BANNER REFERRAL & ALERTE */
         .alert-banner { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); border: 1px solid var(--accent); color: var(--accent); padding: 14px 20px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
 
         /* MODAL AUTENTIFICARE */
@@ -150,7 +149,6 @@
         .contract-table th, .contract-table td { border: 1px solid var(--border-color); padding: 14px; text-align: left; }
         .contract-table th { background: var(--bg-body); font-weight: 700; color: var(--text-main); }
 
-        /* REFERRAL BOX & WIDGETS */
         .referral-card { background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(99, 102, 241, 0.1)); border: 2px solid var(--primary); border-radius: var(--radius-md); padding: 24px; margin-top: 20px; }
         .referral-url-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: var(--radius-sm); font-family: monospace; font-size: 12px; word-break: break-all; margin: 12px 0; color: var(--text-main); font-weight: 600; }
 
@@ -474,7 +472,7 @@
 
             <div id="stepsCompletedBanner" class="alert-banner" style="display:none; background: rgba(16, 185, 129, 0.1); border-color: var(--success); color: var(--success);">🎉 Toate datele au fost colectate și contractul este pregătit pentru descărcare.</div>
 
-            <!-- STEP 1: FORMULAR PASUL 1 -->
+            <!-- STEP 1: FORMULAR PASUL 1 (TOATE FORMULARELE INTEGRATE) -->
             <div class="step-content" id="step1">
                 <div class="step-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div style="font-size: 18px; font-weight: 800;" id="titleStep1">Pasul 1: Datele Vânzătorului</div>
@@ -546,6 +544,55 @@
                     <div><label>CNP / CUI *</label><input type="text" id="comodantCnp" placeholder="ex: 1800101123456"></div>
                     <div><label>Act Identitate / Reg. Com. *</label><input type="text" id="comodantAct" placeholder="ex: VS 123456 sau J40/..."></div>
                     <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodantAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
+                </div>
+
+                <!-- Formular Imobiliare Pas 1 -->
+                <div id="formImobiliareStep1" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Proprietar (Locator)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Proprietar *</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
+                    <div><label>CNP Proprietar *</label><input type="text" id="proprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="proprietarAct" placeholder="ex: VS 123456"></div>
+
+                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>CNP Chiriaș *</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
+
+                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">3. Imobilul Închiriat & Condiții Financiare</strong></div>
+                    <div class="full-width"><label>Adresă Completă Imobil Închiriat *</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
+                    <div class="full-width" style="margin-top: 5px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                        <label style="color: var(--primary); margin-bottom: 8px;">Inventar Bunuri / Electrocasnice (Opțional)</label>
+                        <input type="text" id="imobilInventar" placeholder="ex: Centrala termica, Frigider Arctic">
+                    </div>
+                    <div><label>Durată Contract *</label><input type="text" id="imobilDurata" value="12 LUNI"></div>
+                    <div><label>Data Începere *</label><input type="text" id="imobilDataStart" value="01.09.2026"></div>
+                    <div><label>Chirie Lunară *</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
+                    <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
+                </div>
+
+                <!-- Formular Demisie Pas 1 -->
+                <div id="formDemisieStep1" class="form-grid" style="display:none;">
+                    <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
+                        📄 Cerere de Demisie Oficială Standard (Conform Codului Muncii - art. 81)
+                    </div>
+                    <div class="full-width"><label>Denumire Firmă / Societate *</label><input type="text" id="demisFirma" placeholder="ex: SC BARBERHUB SRL"></div>
+                    <div class="full-width"><label>Nume și Prenume Salariat *</label><input type="text" id="demisNume" placeholder="ex: DRAGUSANU MARIO"></div>
+                    <div><label>Funcția / Meseria *</label><input type="text" id="demisFunctie" placeholder="ex: FRIZER"></div>
+                    <div><label>Departamentul *</label><input type="text" id="demisDepartament" placeholder="ex: SALON"></div>
+                    <div class="full-width"><label>Adresă Domiciliu *</label><input type="text" id="demisAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2"></div>
+                    <div><label>Seria și Număr CI *</label><input type="text" id="demisAct" placeholder="ex: VS 123456"></div>
+                    <div><label>CNP *</label><input type="text" id="demisCnp" placeholder="ex: 5040101123456" maxlength="13"></div>
+                    <div><label>Număr Contract Muncă (CIM) *</label><input type="text" id="demisCimNr" placeholder="ex: 45"></div>
+                    <div><label>Data Contract Muncă *</label><input type="text" id="demisCimData" placeholder="ex: 15.05.2025"></div>
+                    <div>
+                        <label>Zile Lucrătoare Preaviz *</label>
+                        <select id="demisZilePreaviz">
+                            <option value="20 ZILE LUCRATOARE">20 Zile Lucrătoare (Execuție)</option>
+                            <option value="45 ZILE LUCRATOARE">45 Zile Lucrătoare (Conducere)</option>
+                        </select>
+                    </div>
+                    <div><label>Data Începere Preaviz *</label><input type="text" id="demisDataStart" placeholder="ex: 01.09.2026"></div>
+                    <div><label>Ultima Zi de Activitate *</label><input type="text" id="demisDataSfarsit" placeholder="ex: 28.09.2026"></div>
                 </div>
 
                 <div style="margin-top: 30px;">
@@ -727,7 +774,7 @@
                 </div>
 
                 <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="if(tipContractCurent==='imobiliare') { genereazaContractImobiliarPDF(); } else if(tipContractCurent==='prestari_servicii') { genereazaContractPrestariServiciiPDF(); } else if(tipContractCurent==='demisie') { genereazaCerereDemisiePDF(); } else if(tipContractCurent==='comodat') { genereazaContractComodatPDF(); } else { genereazaContractOficialPDF(); }">📥 Descarcă Documentul Oficial PDF</button>
+                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()">📥 Descarcă Documentul Oficial PDF</button>
                 </div>
 
                 <div style="margin-top: 20px;" id="btnGroupBackFinal">
