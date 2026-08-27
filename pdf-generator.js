@@ -141,7 +141,7 @@ async function genereazaContractImobiliarPDF() {
         const deseneazaTitluSectiune = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
             page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
-            y -= 15;
+            y -= 20;
         };
 
         const deseneazaParagraf = (text) => {
@@ -280,7 +280,7 @@ async function genereazaContractPrestariServiciiPDF() {
         const deseneazaTitluSectiune = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
             page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
-            y -= 15;
+            y -= 20;
         };
 
         const deseneazaParagraf = (text) => {
@@ -502,7 +502,7 @@ async function genereazaContractComodatPDF() {
         const deseneazaTitluSectiune = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
             page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
-            y -= 15;
+            y -= 20;
         };
 
         const deseneazaParagraf = (text) => {
