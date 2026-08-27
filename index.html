@@ -317,7 +317,7 @@
                     <div class="category-card" onclick="selecteazaCategorie('demisie')">
                         <div class="category-icon">💼</div>
                         <h4>Muncă & PFA</h4>
-                        <p>Cerere de demisie oficială (simplă sau detaliată), cu calcul preaviz și semnătură.</p>
+                        <p>Cerere de demisie oficială standard cu calcul preaviz și semnătură.</p>
                     </div>
                     <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele Pro!', true)">
                         <div class="category-icon">📋</div>
@@ -449,26 +449,6 @@
                 </div>
             </div>
 
-            <!-- ECRAN SELECTARE TIP DEMISIE (SIMPLĂ VS DETALIATĂ) -->
-            <div id="demisieSelectorContainer" style="display:none;">
-                <div class="step-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Alege Tipul Cererii de Demisie</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
-                </div>
-                <div class="categories-grid" style="margin-top: 0;">
-                    <div class="category-card" onclick="selecteazaTipDemisieSiPorneste('simpla')">
-                        <div class="category-icon">🟢</div>
-                        <h4>Cerere Simplă și Rapidă</h4>
-                        <p>Format scurt, la obiect, ideal pentru o plecare rapidă, fără articole de lege stufoase.</p>
-                    </div>
-                    <div class="category-card" onclick="selecteazaTipDemisieSiPorneste('detaliata')">
-                        <div class="category-icon">🔵</div>
-                        <h4>Cerere Detaliată & Juridică</h4>
-                        <p>Conține temeiul legal complet (Codul Muncii), cerere pentru concediu neefectuat și adeverință REVISAL.</p>
-                    </div>
-                </div>
-            </div>
-
             <!-- BARA DE PROGRES WIZARD -->
             <div class="progress-container" id="progressBarContainer" style="display:none;">
                 <div class="progress-step active" id="p1">1</div>
@@ -559,16 +539,13 @@
                     <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
                 </div>
 
-                <!-- Formular Cerere Demisie (Muncă) -->
+                <!-- Formular Cerere Demisie (Muncă) - Unic și Oficial -->
                 <div id="formDemisieStep1" class="form-grid" style="display:none;">
-                    <input type="hidden" id="demisTipFormat" value="simpla">
-                    
-                    <!-- BANNER INFORMATIV DINAMIC PENTRU TIPUL DE DEMISIE ALES -->
-                    <div class="full-width" id="demisieInfoBanner" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
-                        ℹ️ Ai selectat formatul de demisie. Completează datele de mai jos pentru generarea documentului.
+                    <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
+                        📄 Cerere de Demisie Oficială Standard (Conform Codului Muncii - art. 81)
                     </div>
 
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;" id="demisieFormHeaderTitle">1. Date Angajator & Salariat</strong></div>
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">Date Angajator & Salariat</strong></div>
                     
                     <div class="full-width"><label>Denumire Firmă / Societate *</label><input type="text" id="demisFirma" placeholder="ex: SC BARBERHUB SRL"></div>
                     <div class="full-width"><label>Nume și Prenume Salariat *</label><input type="text" id="demisNume" placeholder="ex: DRAGUSANU MARIO"></div>
