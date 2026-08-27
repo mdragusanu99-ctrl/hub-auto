@@ -386,6 +386,7 @@ function selecteazaCategorie(cat) {
     const modTitle = document.getElementById('modSelectorTitle');
     const formAuto1 = document.getElementById('formAutoStep1');
     const formImob1 = document.getElementById('formImobiliareStep1');
+    const formPrestari1 = document.getElementById('formPrestariStep1');
     const formDemisie1 = document.getElementById('formDemisieStep1');
     const titleStep1 = document.getElementById('titleStep1');
 
@@ -396,6 +397,7 @@ function selecteazaCategorie(cat) {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Auto ITL 054";
         if (formAuto1) formAuto1.style.display = 'grid';
         if (formImob1) formImob1.style.display = 'none';
+        if (formPrestari1) formPrestari1.style.display = 'none';
         if (formDemisie1) formDemisie1.style.display = 'none';
         if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Vânzătorului";
         if (modeSelector) modeSelector.style.display = 'block';
@@ -403,13 +405,29 @@ function selecteazaCategorie(cat) {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Imobiliar cu Inventar";
         if (formAuto1) formAuto1.style.display = 'none';
         if (formImob1) formImob1.style.display = 'grid';
+        if (formPrestari1) formPrestari1.style.display = 'none';
         if (formDemisie1) formDemisie1.style.display = 'none';
         if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Părților & Imobilului";
         if (modeSelector) modeSelector.style.display = 'block';
-    } else if (cat === 'demisie') {
-        // Pentru demisie, sărim direct la formularul unic oficial (fără mod de lucru local/remote)
+    } else if (cat === 'prestari_servicii') {
+        // Prestări servicii: direct completare locală cu semnături fizice pe ecran
         if (formAuto1) formAuto1.style.display = 'none';
         if (formImob1) formImob1.style.display = 'none';
+        if (formPrestari1) formPrestari1.style.display = 'grid';
+        if (formDemisie1) formDemisie1.style.display = 'none';
+        if (titleStep1) titleStep1.innerText = "Contract de Prestări Servicii (Complet Local)";
+        if (modeSelector) modeSelector.style.display = 'none';
+
+        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+        const step1 = document.getElementById('step1');
+        if (step1) {
+            step1.style.display = 'block';
+            step1.classList.add('active');
+        }
+    } else if (cat === 'demisie') {
+        if (formAuto1) formAuto1.style.display = 'none';
+        if (formImob1) formImob1.style.display = 'none';
+        if (formPrestari1) formPrestari1.style.display = 'none';
         if (formDemisie1) formDemisie1.style.display = 'grid';
         if (titleStep1) titleStep1.innerText = "Cerere de Demisie Oficială";
         if (modeSelector) modeSelector.style.display = 'none';
@@ -432,6 +450,9 @@ const elementeFormular = [
     'buyerRepresentant', 'buyerQuality', 'buyerRepresCISeries', 'buyerRepresCINumber', 'buyerRepresCNP', 'buyerRepresPhone', 'buyerRepresEmail',
     'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredActType', 'acquiredActDetails', 'figurePrice', 'lettersPrice',
     'proprietarNume', 'proprietarCnp', 'proprietarAct', 'chiriasNume', 'chiriasCnp', 'chiriasAct', 'imobilAdresa', 'imobilInventar', 'imobilDurata', 'imobilDataStart', 'imobilChirie', 'imobilGarantie',
+    'prestatorNume', 'prestatorCui', 'prestatorReg', 'prestatorAdresa', 'prestatorReprezentant', 'prestatorBanca',
+    'beneficiarNume', 'beneficiarCui', 'beneficiarReg', 'beneficiarAdresa', 'beneficiarReprezentant', 'beneficiarContact',
+    'serviciiDescriere', 'serviciiPret', 'serviciiTermen',
     'demisFirma', 'demisNume', 'demisFunctie', 'demisDepartament', 'demisAdresa', 'demisAct', 'demisCnp', 'demisCimNr', 'demisCimData', 'demisZilePreaviz', 'demisDataStart', 'demisDataSfarsit'
 ];
 
@@ -519,7 +540,7 @@ function valideazaEmail(email) {
 }
 
 function valideazaPasCurent() {
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') return true;
+    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie' || tipContractCurent === 'prestari_servicii') return true;
     if (currentStep === 1 && userRole === 'vanzator') {
         const cnpEl = document.getElementById('seller_ci_cnp');
         const emailEl = document.getElementById('seller_email');
@@ -633,7 +654,7 @@ function comutaFirmaCumparator() {
 }
 
 function updateProgress() {
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') return;
+    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie' || tipContractCurent === 'prestari_servicii') return;
     const total = (modLucru === 'remote' && userRole === 'vanzator') ? 2 : 4;
     for (let i = 1; i <= 4; i++) {
         const p = document.getElementById('p' + i);
@@ -647,6 +668,39 @@ function updateProgress() {
 
 function nextStep(step) {
     if (!valideazaPasCurent()) return;
+
+    if (tipContractCurent === 'prestari_servicii') {
+        if (step === 1) {
+            const step1 = document.getElementById('step1');
+            const step4 = document.getElementById('step4');
+            const titleStep4 = document.getElementById('titleStep4');
+            const step4Desc = document.getElementById('step4Desc');
+            const localActions = document.getElementById('localActions');
+            const waitingContainer = document.getElementById('waitingAnimationContainer');
+            const finalDownload = document.getElementById('finalDownloadContainer');
+            const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
+            const btnDescarca = document.getElementById('btnDescarcaOficial');
+
+            if (step1) step1.classList.remove('active');
+            if (step4) step4.classList.add('active');
+            if (titleStep4) titleStep4.innerText = "Pasul Final: Semnături & Generare Contract Prestări Servicii";
+            if (step4Desc) step4Desc.innerText = "Verificați datele introduse. Semnați în casetele de mai jos pentru finalizarea contractului B2B/B2C:";
+            if (localActions) localActions.style.display = 'none';
+            if (waitingContainer) waitingContainer.style.display = 'none';
+            if (finalDownload) finalDownload.style.display = 'block';
+            if (imobSemnaturi) imobSemnaturi.style.display = 'block';
+            
+            document.getElementById('labelPart1Sign').innerText = "Semnătură Prestator";
+            document.getElementById('chiriasSignLabel').innerText = "Semnătură Beneficiar";
+            document.getElementById('proprietarSignBox').style.display = 'block';
+            document.getElementById('chiriasSignBox').style.display = 'block';
+
+            if (btnDescarca) btnDescarca.innerText = "📥 Descarcă Contractul de Prestări Servicii PDF";
+            if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractPrestariServiciiPDF()');
+            currentStep = 4;
+        }
+        return;
+    }
 
     if (tipContractCurent === 'demisie') {
         if (step === 1) {
@@ -706,6 +760,8 @@ function nextStep(step) {
                 if (waitingContainer) waitingContainer.style.display = 'none';
                 if (finalDownload) finalDownload.style.display = modLucru === 'local' ? 'block' : 'none';
                 if (imobSemnaturi) imobSemnaturi.style.display = 'block';
+                document.getElementById('labelPart1Sign').innerText = "Semnătură Proprietar (Locator)";
+                document.getElementById('chiriasSignLabel').innerText = "Semnătură Chiriaș (Locatar)";
                 if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractImobiliarPDF()');
             }
             currentStep = 4;
@@ -746,7 +802,7 @@ function nextStep(step) {
 }
 
 function prevStep(step) {
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') {
+    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie' || tipContractCurent === 'prestari_servicii') {
         if (step === 4 && !isRemoteTenantView) {
             const step4 = document.getElementById('step4');
             const step1 = document.getElementById('step1');
@@ -1072,6 +1128,133 @@ async function genereazaContractImobiliarPDF() {
     } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
 }
 
+async function genereazaContractPrestariServiciiPDF() {
+    arataNotificare("Se generează contractul de prestări servicii irefutabil...");
+    try {
+        const { PDFDocument, StandardFonts } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]);
+        let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Toate drepturile rezervate"), { 
+                x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
+            });
+        };
+
+        const deseneazaTitluSectiune = (text) => {
+            if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
+            y -= 13;
+        };
+
+        const deseneazaParagraf = (text) => {
+            if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 7, font });
+            y -= 11;
+        };
+
+        const titluText = "CONTRACT DE PRESTARI SERVICII";
+        const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
+        const centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });
+        y -= 20;
+
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
+        deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
+        deseneazaParagraf(`1.1. Prestator: ${getVal('prestatorNume') || '....................................'}, CUI/CIF: ${getVal('prestatorCui') || '........'},`);
+        deseneazaParagraf(`Nr. Reg. Com: ${getVal('prestatorReg') || '........'}, cu sediul in ${getVal('prestatorAdresa') || '....................................'},`);
+        deseneazaParagraf(`reprezentata prin ${getVal('prestatorReprezentant') || '....................'}, avand contul bancar ${getVal('prestatorBanca') || '....................'}.`);
+        deseneazaParagraf(`1.2. Beneficiar: ${getVal('beneficiarNume') || '....................................'}, CUI/CIF: ${getVal('beneficiarCui') || '........'},`);
+        deseneazaParagraf(`Nr. Reg. Com: ${getVal('beneficiarReg') || '........'}, cu sediul in ${getVal('beneficiarAdresa') || '....................................'},`);
+        deseneazaParagraf(`reprezentata prin ${getVal('beneficiarReprezentant') || '....................'}, contact: ${getVal('beneficiarContact') || '....................'}.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI (INDEPENDENTA SI FARA SUBORDONARE)");
+        deseneazaParagraf(`2.1. Obiectul prezentului contract consta in prestarea de catre Prestator a urmatoarelor servicii specializate:`);
+        deseneazaParagraf(`${getVal('serviciiDescriere') || '..................................................................................................................'}.`);
+        deseneazaParagraf(`2.2. Prestatorul isi desfasoara activitatea in mod independent, pe cont propriu si pe riscul sau, fara a exista o subordonare ierarhica sau program fix de lucru specific contractelor individuale de munca, evitand astfel orice risc de reclasificare fiscala (ANAF).`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 3: DURATA CONTRACTULUI");
+        deseneazaParagraf(`3.1. Prezentul contract intra in vigoare la data semnarii si este valabil pana la finalizarea serviciilor si achitarea integrala a pretului.`);
+        deseneazaParagraf(`3.2. Termenul estimat pentru executarea serviciilor este de ${getVal('serviciiTermen') || '30 ZILE CALENDARISTICE'}.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 4: PRETUL SI MODALITATEA DE PLATA");
+        deseneazaParagraf(`4.1. Pretul total convenit pentru prestarea serviciilor este in cuantum de ${getVal('serviciiPret') || '0 RON'}.`);
+        deseneazaParagraf(`4.2. Plata se va efectua pe baza facturii fiscale emise de Prestator, in termen de maximum 5 zile de la emitere.`);
+        deseneazaParagraf(`4.3. In caz de intârziere a platii, Beneficiarul datoreaza penalitati de 0.1% pe zi de intarziere din suma datorata.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 5: RECEPTIA SERVICIILOR");
+        deseneazaParagraf(`5.1. La finalizarea serviciilor, partile vor semna un Proces-Verbal de Predare-Primire.`);
+        deseneazaParagraf(`5.2. Daca Beneficiarul nu formuleaza obiectii scrise in termen de 3 zile calendaristice de la predare, serviciile se considera acceptate tacit.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 6: PROPRIETATEA INTELECTUALA (IP)");
+        deseneazaParagraf(`6.1. Drepturile de proprietate intelectuala asupra rezultatelor muncii revin Beneficiarului NUMAI DUPA achitarea integrala a pretului prevazut la Art. 4.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 7: CONFIDENTIALITATEA (NDA) SI GDPR");
+        deseneazaParagraf(`7.1. Partile se obliga sa pastreze confidentialitatea tuturor informatiilor comerciale sau tehnice luate la cunostinta.`);
+        deseneazaParagraf(`7.2. Prelucrarea datelor cu caracter personal se face in conformitate cu Regulamentul (UE) 2016/679 (GDPR), strict in scopul executarii prezentului contract.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 8: PACTUL COMISORIU EXPRES (REZILIERE)");
+        deseneazaParagraf(`8.1. Prezentul contract poate inceta prin acordul scris al partilor sau prin reziliere unilaterala cu un preaviz de 15 zile.`);
+        deseneazaParagraf(`8.2. In cazul inclacarii grave a obligatiilor (ex: neplata la termen), contractul se considera reziliat de plin drept (pact comisoriu de gradul IV), fara interventia instantei.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 9: LITIGII SI FORTA MAJORA");
+        deseneazaParagraf(`9.1. Forta majora exonereaza de raspundere in conditiile legii.`);
+        deseneazaParagraf(`9.2. Litigiile nerezolvate pe cale amiabila vor fi inaintate spre solutionare instantelor judecatoresti competente.`);
+        y -= 15;
+
+        if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+
+        page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`), { x: 45, y, size: 7.5, font: fontBold });
+        y -= 22;
+        
+        deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
+        y -= 4;
+
+        const sigPropCanvas = document.getElementById('sigProprietarCanvas');
+        const sigChirCanvas = document.getElementById('sigChiriasCanvas');
+        
+        if (sigPropCanvas && sigPropCanvas.offsetParent !== null) {
+            const sigPImageBytes = await pdfDoc.embedPng(sigPropCanvas.toDataURL('image/png'));
+            page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
+        }
+        if (sigChirCanvas && sigChirCanvas.offsetParent !== null) {
+            const sigCImageBytes = await pdfDoc.embedPng(sigChirCanvas.toDataURL('image/png'));
+            page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
+        }
+
+        page.drawText(curataDiacritice("Semnatura Prestator"), { x: 45, y: y - 62, size: 7, font: fontBold });
+        page.drawText(curataDiacritice("Semnatura Beneficiar"), { x: 310, y: y - 62, size: 7, font: fontBold });
+
+        deseneazaFooter();
+
+        const bytes = await pdfDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = "CONTRACT_PRESTARI_SERVICII_ACTPELOC.pdf";
+        a.click();
+
+        salveazaInArhivaprivata({ idAct: 'PS-' + Math.floor(1000 + Math.random()*9000), numeClient: curataDiacritice(getVal('beneficiarNume') || 'Beneficiar') });
+        arataNotificare("✅ Contract de prestări servicii generat cu succes și salvat în arhivă!");
+    } catch(e) { arataNotificare("Eroare PDF Prestări: " + e.message, true); }
+}
+
 async function genereazaCerereDemisiePDF() {
     arataNotificare("Se generează cererea de demisie oficială...");
     try {
@@ -1082,6 +1265,12 @@ async function genereazaCerereDemisiePDF() {
         
         let page = pdfDoc.addPage([595.28, 841.89]);
         let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Toate drepturile rezervate"), { 
+                x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
+            });
+        };
 
         const getVal = (id) => {
             const el = document.getElementById(id);
@@ -1146,6 +1335,8 @@ async function genereazaCerereDemisiePDF() {
         page.drawText(curataDiacritice("Luat la cunoștință, Data: ........................"), { x: 320, y: y - 35, size: 7, font });
         page.drawText(curataDiacritice("Nr. înregistrare: ...................................."), { x: 320, y: y - 50, size: 7, font });
         page.drawText(curataDiacritice("Semnătura și ștampila: ........................"), { x: 320, y: y - 65, size: 7, font });
+
+        deseneazaFooter();
 
         const bytes = await pdfDoc.save();
         const blob = new Blob([bytes], { type: 'application/pdf' });
