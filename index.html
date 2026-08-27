@@ -551,11 +551,42 @@
                     <div><label>Sat / Sector</label><input type="text" id="buyer_sector" placeholder="ex: SECTOR 1"></div>
                     <div><label>Stradă</label><input type="text" id="buyerStreet" placeholder="ex: STR. VICTORIEI"></div>
                     <div><label>Număr</label><input type="text" id="buyerStreetNo" placeholder="ex: 5"></div>
+                    <div><label>Bloc (Bl.)</label><input type="text" id="buyerBlock" placeholder="ex: -"></div>
+                    <div><label>Scară</label><input type="text" id="buyerBuilding" placeholder="ex: -"></div>
+                    <div><label>Etaj</label><input type="text" id="buyerFloor" placeholder="ex: -"></div>
+                    <div><label>Apartament</label><input type="text" id="buyerApartment" placeholder="ex: -"></div>
                     <div><label>Tip Act & Serie</label><input type="text" id="buyerCISeries" placeholder="ex: CI RX"></div>
                     <div><label>Număr Act</label><input type="text" id="buyerCINumber" placeholder="ex: 654321"></div>
                     <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere)</label><input type="text" id="buyerCNP" placeholder="ex: 2950505654321" maxlength="13"></div>
                     <div><label>Telefon / Fax</label><input type="text" id="buyerPhone" placeholder="ex: 0733000000"></div>
                     <div><label>E-mail</label><input type="text" id="buyerEmail" placeholder="ex: cumparator@email.com" style="text-transform: none;"></div>
+
+                    <div class="full-width">
+                        <button type="button" class="btn btn-secondary" id="btnToggleBuyerFiscal" onclick="comutaDomiciliuFiscalCumparator()" style="margin-top: 10px;">➕ Adaugă Domiciliu Fiscal Diferit (Cumpărător)</button>
+                        <div id="sectiuneFiscalaCumparator" class="form-grid" style="display:none; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 12px;">
+                            <div class="full-width"><strong style="font-size: 13px;">Date Domiciliu Fiscal Cumpărător</strong></div>
+                            <div><label>Județ Fiscal</label><input type="text" id="buyerFiscalCounty"></div>
+                            <div><label>Cod Poștal</label><input type="text" id="buyerFiscalPostalCode"></div>
+                            <div><label>Localitate</label><input type="text" id="buyerFiscalCity"></div>
+                            <div><label>Sector / Sat</label><input type="text" id="buyerFiscalSector"></div>
+                            <div><label>Stradă</label><input type="text" id="buyerFiscalStreet"></div>
+                            <div><label>Număr</label><input type="text" id="buyerFiscalStreetNo"></div>
+                        </div>
+                    </div>
+
+                    <div class="full-width">
+                        <button type="button" class="btn btn-secondary" id="btnToggleBuyerFirma" onclick="comutaFirmaCumparator()" style="margin-top: 10px;">🏢 Cumpărarea prin Firmă / Mandatar (Cumpărător)</button>
+                        <div id="sectiuneFirmaCumparator" class="form-grid" style="display:none; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 12px;">
+                            <div class="full-width"><strong style="font-size: 13px;">Date Reprezentant / Firmă Cumpărător</strong></div>
+                            <div><label>Reprezentată prin (Nume)</label><input type="text" id="buyerRepresentant"></div>
+                            <div><label>În calitate de</label><input type="text" id="buyerQuality" placeholder="ex: ADMINISTRATOR"></div>
+                            <div><label>Seria Act Reprezentant</label><input type="text" id="buyerRepresCISeries"></div>
+                            <div><label>Număr Act Reprezentant</label><input type="text" id="buyerRepresCINumber"></div>
+                            <div class="full-width"><label>CNP / CIF Reprezentant (13 caractere)</label><input type="text" id="buyerRepresCNP" maxlength="13"></div>
+                            <div><label>Telefon Reprezentant</label><input type="text" id="buyerRepresPhone"></div>
+                            <div><label>E-mail Reprezentant</label><input type="text" id="buyerRepresEmail" style="text-transform: none;"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div style="margin-top: 30px; display: flex; gap: 12px;" id="btnGroupStep2">

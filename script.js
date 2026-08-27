@@ -7,6 +7,11 @@ let userRole = 'vanzator';
 let isRemoteTenantView = false;
 let linkCumparatorGlobal = "";
 
+let domiciliuFiscalDiferit = false;
+let esteFirmaSauMandatar = false;
+let domiciliuFiscalCumparatorDiferit = false;
+let esteFirmaSauMandatarCumparator = false;
+
 let profilCurent = null;
 let modAuthCurent = 'logare';
 let pachetSelectatInregistrare = 'GRATUIT';
@@ -404,6 +409,8 @@ const elementeFormular = [
     'sellerFiscalCounty', 'sellerFiscalPostalCode', 'sellerFiscalCity', 'sellerFiscalSector', 'sellerFiscalStreet', 'sellerFiscalStreetNo',
     'sellerRepresentant', 'sellerQuality', 'reprCISeries', 'reprCINumber', 'reprCNP', 'reprPhone', 'reprEmail',
     'buyerName', 'buyer_judet', 'buyerPostalCode', 'buyer_city', 'buyer_sector', 'buyerStreet', 'buyerStreetNo', 'buyerBlock', 'buyerBuilding', 'buyerFloor', 'buyerApartment', 'buyerCISeries', 'buyerCINumber', 'buyerCNP', 'buyerPhone', 'buyerEmail',
+    'buyerFiscalCounty', 'buyerFiscalPostalCode', 'buyerFiscalCity', 'buyerFiscalSector', 'buyerFiscalStreet', 'buyerFiscalStreetNo',
+    'buyerRepresentant', 'buyerQuality', 'buyerRepresCISeries', 'buyerRepresCINumber', 'buyerRepresCNP', 'buyerRepresPhone', 'buyerRepresEmail',
     'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredActType', 'acquiredActDetails', 'figurePrice', 'lettersPrice',
     'proprietarNume', 'proprietarCnp', 'proprietarAct', 'chiriasNume', 'chiriasCnp', 'chiriasAct', 'imobilAdresa', 'imobilInventar', 'imobilDurata', 'imobilDataStart', 'imobilChirie', 'imobilGarantie'
 ];
@@ -542,7 +549,7 @@ function selecteazaModSiPorneste(mod) {
         
         if (mod === 'remote') {
             document.getElementById('proprietarSignBox').style.display = 'block';
-            document.getElementById('chiriasSignBox').style.display = 'none'; // Chiriasul semneaza de pe linkul lui remote
+            document.getElementById('chiriasSignBox').style.display = 'none';
             if(step4Desc) step4Desc.innerText = "Semnați ca proprietar și generați linkul pentru chiriaș.";
         } else {
             document.getElementById('proprietarSignBox').style.display = 'block';
@@ -587,6 +594,18 @@ function comutaFirma() {
     esteFirmaSauMandatar = !esteFirmaSauMandatar;
     const sectiune = document.getElementById('sectiuneFirma');
     if (sectiune) sectiune.style.display = esteFirmaSauMandatar ? 'grid' : 'none';
+}
+
+function comutaDomiciliuFiscalCumparator() {
+    domiciliuFiscalCumparatorDiferit = !domiciliuFiscalCumparatorDiferit;
+    const sectiune = document.getElementById('sectiuneFiscalaCumparator');
+    if (sectiune) sectiune.style.display = domiciliuFiscalCumparatorDiferit ? 'grid' : 'none';
+}
+
+function comutaFirmaCumparator() {
+    esteFirmaSauMandatarCumparator = !esteFirmaSauMandatarCumparator;
+    const sectiune = document.getElementById('sectiuneFirmaCumparator');
+    if (sectiune) sectiune.style.display = esteFirmaSauMandatarCumparator ? 'grid' : 'none';
 }
 
 function updateProgress() {
@@ -715,19 +734,16 @@ window.onload = async function() {
         setTimeout(() => { deschideModalAuth('inregistrare'); }, 1200);
     }
 
-    // Gestionare link Remote pentru Chiriaș (Imobiliare)
     if (params.has('remote_imob')) {
         isRemoteTenantView = true;
         tipContractCurent = 'imobiliare';
         
-        // Citim datele stocate sau transmise din sesiune
         const dateSalvate = JSON.parse(localStorage.getItem('act_peloc_remote_imob') || '{}');
         for (let key in dateSalvate) {
             const el = document.getElementById(key);
             if (el) el.value = dateSalvate[key];
         }
 
-        // Ascundem ecranul principal și ducem chiriașul direct la pasul de vizualizare și semnătură
         document.getElementById('mainMenuContainer').style.display = 'none';
         document.getElementById('step1').style.display = 'none';
         document.getElementById('step4').classList.add('active');
@@ -737,7 +753,8 @@ window.onload = async function() {
         document.getElementById('waitingAnimationContainer').style.display = 'none';
         document.getElementById('finalDownloadContainer').style.display = 'block';
         document.getElementById('imobiliareSemnaturiContainer').style.display = 'block';
-        document.getElementById('proprietarSignBox').style.display = 'none'; // Chiriasul nu are acces la semnatura proprietarului
+        document.getElementById('proprietarSignBox').style.display = 'none';
+        document.getElementById('chiriasSignBox').style.display = 'block';
         document.getElementById('btnDescarcaOficial').innerText = "📥 Semnează și Descarcă Contractul Oficial";
         document.getElementById('btnDescarcaOficial').setAttribute('onclick', 'genereazaContractImobiliarPDF()');
         document.getElementById('btnGroupBackFinal').style.display = 'none';
@@ -772,7 +789,6 @@ function pornesteFluxRemote() {
         return;
     }
 
-    // Flux Auto Remote
     pornesteFluxRemoteAuto();
 }
 
