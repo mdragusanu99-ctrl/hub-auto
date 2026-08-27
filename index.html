@@ -50,7 +50,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s ease, color 0.3s ease; }
 
-        /* SPLASH SCREEN & LANDING HERO 2026 */
+        /* SPLASH SCREEN */
         #splashScreen {
             position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #090d16 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
@@ -454,10 +454,10 @@
 
             <div id="stepsCompletedBanner" class="alert-banner" style="display:none; background: rgba(16, 185, 129, 0.1); border-color: var(--success); color: var(--success);">🎉 Toate datele au fost colectate și contractul este pregătit pentru descărcare.</div>
 
-            <!-- STEP 1: VÂNZĂTOR (AUTO) / PROPRIETAR (IMOBILIARE) -->
+            <!-- STEP 1: FORMULAR COMPLET (AUTO PASUL 1 / IMOBILIARE COMPLET) -->
             <div class="step-content" id="step1">
                 <div class="step-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;" id="titleStep1">Pasul 1: Datele Vânzătorului</div>
+                    <div style="font-size: 18px; font-weight: 800;" id="titleStep1">Pasul 1: Datele Părților & Imobilului</div>
                     <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
                 </div>
                 
@@ -508,25 +508,42 @@
                     </div>
                 </div>
 
-                <!-- Formular Imobiliare Pas 1 (Proprietar) -->
+                <!-- Formular Imobiliare Complet (Proprietar + Chiriaș + Imobil + Inventar) -->
                 <div id="formImobiliareStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Proprietar (Locator)</strong></div>
                     <div class="full-width"><label>Nume și Prenume Proprietar *</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
                     <div><label>CNP Proprietar *</label><input type="text" id="proprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
                     <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="proprietarAct" placeholder="ex: VS 123456"></div>
                     <div class="full-width"><label>Domiciliu Complet Proprietar *</label><input type="text" id="proprietarAdresa" placeholder="ex: STR. UNIRII, NR. 10, BÂRLAD"></div>
+
+                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>CNP Chiriaș *</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
+
+                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">3. Imobilul Închiriat & Condiții Financiare</strong></div>
+                    <div class="full-width"><label>Adresă Completă Imobil Închiriat *</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
+                    
+                    <div class="full-width" style="margin-top: 5px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                        <label style="color: var(--primary); margin-bottom: 8px;">Inventar Bunuri / Electrocasnice (Opțional)</label>
+                        <input type="text" id="imobilInventar" placeholder="ex: Centrala termica, Frigider Arctic, Masina spalat Samsung, TV LG">
+                    </div>
+
+                    <div><label>Durată Contract *</label><input type="text" id="imobilDurata" value="12 LUNI"></div>
+                    <div><label>Data Începere *</label><input type="text" id="imobilDataStart" value="01.09.2026"></div>
+                    <div><label>Chirie Lunară *</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
+                    <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
                 </div>
 
                 <div style="margin-top: 30px;">
-                    <button class="btn btn-primary" onclick="nextStep(1)">Înainte ➔</button>
+                    <button class="btn btn-primary" onclick="nextStep(1)">Înainte (Semnături & Finalizare) ➔</button>
                 </div>
             </div>
 
-            <!-- STEP 2: CUMPĂRĂTOR (AUTO) / CHIRIAȘ & IMOBIL (IMOBILIARE) -->
+            <!-- STEP 2: CUMPĂRĂTOR (AUTO) -->
             <div class="step-content" id="step2">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
                 
-                <!-- Formular Auto Pas 2 -->
                 <div id="formAutoStep2" class="form-grid">
                     <div class="full-width"><label>Nume și Prenume / Denumire</label><input type="text" id="buyerName" placeholder="ex: IONESCU MARIA"></div>
                     <div><label>Județ</label><input type="text" id="buyer_judet" placeholder="ex: BUCUREȘTI"></div>
@@ -540,43 +557,6 @@
                     <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere)</label><input type="text" id="buyerCNP" placeholder="ex: 2950505654321" maxlength="13"></div>
                     <div><label>Telefon / Fax</label><input type="text" id="buyerPhone" placeholder="ex: 0733000000"></div>
                     <div><label>E-mail</label><input type="text" id="buyerEmail" placeholder="ex: cumparator@email.com" style="text-transform: none;"></div>
-                </div>
-
-                <!-- Formular Imobiliare Pas 2 (Chiriaș & Imobil) -->
-                <div id="formImobiliareStep2" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>CNP Chiriaș *</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
-
-                    <div class="full-width" style="margin-top: 10px;"><strong style="color: var(--primary); font-size: 13px;">3. Imobilul Închiriat & Condiții Financiare</strong></div>
-                    <div class="full-width"><label>Adresă Completă Imobil Închiriat *</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
-                    
-                    <div class="full-width" style="margin-top: 5px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Inventar Bunuri / Electrocasnice (Opțional)</label>
-                        <input type="text" id="imobilInventar" placeholder="ex: Centrala termica, Frigider Arctic, Masina spalat Samsung, TV LG">
-                    </div>
-
-                    <div><label>Durată Contract *</label><input type="text" id="imobilDurata" value="12 LUNI"></div>
-                    <div><label>Data Începere *</label><input type="text" id="imobilDataStart" value="01.09.2026"></div>
-                    <div><label>Chirie Lunară *</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
-                    <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
-
-                    <div class="full-width" style="margin-top: 15px;">
-                        <strong style="font-size: 13px; display: block; margin-bottom: 8px;">Semnături Digitale</strong>
-                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                            <div>
-                                <label>Semnătură Proprietar</label>
-                                <canvas id="sigProprietarCanvas" width="220" height="80" style="border: 1px solid var(--border-color); background: var(--bg-body); border-radius: 6px; cursor: crosshair;"></canvas>
-                                <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px; margin-top: 4px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează</button>
-                            </div>
-                            <div>
-                                <label>Semnătură Chiriaș</label>
-                                <canvas id="sigChiriasCanvas" width="220" height="80" style="border: 1px solid var(--border-color); background: var(--bg-body); border-radius: 6px; cursor: crosshair;"></canvas>
-                                <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px; margin-top: 4px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div style="margin-top: 30px; display: flex; gap: 12px;" id="btnGroupStep2">
@@ -622,23 +602,36 @@
                 </div>
             </div>
 
-            <!-- STEP 4: FINALIZARE -->
+            <!-- STEP 4: FINALIZARE & SEMNĂTURI -->
             <div class="step-content" id="step4">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep4">Pasul 4: Finalizare Contract</div>
                 <p id="step4Desc" style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Sistemul este pregătit pentru generarea documentului oficial.</p>
                 
-                <div id="localActions">
-                    <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cumpărător (Mod Distanță)</button>
+                <!-- ZONA DE SEMNĂTURI PENTRU IMOBILIARE (DIRECT PE ECRANUL FINAL) -->
+                <div id="imobiliareSemnaturiContainer" style="margin-bottom: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <strong style="font-size: 13px; display: block; margin-bottom: 8px;">Semnături Digitale Părți</strong>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                        <div>
+                            <label>Semnătură Proprietar</label>
+                            <canvas id="sigProprietarCanvas" width="220" height="80" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair;"></canvas>
+                            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px; margin-top: 4px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează</button>
+                        </div>
+                        <div>
+                            <label>Semnătură Chiriaș (Sau trimite remote)</label>
+                            <canvas id="sigChiriasCanvas" width="220" height="80" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair;"></canvas>
+                            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px; margin-top: 4px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="buyerActions" style="display:none;">
-                    <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Trimite Datele Către Vânzător</button>
+                <div id="localActions">
+                    <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cumpărător / Chiriaș (Mod Distanță)</button>
                 </div>
 
                 <div id="waitingAnimationContainer" style="display:none; background: var(--bg-body); border: 1px dashed var(--border-color); padding: 24px; border-radius: var(--radius-md); text-align: center; margin-top: 16px;">
                     <div class="spinner"></div>
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 4px;">Sesiune securizată creată!</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Trimite linkul de mai jos cumpărătorului:</p>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Trimite linkul de mai jos celeilalte părți:</p>
                     <div style="display: inline-block; background: var(--bg-card); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" id="qrcode"></div>
                     <div style="font-family: monospace; font-size: 12px; margin: 12px 0; background: var(--bg-card); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); word-break: break-all;" id="shareLinkContainer"></div>
                     <div style="display: flex; gap: 10px; margin-top: 12px;">
