@@ -250,6 +250,103 @@ function activeazaPasulUI(stepNum) {
         }
     }
 
+    // Preluare elemente formular Pas 1
+    const fAuto1 = document.getElementById('formAutoStep1');
+    const fPrest1 = document.getElementById('formPrestariStep1');
+    const fComod1 = document.getElementById('formComodatStep1');
+    const fImob1 = document.getElementById('formImobiliareStep1');
+    const fDem1 = document.getElementById('formDemisieStep1');
+
+    // Ascundem tot pas 1 inițial
+    if (fAuto1) fAuto1.style.display = 'none';
+    if (fPrest1) fPrest1.style.display = 'none';
+    if (fComod1) fComod1.style.display = 'none';
+    if (fImob1) fImob1.style.display = 'none';
+    if (fDem1) fDem1.style.display = 'none';
+
+    if (stepNum === 1) {
+        if (tipContractCurent === 'auto' && fAuto1) fAuto1.style.display = 'grid';
+        else if (tipContractCurent === 'prestari_servicii' && fPrest1) fPrest1.style.display = 'grid';
+        else if (tipContractCurent === 'comodat' && fComod1) fComod1.style.display = 'grid';
+        else if (tipContractCurent === 'imobiliare' && fImob1) fImob1.style.display = 'grid';
+        else if (tipContractCurent === 'demisie' && fDem1) {
+            fDem1.style.display = 'grid';
+            initCanvasSemnatura('sigDemisieCanvas');
+        }
+
+        if (tipContractCurent === 'auto') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Vânzătorului";
+        else if (tipContractCurent === 'prestari_servicii') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Prestatorului";
+        else if (tipContractCurent === 'comodat') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Comodantului";
+        else if (tipContractCurent === 'imobiliare') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Părților & Imobilului";
+        else if (tipContractCurent === 'demisie') document.getElementById('titleStep1').innerText = "Cerere de Demisie Oficială";
+    }
+
+    // Preluare elemente formular Pas 2
+    const fAuto2 = document.getElementById('formAutoStep2');
+    const fPrest2 = document.getElementById('formPrestariStep2');
+    const fComod2 = document.getElementById('formComodatStep2');
+    if (fAuto2) fAuto2.style.display = 'none';
+    if (fPrest2) fPrest2.style.display = 'none';
+    if (fComod2) fComod2.style.display = 'none';
+
+    if (stepNum === 2) {
+        if (tipContractCurent === 'auto' && fAuto2) fAuto2.style.display = 'grid';
+        else if (tipContractCurent === 'prestari_servicii' && fPrest2) fPrest2.style.display = 'grid';
+        else if (tipContractCurent === 'comodat' && fComod2) fComod2.style.display = 'grid';
+
+        if (tipContractCurent === 'auto') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Cumpărătorului";
+        else if (tipContractCurent === 'prestari_servicii') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Beneficiarului";
+        else if (tipContractCurent === 'comodat') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Comodatarului";
+    }
+
+    // Preluare elemente formular Pas 3
+    const fAuto3 = document.getElementById('formAutoStep3');
+    const fPrest3 = document.getElementById('formPrestariStep3');
+    const fComod3 = document.getElementById('formComodatStep3');
+    if (fAuto3) fAuto3.style.display = 'none';
+    if (fPrest3) fPrest3.style.display = 'none';
+    if (fComod3) fComod3.style.display = 'none';
+
+    if (stepNum === 3) {
+        if (tipContractCurent === 'auto' && fAuto3) fAuto3.style.display = 'grid';
+        else if (tipContractCurent === 'prestari_servicii' && fPrest3) fPrest3.style.display = 'grid';
+        else if (tipContractCurent === 'comodat' && fComod3) fComod3.style.display = 'grid';
+
+        if (tipContractCurent === 'auto') document.getElementById('titleStep3').innerText = "Pasul 3: Vehiculul și Prețul";
+        else if (tipContractCurent === 'prestari_servicii') document.getElementById('titleStep3').innerText = "Pasul 3: Obiectul și Prețul Serviciilor";
+        else if (tipContractCurent === 'comodat') document.getElementById('titleStep3').innerText = "Pasul 3: Obiectul și Condițiile Comodatului";
+    }
+
+    // Gestionare Pasul 4 (Finalizare & Semnături)
+    if (stepNum === 4) {
+        const imobContainer = document.getElementById('imobiliareSemnaturiContainer');
+        const localAct = document.getElementById('localActions');
+        const finalDL = document.getElementById('finalDownloadContainer');
+
+        if (localAct) localAct.style.display = (modLucru === 'remote') ? 'block' : 'none';
+        if (finalDL) finalDL.style.display = 'block';
+
+        if (tipContractCurent === 'imobiliare' || tipContractCurent === 'prestari_servicii' || tipContractCurent === 'comodat') {
+            if (imobContainer) imobContainer.style.display = 'block';
+
+            if (tipContractCurent === 'imobiliare') {
+                if (document.getElementById('labelPart1Sign')) document.getElementById('labelPart1Sign').innerText = "Semnătură Proprietar (Locator)";
+                if (document.getElementById('chiriasSignLabel')) document.getElementById('chiriasSignLabel').innerText = "Semnătură Chiriaș (Locatar)";
+            } else if (tipContractCurent === 'prestari_servicii') {
+                if (document.getElementById('labelPart1Sign')) document.getElementById('labelPart1Sign').innerText = "Semnătură Prestator";
+                if (document.getElementById('chiriasSignLabel')) document.getElementById('chiriasSignLabel').innerText = "Semnătură Beneficiar";
+            } else if (tipContractCurent === 'comodat') {
+                if (document.getElementById('labelPart1Sign')) document.getElementById('labelPart1Sign').innerText = "Semnătură Comodant";
+                if (document.getElementById('chiriasSignLabel')) document.getElementById('chiriasSignLabel').innerText = "Semnătură Comodatar";
+            }
+            initCanvasSemnatura('sigProprietarCanvas');
+            initCanvasSemnatura('sigChiriasCanvas');
+        } else {
+            if (imobContainer) imobContainer.style.display = 'none';
+        }
+    }
+}
+
     // Ascundere sub-formulare Pasul 1
     const fAuto1 = document.getElementById('formAutoStep1');
     const fPrest1 = document.getElementById('formPrestariStep1');
