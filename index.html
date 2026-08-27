@@ -108,9 +108,9 @@
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
         .full-width { grid-column: span 2; }
         label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
-        input, select, textarea { width: 100%; padding: 14px 16px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 14px; color: var(--text-main); transition: all 0.2s; outline: none; }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-        input.input-error, select.input-error, textarea.input-error { border-color: var(--danger) !important; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important; }
+        input, select { width: 100%; padding: 14px 16px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 14px; color: var(--text-main); transition: all 0.2s; outline: none; }
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+        input.input-error, select.input-error { border-color: var(--danger) !important; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important; }
 
         .packages-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 8px; }
         .package-card { border: 2px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; background: var(--bg-body); }
@@ -182,7 +182,7 @@
         <div class="splash-content">
             <div class="brand-pill">⚡ Ediția Avansată 2026 • SaaS Juridic</div>
             <h1 class="splash-title">Generează Contracte Oficiale <span>În Câteva Secunde</span></h1>
-            <p class="splash-desc">Platforma unică pentru contracte auto, închirieri imobiliare, cereri de demisie, prestări servicii B2B și arhivă securizată în cloud.</p>
+            <p class="splash-desc">Platforma unică pentru contracte auto, închirieri imobiliare, cereri de demisie, semnături digitale și arhivă securizată în cloud.</p>
             <div class="splash-btn-group">
                 <button class="btn-primary-glow" onclick="inchideSplash()">Începe Acum Gratuit ➔</button>
                 <button class="btn-secondary-glass" onclick="inchideSplash(); deschideModalAuth('inregistrare');">Creează Cont 🚀</button>
@@ -317,8 +317,8 @@
                     </div>
                     <div class="category-card" onclick="selecteazaCategorie('munca')">
                         <div class="category-icon">💼</div>
-                        <h4>Muncă, PFA & B2B</h4>
-                        <p>Cereri de demisie și Contracte de Prestări Servicii B2B profesionale.</p>
+                        <h4>Muncă & PFA</h4>
+                        <p>Cereri de demisie oficiale cu preaviz conform Codului Muncii.</p>
                     </div>
                     <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând!', true)">
                         <div class="category-icon">📋</div>
@@ -396,78 +396,6 @@
                         </div>
                     </div>
                     <button class="btn btn-primary" style="margin-top: 16px; max-width: 220px;" onclick="actualizeazaEmailCont()">💾 Salvează</button>
-                </div>
-            </div>
-
-            <!-- MENIU SELECTARE TIP DOCUMENT CATEGORIE MUNCĂ -->
-            <div id="muncaMenuContainer" style="display:none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Alege Documentul Dorit (Muncă & B2B)</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
-                </div>
-                <div class="categories-grid" style="margin-top: 0;">
-                    <div class="category-card" onclick="pornesteFluxDemisie()">
-                        <div class="category-icon">📄</div>
-                        <h4>Cerere de Demisie</h4>
-                        <p>Notificare oficială de încetare a contractului individual de muncă cu preaviz legal.</p>
-                    </div>
-                    <div class="category-card" onclick="pornesteFluxB2B()">
-                        <div class="category-icon">🤝</div>
-                        <h4>Contract Prestări Servicii B2B</h4>
-                        <p>Contract comercial robust între două firme sau PFA-uri, cu clauze complete și NDA.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ========================================== -->
-            <!-- FLUX CONTRACT PRESTĂRI SERVICII B2B        -->
-            <!-- ========================================== -->
-            <div class="step-content" id="b2bStep1">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract Prestări Servicii B2B — Pasul 1/2 (Părți)</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div class="form-grid">
-                    <div class="full-width"><strong style="font-size: 13px; color: var(--primary);">A. Date Prestator (Cine oferă serviciul)</strong></div>
-                    <div class="full-width"><label>Denumire Firmă / PFA</label><input type="text" id="b2bPrestatorNume" placeholder="ex: SC DEV STUDIO SRL / POPESCU PFA"></div>
-                    <div><label>CUI / CIF</label><input type="text" id="b2bPrestatorCui" placeholder="ex: RO12345678"></div>
-                    <div><label>Nr. Reg. Comerțului</label><input type="text" id="b2bPrestatorReg" placeholder="ex: J40/1234/2025"></div>
-                    <div class="full-width"><label>Adresă Sediu Social</label><input type="text" id="b2bPrestatorAdresa" placeholder="ex: BUCUREȘTI, STR. LUNCA NR. 5"></div>
-                    <div><label>Bancă</label><input type="text" id="b2bPrestatorBanca" placeholder="ex: BANCA TRANSILVANIA"></div>
-                    <div><label>Cont IBAN</label><input type="text" id="b2bPrestatorIban" placeholder="ex: RO49BTRL0000123456789012"></div>
-
-                    <div class="full-width" style="margin-top: 15px;"><strong style="font-size: 13px; color: var(--primary);">B. Date Beneficiar (Cine achită serviciul)</strong></div>
-                    <div class="full-width"><label>Denumire Companie Beneficiară</label><input type="text" id="b2bBeneficiarNume" placeholder="ex: SC GLOBAL CLIENT SRL"></div>
-                    <div><label>CUI / CIF Beneficiar</label><input type="text" id="b2bBeneficiarCui" placeholder="ex: RO87654321"></div>
-                    <div><label>Nr. Reg. Comerțului Beneficiar</label><input type="text" id="b2bBeneficiarReg" placeholder="ex: J35/987/2024"></div>
-                    <div class="full-width"><label>Adresă Sediu Beneficiar</label><input type="text" id="b2bBeneficiarAdresa" placeholder="ex: CLUJ-NAPOCA, BD. EROILOR NR. 12"></div>
-                </div>
-                <div style="margin-top: 30px;">
-                    <button class="btn btn-primary" onclick="valideazaPasB2B1()">Înainte: Obiect & Preț ➔</button>
-                </div>
-            </div>
-
-            <!-- PASUL 2 B2B: OBIECT, PREȚ ȘI SEMNĂTURĂ -->
-            <div class="step-content" id="b2bStep2">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract Prestări Servicii B2B — Pasul 2/2 (Detalii & Semnătură)</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div class="form-grid">
-                    <div class="full-width"><label>Obiectul Contractului (Descriere detaliată a serviciilor)</label><textarea id="b2bObiect" rows="3" placeholder="ex: Servicii de consultanță IT, mentenanță web și dezvoltare de module software personalizate."></textarea></div>
-                    <div><label>Valoare / Preț (în cifre și monedă)</label><input type="text" id="b2bPret" placeholder="ex: 1.500 EUR + TVA"></div>
-                    <div><label>Termen de Execuție / Predare</label><input type="text" id="b2bTermen" placeholder="ex: 30 de zile calendaristice"></div>
-                </div>
-
-                <div class="signature-box" style="max-width: 450px; margin: 24px auto;">
-                    <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Reprezentant / Administrator:</label>
-                    <canvas id="sigB2BCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                    <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaB2B()">Șterge Semnătura</button>
-                </div>
-
-                <div style="margin-top: 20px; display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="document.getElementById('b2bStep2').classList.remove('active'); document.getElementById('b2bStep1').classList.add('active');">⬅ Înapoi</button>
-                    <button class="btn btn-success" onclick="genereazaContractB2B_PDF()">📥 Generează & Descarcă Contractul B2B PDF</button>
                 </div>
             </div>
 
@@ -749,10 +677,10 @@
         let pachetSelectatInregistrare = 'GRATUIT';
         let splashTimerInterval = null;
         
-        let sigProprietarCanvas, sigChiriasCanvas, sigProprietarRemoteCanvas, sigDemisieCanvas, sigB2BCanvas;
-        let ctxProprietar, ctxChirias, ctxProprietarRemote, ctxDemisie, ctxB2B;
-        let isDrawingP = false, isDrawingC = false, isDrawingPR = false, isDrawingD = false, isDrawingB2B = false;
-        let hasDrawnP = false, hasDrawnC = false, hasDrawnPR = false, hasDrawnD = false, hasDrawnB2B = false;
+        let sigProprietarCanvas, sigChiriasCanvas, sigProprietarRemoteCanvas, sigDemisieCanvas;
+        let ctxProprietar, ctxChirias, ctxProprietarRemote, ctxDemisie;
+        let isDrawingP = false, isDrawingC = false, isDrawingPR = false, isDrawingD = false;
+        let hasDrawnP = false, hasDrawnC = false, hasDrawnPR = false, hasDrawnD = false;
 
         function initSplashTimer() {
             let secunde = 4;
@@ -901,7 +829,6 @@
             document.getElementById('mainMenuContainer').style.display = 'none';
             document.getElementById('modeSelectorContainer').style.display = 'none';
             document.getElementById('imobilModeSelectorContainer').style.display = 'none';
-            document.getElementById('muncaMenuContainer').style.display = 'none';
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
             document.getElementById('dashboardView').style.display = 'block';
             incarcaDateDashboard();
@@ -1030,7 +957,6 @@
             document.getElementById('progressBarContainer').style.display = 'none';
             document.getElementById('modeSelectorContainer').style.display = 'none';
             document.getElementById('imobilModeSelectorContainer').style.display = 'none';
-            document.getElementById('muncaMenuContainer').style.display = 'none';
             document.getElementById('dashboardView').style.display = 'none';
             document.getElementById('mainMenuContainer').style.display = 'block';
         }
@@ -1044,20 +970,9 @@
                 document.getElementById('imobilModeSelectorContainer').style.display = 'block';
             } else if (cat === 'munca') {
                 document.getElementById('mainMenuContainer').style.display = 'none';
-                document.getElementById('muncaMenuContainer').style.display = 'block';
+                document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+                document.getElementById('demisieStep1').classList.add('active');
             }
-        }
-
-        function pornesteFluxDemisie() {
-            document.getElementById('muncaMenuContainer').style.display = 'none';
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('demisieStep1').classList.add('active');
-        }
-
-        function pornesteFluxB2B() {
-            document.getElementById('muncaMenuContainer').style.display = 'none';
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('b2bStep1').classList.add('active');
         }
 
         function selecteazaModImobiliarSiPorneste(mod) {
@@ -1114,145 +1029,7 @@
             }
         }
 
-        /* VALIDARE & FLUX CONTRACT B2B */
-        function valideazaPasB2B1() {
-            const prestNume = document.getElementById('b2bPrestatorNume');
-            const prestCui = document.getElementById('b2bPrestatorCui');
-            const benefNume = document.getElementById('b2bBeneficiarNume');
-
-            if (!prestNume.value.trim()) { marcheazaEroreInput('b2bPrestatorNume'); arataNotificare("❌ Introduceți numele prestatorului!", true); return; }
-            if (!prestCui.value.trim()) { marcheazaEroreInput('b2bPrestatorCui'); arataNotificare("❌ Introduceți CUI-ul prestatorului!", true); return; }
-            if (!benefNume.value.trim()) { marcheazaEroreInput('b2bBeneficiarNume'); arataNotificare("❌ Introduceți numele beneficiarului!", true); return; }
-
-            document.getElementById('b2bStep1').classList.remove('active');
-            document.getElementById('b2bStep2').classList.add('active');
-            initCanvasB2B();
-        }
-
-        function initCanvasB2B() {
-            const canvas = document.getElementById('sigB2BCanvas');
-            if(!canvas) return;
-            ctxB2B = canvas.getContext('2d');
-            ctxB2B.strokeStyle = '#0f172a'; ctxB2B.lineWidth = 2;
-            canvas.onmousedown = (e) => { isDrawingB2B = true; hasDrawnB2B = true; ctxB2B.beginPath(); ctxB2B.moveTo(e.offsetX, e.offsetY); };
-            canvas.onmousemove = (e) => { if (isDrawingB2B) { ctxB2B.lineTo(e.offsetX, e.offsetY); ctxB2B.stroke(); } };
-            canvas.onmouseup = () => { isDrawingB2B = false; };
-        }
-
-        function stergeSemnaturaB2B() { ctxB2B.clearRect(0, 0, 280, 130); hasDrawnB2B = false; }
-
-        async function genereazaContractB2B_PDF() {
-            if (!hasDrawnB2B) {
-                arataNotificare("❌ Vă rugăm să semnați contractul pe ecran!", true);
-                return;
-            }
-
-            if (!profilCurent) {
-                arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
-                deschideModalAuth('logare');
-                return;
-            }
-
-            arataNotificare("Se generează contractul de prestări servicii B2B...");
-            try {
-                const { PDFDocument, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 780;
-
-                const deseneazaFooter = () => {
-                    page.drawText("Generat prin ActPeLoc.ro — Contract Comercial de Prestări Servicii B2B", { 
-                        x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
-                    });
-                };
-
-                const deseneazaTitluSectiune = (text) => {
-                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(text, { x: 45, y, size: 8.5, font: fontBold });
-                    y -= 13;
-                };
-
-                const deseneazaParagraf = (text) => {
-                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(text, { x: 45, y, size: 7, font });
-                    y -= 11;
-                };
-
-                const titluText = "CONTRACT COMERCIAL DE PRESTARI SERVICII B2B";
-                const textWidth = fontBold.widthOfTextAtSize(titluText, 11);
-                page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 11, font: fontBold });
-                y -= 22;
-
-                deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
-                deseneazaParagraf(`1.1. Prestator: ${curataDiacritice(document.getElementById('b2bPrestatorNume').value)}, CUI: ${document.getElementById('b2bPrestatorCui').value},`);
-                deseneazaParagraf(`Nr. Reg. Com.: ${curataDiacritice(document.getElementById('b2bPrestatorReg').value)}, cu sediul in ${curataDiacritice(document.getElementById('b2bPrestatorAdresa').value)},`);
-                deseneazaParagraf(`cont bancar ${document.getElementById('b2bPrestatorIban').value} deschis la ${curataDiacritice(document.getElementById('b2bPrestatorBanca').value)}.`);
-                deseneazaParagraf(`1.2. Beneficiar: ${curataDiacritice(document.getElementById('b2bBeneficiarNume').value)}, CUI: ${document.getElementById('b2bBeneficiarCui').value},`);
-                deseneazaParagraf(`Nr. Reg. Com.: ${curataDiacritice(document.getElementById('b2bBeneficiarReg').value)}, cu sediul in ${curataDiacritice(document.getElementById('b2bBeneficiarAdresa').value)}.`);
-                y -= 4;
-
-                deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI");
-                deseneazaParagraf(`2.1. Prestatorul se obliga sa presteze in favoarea Beneficiarului serviciile constand in:`);
-                deseneazaParagraf(`${curataDiacritice(document.getElementById('b2bObiect').value)}.`);
-                y -= 4;
-
-                deseneazaTitluSectiune("ARTICOLUL 3: PRETUL SI MODALITATEA DE PLATA");
-                deseneazaParagraf(`3.1. Valoarea totala a serviciilor este de ${curataDiacritice(document.getElementById('b2bPret').value || 'Conform ofertei')}, achitata pe baza facturii fiscale emise.`);
-                deseneazaParagraf(`3.2. Termenul de plata este de 15 zile calendaristice de la emiterea facturii. Intarzierile atrag penalitati de 0.5% pe zi.`);
-                y -= 4;
-
-                deseneazaTitluSectiune("ARTICOLUL 4: DURATA SI TERMENUL DE PREDARE");
-                deseneazaParagraf(`4.1. Prezentul contract intra in vigoare la data semnarii si are termen de executie de ${curataDiacritice(document.getElementById('b2bTermen').value || '30 zile')}.`);
-                y -= 4;
-
-                deseneazaTitluSectiune("ARTICOLUL 5: RECEPTIA SERVICIILOR");
-                deseneazaParagraf(`5.1. Predarea-primirea se face prin proces-verbal sau prin acceptare tacita in termen de 3 zile de la livrare.`);
-                y -= 4;
-
-                deseneazaTitluSectiune("ARTICOLUL 6: CONFIDENTIALITATEA (NDA)");
-                deseneazaParagraf(`6.1. Partile se obliga sa pastreze confidentialitatea tuturor informutilor comerciale si tehnice schimbate.`);
-                y -= 4;
-
-                deseneazaTitluSectiune("ARTICOLUL 7: LITIGII SI LEGEA APLICABILA");
-                deseneazaParagraf(`7.1. Eventualele litigii se vor solutiona amiabil sau prin instantele judecatoresti competente de la sediul Prestatorului.`);
-                y -= 15;
-
-                if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-
-                page.drawText(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`, { x: 45, y, size: 7.5, font: fontBold });
-                y -= 22;
-
-                deseneazaTitluSectiune("SEMNATURA PRESTATOR:");
-                y -= 4;
-
-                const sigImageBytes = await pdfDoc.embedPng(document.getElementById('sigB2BCanvas').toDataURL('image/png'));
-                page.drawImage(sigImageBytes, { x: 45, y: y - 50, width: 130, height: 42 });
-                page.drawText("Reprezentant Legal / Administrator", { x: 45, y: y - 62, size: 7, font: fontBold });
-
-                deseneazaFooter();
-
-                const bytes = await pdfDoc.save();
-
-                salveazaInArhivaprivata({ 
-                    idAct: 'B2B-' + Math.floor(1000 + Math.random()*9000), 
-                    detalii: 'Contract B2B - ' + curataDiacritice(document.getElementById('b2bBeneficiarNume').value) 
-                }, bytes);
-
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url; a.download = "CONTRACT_PRESTARI_SERVICII_B2B.pdf";
-                a.click();
-
-                arataNotificare("✅ Contract B2B generat și salvat în arhivă!");
-                deschideMeniuPrincipal();
-            } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
-        }
-
-        /* VALIDARE PASI AUTO */
+        /* VALIDARE PASI AUTO CU CHENAR ROȘU */
         function valideazaPasAuto(pas) {
             if (pas === 1) {
                 const nume = document.getElementById('sellerName');
@@ -1268,8 +1045,14 @@
             nextStep(pas);
         }
 
+        /* GENERARE CONTRACT AUTO CU SALVARE ÎN ARHIVĂ ȘI RESETARE */
         async function genereazaContractAutoPDF() {
-            if (!profilCurent) { arataNotificare("⚠️ Vă rugăm să vă autentificați în cont.", true); deschideModalAuth('logare'); return; }
+            if (!profilCurent) {
+                arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
+                deschideModalAuth('logare');
+                return;
+            }
+
             arataNotificare("Se generează contractul auto oficial ITL 054...");
             try {
                 const { PDFDocument, StandardFonts } = PDFLib;
@@ -1375,8 +1158,16 @@
         function stergeSemnaturaDemisie() { ctxDemisie.clearRect(0, 0, 280, 140); hasDrawnD = false; }
 
         async function genereazaCerereDemisiePDF() {
-            if (!hasDrawnD) { arataNotificare("❌ Vă rugăm să semnați cererea pe ecran!", true); return; }
-            if (!profilCurent) { arataNotificare("⚠️ Vă rugăm să vă autentificați în cont.", true); deschideModalAuth('logare'); return; }
+            if (!hasDrawnD) {
+                arataNotificare("❌ Vă rugăm să semnați cererea pe ecran!", true);
+                return;
+            }
+
+            if (!profilCurent) {
+                arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
+                deschideModalAuth('logare');
+                return;
+            }
 
             arataNotificare("Se generează cererea de demisie compactă și oficială...");
             try {
@@ -1567,9 +1358,20 @@
         function trimiteImobilRemoteWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Salut! Vă rog să accesați acest link securizat pentru semnarea contractului de închiriere: " + document.getElementById('imobilRemoteLinkBox').innerText)}`, '_blank'); }
 
         async function genereazaContractImobiliarPDF() {
-            if (modLucruImobil === 'local' && (!hasDrawnP || !hasDrawnC)) { arataNotificare("❌ Atât Proprietarul cât și Chiriașul trebuie să semneze!", true); return; }
-            if (modLucruImobil === 'remote' && !hasDrawnPR) { arataNotificare("❌ Trebuie să semnați ca proprietar!", true); return; }
-            if (!profilCurent) { arataNotificare("⚠️ Vă rugăm să vă autentificați în cont.", true); deschideModalAuth('logare'); return; }
+            if (modLucruImobil === 'local' && (!hasDrawnP || !hasDrawnC)) {
+                arataNotificare("❌ Atât Proprietarul cât și Chiriașul trebuie să semneze pe ecran!", true);
+                return;
+            }
+            if (modLucruImobil === 'remote' && !hasDrawnPR) {
+                arataNotificare("❌ Trebuie să semnați ca proprietar înainte de generare!", true);
+                return;
+            }
+
+            if (!profilCurent) {
+                arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
+                deschideModalAuth('logare');
+                return;
+            }
 
             arataNotificare("Se generează contractul imobiliar complet și detaliat...");
             try {
@@ -1588,20 +1390,29 @@
                 };
 
                 const deseneazaTitluSectiune = (text) => {
-                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    if (y < 80) { 
+                        deseneazaFooter();
+                        page = pdfDoc.addPage([595.28, 841.89]); 
+                        y = 780; 
+                    }
                     page.drawText(text, { x: 45, y, size: 8.5, font: fontBold });
                     y -= 13;
                 };
 
                 const deseneazaParagraf = (text) => {
-                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    if (y < 80) { 
+                        deseneazaFooter();
+                        page = pdfDoc.addPage([595.28, 841.89]); 
+                        y = 780; 
+                    }
                     page.drawText(text, { x: 45, y, size: 7, font });
                     y -= 11;
                 };
 
                 const titluText = "CONTRACT DE INCHIRIERE LOCUINTA";
                 const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
-                page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 12, font: fontBold });
+                const centerX = (595.28 - textWidth) / 2;
+                page.drawText(titluText, { x: centerX, y, size: 12, font: fontBold });
                 y -= 20;
 
                 deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
@@ -1625,24 +1436,54 @@
 
                 deseneazaTitluSectiune("ARTICOLUL 3: DURATA CONTRACTULUI");
                 deseneazaParagraf(`3.1. Prezentul contract se incheie pe o perioada de ${curataDiacritice(document.getElementById('imobilDurata').value || '12 LUNI')}, incepand cu data de ${document.getElementById('imobilDataStart').value || '01.09.2026'}.`);
+                deseneazaParagraf(`3.2. La expirarea termenului, contractul poate fi prelungit prin acordul scris al ambelor parti.`);
                 y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 4: CHIRIA, GARANTIA SI MODALITATEA DE PLATA");
                 deseneazaParagraf(`4.1. Chiria lunara stabilita este in cuantum de ${curataDiacritice(document.getElementById('imobilChirie').value)}, achitata in avans pana la data de 5 a fiecarei luni.`);
-                deseneazaParagraf(`4.2. Cu titlu de garantie, Locatarul achita la semnare suma de ${curataDiacritice(document.getElementById('imobilGarantie').value || document.getElementById('imobilChirie').value)}.`);
+                deseneazaParagraf(`4.2. Cu titlu de garantie, Locatarul achita la semnare suma de ${curataDiacritice(document.getElementById('imobilGarantie').value || document.getElementById('imobilChirie').value)}, destinata acoperirii daunelor sau utilitatilor neachitate.`);
+                deseneazaParagraf(`4.3. Garantia se restituie in termen de cel mult 7 zile calendaristice de la predarea imobilului si achitarea datoriilor.`);
                 y -= 4;
 
                 deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIIle PARTILOR");
-                deseneazaParagraf(`5.1. Locatorul garanteaza linistita folosinta a imobilului. Locatarul se obliga sa achite utilitatile la termen.`);
+                deseneazaParagraf(`5.1. Locatorul garanteaza linistita folosinta a imobilului si nu poate interveni in spatiu fara notificare prealabila.`);
+                deseneazaParagraf(`5.2. Locatarul se obliga sa achite la termen chiria, cotele de intretinere, consumul de energie, gaze si apa pe baza contoarelor.`);
+                deseneazaParagraf(`5.3. Subinchirierea totala sau partiala catre terti, precum si desfasurarea de activitati comerciale sunt strict interzise.`);
+                deseneazaParagraf(`5.4. Reparatiile capitale cad in sarcina Locatorului, in timp ce reparatiile curente si intretinerea locuintei revin Locatarului.`);
                 y -= 4;
 
-                deseneazaTitluSectiune("ARTICOLUL 6: INCETAREA SI LITIGIILE");
-                deseneazaParagraf(`6.1. Contractul poate fi denuntat cu preaviz de 60 de zile. Litigiile se solutioneaza amiabil sau in instanta.`);
+                deseneazaTitluSectiune("ARTICOLUL 6: REGULI SPECIALE (ANIMALE DE COMPANIE SI FUMAT)");
+                deseneazaParagraf(`6.1. Detinerea de animale de companie in imobil este permisa doar cu acordul prealabil scris al Locatorului.`);
+                deseneazaParagraf(`6.2. Fumatul in interiorul imobilului este strict interzis, eventualele daune sau mirosuri persistente fiind suportate integral de Locatar.`);
+                y -= 4;
+
+                deseneazaTitluSectiune("ARTICOLUL 7: MODIFICARI STRUCTURALE SI INSPECTIA IMOBILULUI");
+                deseneazaParagraf(`7.1. Locatarul nu poate efectua modificari structurale, zugraveli majore sau interventii la instalatii fara acordul scris al Locatorului.`);
+                deseneazaParagraf(`7.2. Locatorul are dreptul de a inspecta starea imobilului cu o notificare prealabila de minim 48 de ore adresata Locatarului.`);
+                y -= 4;
+
+                deseneazaTitluSectiune("ARTICOLUL 8: INCETAREA SI REZILIEREA ANTICIPATA");
+                deseneazaParagraf(`8.1. Prezentul contract poate fi denuntat unilateral de oricare dintre parti, cu un preaviz scris de minim 60 de zile.`);
+                deseneazaParagraf(`8.2. Nerespectarea obligatiilor contractuale de catre una dintre parti atrage rezilierea de plin drept si plata de daune-interese.`);
+                y -= 4;
+
+                deseneazaTitluSectiune("ARTICOLUL 9: FORTA MAJORA SI LITIGII");
+                deseneazaParagraf(`9.1. Forta majora exonereaza de raspundere partea care o invoca, in conditiile legii.`);
+                deseneazaParagraf(`9.2. Litigiile decurgand din acest contract se vor solutiona pe cale amiabila sau, in caz de esec, de instantele judecatoresti competente.`);
+                y -= 4;
+
+                deseneazaTitluSectiune("ARTICOLUL 10: DISPOZITII FINALE SI FISCALE (ANAF)");
+                deseneazaParagraf(`10.1. Prezentul contract constituie titlu executoriu conform dispozitiilor Codului de Procedura Civila.`);
+                deseneazaParagraf(`10.2. Locatorul are obligatia legala de inregistrare a contractului la organul fiscal competent (ANAF) în termen de 30 zile.`);
                 y -= 15;
 
-                if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                if (y < 160) { 
+                    deseneazaFooter();
+                    page = pdfDoc.addPage([595.28, 841.89]); 
+                    y = 780; 
+                }
 
-                page.drawText(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`, { x: 45, y, size: 7.5, font: fontBold });
+                page.drawText(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale, conform Codului Civil.`, { x: 45, y, size: 7.5, font: fontBold });
                 y -= 22;
                 
                 deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
