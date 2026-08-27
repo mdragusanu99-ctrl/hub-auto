@@ -363,6 +363,7 @@ function deschideMeniuPrincipal() {
     const progress = document.getElementById('progressBarContainer');
     const banner = document.getElementById('stepsCompletedBanner');
     const modeSelector = document.getElementById('modeSelectorContainer');
+    const demisieSelector = document.getElementById('demisieSelectorContainer');
     const dashView = document.getElementById('dashboardView');
     const mainMenu = document.getElementById('mainMenuContainer');
     const roleBanner = document.getElementById('roleBanner');
@@ -370,6 +371,7 @@ function deschideMeniuPrincipal() {
     if (progress) progress.style.display = 'none';
     if (banner) banner.style.display = 'none';
     if (modeSelector) modeSelector.style.display = 'none';
+    if (demisieSelector) demisieSelector.style.display = 'none';
     if (dashView) dashView.style.display = 'none';
     if (mainMenu) mainMenu.style.display = 'block';
     if (roleBanner) roleBanner.style.display = 'none';
@@ -381,6 +383,7 @@ function selecteazaCategorie(cat) {
     const mainMenu = document.getElementById('mainMenuContainer');
     const dashView = document.getElementById('dashboardView');
     const modeSelector = document.getElementById('modeSelectorContainer');
+    const demisieSelector = document.getElementById('demisieSelectorContainer');
     const modTitle = document.getElementById('modSelectorTitle');
     const formAuto1 = document.getElementById('formAutoStep1');
     const formImob1 = document.getElementById('formImobiliareStep1');
@@ -397,6 +400,7 @@ function selecteazaCategorie(cat) {
         if (formDemisie1) formDemisie1.style.display = 'none';
         if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Vânzătorului";
         if (modeSelector) modeSelector.style.display = 'block';
+        if (demisieSelector) demisieSelector.style.display = 'none';
     } else if (cat === 'imobiliare') {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Imobiliar cu Inventar";
         if (formAuto1) formAuto1.style.display = 'none';
@@ -404,17 +408,37 @@ function selecteazaCategorie(cat) {
         if (formDemisie1) formDemisie1.style.display = 'none';
         if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Părților & Imobilului";
         if (modeSelector) modeSelector.style.display = 'block';
+        if (demisieSelector) demisieSelector.style.display = 'none';
     } else if (cat === 'demisie') {
         if (formAuto1) formAuto1.style.display = 'none';
         if (formImob1) formImob1.style.display = 'none';
-        if (formDemisie1) formDemisie1.style.display = 'grid';
-        if (titleStep1) titleStep1.innerText = "Cerere de Demisie (Conform Codului Muncii)";
         if (modeSelector) modeSelector.style.display = 'none';
-        
-        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-        document.getElementById('step1').style.display = 'block';
-        document.getElementById('step1').classList.add('active');
+        if (demisieSelector) demisieSelector.style.display = 'block'; // Deschidem meniul de selecție simplă vs detaliată!
     }
+}
+
+function selecteazaTipDemisieSiPorneste(tip) {
+    const demisieSelector = document.getElementById('demisieSelectorContainer');
+    const formDemisie1 = document.getElementById('formDemisieStep1');
+    const titleStep1 = document.getElementById('titleStep1');
+    const headerTitle = document.getElementById('demisieFormHeaderTitle');
+    const formatInput = document.getElementById('demisTipFormat');
+
+    if (demisieSelector) demisieSelector.style.display = 'none';
+    if (formDemisie1) formDemisie1.style.display = 'grid';
+    if (formatInput) formatInput.value = tip;
+
+    if (tip === 'simpla') {
+        if (titleStep1) titleStep1.innerText = "Cerere de Demisie Simplă și Rapidă";
+        if (headerTitle) headerTitle.innerText = "Date Cerere Simplă (Preaviz & Salariat)";
+    } else {
+        if (titleStep1) titleStep1.innerText = "Cerere de Demisie Detaliată & Juridică";
+        if (headerTitle) headerTitle.innerText = "Date Cerere Detaliată (Cu Drepturi & Vechime)";
+    }
+
+    document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+    document.getElementById('step1').style.display = 'block';
+    document.getElementById('step1').classList.add('active');
 }
 
 const elementeFormular = [
