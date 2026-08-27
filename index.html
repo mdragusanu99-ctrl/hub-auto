@@ -468,7 +468,7 @@
                     <div><label>E-mail</label><input type="text" id="seller_email" placeholder="ex: email@exemplu.ro" style="text-transform: none;"></div>
                 </div>
                 <div style="margin-top: 30px;">
-                    <button class="btn btn-primary" onclick="valideazaPasAuto(1)">Înainte ➔</button>
+                    <button class="btn btn-primary" onclick="nextStep(1)">Înainte ➔</button>
                 </div>
             </div>
 
@@ -489,7 +489,7 @@
                 </div>
                 <div style="margin-top: 30px; display: flex; gap: 12px;" id="btnGroupStep2">
                     <button class="btn btn-secondary" onclick="prevStep(2)">⬅ Înapoi</button>
-                    <button class="btn btn-primary" onclick="valideazaPasAuto(2)">Înainte ➔</button>
+                    <button class="btn btn-primary" onclick="nextStep(2)">Înainte ➔</button>
                 </div>
             </div>
 
@@ -508,17 +508,20 @@
                 </div>
                 <div style="margin-top: 30px; display: flex; gap: 12px;">
                     <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
-                    <button class="btn btn-primary" onclick="valideazaPasAuto(3)">Finalizare ➔</button>
+                    <button class="btn btn-primary" onclick="nextStep(3)">Finalizare ➔</button>
                 </div>
             </div>
 
             <!-- STEP 4: FINALIZARE AUTO -->
             <div class="step-content" id="step4">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Pasul 4: Finalizare Contract Auto ITL 054</div>
-                <p id="step4Desc" style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Sistemul a validat datele. Apăsați butonul de mai jos pentru a genera contractul oficial complet.</p>
+                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Pasul 4: Finalizare Contract Auto</div>
+                <p id="step4Desc" style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Sistemul este pregătit pentru generarea documentului oficial.</p>
                 
                 <div id="localActions">
-                    <button class="btn btn-success" onclick="genereazaContractAutoPDF()">📥 Generează & Descarcă Contract Auto Oficial PDF</button>
+                    <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706);" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cumpărător (Mod Distanță)</button>
+                </div>
+                <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
+                    <button class="btn btn-success" onclick="arataNotificare('Contract auto disponibil.')">📥 Descarcă Contractul Auto Oficial PDF</button>
                 </div>
                 <div style="margin-top: 20px;" id="btnGroupBackFinal">
                     <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button>
@@ -907,11 +910,13 @@
             });
         }
 
+        // 1. Redescărcare reală din arhivă
         function descarcaDinArhiva(index) {
             if (!profilCurent || !profilCurent.arhivaContracte || !profilCurent.arhivaContracte[index]) return;
             const item = profilCurent.arhivaContracte[index];
             const base64Data = item.pdfData;
             
+            // Reconstituire fișier din Base64
             const byteCharacters = atob(base64Data);
             const byteNumbers = new Array(byteCharacters.length);
             for (let i = 0; i < byteCharacters.length; i++) {
@@ -933,6 +938,7 @@
         function salveazaInArhivaprivata(item, pdfBytes) {
             if (!profilCurent) return true;
             
+            // Conversie PDF bytes în Base64 pentru stocare sigură în localStorage
             let binary = '';
             const bytes = new Uint8Array(pdfBytes);
             for (let i = 0; i < bytes.byteLength; i++) {
@@ -1020,6 +1026,7 @@
                 .replace(/Ț/g, 'T').replace(/Ţ/g, 'T');
         };
 
+        // 2. Validare Vizuală Dinamică cu Chenar Roșu
         function marcheazaEroreInput(elementId) {
             const el = document.getElementById(elementId);
             if (el) {
@@ -1029,116 +1036,27 @@
             }
         }
 
-        /* VALIDARE PASI AUTO CU CHENAR ROȘU */
-        function valideazaPasAuto(pas) {
-            if (pas === 1) {
-                const nume = document.getElementById('sellerName');
-                const cnp = document.getElementById('seller_ci_cnp');
-                if (!nume.value.trim()) { marcheazaEroreInput('sellerName'); arataNotificare("❌ Introduceți numele vânzătorului!", true); return; }
-                if (cnp.value.trim().length !== 13) { marcheazaEroreInput('seller_ci_cnp'); arataNotificare("❌ CNP vânzător invalid (13 cifre)!", true); return; }
-            } else if (pas === 2) {
-                const nume = document.getElementById('buyerName');
-                const cnp = document.getElementById('buyerCNP');
-                if (!nume.value.trim()) { marcheazaEroreInput('buyerName'); arataNotificare("❌ Introduceți numele cumpărătorului!", true); return; }
-                if (cnp.value.trim().length !== 13) { marcheazaEroreInput('buyerCNP'); arataNotificare("❌ CNP cumpărător invalid (13 cifre)!", true); return; }
-            }
-            nextStep(pas);
-        }
-
-        /* GENERARE CONTRACT AUTO CU SALVARE ÎN ARHIVĂ ȘI RESETARE */
-        async function genereazaContractAutoPDF() {
-            if (!profilCurent) {
-                arataNotificare("⚠️ Vă rugăm să vă autentificați în cont pentru a genera documentul.", true);
-                deschideModalAuth('logare');
-                return;
-            }
-
-            arataNotificare("Se generează contractul auto oficial ITL 054...");
-            try {
-                const { PDFDocument, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 780;
-
-                const deseneazaFooter = () => {
-                    page.drawText("Generat prin ActPeLoc.ro — Contract de vânzare-cumpărare auto oficial ITL 054", { 
-                        x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
-                    });
-                };
-
-                const deseneazaTitlu = (text) => {
-                    page.drawText(curataDiacritice(text), { x: 45, y, size: 10, font: fontBold });
-                    y -= 16;
-                };
-
-                const deseneazaRand = (label, valoare) => {
-                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(curataDiacritice(`${label}: ${valoare || '-'}`), { x: 45, y, size: 8.5, font });
-                    y -= 14;
-                };
-
-                const titluText = "CONTRACT DE VANZARE-CUMPĂRARE PENTRU MIJLOACE DE TRANSPORT";
-                const textWidth = fontBold.widthOfTextAtSize(titluText, 10);
-                page.drawText(titluText, { x: (595.28 - textWidth) / 2, y, size: 10, font: fontBold });
-                y -= 30;
-
-                deseneazaTitlu("1. DATE DESPRE VÂNZĂTOR");
-                deseneazaRand("Nume / Denumire", document.getElementById('sellerName').value);
-                deseneazaRand("Domiciliu / Sediu", `${document.getElementById('sellerCity').value}, Jud. ${document.getElementById('sellerCounty').value}, Str. ${document.getElementById('sellerStreet').value} Nr. ${document.getElementById('sellerStreetNo').value}`);
-                deseneazaRand("Act Identitate", `Seria ${document.getElementById('seller_ci_serie').value} Nr. ${document.getElementById('seller_ci_number').value} | CNP/CIF: ${document.getElementById('seller_ci_cnp').value}`);
-                y -= 10;
-
-                deseneazaTitlu("2. DATE DESPRE CUMPĂRĂTOR");
-                deseneazaRand("Nume / Denumire", document.getElementById('buyerName').value);
-                deseneazaRand("Domiciliu / Sediu", `${document.getElementById('buyer_city').value}, Jud. ${document.getElementById('buyer_judet').value}, Str. ${document.getElementById('buyerStreet').value} Nr. ${document.getElementById('buyerStreetNo').value}`);
-                deseneazaRand("Act Identitate", `CI: ${document.getElementById('buyerCISeries').value} | CNP/CIF: ${document.getElementById('buyerCNP').value}`);
-                y -= 10;
-
-                deseneazaTitlu("3. DATE DESPRE VEHICUL");
-                deseneazaRand("Marca si Tip", `${document.getElementById('make').value} ${document.getElementById('type').value}`);
-                deseneazaRand("Numar de Identificare (VIN)", document.getElementById('chassisSeries').value);
-                deseneazaRand("Serie Motor / Capacitate", `${document.getElementById('motorSeries').value} / ${document.getElementById('cilCapacity').value} cmc`);
-                deseneazaRand("Numar de Inmatriculare", document.getElementById('regNumber').value);
-                y -= 10;
-
-                deseneazaTitlu("4. PREȚUL ÎNSTRĂINĂRII");
-                deseneazaRand("Pret in cifre si litere", `${document.getElementById('figurePrice').value} (${document.getElementById('lettersPrice').value})`);
-                y -= 20;
-
-                page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`), { x: 45, y, size: 9, font: fontBold });
-                
-                deseneazaFooter();
-
-                const bytes = await pdfDoc.save();
-
-                salveazaInArhivaprivata({ 
-                    idAct: 'AUTO-' + Math.floor(1000 + Math.random()*9000), 
-                    detalii: 'Contract Auto ITL 054 - ' + curataDiacritice(document.getElementById('make').value) 
-                }, bytes);
-
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url; a.download = "CONTRACT_AUTO_ITL054.pdf";
-                a.click();
-
-                arataNotificare("✅ Contract Auto generat și salvat în arhivă!");
-                deschideMeniuPrincipal();
-            } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
-        }
-
         /* LOGICĂ CERERE DE DEMISIE */
         function valideazaSiTreciLaSemnaturaDemisie() {
             const numeEl = document.getElementById('demisieAngajatNume');
             const cnpEl = document.getElementById('demisieAngajatCnp');
             const functieEl = document.getElementById('demisieAngajatFunctie');
 
-            if (!numeEl.value.trim()) { arataNotificare("❌ Introduceți numele angajatului!", true); marcheazaEroreInput('demisieAngajatNume'); return; }
-            if (cnpEl.value.trim().length !== 13) { arataNotificare("❌ CNP-ul angajatului trebuie să aibă exact 13 cifre!", true); marcheazaEroreInput('demisieAngajatCnp'); return; }
-            if (!functieEl.value.trim()) { arataNotificare("❌ Introduceți funcția angajatului!", true); marcheazaEroreInput('demisieAngajatFunctie'); return; }
+            if (!numeEl.value.trim()) {
+                arataNotificare("❌ Introduceți numele angajatului!", true);
+                marcheazaEroreInput('demisieAngajatNume');
+                return;
+            }
+            if (cnpEl.value.trim().length !== 13) {
+                arataNotificare("❌ CNP-ul angajatului trebuie să aibă exact 13 cifre!", true);
+                marcheazaEroreInput('demisieAngajatCnp');
+                return;
+            }
+            if (!functieEl.value.trim()) {
+                arataNotificare("❌ Introduceți funcția angajatului!", true);
+                marcheazaEroreInput('demisieAngajatFunctie');
+                return;
+            }
 
             document.getElementById('demisieStep1').classList.remove('active');
             document.getElementById('demisieStep2').classList.add('active');
@@ -1261,6 +1179,7 @@
 
                 const bytes = await pdfDoc.save();
                 
+                // Salvare în arhivă cu tot cu bytes
                 salveazaInArhivaprivata({ 
                     idAct: 'DEM-' + Math.floor(1000 + Math.random()*9000), 
                     detalii: 'Cerere Demisie Oficială - ' + curataDiacritice(document.getElementById('demisieAngajatNume').value) 
@@ -1273,11 +1192,10 @@
                 a.click();
 
                 arataNotificare("✅ Cerere de demisie generată și salvată în arhivă!");
-                deschideMeniuPrincipal();
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
 
-        /* VALIDARE FORMULAR IMOBILIAR */
+        /* VALIDARE INTELIGENTĂ FORMULAR IMOBILIAR */
         function valideazaSiTreciLaSemnaturaImobil() {
             const propNume = document.getElementById('proprietarNume');
             const propCnp = document.getElementById('proprietarCnp');
@@ -1289,11 +1207,11 @@
             const imobilChirie = document.getElementById('imobilChirie');
 
             if (!propNume.value.trim()) { marcheazaEroreInput('proprietarNume'); arataNotificare("❌ Introduceți numele proprietarului!", true); return; }
-            if (propCnp.value.trim().length !== 13) { marcheazaEroreInput('proprietarCnp'); arataNotificare("❌ CNP Proprietar invalid (13 cifre)!", true); return; }
+            if (propCnp.value.trim().length !== 13) { marcheazaEroreInput('proprietarCnp'); arataNotificare("❌ CNP Proprietar invalid (13 cifre necesare)!", true); return; }
             if (!propAdresa.value.trim()) { marcheazaEroreInput('proprietarAdresa'); arataNotificare("❌ Introduceți adresa proprietarului!", true); return; }
             
             if (!chirNume.value.trim()) { marcheazaEroreInput('chiriasNume'); arataNotificare("❌ Introduceți numele chiriașului!", true); return; }
-            if (chirCnp.value.trim().length !== 13) { marcheazaEroreInput('chiriasCnp'); arataNotificare("❌ CNP Chiriaș invalid (13 cifre)!", true); return; }
+            if (chirCnp.value.trim().length !== 13) { marcheazaEroreInput('chiriasCnp'); arataNotificare("❌ CNP Chiriaș invalid (13 cifre necesare)!", true); return; }
             if (!imobilAdresa.value.trim()) { marcheazaEroreInput('imobilAdresa'); arataNotificare("❌ Introduceți adresa imobilului!", true); return; }
             if (!imobilChirie.value.trim()) { marcheazaEroreInput('imobilChirie'); arataNotificare("❌ Introduceți valoarea chiriei!", true); return; }
 
@@ -1520,7 +1438,6 @@
                 a.click();
 
                 arataNotificare("✅ Contract imobiliar generat și salvat în arhivă!");
-                deschideMeniuPrincipal();
             } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
         }
 
