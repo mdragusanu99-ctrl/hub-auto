@@ -381,7 +381,7 @@ function selecteazaCategorie(cat) {
     const modTitle = document.getElementById('modSelectorTitle');
     const formAuto1 = document.getElementById('formAutoStep1');
     const formImob1 = document.getElementById('formImobiliareStep1');
-    const formAuto2 = document.getElementById('formAutoStep2');
+    const titleStep1 = document.getElementById('titleStep1');
 
     if (mainMenu) mainMenu.style.display = 'none';
     if (dashView) dashView.style.display = 'none';
@@ -390,13 +390,13 @@ function selecteazaCategorie(cat) {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Auto ITL 054";
         if (formAuto1) formAuto1.style.display = 'grid';
         if (formImob1) formImob1.style.display = 'none';
-        if (formAuto2) formAuto2.style.display = 'grid';
+        if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Vânzătorului";
         if (modeSelector) modeSelector.style.display = 'block';
     } else if (cat === 'imobiliare') {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Imobiliar cu Inventar";
         if (formAuto1) formAuto1.style.display = 'none';
         if (formImob1) formImob1.style.display = 'grid';
-        if (formAuto2) formAuto2.style.display = 'none';
+        if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Părților & Imobilului";
         if (modeSelector) modeSelector.style.display = 'block';
     }
 }
@@ -407,7 +407,7 @@ const elementeFormular = [
     'sellerRepresentant', 'sellerQuality', 'reprCISeries', 'reprCINumber', 'reprCNP', 'reprPhone', 'reprEmail',
     'buyerName', 'buyer_judet', 'buyerPostalCode', 'buyer_city', 'buyer_sector', 'buyerStreet', 'buyerStreetNo', 'buyerBlock', 'buyerBuilding', 'buyerFloor', 'buyerApartment', 'buyerCISeries', 'buyerCINumber', 'buyerCNP', 'buyerPhone', 'buyerEmail',
     'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredActType', 'acquiredActDetails', 'figurePrice', 'lettersPrice',
-    'proprietarNume', 'proprietarCnp', 'proprietarAct', 'proprietarAdresa', 'chiriasNume', 'chiriasCnp', 'chiriasAct', 'imobilAdresa', 'imobilInventar', 'imobilDurata', 'imobilDataStart', 'imobilChirie', 'imobilGarantie'
+    'proprietarNume', 'proprietarCnp', 'proprietarAct', 'chiriasNume', 'chiriasCnp', 'chiriasAct', 'imobilAdresa', 'imobilInventar', 'imobilDurata', 'imobilDataStart', 'imobilChirie', 'imobilGarantie'
 ];
 
 function initAutoSave() {
@@ -531,6 +531,7 @@ function selecteazaModSiPorneste(mod) {
     const localActions = document.getElementById('localActions');
     const waitingContainer = document.getElementById('waitingAnimationContainer');
     const finalDownload = document.getElementById('finalDownloadContainer');
+    const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
     
     if (tipContractCurent === 'imobiliare') {
         if(p2) p2.style.display = 'none';
@@ -539,7 +540,8 @@ function selecteazaModSiPorneste(mod) {
         if(localActions) localActions.style.display = 'none';
         if(waitingContainer) waitingContainer.style.display = 'none';
         if(finalDownload) finalDownload.style.display = 'block';
-        if(step4Desc) step4Desc.innerText = "Toate datele imobilului și chiriașului au fost completate. Generați contractul.";
+        if(imobSemnaturi) imobSemnaturi.style.display = 'block';
+        if(step4Desc) step4Desc.innerText = "Toate datele imobilului și chiriașului au fost completate. Semnați mai jos și generați contractul.";
     } else if (mod === 'local') {
         if(p2) p2.style.display = 'flex';
         if(p3) p3.innerText = '3';
@@ -548,6 +550,7 @@ function selecteazaModSiPorneste(mod) {
         if(localActions) localActions.style.display = 'none';
         if(waitingContainer) waitingContainer.style.display = 'none';
         if(finalDownload) finalDownload.style.display = 'block';
+        if(imobSemnaturi) imobSemnaturi.style.display = 'none';
         if(step4Desc) step4Desc.innerText = "Tranzacție locală pregătită. Confirmați pentru descărcare.";
     } else {
         if(p2) p2.style.display = 'none';
@@ -557,6 +560,7 @@ function selecteazaModSiPorneste(mod) {
         if(localActions) localActions.style.display = 'block';
         if(waitingContainer) waitingContainer.style.display = 'none';
         if(finalDownload) finalDownload.style.display = 'none';
+        if(imobSemnaturi) imobSemnaturi.style.display = 'none';
         if(step4Desc) step4Desc.innerText = "Generați linkul securizat pentru a-l trimite cumpărătorului.";
     }
 
@@ -603,15 +607,17 @@ function nextStep(step) {
             const localActions = document.getElementById('localActions');
             const waitingContainer = document.getElementById('waitingAnimationContainer');
             const finalDownload = document.getElementById('finalDownloadContainer');
+            const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
             const btnDescarca = document.getElementById('btnDescarcaOficial');
 
             if (step1) step1.classList.remove('active');
             if (step4) step4.classList.add('active');
             if (titleStep4) titleStep4.innerText = "Pasul 2: Semnături & Finalizare Contract Imobiliar";
-            if (step4Desc) step4Desc.innerText = "Toate datele proprietarului, chiriașului și imobilului au fost completate mai sus. Alegeți modul de semnare:";
+            if (step4Desc) step4Desc.innerText = "Toate datele proprietarului, chiriașului și imobilului au fost completate mai sus. Semnați mai jos:";
             if (localActions) localActions.style.display = 'none';
             if (waitingContainer) waitingContainer.style.display = 'none';
             if (finalDownload) finalDownload.style.display = 'block';
+            if (imobSemnaturi) imobSemnaturi.style.display = 'block';
             if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractImobiliarPDF()');
             currentStep = 4;
         }
@@ -634,11 +640,13 @@ function nextStep(step) {
             const localActions = document.getElementById('localActions');
             const waitingContainer = document.getElementById('waitingAnimationContainer');
             const finalDownload = document.getElementById('finalDownloadContainer');
+            const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
             const btnDescarca = document.getElementById('btnDescarcaOficial');
 
             if (localActions) localActions.style.display = 'none';
             if (waitingContainer) waitingContainer.style.display = 'none';
             if (finalDownload) finalDownload.style.display = 'block';
+            if (imobSemnaturi) imobSemnaturi.style.display = 'none';
             if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractOficialPDF()');
         }
     }
