@@ -521,9 +521,6 @@ function ruleazaDescarcareaFinala() {
         return;
     }
 
-    // AICI PE VIITOR SE VA INTEGRA GATEWAY-UL DE PLATĂ (Stripe / Netopia)
-    // Datorită separării logice, utilizatorul va efectua plata înainte de declanșarea funcției de mai jos.
-
     if (tipContractCurent === 'auto') {
         if (typeof genereazaContractOficialPDF === 'function') genereazaContractOficialPDF();
     } else if (tipContractCurent === 'imobiliare') {
