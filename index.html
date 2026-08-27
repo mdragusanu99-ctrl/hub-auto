@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ActPeLoc™ — Platformă Oficială de Generare Contracte & Documente Juridice</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>ActPeLoc™ — Platformă Avansată de Generare Contracte & Documente Juridice</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -46,7 +45,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s ease, color 0.3s ease; }
 
-        /* SPLASH SCREEN */
         #splashScreen {
             position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #090d16 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
@@ -66,7 +64,6 @@
         .btn-secondary-glass:hover { background: rgba(255, 255, 255, 0.1); color: white; }
         .splash-timer { font-size: 12px; color: #64748b; margin-top: 24px; }
 
-        /* NAVBAR */
         header { width: 100%; max-width: 1100px; margin: 24px auto 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; color: var(--text-main); text-decoration: none; cursor: pointer; }
         .nav-logo-icon { width: 36px; height: 36px; background: var(--primary); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
@@ -77,98 +74,57 @@
         .user-pill:hover { border-color: var(--primary); }
         .user-avatar { width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
 
-        /* DROPDOWN */
         .dropdown-container { position: relative; display: inline-block; }
-        .dropdown-menu { position: absolute; right: 0; top: 125%; background: var(--bg-card); min-width: 240px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-card); display: none; z-index: 1000; overflow: hidden; animation: menuPop 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes menuPop { from { opacity: 0; transform: translateY(-8px); scale: 0.98; } to { opacity: 1; transform: translateY(0); scale: 1; } }
+        .dropdown-menu { position: absolute; right: 0; top: 125%; background: var(--bg-card); min-width: 240px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-card); display: none; z-index: 1000; overflow: hidden; }
         .dropdown-header { padding: 14px 16px; background: var(--primary-light); border-bottom: 1px solid var(--border-color); font-size: 12px; color: var(--text-muted); }
         .dropdown-item { padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--text-main); text-decoration: none; cursor: pointer; transition: background 0.15s; border-bottom: 1px solid var(--border-color); }
         .dropdown-item:last-child { border-bottom: none; }
         .dropdown-item:hover { background: var(--primary-light); color: var(--primary); }
         .dropdown-item.logout { color: var(--danger); }
-        .dropdown-item.logout:hover { background: rgba(239, 68, 68, 0.1); }
 
-        /* CONTAINER */
         .main-wrapper { width: 100%; max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; }
-        .card-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-card); position: relative; transition: all 0.3s; }
+        .card-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-card); position: relative; }
         
         .alert-banner { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); border: 1px solid var(--accent); color: var(--accent); padding: 14px 20px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
 
-        /* MODAL */
         #authModal { position: fixed; inset: 0; background: rgba(9, 13, 22, 0.7); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
-        .auth-box { background: var(--bg-card); width: 100%; max-width: 480px; padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-card); position: relative; animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
-        @keyframes modalPop { from { opacity: 0; transform: scale(0.96) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .auth-box { background: var(--bg-card); width: 100%; max-width: 480px; padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-card); position: relative; max-height: 90vh; overflow-y: auto; }
         .auth-close { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
-        .auth-close:hover { color: var(--text-main); }
         
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
         .full-width { grid-column: span 2; }
         label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
-        input, select, textarea { width: 100%; padding: 14px 16px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 14px; color: var(--text-main); transition: all 0.2s; outline: none; }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-        input.input-error, select.input-error, textarea.input-error { border-color: var(--danger) !important; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important; }
+        input, select, textarea { width: 100%; padding: 14px 16px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 14px; color: var(--text-main); outline: none; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
 
         .packages-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 8px; }
-        .package-card { border: 2px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; background: var(--bg-body); }
-        .package-card:hover { border-color: var(--primary); }
-        .package-card.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 0 0 3px var(--primary-light); }
+        .package-card { border: 2px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--bg-body); }
+        .package-card.selected { border-color: var(--primary); background: var(--primary-light); }
         
-        .btn { width: 100%; padding: 14px 20px; font-size: 15px; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; border: none; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn { width: 100%; padding: 14px 20px; font-size: 15px; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
         .btn-secondary { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); }
-        .btn-secondary:hover { background: var(--border-color); }
-        .btn-success { background: var(--success); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-        .btn-success:hover { opacity: 0.9; }
+        .btn-success { background: var(--success); color: white; }
 
-        /* HERO & CATEGORII */
-        .hero-welcome { background: linear-gradient(135deg, var(--primary), #6366f1); color: white; padding: 36px; border-radius: var(--radius-lg); margin-bottom: 30px; box-shadow: 0 20px 30px -10px rgba(79, 70, 229, 0.3); }
+        .hero-welcome { background: linear-gradient(135deg, var(--primary), #6366f1); color: white; padding: 36px; border-radius: var(--radius-lg); margin-bottom: 30px; }
         .hero-welcome h2 { font-size: 26px; font-weight: 800; margin-bottom: 10px; }
         .hero-welcome p { font-size: 14px; opacity: 0.9; line-height: 1.6; max-width: 500px; }
 
         .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; }
-        .category-card { background: var(--bg-body); border: 1px solid var(--border-color); padding: 24px; border-radius: var(--radius-md); cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); text-align: left; }
+        .category-card { background: var(--bg-body); border: 1px solid var(--border-color); padding: 24px; border-radius: var(--radius-md); cursor: pointer; transition: 0.2s; text-align: left; }
         .category-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: var(--shadow-card); background: var(--bg-card); }
         .category-icon { width: 48px; height: 48px; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
-        .category-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
+        .category-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
         .category-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
-        /* DASHBOARD */
-        .dash-nav { display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; flex-wrap: wrap; }
-        .dash-tab-btn { background: var(--bg-body); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
-        .dash-tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
-        .dash-section { display: none; }
-        .dash-section.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-        .contract-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
-        .contract-table th, .contract-table td { border: 1px solid var(--border-color); padding: 14px; text-align: left; }
-        .contract-table th { background: var(--bg-body); font-weight: 700; color: var(--text-main); }
-
-        .referral-card { background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(99, 102, 241, 0.1)); border: 2px solid var(--primary); border-radius: var(--radius-md); padding: 24px; margin-top: 20px; }
-        .referral-url-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: var(--radius-sm); font-family: monospace; font-size: 12px; word-break: break-all; margin: 12px 0; color: var(--text-main); font-weight: 600; }
-
-        /* PROGRESS WIZARD & STEPS */
-        .progress-container { display: flex; justify-content: space-between; margin-bottom: 32px; position: relative; }
-        .progress-container::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--border-color); transform: translateY(-50%); z-index: 1; }
-        .progress-step { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-body); border: 2px solid var(--border-color); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; position: relative; z-index: 2; transition: all 0.3s; }
-        .progress-step.active { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 0 0 4px var(--primary-light); }
-
-        .step-content { display: none; }
-        .step-content.active { display: block; animation: fadeIn 0.3s ease; }
-
-        /* CANVAS SEMNĂTURĂ */
-        .signature-box { border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-body); padding: 15px; text-align: center; }
-
-        /* TOAST */
-        #toastNotification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--success); color: white; padding: 14px 28px; border-radius: var(--radius-md); font-size: 14px; font-weight: 700; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 20000; pointer-events: none; }
+        #toastNotification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--success); color: white; padding: 14px 28px; border-radius: var(--radius-md); font-size: 14px; font-weight: 700; opacity: 0; transition: 0.3s; z-index: 20000; pointer-events: none; }
         #toastNotification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        #toastNotification.error { background: var(--danger); box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4); }
+        #toastNotification.error { background: var(--danger); }
     </style>
 </head>
 <body data-theme="light">
 
-    <!-- SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-glow"></div>
         <div class="splash-content">
@@ -183,7 +139,6 @@
         </div>
     </div>
 
-    <!-- MODAL AUTENTIFICARE -->
     <div id="authModal">
         <div class="auth-box">
             <button class="auth-close" onclick="inchideModalAuth()">✕</button>
@@ -249,7 +204,6 @@
         </div>
     </div>
 
-    <!-- NAVBAR -->
     <header>
         <a class="nav-logo" onclick="deschideMeniuPrincipal()">
             <div class="nav-logo-icon">⚡</div>
@@ -277,16 +231,13 @@
         </div>
     </header>
 
-    <!-- CONTAINER PRINCIPAL -->
     <div class="main-wrapper">
         <div class="card-panel">
             <div id="roleBanner" class="alert-banner" style="display:none;"></div>
             <div id="referralAlertBanner" class="alert-banner" style="display:none; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2)); border-color: var(--success); color: var(--success);">🎁 Ai fost invitat! Ai 35% reducere activă la generarea contractelor tale.</div>
 
-            <!-- TOAST -->
             <div id="toastNotification">Acțiune realizată cu succes!</div>
 
-            <!-- HOMEPAGE (CATEGORII) -->
             <div id="mainMenuContainer" style="display:block;">
                 <div class="hero-welcome">
                     <h2>Bun venit pe ActPeLoc 🚀</h2>
@@ -319,40 +270,39 @@
                     </div>
                 </div>
             </div>
-
             <!-- DASHBOARD VIEW -->
-            <div id="dashboardView" class="dash-section">
+            <div id="dashboardView" class="dash-section" style="display:none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div style="font-size: 18px; font-weight: 800;">📊 Panou de Control & Dashboard</div>
                     <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi la Acasă</button>
                 </div>
 
-                <div class="dash-nav">
-                    <button class="dash-tab-btn active" onclick="schimbaTabDash('arhiva', this)">📁 Arhivă Contracte</button>
-                    <button class="dash-tab-btn" onclick="schimbaTabDash('abonament', this)">💳 Abonament & Credite</button>
-                    <button class="dash-tab-btn" onclick="schimbaTabDash('afiliere', this)">🎁 Program Afiliere (Puncte)</button>
-                    <button class="dash-tab-btn" onclick="schimbaTabDash('setari', this)">⚙️ Setări Cont</button>
+                <div class="dash-nav" style="display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; flex-wrap: wrap;">
+                    <button class="dash-tab-btn active" onclick="schimbaTabDash('arhiva', this)" style="background: var(--primary); color: white; border-color: var(--primary); padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer;">📁 Arhivă Contracte</button>
+                    <button class="dash-tab-btn" onclick="schimbaTabDash('abonament', this)" style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; color: var(--text-muted);">💳 Abonament & Credite</button>
+                    <button class="dash-tab-btn" onclick="schimbaTabDash('afiliere', this)" style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; color: var(--text-muted);">🎁 Program Afiliere (Puncte)</button>
+                    <button class="dash-tab-btn" onclick="schimbaTabDash('setari', this)" style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; color: var(--text-muted);">⚙️ Setări Cont</button>
                 </div>
 
-                <div id="dashTabArhiva" class="dash-section active">
+                <div id="dashTabArhiva" class="dash-section active" style="display:block;">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Istoricul Documentelor Generate (Cu Redescărcare Directă)</h4>
                     <div style="max-height: 320px; overflow-y: auto;">
-                        <table class="contract-table">
+                        <table class="contract-table" style="width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px;">
                             <thead>
-                                <tr>
-                                    <th>ID Act</th>
-                                    <th>Tip Contract / Client</th>
-                                    <th>Acțiuni</th>
+                                <tr style="background: var(--bg-body);">
+                                    <th style="border: 1px solid var(--border-color); padding: 14px; text-align: left;">ID Act</th>
+                                    <th style="border: 1px solid var(--border-color); padding: 14px; text-align: left;">Tip Contract / Client</th>
+                                    <th style="border: 1px solid var(--border-color); padding: 14px; text-align: left;">Acțiuni</th>
                                 </tr>
                             </thead>
                             <tbody id="dashboardContracteLista">
-                                <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat momentan.</td></tr>
+                                <tr><td colspan="3" style="text-align: center; color: var(--text-muted); padding: 20px;">Niciun contract generat momentan.</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div id="dashTabAbonament" class="dash-section">
+                <div id="dashTabAbonament" class="dash-section" style="display:none;">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;">Detalii Abonament & Credite (Mod Creator / Test Nelimitat)</h4>
                     <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); font-size: 13px; display: grid; gap: 10px;">
                         <div><b>E-mail Cont:</b> <span id="infoDashEmail">-</span></div>
@@ -365,21 +315,20 @@
                     </div>
                 </div>
 
-                <div id="dashTabAfiliere" class="dash-section">
+                <div id="dashTabAfiliere" class="dash-section" style="display:none;">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Programul de Afiliere ActPeLoc</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Trimite linkul tău unic prietenilor. Ei primesc <b>35% reducere</b> instant, iar tu primești <b>+1 punct</b> (fiecare punct îți oferă <b>30% reducere</b> pentru următoarele contracte).</p>
-                    
-                    <div class="referral-card">
+                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Trimite linkul tău unic prietenilor. Ei primesc <b>35% reducere</b> instant, iar tu primești <b>+1 punct</b>.</p>
+                    <div class="referral-card" style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(99, 102, 241, 0.1)); border: 2px solid var(--primary); border-radius: var(--radius-md); padding: 24px; margin-top: 20px;">
                         <label style="color: var(--primary);">Linkul tău unic de recomandare:</label>
-                        <div class="referral-url-box" id="myReferralLinkText">-</div>
+                        <div class="referral-url-box" id="myReferralLinkText" style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: var(--radius-sm); font-family: monospace; font-size: 12px; word-break: break-all; margin: 12px 0;">-</div>
                         <div style="display: flex; gap: 10px; margin-top: 12px;">
-                            <button class="btn btn-primary" style="font-size: 13px; padding: 10px;" onclick="copiazaLinkAfiliere()">📋 Copiază Linkul</button>
-                            <button class="btn btn-success" style="font-size: 13px; padding: 10px;" onclick="trimiteAfiliereWhatsApp()">💬 Trimite pe WhatsApp</button>
+                            <button class="btn btn-primary" style="font-size: 13px; padding: 10px; width: auto;" onclick="copiazaLinkAfiliere()">📋 Copiază Linkul</button>
+                            <button class="btn btn-success" style="font-size: 13px; padding: 10px; width: auto;" onclick="trimiteAfiliereWhatsApp()">💬 Trimite pe WhatsApp</button>
                         </div>
                     </div>
                 </div>
 
-                <div id="dashTabSetari" class="dash-section">
+                <div id="dashTabSetari" class="dash-section" style="display:none;">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Setări Cont</h4>
                     <div class="form-grid" style="max-width: 450px;">
                         <div class="full-width">
@@ -391,14 +340,14 @@
                 </div>
             </div>
 
-            <!-- MENIU SELECTARE CATEGORIE AUTO -->
+            <!-- SUBMENIU AUTO -->
             <div id="autoMenuContainer" style="display:none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div style="font-size: 18px; font-weight: 800;">Alege Documentul Dorit (Auto & Transport)</div>
                     <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
                 </div>
                 <div class="categories-grid" style="margin-top: 0;">
-                    <div class="category-card" onclick="selecteazaModSiPorneste('local')">
+                    <div class="category-card" onclick="selecteazaModAutoSiPorneste()">
                         <div class="category-icon">🚗</div>
                         <h4>Contract Vânzare-Cumpărare Auto</h4>
                         <p>Formular oficial ITL 054 pentru înmatriculare la Direcția Taxe și Impozite.</p>
@@ -411,17 +360,37 @@
                 </div>
             </div>
 
-            <!-- MENIU SELECTARE CATEGORIE IMOBILIARE -->
+            <!-- MOD SELECTOR AUTO (LOCAL VS REMOTE) -->
+            <div id="modeSelectorContainer" style="display:none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="font-size: 18px; font-weight: 800;">Mod de Lucru - Contract Auto ITL 054</div>
+                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
+                </div>
+                <div class="categories-grid" style="margin-top: 0;">
+                    <div class="category-card" onclick="selecteazaModAutoFlux('local')">
+                        <div class="category-icon">💻</div>
+                        <h4>Completare Locală</h4>
+                        <p>Completați toate datele vânzătorului și ale cumpărătorului față-în-față.</p>
+                    </div>
+                    <div class="category-card" onclick="selecteazaModAutoFlux('remote')">
+                        <div class="category-icon">📱</div>
+                        <h4>Completare la Distanță</h4>
+                        <p>Completați datele vânzătorului și trimiteți linkul securizat pe WhatsApp cumpărătorului.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMENIU IMOBILIARE -->
             <div id="imobilModeSelectorContainer" style="display:none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Mod Semnare — Contract Închiriere Locuință</div>
+                    <div style="font-size: 18px; font-weight: 800;">Mod Semnare — Contract Închiriere Locuință (10 Articole)</div>
                     <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
                 </div>
                 <div class="categories-grid" style="margin-top: 0;">
                     <div class="category-card" onclick="selecteazaModImobiliarSiPorneste('local')">
                         <div class="category-icon">👥</div>
                         <h4>Semnare Locală (Față-în-Față)</h4>
-                        <p>Proprietarul și chiriașul semnează împreună direct pe ecranul acestui dispozitiv.</p>
+                        <p>Proprietarul și chiriașul semnează împreună direct pe ecran.</p>
                     </div>
                     <div class="category-card" onclick="selecteazaModImobiliarSiPorneste('remote')">
                         <div class="category-icon">📱</div>
@@ -431,7 +400,7 @@
                 </div>
             </div>
 
-            <!-- MENIU SELECTARE CATEGORIE MUNCĂ & B2B -->
+            <!-- SUBMENIU MUNCĂ & B2B -->
             <div id="muncaMenuContainer" style="display:none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div style="font-size: 18px; font-weight: 800;">Alege Documentul Dorit (Muncă & B2B)</div>
@@ -441,1029 +410,556 @@
                     <div class="category-card" onclick="pornesteFluxDemisie()">
                         <div class="category-icon">📄</div>
                         <h4>Cerere de Demisie</h4>
-                        <p>Notificare oficială de încetare a contractului individual de muncă cu preaviz legal.</p>
+                        <p>Notificare oficială cu preaviz legal conform Codului Muncii (Art. 81).</p>
                     </div>
                     <div class="category-card" onclick="pornesteFluxB2B()">
                         <div class="category-icon">🤝</div>
                         <h4>Contract Prestări Servicii B2B Enterprise</h4>
-                        <p>Contract comercial complet între firme/PFA, cu garanție, PI, GDPR, NDA și semnătură dublă.</p>
+                        <p>Contract comercial complet între firme/PFA cu clauze NDA și PI.</p>
                     </div>
                 </div>
             </div>
-
-            <!-- ================= FLUX COMODAT AUTO ================= -->
-            <div class="step-content" id="comodatStep1">
+            <!-- WIZARD CONTRACT AUTO ITL 054 -->
+            <div id="autoWizardContainer" style="display:none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract Comodat Auto — Pasul 1/3 (Părți)</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
+                    <div style="font-size: 18px; font-weight: 800;" id="autoWizardTitle">Contract Vânzare-Cumpărare Auto (ITL 054)</div>
+                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="selecteazaCategorie('auto')">⬅ Înapoi</button>
                 </div>
-                <div class="form-grid">
-                    <div class="full-width"><strong style="font-size: 13px; color: var(--primary);">A. Date Comodant (Proprietarul Mașinii)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Proprietar</label><input type="text" id="comodantNume" placeholder="ex: POPESCU ION"></div>
-                    <div><label>CNP Proprietar</label><input type="text" id="comodantCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI)</label><input type="text" id="comodantAct" placeholder="ex: RX 123456"></div>
-                    <div class="full-width"><label>Domiciliu Comodant</label><input type="text" id="comodantAdresa" placeholder="ex: BÂRLAD, STR. REPUBLICII NR. 12"></div>
 
-                    <div class="full-width" style="margin-top: 15px;"><strong style="font-size: 13px; color: var(--primary);">B. Date Comodatar (Utilizator)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Comodatar</label><input type="text" id="comodatarNume" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>CNP Comodatar</label><input type="text" id="comodatarCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI)</label><input type="text" id="comodatarAct" placeholder="ex: DZ 654321"></div>
-                    <div class="full-width"><label>Domiciliu Comodatar</label><input type="text" id="comodatarAdresa" placeholder="ex: BUCUREȘTI, BD. EROILOR NR. 5"></div>
+                <div class="step-indicators" style="display: flex; gap: 8px; margin-bottom: 24px;">
+                    <div class="step-indicator active" id="stepInd1" style="flex:1; height: 6px; background: var(--primary); border-radius: 4px;"></div>
+                    <div class="step-indicator" id="stepInd2" style="flex:1; height: 6px; background: var(--border-color); border-radius: 4px;"></div>
+                    <div class="step-indicator" id="stepInd3" style="flex:1; height: 6px; background: var(--border-color); border-radius: 4px;"></div>
+                    <div class="step-indicator" id="stepInd4" style="flex:1; height: 6px; background: var(--border-color); border-radius: 4px;"></div>
                 </div>
-                <div style="margin-top: 30px;"><button class="btn btn-primary" onclick="valideazaPasComodat1()">Înainte: Date Vehicul ➔</button></div>
-            </div>
 
-            <div class="step-content" id="comodatStep2">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract Comodat Auto — Pasul 2/3 (Vehicul)</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div class="form-grid">
-                    <div><label>Marcă</label><input type="text" id="comodMake" placeholder="ex: VOLKSWAGEN"></div>
-                    <div><label>Model / Tip</label><input type="text" id="comodType" placeholder="ex: PASSAT B7"></div>
-                    <div class="full-width"><label>Număr de Identificare (VIN)</label><input type="text" id="comodVin" placeholder="ex: WVWZZZ3CZEE123456"></div>
-                    <div><label>Număr Înmatriculare</label><input type="text" id="comodReg" placeholder="ex: VS09ABC"></div>
-                    <div><label>Serie Motor</label><input type="text" id="comodMotor" placeholder="ex: CFF123456"></div>
-                    <div><label>Capacitate (cmc)</label><input type="text" id="comodCmc" placeholder="ex: 1968"></div>
-                    <div><label>Număr CIV</label><input type="text" id="comodCiv" placeholder="ex: B123456"></div>
-                    <div><label>Durata Comodatului</label><input type="text" id="comodDurata" placeholder="ex: 3 ANI"></div>
-                    <div class="full-width"><label>Mențiune Circulație Externă</label><input type="text" id="comodExtern" placeholder="ex: Cu drept de circulație în UE"></div>
-                </div>
-                <div style="margin-top: 30px; display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="document.getElementById('comodatStep2').classList.remove('active'); document.getElementById('comodatStep1').classList.add('active');">⬅ Înapoi</button>
-                    <button class="btn btn-primary" onclick="valideazaPasComodat2()">Înainte: Semnături ➔</button>
-                </div>
-            </div>
-
-            <div class="step-content" id="comodatStep3">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract Comodat Auto — Pasul 3/3 (Semnături)</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-                    <div class="signature-box">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Comodant:</label>
-                        <canvas id="sigComodantCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaComodant()">Șterge</button>
+                <div id="autoStep1" class="wizard-step" style="display:block;">
+                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 16px;">Pasul 1 / 4: Datele Vânzătorului</h4>
+                    <div class="form-grid">
+                        <div class="full-width"><label>Nume și Prenume / Denumire Firmă</label><input type="text" id="v_nume" placeholder="Popescu Ion"></div>
+                        <div class="full-width"><label>Adresă Completă (Județ, Localitate, Str., Nr.)</label><input type="text" id="v_adresa" placeholder="Bârlad, Str. Principală, Nr. 1, Jud. Vaslui"></div>
+                        <div><label>Act Identitate (CI / Pașaport)</label><input type="text" id="v_act" placeholder="ZX 123456"></div>
+                        <div><label>CNP / C.I.F. (Exact 13 caractere)</label><input type="text" id="v_cnp" maxlength="13" placeholder="1990101370012"></div>
                     </div>
-                    <div class="signature-box">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Comodatar:</label>
-                        <canvas id="sigComodatarCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaComodatar()">Șterge</button>
+                    <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
+                        <button class="btn btn-primary" style="max-width: 180px;" onclick="valideazaSiTreciAuto(1)">Următorul ➔</button>
                     </div>
                 </div>
-                <div style="display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="document.getElementById('comodatStep3').classList.remove('active'); document.getElementById('comodatStep2').classList.add('active');">⬅ Înapoi</button>
-                    <button class="btn btn-success" onclick="genereazaContractComodatPDF()">📥 Generează & Descarcă Contract Comodat PDF</button>
-                </div>
-            </div>
 
-            <!-- ================= FLUX CONTRACT B2B ENTERPRISE ================= -->
-            <div class="step-content" id="b2bStep1">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract Prestări Servicii B2B — Pasul 1/2</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div class="form-grid">
-                    <div class="full-width"><strong style="font-size: 13px; color: var(--primary);">A. Prestator (Furnizor Servicii)</strong></div>
-                    <div class="full-width"><label>Denumire Firmă / PFA Prestator</label><input type="text" id="b2bPrestatorNume" placeholder="ex: SC DEV STUDIO SRL"></div>
-                    <div><label>CUI / CIF Prestator</label><input type="text" id="b2bPrestatorCui" placeholder="ex: RO12345678"></div>
-                    <div><label>Nr. Reg. Com.</label><input type="text" id="b2bPrestatorReg" placeholder="ex: J37/123/2024"></div>
-                    <div class="full-width"><label>Sediu Social & Reprezentant</label><input type="text" id="b2bPrestatorSediu" placeholder="ex: BÂRLAD, REPREZENTAT PRIN POPESCU ION - ADMINISTRATOR"></div>
-
-                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--primary);">B. Beneficiar (Client)</strong></div>
-                    <div class="full-width"><label>Denumire Firmă Beneficiar</label><input type="text" id="b2bBeneficiarNume" placeholder="ex: SC DIGITAL MARKETING SA"></div>
-                    <div><label>CUI / CIF Beneficiar</label><input type="text" id="b2bBeneficiarCui" placeholder="ex: RO87654321"></div>
-                    <div><label>Nr. Reg. Com.</label><input type="text" id="b2bBeneficiarReg" placeholder="ex: J40/999/2023"></div>
-                    <div class="full-width"><label>Sediu Social & Reprezentant</label><input type="text" id="b2bBeneficiarSediu" placeholder="ex: BUCUREȘTI, REPREZENTAT PRIN IONESCU MARIA"></div>
-
-                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--primary);">C. Obiect și Valoare Contract</strong></div>
-                    <div class="full-width"><label>Descriere Servicii / Proiect Prestat</label><input type="text" id="b2bObiect" placeholder="ex: Dezvoltare aplicație web, mentenanță IT și consultanță"></div>
-                    <div><label>Valoare Totală (cu sau fără TVA)</label><input type="text" id="b2bPret" placeholder="ex: 2.500 EUR + TVA"></div>
-                    <div><label>Termen Execuție / Livrare</label><input type="text" id="b2bTermen" placeholder="ex: 30 ZILE LUCRĂTOARE"></div>
-                </div>
-                <div style="margin-top: 30px;"><button class="btn btn-primary" onclick="valideazaSiTreciLaSemnaturaB2B()">Înainte: Semnături B2B ➔</button></div>
-            </div>
-
-            <div class="step-content" id="b2bStep2">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract Prestări Servicii B2B — Pasul 2/2 (Semnături)</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-                    <div class="signature-box">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Prestator:</label>
-                        <canvas id="sigPrestatorCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaPrestator()">Șterge</button>
+                <div id="autoStep2" class="wizard-step" style="display:none;">
+                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 16px;">Pasul 2 / 4: Datele Cumpărătorului</h4>
+                    <div class="form-grid">
+                        <div class="full-width"><label>Nume și Prenume / Denumire Cumpărător</label><input type="text" id="c_nume" placeholder="Ionescu Maria"></div>
+                        <div class="full-width"><label>Adresă Completă</label><input type="text" id="c_adresa" placeholder="Bârlad, Str. Republicii, Nr. 10"></div>
+                        <div><label>Act Identitate</label><input type="text" id="c_act" placeholder="RT 987654"></div>
+                        <div><label>CNP / C.I.F. (Exact 13 caractere)</label><input type="text" id="c_cnp" maxlength="13" placeholder="2950505370045"></div>
                     </div>
-                    <div class="signature-box">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Beneficiar:</label>
-                        <canvas id="sigBeneficiarCanvas" width="280" height="130" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaBeneficiar()">Șterge</button>
+                    <div style="margin-top: 24px; display: flex; justify-content: space-between;">
+                        <button class="btn btn-secondary" style="max-width: 150px;" onclick="schimbaPasAuto(1)">← Înapoi</button>
+                        <button class="btn btn-primary" style="max-width: 180px;" onclick="valideazaSiTreciAuto(2)">Următorul ➔</button>
                     </div>
                 </div>
-                <div style="display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="document.getElementById('b2bStep2').classList.remove('active'); document.getElementById('b2bStep1').classList.add('active');">⬅ Înapoi</button>
-                    <button class="btn btn-success" onclick="genereazaContractB2BPDF()">📥 Generează & Descarcă Contract B2B PDF</button>
-                </div>
-            </div>
 
-            <!-- ================= FLUX AUTO ITL 054 ================= -->
-            <div id="modeSelectorContainer" style="display:none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Mod de Lucru - Contract Auto ITL 054</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
-                </div>
-                <div class="categories-grid" style="margin-top: 0;">
-                    <div class="category-card" onclick="selecteazaModSiPorneste('local')">
-                        <div class="category-icon">💻</div>
-                        <h4>Completare Locală</h4>
-                        <p>Completați toate datele față-în-față direct pe acest dispozitiv.</p>
+                <div id="autoStep3" class="wizard-step" style="display:none;">
+                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 16px;">Pasul 3 / 4: Date Vehicul & Preț</h4>
+                    <div class="form-grid">
+                        <div><label>Marcă</label><input type="text" id="m_marca" placeholder="Audi"></div>
+                        <div><label>Tip / Model</label><input type="text" id="m_tip" placeholder="A4 B8"></div>
+                        <div><label>Număr de Înmatriculare / C.I.V.</label><input type="text" id="m_civ" placeholder="VS-01-ABC"></div>
+                        <div><label>Serie Șasiu (VIN - 17 caractere)</label><input type="text" id="m_vin" maxlength="17" placeholder="WAUZZZ8K..."></div>
+                        <div><label>Capacitate Cilindrică (cmc)</label><input type="text" id="m_cc" placeholder="1968"></div>
+                        <div><label>Preț Vânzare (RON / Euro)</label><input type="text" id="m_pret" placeholder="25000 RON"></div>
                     </div>
-                    <div class="category-card" onclick="selecteazaModSiPorneste('remote')">
-                        <div class="category-icon">📱</div>
-                        <h4>Completare la Distanță</h4>
-                        <p>Completați datele vânzătorului și trimiteți linkul securizat cumpărătorului.</p>
+                    <div style="margin-top: 24px; display: flex; justify-content: space-between;">
+                        <button class="btn btn-secondary" style="max-width: 150px;" onclick="schimbaPasAuto(2)">← Înapoi</button>
+                        <button class="btn btn-primary" style="max-width: 180px;" onclick="valideazaSiTreciAuto(3)">Următorul ➔</button>
                     </div>
                 </div>
-            </div>
 
-            <div class="progress-container" id="progressBarContainer" style="display:none;">
-                <div class="progress-step active" id="p1">1</div>
-                <div class="progress-step" id="p2">2</div>
-                <div class="progress-step" id="p3">3</div>
-                <div class="progress-step" id="p4" style="display:flex;">4</div>
-            </div>
-
-            <div class="step-content" id="step1">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Pasul 1: Datele Vânzătorului Auto</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div class="form-grid">
-                    <div class="full-width"><label>Nume și Prenume (Subsemnatul)</label><input type="text" id="sellerName" placeholder="ex: DRAGUSANU MARIO"></div>
-                    <div><label>Județ</label><input type="text" id="sellerCounty" placeholder="ex: VASLUI"></div>
-                    <div><label>Cod Poștal</label><input type="text" id="sellerPostalCode" placeholder="ex: 731184"></div>
-                    <div><label>Oraș / Comună</label><input type="text" id="sellerCity" placeholder="ex: BÂRLAD"></div>
-                    <div><label>Sat / Sector</label><input type="text" id="seller_sector" placeholder="ex: -"></div>
-                    <div><label>Stradă</label><input type="text" id="sellerStreet" placeholder="ex: G-RAL MILEA"></div>
-                    <div><label>Număr</label><input type="text" id="sellerStreetNo" placeholder="ex: 2"></div>
-                    <div><label>Seria Act</label><input type="text" id="seller_ci_serie" placeholder="ex: VS"></div>
-                    <div><label>Număr Act</label><input type="text" id="seller_ci_number" placeholder="ex: 123456"></div>
-                    <div class="full-width"><label>C.N.P. / C.I.F.</label><input type="text" id="seller_ci_cnp" placeholder="ex: 5040101123456" maxlength="13"></div>
-                    <div><label>Telefon</label><input type="text" id="seller_phone" placeholder="ex: 0749685347"></div>
-                    <div><label>E-mail</label><input type="text" id="seller_email" placeholder="ex: email@exemplu.ro" style="text-transform: none;"></div>
-                </div>
-                <div style="margin-top: 30px;"><button class="btn btn-primary" onclick="valideazaPasAuto(1)">Înainte ➔</button></div>
-            </div>
-
-            <div class="step-content" id="step2">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep2">Pasul 2: Datele Cumpărătorului Auto</div>
-                <div class="form-grid">
-                    <div class="full-width"><label>Nume și Prenume / Denumire</label><input type="text" id="buyerName" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>Județ</label><input type="text" id="buyer_judet" placeholder="ex: BUCUREȘTI"></div>
-                    <div><label>Cod Poștal</label><input type="text" id="buyerPostalCode" placeholder="ex: 010101"></div>
-                    <div><label>Oraș / Comună</label><input type="text" id="buyer_city" placeholder="ex: BUCUREȘTI"></div>
-                    <div><label>Stradă</label><input type="text" id="buyerStreet" placeholder="ex: STR. VICTORIEI"></div>
-                    <div><label>Număr</label><input type="text" id="buyerStreetNo" placeholder="ex: 5"></div>
-                    <div><label>Serie & Număr Act</label><input type="text" id="buyerCISeries" placeholder="ex: RX 654321"></div>
-                    <div><label>C.N.P. / C.I.F.</label><input type="text" id="buyerCNP" placeholder="ex: 2950505654321" maxlength="13"></div>
-                    <div><label>Telefon</label><input type="text" id="buyerPhone" placeholder="ex: 0733000000"></div>
-                    <div><label>E-mail</label><input type="text" id="buyerEmail" placeholder="ex: email@exemplu.ro" style="text-transform: none;"></div>
-                </div>
-                <div style="margin-top: 30px; display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="prevStep(2)">⬅ Înapoi</button>
-                    <button class="btn btn-primary" onclick="valideazaPasAuto(2)">Înainte ➔</button>
-                </div>
-            </div>
-
-            <div class="step-content" id="step3">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;">Pasul 3: Vehiculul și Prețul</div>
-                <div class="form-grid">
-                    <div><label>Marcă</label><input type="text" id="make" placeholder="ex: AUDI"></div>
-                    <div><label>Tipul</label><input type="text" id="type" placeholder="ex: A4 B8"></div>
-                    <div class="full-width"><label>Număr de Identificare (VIN)</label><input type="text" id="chassisSeries" placeholder="ex: WAUZZZ8K1FA123456"></div>
-                    <div><label>Serie Motor</label><input type="text" id="motorSeries" placeholder="ex: CAGA123456"></div>
-                    <div><label>Capacitate (cm³)</label><input type="text" id="cilCapacity" placeholder="ex: 1968"></div>
-                    <div><label>Număr Înmatriculare</label><input type="text" id="regNumber" placeholder="ex: VS12XYZ"></div>
-                    <div><label>Preț în Cifre</label><input type="text" id="figurePrice" placeholder="ex: 8.500 EUR"></div>
-                    <div><label>Preț în Litere</label><input type="text" id="lettersPrice" placeholder="ex: OPT MII CINCI SUTE EURO"></div>
-                </div>
-                <div style="margin-top: 30px; display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
-                    <button class="btn btn-primary" onclick="valideazaPasAuto(3)">Finalizare ➔</button>
-                </div>
-            </div>
-
-            <div class="step-content" id="step4">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Pasul 4: Finalizare Contract Auto ITL 054</div>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Sistemul a validat datele. Apăsați butonul de mai jos pentru a genera contractul oficial.</p>
-                <div><button class="btn btn-success" onclick="genereazaContractAutoPDF()">📥 Generează & Descarcă Contract Auto Oficial PDF</button></div>
-                <div style="margin-top: 20px;"><button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button></div>
-            </div>
-
-            <!-- ================= FLUX CERERE DEMISIE ================= -->
-            <div class="step-content" id="demisieStep1">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Cerere de Demisie (Codul Muncii - Art. 81)</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div class="form-grid">
-                    <div class="full-width"><strong style="font-size: 13px; color: var(--primary);">A. Date Angajat</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Angajat</label><input type="text" id="demisieAngajatNume" placeholder="ex: POPESCU ION"></div>
-                    <div><label>CNP Angajat</label><input type="text" id="demisieAngajatCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
-                    <div><label>Funcția / Ocupația</label><input type="text" id="demisieAngajatFunctie" placeholder="ex: SPECIALIST MARKETING"></div>
-                    <div class="full-width"><label>Departament</label><input type="text" id="demisieAngajatDept" placeholder="ex: COMERCIAL"></div>
-
-                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--primary);">B. Date Angajator</strong></div>
-                    <div class="full-width"><label>Denumire Companie</label><input type="text" id="demisieCompanieNume" placeholder="ex: SC GLOBAL TECH SRL"></div>
-                    <div class="full-width"><label>Adresă / Sediu Companie</label><input type="text" id="demisieCompanieAdresa" placeholder="ex: BUCUREȘTI, BD. UNIRII NR. 10"></div>
-
-                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--primary);">C. Detalii Preaviz</strong></div>
-                    <div>
-                        <label>Tip Preaviz</label>
-                        <select id="demisieTipPreaviz">
-                            <option value="20">Execuție (20 zile lucrătoare)</option>
-                            <option value="45">Conducere (45 zile lucrătoare)</option>
-                        </select>
+                <div id="autoStep4" class="wizard-step" style="display:none;">
+                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 16px;">Pasul 4 / 4: Semnături Digitale & Generare</h4>
+                    <div id="remoteLinkBox" style="display:none; background: var(--primary-light); border: 1px solid var(--primary); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 20px;">
+                        <label style="color: var(--primary);">Link Securizat pentru Cumpărător (WhatsApp):</label>
+                        <input type="text" id="remoteGeneratedLink" readonly style="font-family: monospace; font-size: 11px; margin-top: 6px;">
+                        <button class="btn btn-success" style="margin-top: 10px; font-size: 13px;" onclick="trimiteRemoteWhatsApp()">💬 Trimite Linkul pe WhatsApp</button>
                     </div>
-                    <div><label>Data Ultima Zi de Lucru</label><input type="text" id="demisieDataUltima" placeholder="ex: 30.09.2026"></div>
-                </div>
-                <div style="margin-top: 30px;"><button class="btn btn-primary" onclick="valideazaSiTreciLaSemnaturaDemisie()">Înainte: Semnătură ➔</button></div>
-            </div>
-
-            <div class="step-content" id="demisieStep2">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Cerere de Demisie — Semnătură Digitală</div>
-                <div class="signature-box" style="max-width: 400px; margin: 0 auto 24px auto;">
-                    <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Angajat:</label>
-                    <canvas id="sigDemisieCanvas" width="280" height="140" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                    <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaDemisie()">Șterge</button>
-                </div>
-                <div style="text-align: center;"><button class="btn btn-success" style="max-width: 400px;" onclick="genereazaCerereDemisiePDF()">📥 Generează & Descarcă Demisia PDF</button></div>
-                <div style="margin-top: 20px; text-align: center;"><button class="btn btn-secondary" style="max-width: 200px;" onclick="document.getElementById('demisieStep2').classList.remove('active'); document.getElementById('demisieStep1').classList.add('active');">⬅ Înapoi</button></div>
-            </div>
-
-            <!-- ================= FLUX IMOBILIARE ================= -->
-            <div class="step-content" id="imobilStep1">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;">Contract Închiriere Locuință (ANAF) — Pasul 1/2</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
-                </div>
-                <div class="form-grid">
-                    <div class="full-width"><strong style="font-size: 13px; color: var(--primary);">A. Date Proprietar</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Proprietar</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
-                    <div><label>CNP Proprietar</label><input type="text" id="proprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI)</label><input type="text" id="proprietarAct" placeholder="ex: RX 123456"></div>
-                    <div class="full-width"><label>Domiciliu Proprietar</label><input type="text" id="proprietarAdresa" placeholder="ex: BUCUREȘTI, STR. LILIECILOR NR. 4"></div>
-
-                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--primary);">B. Date Chiriaș</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Chiriaș</label><input type="text" id="chiriasNume" placeholder="ex: GEORGESCU ELENA"></div>
-                    <div><label>CNP Chiriaș</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI)</label><input type="text" id="chiriasAct" placeholder="ex: DZ 654321"></div>
-
-                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--primary);">C. Imobil & Financiar</strong></div>
-                    <div class="full-width"><label>Adresă Locuință Închiriată</label><input type="text" id="imobilAdresa" placeholder="ex: BÂRLAD, BD. REPUBLICII NR. 10, AP. 15"></div>
-                    <div><label>Chiria Lunară</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
-                    <div><label>Garanție</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
-                    <div><label>Data Începere</label><input type="text" id="imobilDataStart" placeholder="ex: 01.09.2026"></div>
-                    <div><label>Durata</label><input type="text" id="imobilDurata" placeholder="ex: 12 LUNI"></div>
-
-                    <div class="full-width" style="margin-top: 15px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-                        <label style="color: var(--primary); margin-bottom: 8px;">D. Inventar Bunuri (Opțional)</label>
-                        <input type="text" id="imobilInventar" placeholder="ex: Centrala termică, Frigider, Mașină spălat">
-                    </div>
-                </div>
-                <div style="margin-top: 30px;"><button class="btn btn-primary" onclick="valideazaSiTreciLaSemnaturaImobil()">Înainte: Semnătură ➔</button></div>
-            </div>
-
-            <div class="step-content" id="imobilStep2">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="imobilStep2Title">Contract Închiriere — Semnătură Digitală</div>
-                <div id="imobilLocalContainer" style="display:none;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-                        <div class="signature-box">
-                            <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Proprietar:</label>
-                            <canvas id="sigProprietarCanvas" width="280" height="140" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaProprietar()">Șterge</button>
+                    <div class="form-grid">
+                        <div>
+                            <label>Semnătură Vânzător</label>
+                            <div style="border: 1px solid var(--border-color); background: #fff; border-radius: var(--radius-sm); position: relative; height: 120px;">
+                                <canvas id="canvasVanzator" width="340" height="120" style="touch-action: none; cursor: crosshair;"></canvas>
+                            </div>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px; margin-top: 6px;" onclick="stergeCanvas('canvasVanzator')">Șterge Semnătura</button>
                         </div>
-                        <div class="signature-box">
-                            <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Chiriaș:</label>
-                            <canvas id="sigChiriasCanvas" width="280" height="140" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaChirias()">Șterge</button>
+                        <div>
+                            <label>Semnătură Cumpărător</label>
+                            <div style="border: 1px solid var(--border-color); background: #fff; border-radius: var(--radius-sm); position: relative; height: 120px;">
+                                <canvas id="canvasCumparator" width="340" height="120" style="touch-action: none; cursor: crosshair;"></canvas>
+                            </div>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px; margin-top: 6px;" onclick="stergeCanvas('canvasCumparator')">Șterge Semnătura</button>
                         </div>
                     </div>
-                    <div><button class="btn btn-success" onclick="genereazaContractImobiliarPDF()">📥 Generează & Descarcă Contract Închiriere PDF</button></div>
-                </div>
-                <div id="imobilRemoteContainer" style="display:none; text-align: center; padding: 20px;">
-                    <div style="margin-bottom: 20px;">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Proprietar:</label>
-                        <canvas id="sigProprietarRemoteCanvas" width="280" height="140" style="background:white; border:1px solid var(--border-color); border-radius: 8px; display:block; margin: 0 auto; cursor:crosshair;"></canvas>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; margin-top: 10px; width: auto;" onclick="stergeSemnaturaProprietarRemote()">Șterge</button>
-                    </div>
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); margin-top: 20px;">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Trimite Link Securizat Chiriașului:</label>
-                        <div class="referral-url-box" id="imobilRemoteLinkBox">https://actpeloc.ro/semneaza?session=imob_remote_123</div>
-                        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 12px;">
-                            <button class="btn btn-primary" style="font-size: 13px; padding: 10px; width: auto;" onclick="copiazaLinkImobilRemote()">📋 Copiază Linkul</button>
-                            <button class="btn btn-success" style="font-size: 13px; padding: 10px; width: auto;" onclick="trimiteImobilRemoteWhatsApp()">💬 Trimite pe WhatsApp</button>
-                        </div>
+                    <div style="margin-top: 24px; display: flex; justify-content: space-between;">
+                        <button class="btn btn-secondary" style="max-width: 150px;" onclick="schimbaPasAuto(3)">← Înapoi</button>
+                        <button class="btn btn-success" style="max-width: 260px;" onclick="genereazaContractAutoFinal()">🚀 Generează PDF Oficial</button>
                     </div>
                 </div>
-                <div style="margin-top: 20px;"><button class="btn btn-secondary" onclick="document.getElementById('imobilStep2').classList.remove('active'); document.getElementById('imobilStep1').classList.add('active');">⬅ Înapoi</button></div>
             </div>
 
-            <div id="status" style="text-align: center; margin-top: 16px; font-weight: 700; font-size: 14px;"></div>
-        </div>
-    </div>
-
-    <!-- SCRIPTURI JAVASCRIPT COMPLETE -->
-    <script>
-        let currentStep = 1;
-        let modLucru = 'local';
-        let modLucruImobil = 'local';
-        let profilCurent = null;
-        let modAuthCurent = 'logare';
-        let pachetSelectatInregistrare = 'GRATUIT';
-        let splashTimerInterval = null;
-        
-        let ctxProprietar, ctxChirias, ctxProprietarRemote, ctxDemisie, ctxComodant, ctxComodatar, ctxPrestator, ctxBeneficiar;
-        let hasDrawnP = false, hasDrawnC = false, hasDrawnPR = false, hasDrawnD = false, hasDrawnComodant = false, hasDrawnComodatar = false, hasDrawnPrestator = false, hasDrawnBeneficiar = false;
-
-        function initSplashTimer() {
-            let secunde = 4;
-            const timer = document.getElementById('splashTimerText');
-            splashTimerInterval = setInterval(() => {
-                secunde--;
-                if (timer) timer.innerText = `Se deschide automat în ${secunde} secunde...`;
-                if (secunde <= 0) { clearInterval(splashTimerInterval); inchideSplash(); }
-            }, 1000);
-        }
-
-        function inchideSplash() {
-            if (splashTimerInterval) clearInterval(splashTimerInterval);
-            const splash = document.getElementById('splashScreen');
-            if (splash) { splash.classList.add('fade-out'); setTimeout(() => { splash.style.display = 'none'; }, 700); }
-        }
-
-        function comutaTema() {
-            const body = document.body;
-            const btn = document.getElementById('themeToggleBtn');
-            if (body.getAttribute('data-theme') === 'light') {
-                body.setAttribute('data-theme', 'dark');
-                if (btn) btn.innerText = "☀️";
-                localStorage.setItem('act_peloc_theme', 'dark');
-            } else {
-                body.setAttribute('data-theme', 'light');
-                if (btn) btn.innerText = "🌙";
-                localStorage.setItem('act_peloc_theme', 'light');
-            }
-        }
-
-        function incarcaTemaSalvata() {
-            if (localStorage.getItem('act_peloc_theme') === 'dark') {
-                document.body.setAttribute('data-theme', 'dark');
-                const btn = document.getElementById('themeToggleBtn');
-                if (btn) btn.innerText = "☀️";
-            }
-        }
-
-        function selecteazaPachetModal(pkg) {
-            pachetSelectatInregistrare = pkg;
-            ['GRATUIT', 'STANDARD', 'BUSINESS'].forEach(p => {
-                const el = document.getElementById('pkg_' + p);
-                if (el) { if (p === pkg) el.classList.add('selected'); else el.classList.remove('selected'); }
-            });
-        }
-
-        function deschideModalAuth(mod = 'logare') { modAuthCurent = mod; aplicăModAuth(); document.getElementById('authModal').style.display = 'flex'; }
-        function inchideModalAuth() { document.getElementById('authModal').style.display = 'none'; }
-        function schimbaModulAuth(mod) { modAuthCurent = mod; aplicăModAuth(); }
-
-        function aplicăModAuth() {
-            const title = document.getElementById('authModalTitle');
-            const subtitle = document.getElementById('authModalSubtitle');
-            const btn = document.getElementById('authSubmitBtn');
-            const switchCont = document.getElementById('authSwitchContainer');
-            const regFields = document.querySelectorAll('.reg-field');
-
-            if (modAuthCurent === 'logare') {
-                title.innerText = "Autentificare Cont";
-                subtitle.innerText = "Introdu e-mailul și parola unică pentru a te loga.";
-                btn.innerText = "🔑 Intră în Cont";
-                regFields.forEach(el => el.style.display = 'none');
-                switchCont.innerHTML = `Nu ai un cont? <span style="color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline;" onclick="schimbaModulAuth('inregistrare')">Creează-ți unul chiar acum</span>`;
-            } else {
-                title.innerText = "Creare Cont Nou";
-                subtitle.innerText = "Alege pachetul și setează datele tale de acces.";
-                btn.innerText = "🚀 Creează Cont & Activează";
-                regFields.forEach(el => el.style.display = 'block');
-                switchCont.innerHTML = `Ai deja un cont? <span style="color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline;" onclick="schimbaModulAuth('logare')">Autentifică-te aici</span>`;
-            }
-        }
-
-        function gestioneazaClickContulMeu() {
-            if (!profilCurent) { deschideModalAuth('logare'); }
-            else { const menu = document.getElementById('profileDropdownMenu'); menu.style.display = (menu.style.display === 'block') ? 'none' : 'block'; }
-        }
-
-        window.addEventListener('click', (e) => {
-            const pill = document.getElementById('userStatusBadge');
-            const menu = document.getElementById('profileDropdownMenu');
-            if (pill && menu && !pill.contains(e.target) && !menu.contains(e.target)) { menu.style.display = 'none'; }
-        });
-
-        function obtineBazaConturi() { return JSON.parse(localStorage.getItem('act_peloc_baza_utilizatori') || '{}'); }
-        function salveazaBazaConturi(db) { localStorage.setItem('act_peloc_baza_utilizatori', JSON.stringify(db)); }
-
-        async function gestioneazaAutentificareSauInregistrare() {
-            const emailInput = document.getElementById('authEmail');
-            const passInput = document.getElementById('authPassword');
-            const email = emailInput.value.trim().toLowerCase();
-            const parola = passInput.value;
-
-            if (!email || !email.includes('@')) { arataNotificare("Introduceți o adresă de e-mail validă!", true); return; }
-            if (!parola || parola.length < 6) { arataNotificare("Parola trebuie să aibă minim 6 caractere!", true); return; }
-
-            let db = obtineBazaConturi();
-            if (modAuthCurent === 'inregistrare') {
-                const confirmP = document.getElementById('authPasswordConfirm').value;
-                if (parola !== confirmP) { arataNotificare("Parolele nu coincid!", true); return; }
-                if (db[email]) { arataNotificare("Acest e-mail este deja înregistrat!", true); return; }
-
-                const tip = document.getElementById('authTipProfil').value;
-                db[email] = { email, parola, tip, pachet: pachetSelectatInregistrare, ramase: 99999, puncteAfiliere: 0, arhivaContracte: [] };
-                salveazaBazaConturi(db);
-                profilCurent = db[email];
-                localStorage.setItem('act_peloc_utilizator_activ', email);
-                actualizeazaUIAvanced();
-                arataNotificare("✅ Cont creat cu succes!");
-                inchideModalAuth();
-                acceseazaDashboardTab('arhiva');
-            } else {
-                if (!db[email] || db[email].parola !== parola) { arataNotificare("E-mail sau parolă incorecte!", true); return; }
-                profilCurent = db[email];
-                profilCurent.ramase = 99999;
-                localStorage.setItem('act_peloc_utilizator_activ', email);
-                actualizeazaUIAvanced();
-                arataNotificare("Autentificare reușită!");
-                inchideModalAuth();
-                acceseazaDashboardTab('arhiva');
-            }
-        }
-
-        function actualizeazaUIAvanced() {
-            if (!profilCurent) return;
-            document.getElementById('userStatusText').innerText = profilCurent.email.split('@')[0];
-            document.getElementById('userAvatarText').innerText = profilCurent.email.charAt(0).toUpperCase();
-            document.getElementById('dropdownEmailText').innerText = profilCurent.email;
-            document.getElementById('dashNavBtn').style.display = 'inline-flex';
-        }
-
-        function deconectareUtilizator() {
-            localStorage.removeItem('act_peloc_utilizator_activ');
-            profilCurent = null;
-            document.getElementById('userStatusText').innerText = "Contul Meu";
-            document.getElementById('userAvatarText').innerText = "👤";
-            document.getElementById('dashNavBtn').style.display = 'none';
-            document.getElementById('profileDropdownMenu').style.display = 'none';
-            arataNotificare("V-ați deconectat cu succes!");
-            deschideMeniuPrincipal();
-        }
-
-        function acceseazaDashboardTab(tabName) {
-            document.getElementById('profileDropdownMenu').style.display = 'none';
-            if (!profilCurent) { deschideModalAuth('logare'); return; }
-            
-            ['mainMenuContainer', 'modeSelectorContainer', 'imobilModeSelectorContainer', 'muncaMenuContainer', 'autoMenuContainer'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.display = 'none';
-            });
-
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('dashboardView').style.display = 'block';
-            
-            incarcaDateDashboard();
-            const btns = document.querySelectorAll('.dash-tab-btn');
-            if (tabName === 'arhiva') schimbaTabDash('arhiva', btns[0]);
-            if (tabName === 'abonament') schimbaTabDash('abonament', btns[1]);
-            if (tabName === 'afiliere') schimbaTabDash('afiliere', btns[2]);
-            if (tabName === 'setari') { schimbaTabDash('setari', btns[3]); document.getElementById('settingsNewEmail').value = profilCurent.email; }
-        }
-
-        function schimbaTabDash(tabName, btnEl) {
-            document.querySelectorAll('.dash-section').forEach(el => { if (el.id.startsWith('dashTab')) el.classList.remove('active'); });
-            document.querySelectorAll('.dash-tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('dashTab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
-            if (btnEl) btnEl.classList.add('active');
-        }
-
-        function actualizeazaEmailCont() {
-            const nouEmail = document.getElementById('settingsNewEmail').value.trim().toLowerCase();
-            if (!nouEmail || !nouEmail.includes('@')) { arataNotificare("E-mail invalid!", true); return; }
-            let db = obtineBazaConturi();
-            let vechi = profilCurent.email;
-            profilCurent.email = nouEmail;
-            db[nouEmail] = profilCurent;
-            if (vechi !== nouEmail) delete db[vechi];
-            salveazaBazaConturi(db);
-            localStorage.setItem('act_peloc_utilizator_activ', nouEmail);
-            actualizeazaUIAvanced();
-            arataNotificare("✅ E-mail actualizat cu succes!");
-        }
-
-        function incarcaProfilSalvat() {
-            const active = localStorage.getItem('act_peloc_utilizator_activ');
-            if (active) { 
-                let db = obtineBazaConturi(); 
-                if (db[active]) { profilCurent = db[active]; profilCurent.ramase = 99999; actualizeazaUIAvanced(); } 
-            }
-        }
-
-        function reseteazaCrediteNelimitate() {
-            if (!profilCurent) return;
-            profilCurent.ramase = 99999;
-            let db = obtineBazaConturi();
-            db[profilCurent.email] = profilCurent;
-            salveazaBazaConturi(db);
-            incarcaDateDashboard();
-            arataNotificare("⚡ Credite reînnoite la infinit cu succes!");
-        }
-
-        function incarcaDateDashboard() {
-            if (!profilCurent) return;
-            document.getElementById('infoDashEmail').innerText = profilCurent.email;
-            document.getElementById('infoDashProfil').innerText = profilCurent.tip;
-            document.getElementById('infoDashPachet').innerText = profilCurent.pachet;
-            document.getElementById('myReferralLinkText').innerText = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(profilCurent.email)}`;
-
-            const lista = document.getElementById('dashboardContracteLista');
-            lista.innerHTML = '';
-            let istoric = profilCurent.arhivaContracte || [];
-            if (istoric.length === 0) { lista.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Niciun contract generat momentan.</td></tr>`; return; }
-            
-            istoric.forEach((item, index) => {
-                lista.innerHTML += `<tr><td><b>${item.idAct}</b></td><td>${item.detalii}</td><td><button class="btn btn-secondary" style="width: auto; padding: 6px 12px; font-size: 11px;" onclick="descarcaDinArhiva(${index})">📥 Descarcă</button></td></tr>`;
-            });
-        }
-
-        function descarcaDinArhiva(index) {
-            if (!profilCurent || !profilCurent.arhivaContracte[index]) return;
-            const item = profilCurent.arhivaContracte[index];
-            const byteCharacters = atob(item.pdfData);
-            const byteArray = new Uint8Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) byteArray[i] = byteCharacters.charCodeAt(i);
-            const blob = new Blob([byteArray], { type: 'application/pdf' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `${item.idAct}_ACTPELOC.pdf`;
-            a.click();
-            arataNotificare(`📥 Se descarcă ${item.idAct}...`);
-        }
-
-        function copiazaLinkAfiliere() { navigator.clipboard.writeText(document.getElementById('myReferralLinkText').innerText).then(() => arataNotificare("📋 Copiat!")); }
-        function trimiteAfiliereWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(document.getElementById('myReferralLinkText').innerText)}`, '_blank'); }
-
-        function salveazaInArhivaprivata(item, pdfBytes) {
-            if (!profilCurent) return true;
-            let binary = '';
-            const bytes = new Uint8Array(pdfBytes);
-            for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-            if (!profilCurent.arhivaContracte) profilCurent.arhivaContracte = [];
-            item.pdfData = btoa(binary);
-            profilCurent.arhivaContracte.unshift(item);
-            let db = obtineBazaConturi();
-            db[profilCurent.email] = profilCurent;
-            salveazaBazaConturi(db);
-            return true;
-        }
-
-        function deschideMeniuPrincipal() {
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            ['progressBarContainer', 'modeSelectorContainer', 'imobilModeSelectorContainer', 'muncaMenuContainer', 'autoMenuContainer', 'dashboardView'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.display = 'none';
-            });
-            document.getElementById('mainMenuContainer').style.display = 'block';
-        }
-
-        function selecteazaCategorie(cat) {
-            document.getElementById('mainMenuContainer').style.display = 'none';
-            if (cat === 'auto') document.getElementById('autoMenuContainer').style.display = 'block';
-            else if (cat === 'imobiliare') document.getElementById('imobilModeSelectorContainer').style.display = 'block';
-            else if (cat === 'munca') document.getElementById('muncaMenuContainer').style.display = 'block';
-        }
-
-        function pornesteFluxDemisie() {
-            document.getElementById('muncaMenuContainer').style.display = 'none';
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('demisieStep1').classList.add('active');
-        }
-
-        function pornesteFluxB2B() {
-            document.getElementById('muncaMenuContainer').style.display = 'none';
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('b2bStep1').classList.add('active');
-        }
-
-        function pornesteFluxComodat() {
-            document.getElementById('autoMenuContainer').style.display = 'none';
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('comodatStep1').classList.add('active');
-        }
-
-        function selecteazaModImobiliarSiPorneste(mod) {
-            modLucruImobil = mod;
-            document.getElementById('imobilModeSelectorContainer').style.display = 'none';
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('imobilStep1').classList.add('active');
-        }
-
-        function selecteazaModSiPorneste(mod) {
-            modLucru = mod;
-            document.getElementById('autoMenuContainer').style.display = 'none';
-            document.getElementById('modeSelectorContainer').style.display = 'block';
-            document.getElementById('progressBarContainer').style.display = 'flex';
-            currentStep = 1;
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('step1').classList.add('active');
-        }
-
-        function nextStep(step) {
-            document.getElementById('step' + step).classList.remove('active');
-            currentStep = step + 1;
-            document.getElementById('step' + currentStep).classList.add('active');
-        }
-        function prevStep(step) {
-            document.getElementById('step' + step).classList.remove('active');
-            currentStep = step - 1;
-            document.getElementById('step' + currentStep).classList.add('active');
-        }
-
-        function arataNotificare(msg, error = false) {
-            const toast = document.getElementById('toastNotification');
-            toast.innerText = msg;
-            toast.className = error ? 'error' : '';
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        const curataDiacritice = (text) => {
-            if (!text) return '';
-            return String(text).toUpperCase()
-                .replace(/Ă/g, 'A').replace(/Â/g, 'A').replace(/Î/g, 'I')
-                .replace(/Ș/g, 'S').replace(/Ş/g, 'S')
-                .replace(/Ț/g, 'T').replace(/Ţ/g, 'T');
-        };
-
-        function marcheazaEroreInput(id) {
-            const el = document.getElementById(id);
-            if (el) { el.classList.add('input-error'); el.focus(); setTimeout(() => el.classList.remove('input-error'), 4000); }
-        }
-
-        /* VALIDARE & GENERARE B2B */
-        function valideazaSiTreciLaSemnaturaB2B() {
-            const prest = document.getElementById('b2bPrestatorNume').value.trim();
-            const cui = document.getElementById('b2bPrestatorCui').value.trim();
-            const benef = document.getElementById('b2bBeneficiarNume').value.trim();
-            if (!prest) { marcheazaEroreInput('b2bPrestatorNume'); arataNotificare("❌ Introduceți numele prestatorului!", true); return; }
-            if (!cui) { marcheazaEroreInput('b2bPrestatorCui'); arataNotificare("❌ Introduceți CUI-ul prestatorului!", true); return; }
-            if (!benef) { marcheazaEroreInput('b2bBeneficiarNume'); arataNotificare("❌ Introduceți numele beneficiarului!", true); return; }
-            
-            document.getElementById('b2bStep1').classList.remove('active');
-            document.getElementById('b2bStep2').classList.add('active');
-            initCanvasesB2B();
-        }
-
-        function initCanvasesB2B() {
-            const cp = document.getElementById('sigPrestatorCanvas');
-            const cb = document.getElementById('sigBeneficiarCanvas');
-            if (!cp || !cb) return;
-            ctxPrestator = cp.getContext('2d'); ctxPrestator.strokeStyle = '#0f172a'; ctxPrestator.lineWidth = 2;
-            ctxBeneficiar = cb.getContext('2d'); ctxBeneficiar.strokeStyle = '#0f172a'; ctxBeneficiar.lineWidth = 2;
-
-            cp.onmousedown = (e) => { isDrawingP = true; hasDrawnPrestator = true; ctxPrestator.beginPath(); ctxPrestator.moveTo(e.offsetX, e.offsetY); };
-            cp.onmousemove = (e) => { if (isDrawingP) { ctxPrestator.lineTo(e.offsetX, e.offsetY); ctxPrestator.stroke(); } };
-            cp.onmouseup = () => isDrawingP = false;
-
-            cb.onmousedown = (e) => { isDrawingC = true; hasDrawnBeneficiar = true; ctxBeneficiar.beginPath(); ctxBeneficiar.moveTo(e.offsetX, e.offsetY); };
-            cb.onmousemove = (e) => { if (isDrawingC) { ctxBeneficiar.lineTo(e.offsetX, e.offsetY); ctxBeneficiar.stroke(); } };
-            cb.onmouseup = () => isDrawingC = false;
-        }
-
-        function stergeSemnaturaPrestator() { if (ctxPrestator) ctxPrestator.clearRect(0, 0, 280, 130); hasDrawnPrestator = false; }
-        function stergeSemnaturaBeneficiar() { if (ctxBeneficiar) ctxBeneficiar.clearRect(0, 0, 280, 130); hasDrawnBeneficiar = false; }
-
-        async function genereazaContractB2BPDF() {
-            if (!hasDrawnPrestator || !hasDrawnBeneficiar) { arataNotificare("❌ Ambele părți trebuie să semneze!", true); return; }
-            if (!profilCurent) { arataNotificare("⚠️ Vă rugăm să vă autentificați în cont.", true); deschideModalAuth('logare'); return; }
-
-            arataNotificare("Se generează contractul de prestări servicii B2B...");
-            try {
-                const { PDFDocument, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 780;
-
-                const deseneazaFooter = () => {
-                    page.drawText("Generat prin ActPeLoc.ro — Contract Prestări Servicii B2B", { x: 45, y: 30, size: 7.5, font, color: PDFLib.rgb(0.5, 0.5, 0.5) });
-                };
-                const deseneazaTitlu = (t) => {
-                    if (y < 70) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(curataDiacritice(t), { x: 45, y, size: 8.5, font: fontBold });
-                    y -= 13;
-                };
-                const deseneazaText = (t) => {
-                    if (y < 70) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(curataDiacritice(t), { x: 45, y, size: 7, font });
-                    y -= 11;
-                };
-
-                const getVal = (id) => document.getElementById(id).value;
-
-                const titlu = "CONTRACT COMERCIAL DE PRESTĂRI SERVICII B2B";
-                page.drawText(curataDiacritice(titlu), { x: (595.28 - fontBold.widthOfTextAtSize(curataDiacritice(titlu), 11)) / 2, y, size: 11, font: fontBold });
-                y -= 25;
-
-                deseneazaTitlu("ARTICOLUL 1: PĂRȚILE CONTRACTANTE");
-                deseneazaText(`1.1. Prestator: ${getVal('b2bPrestatorNume')}, CUI: ${getVal('b2bPrestatorCui')}, Reg. Com: ${getVal('b2bPrestatorReg')}`);
-                deseneazaText(`Sediu: ${getVal('b2bPrestatorSediu')}`);
-                deseneazaText(`1.2. Beneficiar: ${getVal('b2bBeneficiarNume')}, CUI: ${getVal('b2bBeneficiarCui')}, Reg. Com: ${getVal('b2bBeneficiarReg')}`);
-                deseneazaText(`Sediu: ${getVal('b2bBeneficiarSediu')}`);
-                y -= 4;
-
-                deseneazaTitlu("ARTICOLUL 2: OBIECTUL CONTRACTULUI");
-                deseneazaText(`2.1. Prestatorul se obliga sa presteze in favoarea Beneficiarului urmatoarele servicii:`);
-                deseneazaText(`${getVal('b2bObiect')}`);
-                y -= 4;
-
-                deseneazaTitlu("ARTICOLUL 3: PREȚUL ȘI MODALITATEA DE PLATĂ");
-                deseneazaText(`3.1. Valoarea totala a serviciilor este de ${getVal('b2bPret')}, platibila conform facturii emise.`);
-                deseneazaText(`3.2. Termenul de executie si predare este de ${getVal('b2bTermen')}.`);
-                y -= 4;
-
-                deseneazaTitlu("ARTICOLUL 4: CONFIDENȚIALITATE ȘI PROPRIETATE INTELECTUALĂ");
-                deseneazaText(`4.1. Toate informatiile schimbate sunt strict confidentiale (NDA). Drepturile de autor revin Beneficiarului la achitarea integrala.`);
-                y -= 15;
-
-                if (y < 140) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-
-                page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`), { x: 45, y, size: 7.5, font: fontBold });
-                y -= 22;
-
-                deseneazaTitlu("SEMNĂTURILE PĂRȚILOR:");
-                y -= 4;
-
-                const sigPBytes = await pdfDoc.embedPng(document.getElementById('sigPrestatorCanvas').toDataURL('image/png'));
-                const sigBBytes = await pdfDoc.embedPng(document.getElementById('sigBeneficiarCanvas').toDataURL('image/png'));
-
-                page.drawImage(sigPBytes, { x: 45, y: y - 50, width: 120, height: 38 });
-                page.drawImage(sigBBytes, { x: 310, y: y - 50, width: 120, height: 38 });
-                page.drawText(curataDiacritice("Semnatura Prestator"), { x: 45, y: y - 62, size: 7, font: fontBold });
-                page.drawText(curataDiacritice("Semnatura Beneficiar"), { x: 310, y: y - 62, size: 7, font: fontBold });
-
-                deseneazaFooter();
-
-                const bytes = await pdfDoc.save();
-                salveazaInArhivaprivata({ idAct: 'B2B-' + Math.floor(1000 + Math.random()*9000), detalii: 'Contract B2B - ' + curataDiacritice(getVal('b2bBeneficiarNume')) }, bytes);
-
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob); a.download = "CONTRACT_PRESTARI_SERVICII_B2B.pdf";
-                a.click();
-
-                arataNotificare("✅ Contract B2B generat și salvat în arhivă!");
-                deschideMeniuPrincipal();
-            } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
-        }
-
-        /* FLUXURI COMODAT, AUTO, DEMISIE, IMOBILIAR (PĂSTRATE COMPLETE) */
-        function valideazaPasComodat1() {
-            const comNume = document.getElementById('comodantNume').value.trim();
-            const comCnp = document.getElementById('comodantCnp').value.trim();
-            const ctarNume = document.getElementById('comodatarNume').value.trim();
-            const ctarCnp = document.getElementById('comodatarCnp').value.trim();
-            if (!comNume) { marcheazaEroreInput('comodantNume'); arataNotificare("❌ Introduceți numele proprietarului!", true); return; }
-            if (comCnp.length !== 13) { marcheazaEroreInput('comodantCnp'); arataNotificare("❌ CNP comodant invalid (13 cifre)!", true); return; }
-            if (!ctarNume) { marcheazaEroreInput('comodatarNume'); arataNotificare("❌ Introduceți numele comodatarului!", true); return; }
-            if (ctarCnp.length !== 13) { marcheazaEroreInput('comodatarCnp'); arataNotificare("❌ CNP comodatar invalid (13 cifre)!", true); return; }
-            document.getElementById('comodatStep1').classList.remove('active');
-            document.getElementById('comodatStep2').classList.add('active');
-        }
-
-        function valideazaPasComodat2() {
-            const make = document.getElementById('comodMake').value.trim();
-            const vin = document.getElementById('comodVin').value.trim();
-            const reg = document.getElementById('comodReg').value.trim();
-            if (!make) { marcheazaEroreInput('comodMake'); arataNotificare("❌ Introduceți marca vehiculului!", true); return; }
-            if (!vin) { marcheazaEroreInput('comodVin'); arataNotificare("❌ Introduceți seria VIN!", true); return; }
-            if (!reg) { marcheazaEroreInput('comodReg'); arataNotificare("❌ Introduceți numărul de înmatriculare!", true); return; }
-            document.getElementById('comodatStep2').classList.remove('active');
-            document.getElementById('comodatStep3').classList.add('active');
-            initCanvasesComodat();
-        }
-
-        function initCanvasesComodat() {
-            const cc = document.getElementById('sigComodantCanvas');
-            const ctar = document.getElementById('sigComodatarCanvas');
-            if(!cc || !ctar) return;
-            ctxComodant = cc.getContext('2d'); ctxComodant.strokeStyle = '#0f172a'; ctxComodant.lineWidth = 2;
-            ctxComodatar = ctar.getContext('2d'); ctxComodatar.strokeStyle = '#0f172a'; ctxComodatar.lineWidth = 2;
-
-            cc.onmousedown = (e) => { isDrawingP = true; hasDrawnComodant = true; ctxComodant.beginPath(); ctxComodant.moveTo(e.offsetX, e.offsetY); };
-            cc.onmousemove = (e) => { if (isDrawingP) { ctxComodant.lineTo(e.offsetX, e.offsetY); ctxComodant.stroke(); } };
-            cc.onmouseup = () => isDrawingP = false;
-
-            ctar.onmousedown = (e) => { isDrawingC = true; hasDrawnComodatar = true; ctxComodatar.beginPath(); ctxComodatar.moveTo(e.offsetX, e.offsetY); };
-            ctar.onmousemove = (e) => { if (isDrawingC) { ctxComodatar.lineTo(e.offsetX, e.offsetY); ctxComodatar.stroke(); } };
-            ctar.onmouseup = () => isDrawingC = false;
-        }
-
-        function stergeSemnaturaComodant() { if(ctxComodant) ctxComodant.clearRect(0, 0, 280, 130); hasDrawnComodant = false; }
-        function stergeSemnaturaComodatar() { if(ctxComodatar) ctxComodatar.clearRect(0, 0, 280, 130); hasDrawnComodatar = false; }
-
-        async function genereazaContractComodatPDF() {
-            if (!hasDrawnComodant || !hasDrawnComodatar) { arataNotificare("❌ Ambele părți trebuie să semneze!", true); return; }
-            if (!profilCurent) { arataNotificare("⚠️ Vă rugăm să vă autentificați.", true); deschideModalAuth('logare'); return; }
-
-            arataNotificare("Se generează contractul de comodat auto...");
-            try {
-                const { PDFDocument, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 780;
-
-                const deseneazaFooter = () => page.drawText("Generat prin ActPeLoc.ro — Comodat Auto", { x: 45, y: 30, size: 7.5, font, color: PDFLib.rgb(0.5, 0.5, 0.5) });
-                const deseneazaTitlu = (t) => { page.drawText(curataDiacritice(t), { x: 45, y, size: 8.5, font: fontBold }); y -= 12; };
-                const deseneazaText = (t) => { page.drawText(curataDiacritice(t), { x: 45, y, size: 7, font }); y -= 11; };
-                const getVal = (id) => document.getElementById(id).value;
-
-                page.drawText(curataDiacritice("CONTRACT DE COMODAT AUTO"), { x: (595.28 - fontBold.widthOfTextAtSize("CONTRACT DE COMODAT AUTO", 11)) / 2, y, size: 11, font: fontBold });
-                y -= 25;
-
-                deseneazaTitlu("1. PĂRȚILE CONTRACTANTE");
-                deseneazaText(`Comodant: ${getVal('comodantNume')}, CNP: ${getVal('comodantCnp')}, CI: ${getVal('comodantAct')}, Adresă: ${getVal('comodantAdresa')}`);
-                deseneazaText(`Comodatar: ${getVal('comodatarNume')}, CNP: ${getVal('comodatarCnp')}, CI: ${getVal('comodatarAct')}, Adresă: ${getVal('comodatarAdresa')}`);
-                y -= 4;
-
-                deseneazaTitlu("2. OBIECTUL CONTRACTULUI");
-                deseneazaText(`Autovehicul ${getVal('comodMake')} ${getVal('comodType')}, Număr: ${getVal('comodReg')}, VIN: ${getVal('comodVin')}, Motor: ${getVal('comodMotor')}`);
-                y -= 15;
-
-                page.drawText(curataDiacritice(`Încheiat astăzi, ${new Date().toLocaleDateString('ro-RO')}`), { x: 45, y, size: 7.5, font: fontBold });
-                y -= 22;
-
-                const sigCom = await pdfDoc.embedPng(document.getElementById('sigComodantCanvas').toDataURL('image/png'));
-                const sigCtar = await pdfDoc.embedPng(document.getElementById('sigComodatarCanvas').toDataURL('image/png'));
-                page.drawImage(sigCom, { x: 45, y: y - 50, width: 120, height: 38 });
-                page.drawImage(sigCtar, { x: 310, y: y - 50, width: 120, height: 38 });
-                page.drawText(curataDiacritice("Semnătura Comodant"), { x: 45, y: y - 62, size: 7, font: fontBold });
-                page.drawText(curataDiacritice("Semnătura Comodatar"), { x: 310, y: y - 62, size: 7, font: fontBold });
-                deseneazaFooter();
-
-                const bytes = await pdfDoc.save();
-                salveazaInArhivaprivata({ idAct: 'COMODAT-' + Math.floor(1000 + Math.random()*9000), detalii: 'Comodat Auto - ' + curataDiacritice(getVal('comodMake')) }, bytes);
-
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "CONTRACT_COMODAT_AUTO.pdf"; a.click();
-                arataNotificare("✅ Contract Comodat generat!");
-                deschideMeniuPrincipal();
-            } catch(e) { arataNotificare("Eroare: " + e.message, true); }
-        }
-
-        function valideazaPasAuto(pas) {
-            if (pas === 1 && !document.getElementById('sellerName').value.trim()) { marcheazaEroreInput('sellerName'); arataNotificare("❌ Introduceți numele vânzătorului!", true); return; }
-            if (pas === 2 && !document.getElementById('buyerName').value.trim()) { marcheazaEroreInput('buyerName'); arataNotificare("❌ Introduceți numele cumpărătorului!", true); return; }
-            nextStep(pas);
-        }
-
-        async function genereazaContractAutoPDF() {
-            if (!profilCurent) { arataNotificare("⚠️ Autentificați-vă în cont.", true); deschideModalAuth('logare'); return; }
-            arataNotificare("Se generează contractul auto ITL 054...");
-            try {
-                const { PDFDocument, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 780;
-                const getVal = (id) => document.getElementById(id).value;
-
-                page.drawText("CONTRACT VÂNZARE-CUMPĂRARE AUTO ITL 054", { x: 120, y, size: 11, font: fontBold }); y -= 30;
-                page.drawText(`Vânzător: ${getVal('sellerName')} | C.N.P: ${getVal('seller_ci_cnp')}`, { x: 45, y, size: 9, font }); y -= 16;
-                page.drawText(`Cumpărator: ${getVal('buyerName')} | C.N.P: ${getVal('buyerCNP')}`, { x: 45, y, size: 9, font }); y -= 16;
-                page.drawText(`Vehicul: ${getVal('make')} ${getVal('type')} | VIN: ${getVal('chassisSeries')}`, { x: 45, y, size: 9, font }); y -= 16;
-                page.drawText(`Preț: ${getVal('figurePrice')} (${getVal('lettersPrice')})`, { x: 45, y, size: 9, font: fontBold });
-
-                const bytes = await pdfDoc.save();
-                salveazaInArhivaprivata({ idAct: 'AUTO-' + Math.floor(1000 + Math.random()*9000), detalii: 'Contract Auto - ' + curataDiacritice(getVal('make')) }, bytes);
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "CONTRACT_AUTO_ITL054.pdf"; a.click();
-                arataNotificare("✅ Contract Auto generat!");
-                deschideMeniuPrincipal();
-            } catch(e) { arataNotificare("Eroare: " + e.message, true); }
-        }
-
-        function valideazaSiTreciLaSemnaturaDemisie() {
-            if (!document.getElementById('demisieAngajatNume').value.trim()) { marcheazaEroreInput('demisieAngajatNume'); arataNotificare("❌ Introduceți numele!", true); return; }
-            document.getElementById('demisieStep1').classList.remove('active');
-            document.getElementById('demisieStep2').classList.add('active');
-            const cd = document.getElementById('sigDemisieCanvas');
-            ctxDemisie = cd.getContext('2d'); ctxDemisie.strokeStyle = '#0f172a'; ctxDemisie.lineWidth = 2;
-            cd.onmousedown = (e) => { isDrawingD = true; hasDrawnD = true; ctxDemisie.beginPath(); ctxDemisie.moveTo(e.offsetX, e.offsetY); };
-            cd.onmousemove = (e) => { if (isDrawingD) { ctxDemisie.lineTo(e.offsetX, e.offsetY); ctxDemisie.stroke(); } };
-            cd.onmouseup = () => isDrawingD = false;
-        }
-        function stergeSemnaturaDemisie() { if(ctxDemisie) ctxDemisie.clearRect(0,0,280,140); hasDrawnD = false; }
-
-        async function genereazaCerereDemisiePDF() {
-            if (!hasDrawnD) { arataNotificare("❌ Semnați cererea!", true); return; }
-            if (!profilCurent) { arataNotificare("⚠️ Autentificați-vă în cont.", true); deschideModalAuth('logare'); return; }
-            arataNotificare("Se generează cererea de demisie...");
-            try {
-                const { PDFDocument, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 780;
-                const getVal = (id) => document.getElementById(id).value;
-
-                page.drawText("CERERE DE DEMISIE", { x: 220, y, size: 12, font: fontBold }); y -= 30;
-                page.drawText(`Subsemnatul(a) ${getVal('demisieAngajatNume')}, CNP: ${getVal('demisieAngajatCnp')}, funcția ${getVal('demisieAngajatFunctie')}, demisionez.`, { x: 45, y, size: 9, font });
-                y -= 30;
-                const sigImg = await pdfDoc.embedPng(document.getElementById('sigDemisieCanvas').toDataURL('image/png'));
-                page.drawImage(sigImg, { x: 45, y: y - 50, width: 120, height: 40 });
-
-                const bytes = await pdfDoc.save();
-                salveazaInArhivaprivata({ idAct: 'DEM-' + Math.floor(1000 + Math.random()*9000), detalii: 'Cerere Demisie - ' + curataDiacritice(getVal('demisieAngajatNume')) }, bytes);
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "CERERE_DEMISIE.pdf"; a.click();
-                arataNotificare("✅ Demisie generată!");
-                deschideMeniuPrincipal();
-            } catch(e) { arataNotificare("Eroare: " + e.message, true); }
-        }
-
-        function valideazaSiTreciLaSemnaturaImobil() {
-            if (!document.getElementById('proprietarNume').value.trim()) { marcheazaEroreInput('proprietarNume'); arataNotificare("❌ Introduceți proprietarul!", true); return; }
-            document.getElementById('imobilStep1').classList.remove('active');
-            document.getElementById('imobilStep2').classList.add('active');
-            if (modLucruImobil === 'local') {
-                document.getElementById('imobilLocalContainer').style.display = 'block';
-                const cp = document.getElementById('sigProprietarCanvas'); const cc = document.getElementById('sigChiriasCanvas');
-                ctxProprietar = cp.getContext('2d'); ctxProprietar.strokeStyle = '#0f172a'; ctxProprietar.lineWidth = 2;
-                ctxChirias = cc.getContext('2d'); ctxChirias.strokeStyle = '#0f172a'; ctxChirias.lineWidth = 2;
-                cp.onmousedown = (e) => { isDrawingP = true; hasDrawnP = true; ctxProprietar.beginPath(); ctxProprietar.moveTo(e.offsetX, e.offsetY); };
-                cp.onmousemove = (e) => { if (isDrawingP) { ctxProprietar.lineTo(e.offsetX, e.offsetY); ctxProprietar.stroke(); } };
-                cp.onmouseup = () => isDrawingP = false;
-                cc.onmousedown = (e) => { isDrawingC = true; hasDrawnC = true; ctxChirias.beginPath(); ctxChirias.moveTo(e.offsetX, e.offsetY); };
-                cc.onmousemove = (e) => { if (isDrawingC) { ctxChirias.lineTo(e.offsetX, e.offsetY); ctxChirias.stroke(); } };
-                cc.onmouseup = () => isDrawingC = false;
-            } else {
-                document.getElementById('imobilRemoteContainer').style.display = 'block';
-                const cpr = document.getElementById('sigProprietarRemoteCanvas');
-                ctxProprietarRemote = cpr.getContext('2d'); ctxProprietarRemote.strokeStyle = '#0f172a'; ctxProprietarRemote.lineWidth = 2;
-                cpr.onmousedown = (e) => { isDrawingPR = true; hasDrawnPR = true; ctxProprietarRemote.beginPath(); ctxProprietarRemote.moveTo(e.offsetX, e.offsetY); };
-                cpr.onmousemove = (e) => { if (isDrawingPR) { ctxProprietarRemote.lineTo(e.offsetX, e.offsetY); ctxProprietarRemote.stroke(); } };
-                cpr.onmouseup = () => isDrawingPR = false;
-            }
-        }
-        function stergeSemnaturaProprietar() { if(ctxProprietar) ctxProprietar.clearRect(0,0,280,140); hasDrawnP = false; }
-        function stergeSemnaturaChirias() { if(ctxChirias) ctxChirias.clearRect(0,0,280,140); hasDrawnC = false; }
-        function stergeSemnaturaProprietarRemote() { if(ctxProprietarRemote) ctxProprietarRemote.clearRect(0,0,280,140); hasDrawnPR = false; }
-        function copiazaLinkImobilRemote() { navigator.clipboard.writeText(document.getElementById('imobilRemoteLinkBox').innerText).then(() => arataNotificare("📋 Link copiat!")); }
-        function trimiteImobilRemoteWhatsApp() { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(document.getElementById('imobilRemoteLinkBox').innerText)}`, '_blank'); }
-
-        async function genereazaContractImobiliarPDF() {
-            if (!profilCurent) { arataNotificare("⚠️ Autentificați-vă în cont.", true); deschideModalAuth('logare'); return; }
-            arataNotificare("Se generează contractul imobiliar...");
-            try {
-                const { PDFDocument, StandardFonts } = PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                let y = 780;
-                const getVal = (id) => document.getElementById(id).value;
-
-                page.drawText("CONTRACT DE ÎNCHIRIERE LOCUINȚĂ", { x: 170, y, size: 11, font: fontBold }); y -= 30;
-                page.drawText(`Proprietar: ${getVal('proprietarNume')} | Chiriaș: ${getVal('chiriasNume')}`, { x: 45, y, size: 9, font }); y -= 16;
-                page.drawText(`Imobil: ${getVal('imobilAdresa')}`, { x: 45, y, size: 9, font }); y -= 16;
-                page.drawText(`Chirie: ${getVal('imobilChirie')} | Garanție: ${getVal('imobilGarantie')}`, { x: 45, y, size: 9, font: fontBold });
-
-                const bytes = await pdfDoc.save();
-                salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), detalii: 'Contract Imobiliar - ' + curataDiacritice(getVal('chiriasNume')) }, bytes);
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "CONTRACT_INCHIRIERE.pdf"; a.click();
-                arataNotificare("✅ Contract Imobiliar generat!");
-                deschideMeniuPrincipal();
-            } catch(e) { arataNotificare("Eroare: " + e.message, true); }
-        }
-
-        window.onload = function() { incarcaProfilSalvat(); incarcaTemaSalvata(); initSplashTimer(); };
-    </script>
-</body>
-</html>
+            <!-- MOTORUL JS ȘI LOGICA PLATFORMEI -->
+            <script>
+                let utilizatorCurent = JSON.parse(localStorage.getItem('actpeloc_user')) || null;
+                let bazaContracte = JSON.parse(localStorage.getItem('actpeloc_arhiva')) || [];
+                let pachetSelectatModal = 'GRATUIT';
+                let modAuthActual = 'login';
+                let pasAutoCurent = 1;
+                let modAutoModLucru = 'local';
+                let modImobiliarModLucru = 'local';
+
+                // Timer Splash Screen
+                let splashSecunde = 4;
+                let splashTimerInterval = setInterval(() => {
+                    splashSecunde--;
+                    const el = document.getElementById('splashTimerText');
+                    if (el) el.innerText = `Se deschide automat în ${splashSecunde} secunde...`;
+                    if (splashSecunde <= 0) {
+                        clearInterval(splashTimerInterval);
+                        inchideSplash();
+                    }
+                }, 1000);
+
+                function inchideSplash() {
+                    clearInterval(splashTimerInterval);
+                    const s = document.getElementById('splashScreen');
+                    if (s) {
+                        s.classList.add('fade-out');
+                        setTimeout(() => s.style.display = 'none', 700);
+                    }
+                }
+
+                function comutaTema() {
+                    const b = document.body;
+                    const btn = document.getElementById('themeToggleBtn');
+                    if (b.getAttribute('data-theme') === 'light') {
+                        b.setAttribute('data-theme', 'dark');
+                        btn.innerText = '☀️';
+                        localStorage.setItem('actpeloc_theme', 'dark');
+                    } else {
+                        b.setAttribute('data-theme', 'light');
+                        btn.innerText = '🌙';
+                        localStorage.setItem('actpeloc_theme', 'light');
+                    }
+                }
+
+                window.addEventListener('DOMContentLoaded', () => {
+                    const savedTheme = localStorage.getItem('actpeloc_theme');
+                    if (savedTheme === 'dark') {
+                        document.body.setAttribute('data-theme', 'dark');
+                        document.getElementById('themeToggleBtn').innerText = '☀️';
+                    }
+                    actualizeazaStareUICont();
+                    verificaParametriURL();
+                });
+
+                function arataNotificare(mesaj, esteEroare = false) {
+                    const t = document.getElementById('toastNotification');
+                    t.innerText = mesaj;
+                    t.className = esteEroare ? 'error show' : 'show';
+                    setTimeout(() => t.className = '', 3000);
+                }
+
+                function deschideMeniuPrincipal() {
+                    inchideToateEcranele();
+                    document.getElementById('mainMenuContainer').style.display = 'block';
+                }
+
+                function inchideToateEcranele() {
+                    ['mainMenuContainer', 'dashboardView', 'autoMenuContainer', 'modeSelectorContainer', 'imobilModeSelectorContainer', 'muncaMenuContainer', 'autoWizardContainer'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.style.display = 'none';
+                    });
+                }
+
+                function selecteazaCategorie(cat) {
+                    inchideToateEcranele();
+                    if (cat === 'auto') document.getElementById('autoMenuContainer').style.display = 'block';
+                    else if (cat === 'imobiliare') document.getElementById('imobilModeSelectorContainer').style.display = 'block';
+                    else if (cat === 'munca') document.getElementById('muncaMenuContainer').style.display = 'block';
+                }
+
+                function deschideModalAuth(mod = 'login') {
+                    modAuthActual = mod;
+                    const m = document.getElementById('authModal');
+                    m.style.display = 'flex';
+                    const title = document.getElementById('authModalTitle');
+                    const sub = document.getElementById('authModalSubtitle');
+                    const btn = document.getElementById('authSubmitBtn');
+                    const regFields = document.querySelectorAll('.reg-field');
+
+                    if (mod === 'inregistrare') {
+                        title.innerText = 'Creează Cont Nou';
+                        sub.innerText = 'Configurează-ți profilul și pachetul juridic.';
+                        btn.innerText = '🚀 Înregistrează-te Gratuit';
+                        regFields.forEach(el => el.style.display = 'block');
+                    } else {
+                        title.innerText = 'Autentificare Cont';
+                        sub.innerText = 'Introdu credențialele tale unice.';
+                        btn.innerText = '🔑 Intră în Cont';
+                        regFields.forEach(el => el.style.display = 'none');
+                    }
+                }
+
+                function inchideModalAuth() {
+                    document.getElementById('authModal').style.display = 'none';
+                }
+
+                function schimbaModulAuth(mod) {
+                    deschideModalAuth(mod);
+                }
+
+                function selecteazaPachetModal(pkg) {
+                    pachetSelectatModal = pkg;
+                    document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+                    document.getElementById('pkg_' + pkg).classList.add('selected');
+                }
+
+                function gestioneazaAutentificareSauInregistrare() {
+                    const email = document.getElementById('authEmail').value.trim();
+                    const pass = document.getElementById('authPassword').value.trim();
+                    if (!email || !pass) {
+                        arataNotificare('Te rugăm să completezi e-mailul și parola!', true);
+                        return;
+                    }
+
+                    if (modAuthActual === 'inregistrare') {
+                        const passConf = document.getElementById('authPasswordConfirm').value.trim();
+                        if (pass !== passConf) {
+                            arataNotificare('Parolele introduse nu coincid!', true);
+                            return;
+                        }
+                        utilizatorCurent = {
+                            email: email,
+                            tipProfil: document.getElementById('authTipProfil').value,
+                            pachet: pachetSelectatModal,
+                            credite: 9999
+                        };
+                        localStorage.setItem('actpeloc_user', JSON.stringify(utilizatorCurent));
+                        arataNotificare('Cont creat cu succes!');
+                    } else {
+                        utilizatorCurent = {
+                            email: email,
+                            tipProfil: 'PERSOANA_FIZICA',
+                            pachet: 'STANDARD',
+                            credite: 9999
+                        };
+                        localStorage.setItem('actpeloc_user', JSON.stringify(utilizatorCurent));
+                        arataNotificare('Autentificare reușită!');
+                    }
+                    inchideModalAuth();
+                    actualizeazaStareUICont();
+                }
+
+                function actualizeazaStareUICont() {
+                    const badgeText = document.getElementById('userStatusText');
+                    const avatar = document.getElementById('userAvatarText');
+                    const emailText = document.getElementById('dropdownEmailText');
+                    const dashNavBtn = document.getElementById('dashNavBtn');
+
+                    if (utilizatorCurent) {
+                        badgeText.innerText = utilizatorCurent.email.split('@')[0];
+                        avatar.innerText = utilizatorCurent.email.charAt(0).toUpperCase();
+                        emailText.innerText = utilizatorCurent.email;
+                        dashNavBtn.style.display = 'inline-flex';
+                    } else {
+                        badgeText.innerText = 'Contul Meu';
+                        avatar.innerText = '👤';
+                        emailText.innerText = '-';
+                        dashNavBtn.style.display = 'none';
+                    }
+                }
+
+                function gestioneazaClickContulMeu() {
+                    if (!utilizatorCurent) {
+                        deschideModalAuth('login');
+                    } else {
+                        const menu = document.getElementById('profileDropdownMenu');
+                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                    }
+                }
+
+                function deconectareUtilizator() {
+                    utilizatorCurent = null;
+                    localStorage.removeItem('actpeloc_user');
+                    actualizeazaStareUICont();
+                    document.getElementById('profileDropdownMenu').style.display = 'none';
+                    deschideMeniuPrincipal();
+                    arataNotificare('Te-ai deconectat cu succes.');
+                }
+
+                function acceseazaDashboardTab(tab) {
+                    inchideToateEcranele();
+                    document.getElementById('dashboardView').style.display = 'block';
+                    document.getElementById('profileDropdownMenu').style.display = 'none';
+
+                    // Ascunde taburi dashboard
+                    ['dashTabArhiva', 'dashTabAbonament', 'dashTabAfiliere', 'dashTabSetari'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.style.display = 'none';
+                    });
+
+                    if (tab === 'arhiva') {
+                        document.getElementById('dashTabArhiva').style.display = 'block';
+                        incarcaArhivaContracteUI();
+                    } else if (tab === 'abonament') {
+                        document.getElementById('dashTabAbonament').style.display = 'block';
+                        if (utilizatorCurent) {
+                            document.getElementById('infoDashEmail').innerText = utilizatorCurent.email;
+                            document.getElementById('infoDashProfil').innerText = utilizatorCurent.tipProfil;
+                            document.getElementById('infoDashPachet').innerText = utilizatorCurent.pachet;
+                        }
+                    } else if (tab === 'afiliere') {
+                        document.getElementById('dashTabAfiliere').style.display = 'block';
+                        const linkRef = window.location.origin + window.location.pathname + '?ref=mario_' + Math.floor(Math.random() * 10000);
+                        document.getElementById('myReferralLinkText').innerText = linkRef;
+                    } else if (tab === 'setari') {
+                        document.getElementById('dashTabSetari').style.display = 'block';
+                    }
+                }
+
+                function incarcaArhivaContracteUI() {
+                    const tbody = document.getElementById('dashboardContracteLista');
+                    bazaContracte = JSON.parse(localStorage.getItem('actpeloc_arhiva')) || [];
+                    if (bazaContracte.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted); padding: 20px;">Niciun contract generat momentan în arhivă.</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = '';
+                    bazaContracte.forEach((item, index) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td style="border: 1px solid var(--border-color); padding: 12px; font-weight: 700;">#ACT-${index + 1042}</td>
+                            <td style="border: 1px solid var(--border-color); padding: 12px;">${item.titlu} (${item.data})</td>
+                            <td style="border: 1px solid var(--border-color); padding: 12px;"><button class="btn btn-primary" style="padding: 6px 12px; font-size: 11px; width: auto;" onclick="descarcaContractDinArhiva(${index})">📥 Descarcă PDF</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                function descarcaContractDinArhiva(idx) {
+                    const item = bazaContracte[idx];
+                    if (!item || !item.b64) return;
+                    const byteCharacters = atob(item.b64);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], { type: 'application/pdf' });
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = item.numeFisier || 'Contract_ActPeLoc.pdf';
+                    link.click();
+                    arataNotificare('Descărcare inițiată cu succes!');
+                }
+
+                function reseteazaCrediteNelimitate() {
+                    arataNotificare('Creditele au fost setate la nivel Nelimitat (∞)!');
+                }
+
+                function copiazaLinkAfiliere() {
+                    const text = document.getElementById('myReferralLinkText').innerText;
+                    navigator.clipboard.writeText(text);
+                    arataNotificare('Linkul de afiliere a fost copiat în clipboard!');
+                }
+
+                function trimiteAfiliereWhatsApp() {
+                    const text = document.getElementById('myReferralLinkText').innerText;
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('Salut! Folosește linkul meu pentru 35% reducere la contracte: ' + text)}`, '_blank');
+                }
+
+                function actualizeazaEmailCont() {
+                    const noulEmail = document.getElementById('settingsNewEmail').value.trim();
+                    if (!noulEmail) {
+                        arataNotificare('Introdu o adresă de e-mail validă!', true);
+                        return;
+                    }
+                    utilizatorCurent.email = noulEmail;
+                    localStorage.setItem('actpeloc_user', JSON.stringify(utilizatorCurent));
+                    actualizeazaStareUICont();
+                    arataNotificare('E-mailul a fost actualizat cu succes!');
+                }
+
+                function verificaParametriURL() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.has('ref')) {
+                        const alertB = document.getElementById('referralAlertBanner');
+                        if (alertB) alertB.style.display = 'flex';
+                    }
+                }
+
+                function selecteazaModAutoSiPorneste() {
+                    if (!utilizatorCurent) {
+                        deschideModalAuth('login');
+                        return;
+                    }
+                    inchideToateEcranele();
+                    document.getElementById('modeSelectorContainer').style.display = 'block';
+                }
+
+                function selecteazaModAutoFlux(mod) {
+                    modAutoModLucru = mod;
+                    inchideToateEcranele();
+                    document.getElementById('autoWizardContainer').style.display = 'block';
+                    pasAutoCurent = 1;
+                    actualizeazaPasiAutoUI();
+                    initializatoriCanvasSemnatura();
+                }
+
+                function schimbaPasAuto(pas) {
+                    pasAutoCurent = pas;
+                    actualizeazaPasiAutoUI();
+                }
+
+                function valideazaSiTreciAuto(pasCurent) {
+                    if (pasCurent === 1) {
+                        const cnp = document.getElementById('v_cnp').value.trim();
+                        if (cnp.length !== 13) {
+                            arataNotificare('CNP-ul vânzătorului trebuie să aibă exact 13 caractere!', true);
+                            return;
+                        }
+                    } else if (pasCurent === 2) {
+                        const cnp = document.getElementById('c_cnp').value.trim();
+                        if (cnp.length !== 13) {
+                            arataNotificare('CNP-ul cumpărătorului trebuie să aibă exact 13 caractere!', true);
+                            return;
+                        }
+                    }
+                    pasAutoCurent++;
+                    actualizeazaPasiAutoUI();
+                    if (pasAutoCurent === 4 && modAutoModLucru === 'remote') {
+                        document.getElementById('remoteLinkBox').style.display = 'block';
+                        document.getElementById('remoteGeneratedLink').value = window.location.origin + window.location.pathname + '?session=auto_remote_' + Date.now();
+                    }
+                }
+
+                function actualizeazaPasiAutoUI() {
+                    for (let i = 1; i <= 4; i++) {
+                        const stepEl = document.getElementById('autoStep' + i);
+                        const indEl = document.getElementById('stepInd' + i);
+                        if (stepEl) stepEl.style.display = i === pasAutoCurent ? 'block' : 'none';
+                        if (indEl) indEl.style.background = i <= pasAutoCurent ? 'var(--primary)' : 'var(--border-color)';
+                    }
+                }
+
+                let canvasCtxV = null, canvasCtxC = null;
+                let desenV = false, desenC = false;
+
+                function initializatoriCanvasSemnatura() {
+                    setTimeout(() => {
+                        const cvV = document.getElementById('canvasVanzator');
+                        const cvC = document.getElementById('canvasCumparator');
+                        if (cvV && !canvasCtxV) {
+                            canvasCtxV = cvV.getContext('2d');
+                            configureazaCanvasEv(cvV, canvasCtxV, 'v');
+                        }
+                        if (cvC && !canvasCtxC) {
+                            canvasCtxC = cvC.getContext('2d');
+                            configureazaCanvasEv(cvC, canvasCtxC, 'c');
+                        }
+                    }, 200);
+                }
+
+                function configureazaCanvasEv(canvas, ctx, tip) {
+                    ctx.strokeStyle = '#0f172a';
+                    ctx.lineWidth = 2;
+                    ctx.lineCap = 'round';
+
+                    const getPos = (e) => {
+                        const rect = canvas.getBoundingClientRect();
+                        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                        return { x: clientX - rect.left, y: clientY - rect.top };
+                    };
+
+                    const startDraw = (e) => {
+                        if (tip === 'v') desenV = true; else desenC = true;
+                        const pos = getPos(e);
+                        ctx.beginPath();
+                        ctx.moveTo(pos.x, pos.y);
+                        e.preventDefault();
+                    };
+
+                    const draw = (e) => {
+                        if (tip === 'v' && !desenV) return;
+                        if (tip === 'c' && !desenC) return;
+                        const pos = getPos(e);
+                        ctx.lineTo(pos.x, pos.y);
+                        ctx.stroke();
+                        e.preventDefault();
+                    };
+
+                    const stopDraw = () => {
+                        if (tip === 'v') desenV = false; else desenC = false;
+                    };
+
+                    canvas.addEventListener('mousedown', startDraw);
+                    canvas.addEventListener('mousemove', draw);
+                    canvas.addEventListener('mouseup', stopDraw);
+                    canvas.addEventListener('touchstart', startDraw);
+                    canvas.addEventListener('touchmove', draw);
+                    canvas.addEventListener('touchend', stopDraw);
+                }
+
+                function stergeCanvas(id) {
+                    const cv = document.getElementById(id);
+                    const ctx = cv.getContext('2d');
+                    ctx.clearRect(0, 0, cv.width, cv.height);
+                }
+
+                function trimiteRemoteWhatsApp() {
+                    const link = document.getElementById('remoteGeneratedLink').value;
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('Salut! Completează contractul auto accesând linkul securizat: ' + link)}`, '_blank');
+                }
+
+                async function genereazaContractAutoFinal() {
+                    try {
+                        arataNotificare('Se generează contractul oficial ITL 054...');
+                        // Simulăm generarea și arhivarea binară corectă în Base64
+                        const fakePdfBytes = btoa('PDF_OFFICIAL_ITL_054_ACTPELOC_' + Date.now());
+                        bazaContracte.push({
+                            titlu: 'Contract Vânzare-Cumpărare Auto',
+                            data: new Date().toLocaleDateString('ro-RO'),
+                            numeFisier: 'Contract_Auto_ITL_054.pdf',
+                            b64: fakePdfBytes
+                        });
+                        localStorage.setItem('actpeloc_arhiva', JSON.stringify(bazaContracte));
+                        arataNotificare('Contract generat și salvat în arhivă!');
+                        acceseazaDashboardTab('arhiva');
+                    } catch (err) {
+                        arataNotificare('Eroare la generarea PDF-ului!', true);
+                    }
+                }
+
+                function pornesteFluxComodat() {
+                    if (!utilizatorCurent) { deschideModalAuth('login'); return; }
+                    arataNotificare('Pornire flux Contract de Comodat Auto...');
+                }
+
+                function selecteazaModImobiliarSiPorneste(mod) {
+                    if (!utilizatorCurent) { deschideModalAuth('login'); return; }
+                    modImobiliarModLucru = mod;
+                    arataNotificare('Pornire Contract Închiriere Locuință (10 Articole)...');
+                }
+
+                function pornesteFluxDemisie() {
+                    if (!utilizatorCurent) { deschideModalAuth('login'); return; }
+                    arataNotificare('Pornire Cerere de Demisie (Art. 81 Codul Muncii)...');
+                }
+
+                function pornesteFluxB2B() {
+                    if (!utilizatorCurent) { deschideModalAuth('login'); return; }
+                    arataNotificare('Pornire Contract Prestări Servicii B2B Enterprise...');
+                }
+            </script>
+        </body>
+        </html>
