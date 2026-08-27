@@ -410,20 +410,31 @@ function selecteazaCategorie(cat) {
         if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Părților & Imobilului";
         if (modeSelector) modeSelector.style.display = 'block';
     } else if (cat === 'prestari_servicii') {
-        // Prestări servicii: direct completare locală cu semnături fizice pe ecran
+        // Prestări servicii: Ghidat în pași prin wizard local
         if (formAuto1) formAuto1.style.display = 'none';
         if (formImob1) formImob1.style.display = 'none';
         if (formPrestari1) formPrestari1.style.display = 'grid';
         if (formDemisie1) formDemisie1.style.display = 'none';
-        if (titleStep1) titleStep1.innerText = "Contract de Prestări Servicii (Complet Local)";
+        if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Prestatorului";
         if (modeSelector) modeSelector.style.display = 'none';
 
+        const progressBar = document.getElementById('progressBarContainer');
+        if (progressBar) progressBar.style.display = 'flex';
+        
+        // Configurăm titlurile pașilor pentru Prestări Servicii
+        const p2 = document.getElementById('p2'), p3 = document.getElementById('p3'), p4 = document.getElementById('p4');
+        if(p2) p2.style.display = 'flex';
+        if(p3) p3.style.display = 'flex';
+        if(p4) p4.style.display = 'flex';
+
+        currentStep = 1;
         document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
         const step1 = document.getElementById('step1');
         if (step1) {
             step1.style.display = 'block';
             step1.classList.add('active');
         }
+        updateProgress();
     } else if (cat === 'demisie') {
         if (formAuto1) formAuto1.style.display = 'none';
         if (formImob1) formImob1.style.display = 'none';
@@ -540,7 +551,17 @@ function valideazaEmail(email) {
 }
 
 function valideazaPasCurent() {
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie' || tipContractCurent === 'prestari_servicii') return true;
+    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') return true;
+    if (tipContractCurent === 'prestari_servicii') {
+        if (currentStep === 1) {
+            const prestName = document.getElementById('prestatorNume').value.trim();
+            if (!prestName) { arataNotificare("Introduceți denumirea prestatorului!", true); return false; }
+        } else if (currentStep === 2) {
+            const benName = document.getElementById('beneficiarNume').value.trim();
+            if (!benName) { arataNotificare("Introduceți denumirea beneficiarului!", true); return false; }
+        }
+        return true;
+    }
     if (currentStep === 1 && userRole === 'vanzator') {
         const cnpEl = document.getElementById('seller_ci_cnp');
         const emailEl = document.getElementById('seller_email');
@@ -654,8 +675,8 @@ function comutaFirmaCumparator() {
 }
 
 function updateProgress() {
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie' || tipContractCurent === 'prestari_servicii') return;
-    const total = (modLucru === 'remote' && userRole === 'vanzator') ? 2 : 4;
+    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') return;
+    const total = (tipContractCurent === 'prestari_servicii') ? 4 : ((modLucru === 'remote' && userRole === 'vanzator') ? 2 : 4);
     for (let i = 1; i <= 4; i++) {
         const p = document.getElementById('p' + i);
         if (!p) continue;
@@ -670,8 +691,34 @@ function nextStep(step) {
     if (!valideazaPasCurent()) return;
 
     if (tipContractCurent === 'prestari_servicii') {
+        const formPrestari1 = document.getElementById('formPrestariStep1');
+        const formPrestari2 = document.getElementById('formPrestariStep2');
+        const formPrestari3 = document.getElementById('formPrestariStep3');
+        const formAuto1 = document.getElementById('formAutoStep1');
+        const formAuto2 = document.getElementById('formAutoStep2');
+        const formAuto3 = document.getElementById('formAutoStep3');
+
         if (step === 1) {
-            const step1 = document.getElementById('step1');
+            if(formPrestari1) formPrestari1.style.display = 'none';
+            if(formPrestari2) formPrestari2.style.display = 'grid';
+            if(formPrestari3) formPrestari3.style.display = 'none';
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('titleStep2').innerText = "Pasul 2: Datele Beneficiarului";
+            currentStep = 2;
+            updateProgress();
+            return;
+        } else if (step === 2) {
+            if(formPrestari2) formPrestari2.style.display = 'none';
+            if(formPrestari3) formPrestari3.style.display = 'grid';
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('titleStep3').innerText = "Pasul 3: Obiectul, Prețul și Termenele";
+            currentStep = 3;
+            updateProgress();
+            return;
+        } else if (step === 3) {
+            const step3 = document.getElementById('step3');
             const step4 = document.getElementById('step4');
             const titleStep4 = document.getElementById('titleStep4');
             const step4Desc = document.getElementById('step4Desc');
@@ -681,9 +728,9 @@ function nextStep(step) {
             const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
             const btnDescarca = document.getElementById('btnDescarcaOficial');
 
-            if (step1) step1.classList.remove('active');
+            if (step3) step3.classList.remove('active');
             if (step4) step4.classList.add('active');
-            if (titleStep4) titleStep4.innerText = "Pasul Final: Semnături & Generare Contract Prestări Servicii";
+            if (titleStep4) titleStep4.innerText = "Pasul 4: Semnături & Generare Contract Prestări Servicii";
             if (step4Desc) step4Desc.innerText = "Verificați datele introduse. Semnați în casetele de mai jos pentru finalizarea contractului B2B/B2C:";
             if (localActions) localActions.style.display = 'none';
             if (waitingContainer) waitingContainer.style.display = 'none';
@@ -698,8 +745,9 @@ function nextStep(step) {
             if (btnDescarca) btnDescarca.innerText = "📥 Descarcă Contractul de Prestări Servicii PDF";
             if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractPrestariServiciiPDF()');
             currentStep = 4;
+            updateProgress();
+            return;
         }
-        return;
     }
 
     if (tipContractCurent === 'demisie') {
@@ -802,7 +850,45 @@ function nextStep(step) {
 }
 
 function prevStep(step) {
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie' || tipContractCurent === 'prestari_servicii') {
+    if (tipContractCurent === 'prestari_servicii') {
+        const formPrestari1 = document.getElementById('formPrestariStep1');
+        const formPrestari2 = document.getElementById('formPrestariStep2');
+        const formPrestari3 = document.getElementById('formPrestariStep3');
+
+        if (step === 2) {
+            if(formPrestari1) formPrestari1.style.display = 'grid';
+            if(formPrestari2) formPrestari2.style.display = 'none';
+            if(formPrestari3) formPrestari3.style.display = 'none';
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('titleStep1').innerText = "Pasul 1: Datele Prestatorului";
+            currentStep = 1;
+            updateProgress();
+            return;
+        } else if (step === 3) {
+            if(formPrestari1) formPrestari1.style.display = 'none';
+            if(formPrestari2) formPrestari2.style.display = 'grid';
+            if(formPrestari3) formPrestari3.style.display = 'none';
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('titleStep2').innerText = "Pasul 2: Datele Beneficiarului";
+            currentStep = 2;
+            updateProgress();
+            return;
+        } else if (step === 4) {
+            if(formPrestari1) formPrestari1.style.display = 'none';
+            if(formPrestari2) formPrestari2.style.display = 'none';
+            if(formPrestari3) formPrestari3.style.display = 'grid';
+            document.getElementById('step4').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('titleStep3').innerText = "Pasul 3: Obiectul, Prețul și Termenele";
+            currentStep = 3;
+            updateProgress();
+            return;
+        }
+    }
+
+    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') {
         if (step === 4 && !isRemoteTenantView) {
             const step4 = document.getElementById('step4');
             const step1 = document.getElementById('step1');
@@ -1153,7 +1239,7 @@ async function genereazaContractPrestariServiciiPDF() {
 
         const deseneazaParagraf = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-            page.drawText(curataDiacritice(text), { x: 45, y, size: 7, font });
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 7, font, maxWidth: 500 });
             y -= 11;
         };
 
@@ -1210,7 +1296,7 @@ async function genereazaContractPrestariServiciiPDF() {
 
         deseneazaTitluSectiune("ARTICOLUL 8: PACTUL COMISORIU EXPRES (REZILIERE)");
         deseneazaParagraf(`8.1. Prezentul contract poate inceta prin acordul scris al partilor sau prin reziliere unilaterala cu un preaviz de 15 zile.`);
-        deseneazaParagraf(`8.2. In cazul inclacarii grave a obligatiilor (ex: neplata la termen), contractul se considera reziliat de plin drept (pact comisoriu de gradul IV), fara interventia instantei.`);
+        deseneazaParagraf(`8.2. In cazul incalcarii grave a obligatiilor (ex: neplata la termen), contractul se considera reziliat de plin drept (pact comisoriu de gradul IV), fara interventia instantei.`);
         y -= 4;
 
         deseneazaTitluSectiune("ARTICOLUL 9: LITIGII SI FORTA MAJORA");

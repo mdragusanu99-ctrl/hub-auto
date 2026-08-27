@@ -519,7 +519,7 @@
                     </div>
                 </div>
 
-                <!-- Formular Imobiliare Complet (FĂRĂ domiciliu proprietar) -->
+                <!-- Formular Imobiliare Complet -->
                 <div id="formImobiliareStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Proprietar (Locator)</strong></div>
                     <div class="full-width"><label>Nume și Prenume Proprietar *</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
@@ -545,38 +545,20 @@
                     <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
                 </div>
 
-                <!-- Formular Prestări Servicii (B2B / B2C) -->
+                <!-- Formular Prestări Servicii - Pasul 1 (Prestator) -->
                 <div id="formPrestariStep1" class="form-grid" style="display:none;">
                     <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
-                        ✍️ Contract de Prestări Servicii (Complet Legal, Protecție ANAF & IP)
+                        ✍️ Pasul 1 din 3: Datele Prestatorului (Furnizorul Serviciilor)
                     </div>
-
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Prestator (Furnizor Servicii)</strong></div>
                     <div class="full-width"><label>Denumire Firmă / PFA / Nume *</label><input type="text" id="prestatorNume" placeholder="ex: SC DEVSTUDIO SRL / PFA ION"></div>
                     <div><label>CUI / CIF sau CNP *</label><input type="text" id="prestatorCui" placeholder="ex: RO12345678"></div>
                     <div><label>Nr. Reg. Com. (dacă e firmă)</label><input type="text" id="prestatorReg" placeholder="ex: J37/123/2024"></div>
                     <div class="full-width"><label>Adresă Sediu Social / Domiciliu *</label><input type="text" id="prestatorAdresa" placeholder="ex: STR. EROILOR, NR. 10, BÂRLAD"></div>
                     <div><label>Reprezentat prin (Administrator)</label><input type="text" id="prestatorReprezentant" placeholder="ex: POPESCU ION"></div>
                     <div><label>Bancă & IBAN</label><input type="text" id="prestatorBanca" placeholder="ex: BT, RO48BTRL..."></div>
-
-                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Beneficiar (Client)</strong></div>
-                    <div class="full-width"><label>Denumire Firmă sau Nume Beneficiar *</label><input type="text" id="beneficiarNume" placeholder="ex: SC CLIENTEXPRESS SRL"></div>
-                    <div><label>CUI / CIF sau CNP *</label><input type="text" id="beneficiarCui" placeholder="ex: RO87654321"></div>
-                    <div><label>Nr. Reg. Com. (dacă e firmă)</label><input type="text" id="beneficiarReg" placeholder="ex: J37/456/2025"></div>
-                    <div class="full-width"><label>Adresă Sediu / Domiciliu Beneficiar *</label><input type="text" id="beneficiarAdresa" placeholder="ex: BD. REPUBLICII, NR. 5, BÂRLAD"></div>
-                    <div><label>Reprezentant Beneficiar</label><input type="text" id="beneficiarReprezentant" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>Telefon / E-mail</label><input type="text" id="beneficiarContact" placeholder="ex: 0722000000 / contact@client.ro" style="text-transform: none;"></div>
-
-                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">3. Obiectul, Prețul și Termenele</strong></div>
-                    <div class="full-width">
-                        <label>Descrierea Detaliată a Serviciilor (Obiectul Contractului) *</label>
-                        <textarea id="serviciiDescriere" placeholder="ex: Dezvoltare aplicație web, mentenanță lunară, servicii de marketing digital sau consultanță de specialitate conform anexe."></textarea>
-                    </div>
-                    <div><label>Valoare Totală (Preț) *</label><input type="text" id="serviciiPret" placeholder="ex: 2.500 RON (fara TVA)"></div>
-                    <div><label>Termen de Execuție / Finalizare *</label><input type="text" id="serviciiTermen" placeholder="ex: 30 ZILE CALENDARISTICE"></div>
                 </div>
 
-                <!-- Formular Cerere Demisie (Muncă) - Unic și Oficial -->
+                <!-- Formular Cerere Demisie (Muncă) -->
                 <div id="formDemisieStep1" class="form-grid" style="display:none;">
                     <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
                         📄 Cerere de Demisie Oficială Standard (Conform Codului Muncii - art. 81)
@@ -617,7 +599,7 @@
                 </div>
             </div>
 
-            <!-- STEP 2: CUMPĂRĂTOR (AUTO) -->
+            <!-- STEP 2: CUMPĂRĂTOR (AUTO) / BENEFICIAR (PRESTĂRI SERVICII) -->
             <div class="step-content" id="step2">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
                 
@@ -667,16 +649,30 @@
                     </div>
                 </div>
 
+                <!-- Formular Prestări Servicii - Pasul 2 (Beneficiar) -->
+                <div id="formPrestariStep2" class="form-grid" style="display:none;">
+                    <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
+                        ✍️ Pasul 2 din 3: Datele Beneficiarului (Clientul)
+                    </div>
+                    <div class="full-width"><label>Denumire Firmă sau Nume Beneficiar *</label><input type="text" id="beneficiarNume" placeholder="ex: SC CLIENTEXPRESS SRL"></div>
+                    <div><label>CUI / CIF sau CNP *</label><input type="text" id="beneficiarCui" placeholder="ex: RO87654321"></div>
+                    <div><label>Nr. Reg. Com. (dacă e firmă)</label><input type="text" id="beneficiarReg" placeholder="ex: J37/456/2025"></div>
+                    <div class="full-width"><label>Adresă Sediu / Domiciliu Beneficiar *</label><input type="text" id="beneficiarAdresa" placeholder="ex: BD. REPUBLICII, NR. 5, BÂRLAD"></div>
+                    <div><label>Reprezentant Beneficiar</label><input type="text" id="beneficiarReprezentant" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>Telefon / E-mail</label><input type="text" id="beneficiarContact" placeholder="ex: 0722000000 / contact@client.ro" style="text-transform: none;"></div>
+                </div>
+
                 <div style="margin-top: 30px; display: flex; gap: 12px;" id="btnGroupStep2">
                     <button class="btn btn-secondary" id="btnPrevStep2" onclick="prevStep(2)">⬅ Înapoi</button>
                     <button class="btn btn-primary" onclick="nextStep(2)">Înainte ➔</button>
                 </div>
             </div>
 
-            <!-- STEP 3: VEHICUL ȘI PREȚ -->
+            <!-- STEP 3: VEHICUL ȘI PREȚ / OBIECT SERVICII -->
             <div class="step-content" id="step3">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep3">Pasul 3: Vehiculul și Prețul</div>
-                <div class="form-grid">
+                
+                <div id="formAutoStep3" class="form-grid">
                     <div><label>Marcă</label><input type="text" id="make" placeholder="ex: AUDI"></div>
                     <div><label>Tipul</label><input type="text" id="type" placeholder="ex: A4 B8"></div>
                     <div class="full-width"><label>Număr de Identificare (VIN - 17 caractere)</label><input type="text" id="chassisSeries" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
@@ -704,6 +700,20 @@
                     <div><label>Preț în Cifre</label><input type="text" id="figurePrice" placeholder="ex: 8.500 EUR"></div>
                     <div><label>Preț în Litere</label><input type="text" id="lettersPrice" placeholder="ex: OPT MII CINCI SUTE EURO"></div>
                 </div>
+
+                <!-- Formular Prestări Servicii - Pasul 3 (Obiect, Preț, Termen) -->
+                <div id="formPrestariStep3" class="form-grid" style="display:none;">
+                    <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
+                        ✍️ Pasul 3 din 3: Obiectul, Prețul și Termenele Serviciilor
+                    </div>
+                    <div class="full-width">
+                        <label>Descrierea Detaliată a Serviciilor (Obiectul Contractului) *</label>
+                        <textarea id="serviciiDescriere" placeholder="ex: Dezvoltare aplicație web, mentenanță lunară, servicii de marketing digital sau consultanță de specialitate conform anexe."></textarea>
+                    </div>
+                    <div><label>Valoare Totală (Preț) *</label><input type="text" id="serviciiPret" placeholder="ex: 2.500 RON (fara TVA)"></div>
+                    <div><label>Termen de Execuție / Finalizare *</label><input type="text" id="serviciiTermen" placeholder="ex: 30 ZILE CALENDARISTICE"></div>
+                </div>
+
                 <div style="margin-top: 30px; display: flex; gap: 12px;">
                     <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
                     <button class="btn btn-primary" onclick="finalizarePas()">Finalizare & Opțiuni ➔</button>
