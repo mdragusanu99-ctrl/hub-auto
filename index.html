@@ -547,19 +547,14 @@
                     <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodantAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
                 </div>
 
-                <!-- Formular Imobiliare Pas 1 -->
+                <!-- Formular Imobiliare Pas 1 (Doar Proprietar & Imobil - Chiriașul a fost mutat la Pasul 2) -->
                 <div id="formImobiliareStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Proprietar (Locator)</strong></div>
                     <div class="full-width"><label>Nume și Prenume Proprietar *</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
                     <div><label>CNP Proprietar *</label><input type="text" id="proprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
                     <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="proprietarAct" placeholder="ex: VS 123456"></div>
 
-                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>CNP Chiriaș *</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
-
-                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">3. Imobilul Închiriat & Condiții Financiare</strong></div>
+                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">2. Imobilul Închiriat & Condiții Financiare</strong></div>
                     <div class="full-width"><label>Adresă Completă Imobil Închiriat *</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
                     <div class="full-width" style="margin-top: 5px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
                         <label style="color: var(--primary); margin-bottom: 8px;">Inventar Bunuri / Electrocasnice (Opțional)</label>
@@ -601,7 +596,7 @@
                 </div>
             </div>
 
-            <!-- STEP 2: CUMPĂRĂTOR / BENEFICIAR / COMODATAR / SEMNĂTURĂ DEMISIE -->
+            <!-- STEP 2: CUMPĂRĂTOR / BENEFICIAR / COMODATAR / CHIRIAȘ / SEMNĂTURĂ DEMISIE -->
             <div class="step-content" id="step2">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
                 
@@ -672,7 +667,6 @@
                     <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodatarAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
                 </div>
 
-
                 <!-- Formular Imobiliare Pas 2 (Chiriaș) -->
                 <div id="formImobiliareStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
@@ -680,6 +674,7 @@
                     <div><label>CNP Chiriaș *</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
                     <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
                 </div>
+
                 <!-- Container Semnătură pentru Demisie (care are doar 3 pași total) -->
                 <div id="demisSignBoxContainer" style="display:none; margin-top: 15px;">
                     <label>Semnătură Salariat</label>
@@ -748,31 +743,31 @@
                     <div class="full-width"><label>Scopul Folosinței *</label><input type="text" id="comodatScop" placeholder="ex: LOCUINTA / STABILIRE SEDIU SOCIAL CONFORM LEGII 31/1990"></div>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
-                    <button class="btn btn-primary" onclick="finalizarePas()">Finalizare & Opțiuni ➔</button>
-                </div>
-            </div>
-
-            <!-- STEP 4: SEMNĂTURI / LINK LA DISTANȚĂ -->
-            <div class="step-content" id="step4">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep4">Pasul 4: Semnături & Trimitere la Distanță</div>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Colectați semnăturile sau generați linkul pentru cealaltă parte.</p>
-                
-                <!-- ZONA DE SEMNĂTURI -->
+                <!-- ZONA DE SEMNĂTURI PENTRU IMOBILIARE LA PASUL 3 -->
                 <div id="imobiliareSemnaturiContainer" style="display:none; margin-bottom: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                     <div id="proprietarSignBox" style="margin-bottom: 16px;">
-                        <label id="labelPart1Sign">Semnătură Partea 1</label>
+                        <label id="labelPart1Sign">Semnătură Proprietar (Locator)</label>
                         <canvas id="sigProprietarCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
                         <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează Semnătura</button>
                     </div>
                     <div id="chiriasSignBox">
-                        <label id="chiriasSignLabel">Semnătură Partea 2</label>
+                        <label id="chiriasSignLabel">Semnătură Chiriaș (Locatar)</label>
                         <canvas id="sigChiriasCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
                         <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează Semnătura</button>
                     </div>
                 </div>
 
+                <div style="margin-top: 30px; display: flex; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
+                    <button class="btn btn-primary" id="btnNextStep3" onclick="nextStep(3)">Finalizare & Opțiuni ➔</button>
+                </div>
+            </div>
+
+            <!-- STEP 4: SEMNĂTURI / LINK LA DISTANȚĂ SAU PLATĂ & DESCĂRCARE -->
+            <div class="step-content" id="step4">
+                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep4">Pasul 4: Semnături & Trimitere la Distanță</div>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Colectați semnăturile sau generați linkul pentru cealaltă parte.</p>
+                
                 <!-- BUTON GENERARE LINK LA DISTANȚĂ -->
                 <div id="localActions" style="display:none;">
                     <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" onclick="pornesteFluxRemote()">📤 Generează Link de Trimitere la Distanță</button>
@@ -790,13 +785,22 @@
                     </div>
                 </div>
 
+                <!-- ZONĂ PLATĂ & DESCĂRCARE LA PASUL 4 (PENTRU IMOBILIARE) -->
+                <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
+                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">💳 Status Plată: <span>Credit Gratuit Disponibil</span></div>
+                        <p style="font-size: 12px; color: var(--text-muted);">Apăsați butonul de mai jos pentru a genera și descărca actul oficial.</p>
+                    </div>
+                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()">📥 Plătește & Descarcă Documentul Oficial PDF</button>
+                </div>
+
                 <div style="margin-top: 20px; display: flex; gap: 12px;">
                     <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button>
-                    <button class="btn btn-primary" onclick="nextStep(4)">Continuă spre Plată ➔</button>
+                    <button class="btn btn-primary" id="btnNextStep4" onclick="nextStep(4)" style="display:none;">Continuă spre Plată ➔</button>
                 </div>
             </div>
 
-            <!-- STEP 5: PLATĂ & DESCĂRCARE PDF (SEPARAT) -->
+            <!-- STEP 5: PLATĂ & DESCĂRCARE PDF (PENTRU AUTO 5 PAȘI) -->
             <div class="step-content" id="step5">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep5">Pasul Final: Plată & Descărcare Document</div>
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea documentului oficial în format PDF.</p>
@@ -806,8 +810,8 @@
                     <p style="font-size: 12px; color: var(--text-muted);">Apăsați butonul de mai jos pentru a genera și descărca actul oficial.</p>
                 </div>
 
-                <div id="finalDownloadContainer" style="text-align: center;">
-                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()">📥 Plătește & Descarcă Documentul Oficial PDF</button>
+                <div id="finalDownloadContainerStep5" style="text-align: center;">
+                    <button class="btn btn-success" id="btnDescarcaOficialStep5" onclick="ruleazaDescarcareaFinala()">📥 Plătește & Descarcă Documentul Oficial PDF</button>
                 </div>
 
                 <div style="margin-top: 20px;">
