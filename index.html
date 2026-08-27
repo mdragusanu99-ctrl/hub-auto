@@ -309,11 +309,11 @@
                         <h4>Auto & Transport</h4>
                         <p>Contracte de vânzare-cumpărare auto oficiale ITL 054, închiriere și comodat.</p>
                     </div>
-                    <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele Pro!', true)">
-                        <div class="category-icon">🏠</div>
-                        <h4>Imobiliare</h4>
-                        <p>Contracte de închiriere locuințe, comodat spații comerciale și terenuri.</p>
-                    </div>
+                    <div class="category-card" onclick="deschideFormularImobiliare()">
+    <div class="category-icon">🏠</div>
+    <h4>Imobiliare</h4>
+    <p>Contracte de închiriere locuințe cu inventar de bunuri și garanție.</p>
+</div>
                     <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele Pro!', true)">
                         <div class="category-icon">💼</div>
                         <h4>Muncă & PFA</h4>
@@ -607,6 +607,61 @@
             <div id="status" style="text-align: center; margin-top: 16px; font-weight: 700; font-size: 14px;"></div>
         </div>
     </div>
+    <!-- ECRAN FORMULAR CONTRACT IMOBILIAR (ÎNCHIRIERE LOCUINȚĂ) -->
+<div id="imobiliareFormContainer" style="display:none;">
+    <div class="step-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div style="font-size: 18px; font-weight: 800;">Contract Închiriere Locuință & Inventar</div>
+        <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi la Acasă</button>
+    </div>
+
+    <div class="form-grid">
+        <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Proprietar (Locator)</strong></div>
+        <div class="full-width"><label>Nume și Prenume Proprietar</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
+        <div><label>CNP Proprietar</label><input type="text" id="proprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
+        <div><label>Act Identitate (CI Serie și Nr)</label><input type="text" id="proprietarAct" placeholder="ex: VS 123456"></div>
+        <div class="full-width"><label>Adresă Domiciliu Proprietar</label><input type="text" id="proprietarAdresa" placeholder="ex: STR. UNIRII, NR. 10, BÂRLAD"></div>
+
+        <div class="full-width" style="margin-top: 10px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
+        <div class="full-width"><label>Nume și Prenume Chiriaș</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
+        <div><label>CNP Chiriaș</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+        <div><label>Act Identitate (CI Serie și Nr)</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
+
+        <div class="full-width" style="margin-top: 10px;"><strong style="color: var(--primary); font-size: 13px;">3. Imobilul Închiriat & Condiții Financiare</strong></div>
+        <div class="full-width"><label>Adresă Completă Imobil Închiriat</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
+        
+        <!-- Căsuța de inventar cerută de tine -->
+        <div class="full-width" style="margin-top: 5px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+            <label style="color: var(--primary); margin-bottom: 8px;">D. Inventar Bunuri / Electrocasnice (Opțional)</label>
+            <input type="text" id="imobilInventar" placeholder="ex: Centrala termica, Frigider Arctic, Masina spalat Samsung, TV LG">
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Dacă imobilul este mobilat/utilat, menționați scurt principalele bunuri predate. Dacă este gol, lăsați gol.</div>
+        </div>
+
+        <div><label>Durată Contract</label><input type="text" id="imobilDurata" value="12 LUNI"></div>
+        <div><label>Data Începere</label><input type="text" id="imobilDataStart" value="01.09.2026"></div>
+        <div><label>Chirie Lunară</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
+        <div><label>Garanție</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
+
+        <div class="full-width" style="margin-top: 15px;">
+            <strong style="font-size: 13px; display: block; margin-bottom: 8px;">Semnături Digitale</strong>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div>
+                    <label>Semnătură Proprietar</label>
+                    <canvas id="sigProprietarCanvas" width="220" height="80" style="border: 1px solid var(--border-color); background: var(--bg-body); border-radius: 6px; cursor: crosshair;"></canvas>
+                    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px; margin-top: 4px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează Semnătură</button>
+                </div>
+                <div>
+                    <label>Semnătură Chiriaș</label>
+                    <canvas id="sigChiriasCanvas" width="220" height="80" style="border: 1px solid var(--border-color); background: var(--bg-body); border-radius: 6px; cursor: crosshair;"></canvas>
+                    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px; margin-top: 4px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează Semnătură</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <button class="btn btn-success" onclick="genereazaContractImobiliarPDF()">📥 Descarcă Contract Imobiliar Oficial PDF</button>
+    </div>
+</div>
 
     <script>
         let currentStep = 1;
@@ -953,7 +1008,12 @@
             'sellerRepresentant', 'sellerQuality', 'reprCISeries', 'reprCINumber', 'reprCNP', 'reprPhone', 'reprEmail',
             'buyerName', 'buyer_judet', 'buyerPostalCode', 'buyer_city', 'buyer_sector', 'buyerStreet', 'buyerStreetNo', 'buyerBlock', 'buyerBuilding', 'buyerFloor', 'buyerApartment', 'buyerCISeries', 'buyerCINumber', 'buyerCNP', 'buyerPhone', 'buyerEmail',
             'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredActType', 'acquiredActDetails', 'figurePrice', 'lettersPrice'
-        ];
+     
+            // --- Elementele Noi Imobiliare ---
+    'proprietarNume', 'proprietarCnp', 'proprietarAct', 'proprietarAdresa', 
+    'chiriasNume', 'chiriasCnp', 'chiriasAct', 
+    'imobilAdresa', 'imobilInventar', 'imobilDurata', 'imobilDataStart', 'imobilChirie', 'imobilGarantie'
+];
 
         function initAutoSave() {
             elementeFormular.forEach(id => {
@@ -1309,17 +1369,22 @@
             }, 4000);
         }
 
-       async function salvareDateCumparatorSiFinalizare() {
+      async function salvareDateCumparatorSiFinalizare() {
     if (!valideazaPasCurent()) return;
     
-    // Protecție anti-dublu-click
+    // Găsim butonul și îl blocăm temporar anti-dublu-click
     const btn = document.querySelector('#buyerActions .btn-success');
     if (btn) { btn.disabled = true; btn.innerText = "Se trimite..."; }
 
     const d = colecteazaDate();
     try {
-        const res = await fetch(`/api/actualizeaza-tranzactie/${globalSessionId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) });
+        const res = await fetch(`/api/actualizeaza-tranzactie/${globalSessionId}`, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(d) 
+        });
         const json = await res.json();
+        
         if (json.success) {
             arataNotificare("✅ Datele au fost trimise vânzătorului!");
             document.getElementById('buyerActions').style.display = 'none';
@@ -1328,9 +1393,14 @@
             document.getElementById('titleStep4').innerText = "Tranzacție Finalizată";
             document.getElementById('step4Desc').innerText = "Datele tale au fost trimise cu succes către vânzător!";
             document.getElementById('finalDownloadContainer').style.display = 'block';
+        } else {
+            // Dacă serverul dă eroare logică, deblocăm butonul
+            arataNotificare(json.message || "Eroare la trimitere.", true);
+            if (btn) { btn.disabled = false; btn.innerText = "✅ Trimite Datele Către Vânzător"; }
         }
     } catch(e) { 
-        arataNotificare("Eroare la trimitere.", true); 
+        // Dacă pică rețeaua, deblocăm butonul ca utilizatorul să poată reîncerca
+        arataNotificare("Eroare de conexiune cu serverul.", true); 
         if (btn) { btn.disabled = false; btn.innerText = "✅ Trimite Datele Către Vânzător"; }
     }
 }
@@ -1386,6 +1456,198 @@
                 arataNotificare("✅ Contract generat, descărcat și salvat în arhivă!");
             } catch(e) { arataNotificare("Eroare generare PDF: " + e.message, true); }
         }
+        function deschideFormularImobiliare() {
+    document.getElementById('mainMenuContainer').style.display = 'none';
+    document.getElementById('dashboardView').style.display = 'none';
+    document.getElementById('modeSelectorContainer').style.display = 'none';
+    document.getElementById('imobiliareFormContainer').style.display = 'block';
+    initCanvasuriSemnatura();
+}
+
+function initCanvasuriSemnatura() {
+    ['sigProprietarCanvas', 'sigChiriasCanvas'].forEach(id => {
+        const canvas = document.getElementById(id);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let desenand = false;
+
+        canvas.onmousedown = (e) => { desenand = true; ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY); };
+        canvas.onmousemove = (e) => { if (!desenand) return; ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke(); };
+        canvas.onmouseup = () => { desenand = false; };
+        canvas.onmouseleave = () => { desenand = false; };
+
+        // Suport tactiv pentru telefoane/tablete
+        canvas.ontouchstart = (e) => {
+            desenand = true;
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            ctx.beginPath();
+            ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+            e.preventDefault();
+        };
+        canvas.ontouchmove = (e) => {
+            if (!desenand) return;
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+            ctx.stroke();
+            e.preventDefault();
+        };
+        canvas.ontouchend = () => { desenand = false; };
+    });
+}
+
+function curataCanvas(id) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Funcția ta de generare PDF imobiliar integrată complet
+async function genereazaContractImobiliarPDF() {
+    arataNotificare("Se generează contractul imobiliar cu inventar opțional...");
+    try {
+        const { PDFDocument, StandardFonts } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]);
+        let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText("Generat prin ActPeLoc.ro — Toate drepturile rezervate", { 
+                x: 45, 
+                y: 30, 
+                size: 8, 
+                font, 
+                color: PDFLib.rgb(0.5, 0.5, 0.5) 
+            });
+        };
+
+        const deseneazaTitluSectiune = (text) => {
+            if (y < 80) { 
+                deseneazaFooter();
+                page = pdfDoc.addPage([595.28, 841.89]); 
+                y = 780; 
+            }
+            page.drawText(text, { x: 45, y, size: 8.5, font: fontBold });
+            y -= 13;
+        };
+
+        const deseneazaParagraf = (text) => {
+            if (y < 80) { 
+                deseneazaFooter();
+                page = pdfDoc.addPage([595.28, 841.89]); 
+                y = 780; 
+            }
+            page.drawText(text, { x: 45, y, size: 7, font });
+            y -= 11;
+        };
+
+        const titluText = "CONTRACT DE INCHIRIERE LOCUINTA";
+        const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
+        const centerX = (595.28 - textWidth) / 2;
+        page.drawText(titluText, { x: centerX, y, size: 12, font: fontBold });
+        y -= 20;
+
+        deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
+        deseneazaParagraf(`1.1. Locator (Proprietar): ${curataDiacritice(document.getElementById('proprietarNume').value || '....................................')},`);
+        deseneazaParagraf(`CNP: ${document.getElementById('proprietarCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('proprietarAct').value || '........')}, cu domiciliul in: ${curataDiacritice(document.getElementById('proprietarAdresa').value || '................................................................')}.`);
+        deseneazaParagraf(`1.2. Locatar (Chirias): ${curataDiacritice(document.getElementById('chiriasNume').value || '....................................')},`);
+        deseneazaParagraf(`CNP: ${document.getElementById('chiriasCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('chiriasAct').value || '........')}.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
+        deseneazaParagraf(`2.1. Locatorul inchiriaza Locatarului imobilul cu destinatia exclusiva de locuinta, situat in:`);
+        deseneazaParagraf(`${curataDiacritice(document.getElementById('imobilAdresa').value || '..................................................................................................................')}.`);
+        
+        const inventarInput = document.getElementById('imobilInventar').value.trim();
+        if (inventarInput) {
+            deseneazaParagraf(`2.2. Imobilul se preda utilat si mobilat, urmatorul inventar fiind preluat in buna stare: ${curataDiacritice(inventarInput)}.`);
+        } else {
+            deseneazaParagraf(`2.2. Imobilul este predat in stare buna de utilizare, conform intelegerii prealabile a partilor.`);
+        }
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 3: DURATA CONTRACTULUI");
+        deseneazaParagraf(`3.1. Prezentul contract se incheie pe o perioada de ${curataDiacritice(document.getElementById('imobilDurata').value || '12 LUNI')}, incepand cu data de ${document.getElementById('imobilDataStart').value || '01.09.2026'}.`);
+        deseneazaParagraf(`3.2. La expirarea termenului, contractul poate fi prelungit prin acordul scris al ambelor parti.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 4: CHIRIA, GARANTIA SI MODALITATEA DE PLATA");
+        deseneazaParagraf(`4.1. Chiria lunara stabilita este in cuantum de ${curataDiacritice(document.getElementById('imobilChirie').value || '350 EUR')}, achitata in avans pana la data de 5 a fiecarei luni.`);
+        deseneazaParagraf(`4.2. Cu titlu de garantie, Locatarul achita la semnare suma de ${curataDiacritice(document.getElementById('imobilGarantie').value || '350 EUR')}, destinata acoperirii daunelor sau utilitatilor neachitate.`);
+        deseneazaParagraf(`4.3. Garantia se restituie in termen de cel mult 7 zile calendaristice de la predarea imobilului si achitarea datoriilor.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 5: DREPTURILE SI OBLIGATIILE PARTILOR");
+        deseneazaParagraf(`5.1. Locatorul garanteaza linistita folosinta a imobilului si nu poate interveni in spatiu fara notificare prealabila.`);
+        deseneazaParagraf(`5.2. Locatarul se obliga sa achite la termen chiria, cotele de intretinere, consumul de energie, gaze si apa pe baza contoarelor.`);
+        deseneazaParagraf(`5.3. Subinchirierea totala sau partiala catre terti, precum si desfasurarea de activitati comerciale sunt strict interzise.`);
+        deseneazaParagraf(`5.4. Reparatiile capitale cad in sarcina Locatorului, in timp ce reparatiile curente si intretinerea locuintei revin Locatarului.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 6: REGULI SPECIALE (ANIMALE DE COMPANIE SI FUMAT)");
+        deseneazaParagraf(`6.1. Detinerea de animale de companie in imobil este permisa doar cu acordul prealabil scris al Locatorului.`);
+        deseneazaParagraf(`6.2. Fumatul in interiorul imobilului este strict interzis, eventualele daune sau mirosuri persistente fiind suportate integral de Locatar.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 7: MODIFICARI STRUCTURALE SI INSPECTIA IMOBILULUI");
+        deseneazaParagraf(`7.1. Locatarul nu poate efectua modificari structurale, zugraveli majore sau interventii la instalatii fara acordul scris al Locatorului.`);
+        deseneazaParagraf(`7.2. Locatorul are dreptul de a inspecta starea imobilului cu o notificare prealabila de minim 48 de ore adresata Locatarului.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 8: INCETAREA SI REZILIEREA ANTICIPATA");
+        deseneazaParagraf(`8.1. Prezentul contract poate fi denuntat unilateral de oricare dintre parti, cu un preaviz scris de minim 60 de zile.`);
+        deseneazaParagraf(`8.2. Nerespectarea obligatiilor contractuale de catre una dintre parti atrage rezilierea de plin drept si plata de daune-interese.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 9: FORTA MAJORA SI LITIGII");
+        deseneazaParagraf(`9.1. Forta majora exonereaza de raspundere partea care o invoca, in conditiile legii.`);
+        deseneazaParagraf(`9.2. Litigiile decurgand din acest contract se vor solutiona pe cale amiabila sau, in caz de esec, de instantele judecatoresti competente.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 10: DISPOZITII FINALE SI FISCALE (ANAF)");
+        deseneazaParagraf(`10.1. Prezentul contract constituie titlu executoriu conform dispozitiilor Codului de Procedura Civila.`);
+        deseneazaParagraf(`10.2. Locatorul are obligatia legala de inregistrare a contractului la organul fiscal competent (ANAF) în termen de 30 zile.`);
+        y -= 15;
+
+        if (y < 160) { 
+            deseneazaFooter();
+            page = pdfDoc.addPage([595.28, 841.89]); 
+            y = 780; 
+        }
+
+        page.drawText(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale, conform Codului Civil.`, { x: 45, y, size: 7.5, font: fontBold });
+        y -= 22;
+        
+        deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
+        y -= 4;
+
+        const sigPImageBytes = await pdfDoc.embedPng(document.getElementById('sigProprietarCanvas').toDataURL('image/png'));
+        const sigCImageBytes = await pdfDoc.embedPng(document.getElementById('sigChiriasCanvas').toDataURL('image/png'));
+
+        page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
+        page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
+
+        page.drawText("Semnatura Proprietar (Locator)", { x: 45, y: y - 62, size: 7, font: fontBold });
+        page.drawText("Semnatura Chirias (Locatar)", { x: 310, y: y - 62, size: 7, font: fontBold });
+
+        deseneazaFooter();
+
+        const bytes = await pdfDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = "CONTRACT_INCHIRIERE_ACTPELOC.pdf";
+        a.click();
+
+        salveazaInArhivaprivata({ idAct: 'IMOB-' + Math.floor(1000 + Math.random()*9000), numeClient: curataDiacritice(document.getElementById('chiriasNume').value || 'Chiriaș') });
+        arataNotificare("✅ Contract imobiliar generat cu succes cu tot cu inventar!");
+    } catch(e) { arataNotificare("Eroare PDF: " + e.message, true); }
+}
     </script>
 </body>
 </html>
