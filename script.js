@@ -388,9 +388,16 @@ function activeazaPasulUI(stepNum) {
         if (paymentContainer) paymentContainer.style.display = 'block';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
 
-        // Ascundem formularele de completare de la ultimul pas ca să nu se suprapună peste plată
+        // Ascundem formularele și butoanele de navigare / finalizare de la pașii finali
         if (fPrest3) fPrest3.style.display = 'none';
         if (fComod3) fComod3.style.display = 'none';
+        
+        // Ascundem butoanele de "Finalizare & Opțiuni" / "Înainte" de la pașii finali
+        const btnNext3 = document.getElementById('btnNextStep3');
+        if (btnNext3) btnNext3.style.display = 'none';
+        const btnNext4 = document.getElementById('btnNextStep4');
+        if (btnNext4) btnNext4.style.display = 'none';
+
         const demisSign = document.getElementById('demisSignBoxContainer');
         if (demisSign) demisSign.style.display = 'none';
 
@@ -399,13 +406,14 @@ function activeazaPasulUI(stepNum) {
     } else {
         if (paymentContainer) paymentContainer.style.display = 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
+        
+        const btnNext3 = document.getElementById('btnNextStep3');
+        if (btnNext3) btnNext3.style.display = 'inline-block';
+        const btnNext4 = document.getElementById('btnNextStep4');
+        if (btnNext4) btnNext4.style.display = 'inline-block';
+    }
     }
 
-    // Gestionare specială pentru fluxul de la distanță la Contractul Auto
-    if (tipContractCurent === 'auto' && modLucru === 'remote' && stepNum === 2) {
-        if (localAct) localAct.style.display = 'block';
-    }
-}
 
 
 function nextStep(current) {
