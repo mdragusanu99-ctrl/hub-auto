@@ -196,7 +196,6 @@ function colecteazaDate() {
 
 // ==========================================
 // CONFIGURARE DINAMICĂ PAȘI PE CATEGORII
-// ==========================================
 function selecteazaCategorie(cat) {
     tipContractCurent = cat;
     const mainMenu = document.getElementById('mainMenuContainer');
@@ -208,19 +207,15 @@ function selecteazaCategorie(cat) {
     if (dashView) dashView.style.display = 'none';
 
     if (cat === 'auto') {
-        maxStepsTotal = 4; // 1: Vânzător, 2: Cumpărător, 3: Vehicul & Preț, 4: Plată & Descărcare PDF
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Auto ITL 054";
         if (modeSelector) modeSelector.style.display = 'block';
     } else if (cat === 'imobiliare') {
-        maxStepsTotal = 4; // 1: Părți & Imobil, 2: Garanție/Termeni, 3: Semnături Digital, 4: Plată & Descărcare
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Închiriere Locuință";
         if (modeSelector) modeSelector.style.display = 'block';
     } else if (cat === 'prestari_servicii' || cat === 'comodat') {
-        maxStepsTotal = 4; // 1: Date Părți, 2: Obiect/Preț, 3: Semnături Digitale, 4: Plată & Descărcare
         if (modeSelector) modeSelector.style.display = 'none';
         selecteazaModSiPorneste('local');
     } else if (cat === 'demisie') {
-        maxStepsTotal = 3; // 1: Date Salariat & Firmă, 2: Semnătură Digitală Salariat, 3: Plată & Descărcare PDF
         if (modeSelector) modeSelector.style.display = 'none';
         selecteazaModSiPorneste('local');
     }
@@ -234,7 +229,16 @@ function selecteazaModSiPorneste(mod) {
     const progressBar = document.getElementById('progressBarContainer');
     if (progressBar) progressBar.style.display = 'flex';
 
-    // Afișăm doar bulinele necesare numărului maxim de pași
+    if (tipContractCurent === 'imobiliare') {
+        maxStepsTotal = 4; // Fix 4 pași atât local cât și remote
+    } else if (tipContractCurent === 'auto') {
+        maxStepsTotal = (mod === 'remote') ? 5 : 4;
+    } else if (tipContractCurent === 'prestari_servicii' || tipContractCurent === 'comodat') {
+        maxStepsTotal = (mod === 'remote') ? 4 : 3;
+    } else if (tipContractCurent === 'demisie') {
+        maxStepsTotal = 3;
+    }
+
     for (let i = 1; i <= 5; i++) {
         const pBulina = document.getElementById('p' + i);
         if (pBulina) {

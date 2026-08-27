@@ -467,12 +467,13 @@
                 <div class="progress-step active" id="p1">1</div>
                 <div class="progress-step" id="p2">2</div>
                 <div class="progress-step" id="p3">3</div>
-                <div class="progress-step" id="p4" style="display:flex;">4</div>
+                <div class="progress-step" id="p4">4</div>
+                <div class="progress-step" id="p5" style="display:none;">5</div>
             </div>
 
             <div id="stepsCompletedBanner" class="alert-banner" style="display:none; background: rgba(16, 185, 129, 0.1); border-color: var(--success); color: var(--success);">🎉 Toate datele au fost colectate și contractul este pregătit pentru descărcare.</div>
 
-            <!-- STEP 1: FORMULAR PASUL 1 (TOATE FORMULARELE INTEGRATE) -->
+            <!-- STEP 1: FORMULAR PASUL 1 -->
             <div class="step-content" id="step1">
                 <div class="step-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div style="font-size: 18px; font-weight: 800;" id="titleStep1">Pasul 1: Datele Vânzătorului</div>
@@ -526,7 +527,7 @@
                     </div>
                 </div>
 
-                <!-- Formular Prestări Servicii Pas 1 (Prestator) -->
+                <!-- Formular Prestări Servicii Pas 1 -->
                 <div id="formPrestariStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Prestator (Executant)</strong></div>
                     <div class="full-width"><label>Nume / Denumire Firmă *</label><input type="text" id="prestatorNume" placeholder="ex: PFA ION SRL"></div>
@@ -537,12 +538,12 @@
                     <div><label>Cont Bancar (IBAN) *</label><input type="text" id="prestatorBanca" placeholder="ex: RO49BTRL..."></div>
                 </div>
 
-                <!-- Formular Comodat Pas 1 (Comodant) -->
+                <!-- Formular Comodat Pas 1 -->
                 <div id="formComodatStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Comodant (Proprietar Bun)</strong></div>
                     <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodantNume" placeholder="ex: POPESCU ION"></div>
                     <div><label>CNP / CUI *</label><input type="text" id="comodantCnp" placeholder="ex: 1800101123456"></div>
-                    <div><label>Act Identitate / Reg. Com. *</label><input type="text" id="comodantAct" placeholder="ex: VS 123456 sau J40/..."></div>
+                    <div><label>Act Identitate / Reg. Com. *</label><input type="text" id="comodantAct" placeholder="ex: VS 123456 sau J40/.."></div>
                     <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodantAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
                 </div>
 
@@ -600,7 +601,7 @@
                 </div>
             </div>
 
-            <!-- STEP 2: CUMPĂRĂTOR / BENEFICIAR / COMODATAR -->
+            <!-- STEP 2: CUMPĂRĂTOR / BENEFICIAR / COMODATAR / SEMNĂTURĂ DEMISIE -->
             <div class="step-content" id="step2">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
                 
@@ -651,7 +652,7 @@
                     </div>
                 </div>
 
-                <!-- Formular Prestări Servicii Pas 2 (Beneficiar) -->
+                <!-- Formular Prestări Servicii Pas 2 -->
                 <div id="formPrestariStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Beneficiar</strong></div>
                     <div class="full-width"><label>Nume / Denumire Client *</label><input type="text" id="beneficiarNume" placeholder="ex: CLIENT SRL"></div>
@@ -662,7 +663,7 @@
                     <div><label>Contact / Telefon *</label><input type="text" id="beneficiarContact" placeholder="ex: 0722..."></div>
                 </div>
 
-                <!-- Formular Comodat Pas 2 (Comodatar) -->
+                <!-- Formular Comodat Pas 2 -->
                 <div id="formComodatStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Beneficiar Folosință)</strong></div>
                     <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodatarNume" placeholder="ex: IONESCU MARIA"></div>
@@ -671,13 +672,28 @@
                     <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodatarAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
                 </div>
 
+
+                <!-- Formular Imobiliare Pas 2 (Chiriaș) -->
+                <div id="formImobiliareStep2" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>CNP Chiriaș *</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
+                </div>
+                <!-- Container Semnătură pentru Demisie (care are doar 3 pași total) -->
+                <div id="demisSignBoxContainer" style="display:none; margin-top: 15px;">
+                    <label>Semnătură Salariat</label>
+                    <canvas id="sigDemisieCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+                    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigDemisieCanvas')">Resetează Semnătura</button>
+                </div>
+
                 <div style="margin-top: 30px; display: flex; gap: 12px;" id="btnGroupStep2">
                     <button class="btn btn-secondary" id="btnPrevStep2" onclick="prevStep(2)">⬅ Înapoi</button>
                     <button class="btn btn-primary" onclick="nextStep(2)">Înainte ➔</button>
                 </div>
             </div>
 
-            <!-- STEP 3: VEHICUL / SERVICII / COMODAT -->
+            <!-- STEP 3: VEHICUL / SEMNĂTURI -->
             <div class="step-content" id="step3">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep3">Pasul 3: Vehiculul și Prețul</div>
                 
@@ -738,26 +754,27 @@
                 </div>
             </div>
 
-            <!-- STEP 4: FINALIZARE & SEMNĂTURI -->
+            <!-- STEP 4: SEMNĂTURI / LINK LA DISTANȚĂ -->
             <div class="step-content" id="step4">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep4">Pasul 4: Finalizare Contract</div>
-                <p id="step4Desc" style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Sistemul este pregătit pentru generarea documentului oficial.</p>
+                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep4">Pasul 4: Semnături & Trimitere la Distanță</div>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Colectați semnăturile sau generați linkul pentru cealaltă parte.</p>
                 
-                <!-- ZONA DE SEMNĂTURI PENTRU IMOBILIARE / PRESTĂRI / COMODAT -->
+                <!-- ZONA DE SEMNĂTURI -->
                 <div id="imobiliareSemnaturiContainer" style="display:none; margin-bottom: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                     <div id="proprietarSignBox" style="margin-bottom: 16px;">
-                        <label id="labelPart1Sign">Semnătură Proprietar (Locator)</label>
+                        <label id="labelPart1Sign">Semnătură Partea 1</label>
                         <canvas id="sigProprietarCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
                         <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează Semnătura</button>
                     </div>
                     <div id="chiriasSignBox">
-                        <label id="chiriasSignLabel">Semnătură Chiriaș (Locatar)</label>
+                        <label id="chiriasSignLabel">Semnătură Partea 2</label>
                         <canvas id="sigChiriasCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
                         <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează Semnătura</button>
                     </div>
                 </div>
 
-                <div id="localActions">
+                <!-- BUTON GENERARE LINK LA DISTANȚĂ -->
+                <div id="localActions" style="display:none;">
                     <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" onclick="pornesteFluxRemote()">📤 Generează Link de Trimitere la Distanță</button>
                 </div>
 
@@ -773,12 +790,28 @@
                     </div>
                 </div>
 
-                <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()">📥 Descarcă Documentul Oficial PDF</button>
+                <div style="margin-top: 20px; display: flex; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button>
+                    <button class="btn btn-primary" onclick="nextStep(4)">Continuă spre Plată ➔</button>
+                </div>
+            </div>
+
+            <!-- STEP 5: PLATĂ & DESCĂRCARE PDF (SEPARAT) -->
+            <div class="step-content" id="step5">
+                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep5">Pasul Final: Plată & Descărcare Document</div>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea documentului oficial în format PDF.</p>
+                
+                <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">💳 Status Plată: <span>Credit Gratuit Disponibil</span></div>
+                    <p style="font-size: 12px; color: var(--text-muted);">Apăsați butonul de mai jos pentru a genera și descărca actul oficial.</p>
                 </div>
 
-                <div style="margin-top: 20px;" id="btnGroupBackFinal">
-                    <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi la Modificare</button>
+                <div id="finalDownloadContainer" style="text-align: center;">
+                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()">📥 Plătește & Descarcă Documentul Oficial PDF</button>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="prevStep(5)">⬅ Înapoi</button>
                 </div>
             </div>
 
