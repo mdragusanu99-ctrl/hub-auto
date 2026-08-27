@@ -181,7 +181,7 @@
         <div class="splash-content">
             <div class="brand-pill">⚡ Ediția Avansată 2026 • SaaS Juridic</div>
             <h1 class="splash-title">Generează Contracte Oficiale <span>În Câteva Secunde</span></h1>
-            <p class="splash-desc">Platforma unică pentru contracte auto ITL 054, imobiliare, semnături la distanță, arhivă securizată în cloud și program de afiliere cu puncte.</p>
+            <p class="splash-desc">Platforma unică pentru contracte auto ITL 054, imobiliare, cereri de demisie, semnături la distanță și arhivă securizată în cloud.</p>
             <div class="splash-btn-group">
                 <button class="btn-primary-glow" onclick="inchideSplash()">Începe Acum Gratuit ➔</button>
                 <button class="btn-secondary-glass" onclick="inchideSplash(); deschideModalAuth('inregistrare');">Creează Cont 🚀</button>
@@ -314,10 +314,10 @@
                         <h4>Imobiliare</h4>
                         <p>Contracte de închiriere locuințe cu inventar opțional de bunuri și garanție.</p>
                     </div>
-                    <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele Pro!', true)">
+                    <div class="category-card" onclick="selecteazaCategorie('demisie')">
                         <div class="category-icon">💼</div>
                         <h4>Muncă & PFA</h4>
-                        <p>Cereri demisie, contracte prestări servicii și colaborare B2B.</p>
+                        <p>Cerere de demisie oficială conform Codului Muncii, cu calcul preaviz și semnătură.</p>
                     </div>
                     <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele Pro!', true)">
                         <div class="category-icon">📋</div>
@@ -350,7 +350,7 @@
                             <thead>
                                 <tr>
                                     <th>ID Act</th>
-                                    <th>Client / Cumpărător / Chiriaș</th>
+                                    <th>Client / Cumpărător / Chiriaș / Angajat</th>
                                     <th>Acțiuni Redescărcare</th>
                                 </tr>
                             </thead>
@@ -375,6 +375,11 @@
                             <div class="category-icon">🏠</div>
                             <h4>Imobiliare</h4>
                             <p>Porniți un contract de închiriere locuință.</p>
+                        </div>
+                        <div class="category-card" onclick="selecteazaCategorie('demisie')">
+                            <div class="category-icon">💼</div>
+                            <h4>Muncă & PFA</h4>
+                            <p>Generează cerere de demisie.</p>
                         </div>
                     </div>
                 </div>
@@ -534,6 +539,33 @@
                     <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
                 </div>
 
+                <!-- Formular Cerere Demisie (Muncă) -->
+                <div id="formDemisieStep1" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Angajator (Companie)</strong></div>
+                    <div class="full-width"><label>Denumire Firmă / Societate *</label><input type="text" id="demisFirma" placeholder="ex: SC BARBERHUB SRL"></div>
+
+                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Salariat (Solicitant)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Salariat *</label><input type="text" id="demisNume" placeholder="ex: DRAGUSANU MARIO"></div>
+                    <div><label>Funcția / Meseria *</label><input type="text" id="demisFunctie" placeholder="ex: FRIZER / SPECIALIST"></div>
+                    <div><label>Departamentul *</label><input type="text" id="demisDepartament" placeholder="ex: SALON / OPERATIV"></div>
+                    <div class="full-width"><label>Adresă Domiciliu *</label><input type="text" id="demisAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2, BÂRLAD"></div>
+                    <div><label>Seria și Număr CI *</label><input type="text" id="demisAct" placeholder="ex: VS 123456"></div>
+                    <div><label>CNP *</label><input type="text" id="demisCnp" placeholder="ex: 5040101123456" maxlength="13"></div>
+                    <div><label>Număr Contract Muncă (CIM) *</label><input type="text" id="demisCimNr" placeholder="ex: 45"></div>
+                    <div><label>Data Contract Muncă *</label><input type="text" id="demisCimData" placeholder="ex: 15.05.2025"></div>
+
+                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">3. Detalii Preaviz & Încetare</strong></div>
+                    <div><label>Zile Lucrătoare Preaviz *</label><select id="demisZilePreaviz"><option value="20 ZILE LUCRATOARE">20 Zile Lucrătoare (Execuție)</option><option value="45 ZILE LUCRATOARE">45 Zile Lucrătoare (Conducere)</option></select></div>
+                    <div><label>Data Începere Preaviz *</label><input type="text" id="demisDataStart" placeholder="ex: 01.09.2026"></div>
+                    <div><label>Ultima Zi de Activitate *</label><input type="text" id="demisDataSfarsit" placeholder="ex: 28.09.2026"></div>
+
+                    <div class="full-width" style="margin-top: 15px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                        <label style="color: var(--primary); margin-bottom: 8px;">Semnătură Salariat (Obligatorie)</label>
+                        <canvas id="sigDemisieCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigDemisieCanvas')">Resetează Semnătura</button>
+                    </div>
+                </div>
+
                 <div style="margin-top: 30px;">
                     <button class="btn btn-primary" onclick="nextStep(1)">Înainte ➔</button>
                 </div>
@@ -668,7 +700,7 @@
                 </div>
 
                 <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="if(tipContractCurent==='imobiliare') { genereazaContractImobiliarPDF(); } else { genereazaContractOficialPDF(); }">📥 Descarcă Contractul Oficial PDF</button>
+                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="if(tipContractCurent==='imobiliare') { genereazaContractImobiliarPDF(); } else if(tipContractCurent==='demisie') { genereazaCerereDemisiePDF(); } else { genereazaContractOficialPDF(); }">📥 Descarcă Documentul Oficial PDF</button>
                 </div>
 
                 <div style="margin-top: 20px;" id="btnGroupBackFinal">
