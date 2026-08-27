@@ -442,7 +442,7 @@ function activeazaPasulUI(stepNum) {
             if (imobContainer) imobContainer.style.display = 'none';
         }
     }
-}
+
 
 function nextStep(current) {
     if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') {
