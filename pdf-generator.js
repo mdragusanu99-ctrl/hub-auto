@@ -144,11 +144,31 @@ async function genereazaContractImobiliarPDF() {
             y -= 20;
         };
 
-        const deseneazaParagraf = (text) => {
+       const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
+        if (!text) return;
+        const words = curataDiacritice(text).split(' ');
+        let line = '';
+        const lineHeight = 11;
+
+        for (let i = 0; i < words.length; i++) {
+            const testLine = line + words[i] + ' ';
+            const testWidth = customFont.widthOfTextAtSize(testLine, size);
+            if (testWidth > maxWidth && i > 0) {
+                if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+                line = words[i] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+        if (line.trim().length > 0) {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-            page.drawText(curataDiacritice(text), { x: 45, y, size: 7.5, font, maxWidth: 505 });
-            y -= 14;
-        };
+            page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+            y -= lineHeight;
+        }
+        y -= 4;
+    };
 
         const getVal = (id) => {
             const el = document.getElementById(id);
@@ -283,11 +303,31 @@ async function genereazaContractPrestariServiciiPDF() {
             y -= 20;
         };
 
-        const deseneazaParagraf = (text) => {
+       const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
+        if (!text) return;
+        const words = curataDiacritice(text).split(' ');
+        let line = '';
+        const lineHeight = 11;
+
+        for (let i = 0; i < words.length; i++) {
+            const testLine = line + words[i] + ' ';
+            const testWidth = customFont.widthOfTextAtSize(testLine, size);
+            if (testWidth > maxWidth && i > 0) {
+                if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+                line = words[i] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+        if (line.trim().length > 0) {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-            page.drawText(curataDiacritice(text), { x: 45, y, size: 7.5, font, maxWidth: 505 });
-            y -= 14;
-        };
+            page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+            y -= lineHeight;
+        }
+        y -= 4;
+    };
 
         const getVal = (id) => {
             const el = document.getElementById(id);
@@ -505,11 +545,31 @@ async function genereazaContractComodatPDF() {
             y -= 20;
         };
 
-        const deseneazaParagraf = (text) => {
+       const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
+        if (!text) return;
+        const words = curataDiacritice(text).split(' ');
+        let line = '';
+        const lineHeight = 11;
+
+        for (let i = 0; i < words.length; i++) {
+            const testLine = line + words[i] + ' ';
+            const testWidth = customFont.widthOfTextAtSize(testLine, size);
+            if (testWidth > maxWidth && i > 0) {
+                if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+                line = words[i] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+        if (line.trim().length > 0) {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-            page.drawText(curataDiacritice(text), { x: 45, y, size: 7.5, font, maxWidth: 505 });
-            y -= 14;
-        };
+            page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+            y -= lineHeight;
+        }
+        y -= 4;
+    };
 
         const getVal = (id) => {
             const el = document.getElementById(id);
