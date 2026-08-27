@@ -1,5 +1,4 @@
-let currentStep = 1;
-let buyerCurrentStep = 1;
+let currentStepIndex = 1;
 let modLucru = 'local';
 let tipContractCurent = 'auto';
 let globalSessionId = null;
@@ -233,12 +232,13 @@ function acceseazaDashboardTab(tabName) {
     const mainMenu = document.getElementById('mainMenuContainer');
     const modeSelector = document.getElementById('modeSelectorContainer');
     const dashView = document.getElementById('dashboardView');
-    const step1 = document.getElementById('step1');
+    const wizard = document.getElementById('wizardContainer');
+    const single = document.getElementById('singleStepContainer');
 
     if (mainMenu) mainMenu.style.display = 'none';
     if (modeSelector) modeSelector.style.display = 'none';
-    if (step1) step1.classList.remove('active');
-    document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+    if (wizard) wizard.style.display = 'none';
+    if (single) single.style.display = 'none';
     if (dashView) dashView.style.display = 'block';
 
     incarcaDateDashboard();
@@ -330,7 +330,7 @@ function incarcaDateDashboard() {
                 <td><b>${item.idAct}</b></td>
                 <td>${item.numeClient}</td>
                 <td>
-                    <button class="btn btn-secondary" style="width: auto; padding: 6px 12px; font-size: 11px;" onclick="genereazaContractOficialPDF()">📥 Descarcă</button>
+                    <button class="btn btn-secondary" style="width: auto; padding: 6px 12px; font-size: 11px;" onclick="ruleazaDescarcareaFinala()">📥 Descarcă</button>
                 </td>
             </tr>
         `;
@@ -361,21 +361,24 @@ function salveazaInArhivaprivata(item) {
 }
 
 function deschideMeniuPrincipal() {
-    document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-    const progress = document.getElementById('progressBarContainer');
-    const banner = document.getElementById('stepsCompletedBanner');
+    const mainMenu = document.getElementById('mainMenuContainer');
     const modeSelector = document.getElementById('modeSelectorContainer');
     const dashView = document.getElementById('dashboardView');
-    const mainMenu = document.getElementById('mainMenuContainer');
+    const wizard = document.getElementById('wizardContainer');
+    const single = document.getElementById('singleStepContainer');
+    const progress = document.getElementById('progressBarContainer');
+    const banner = document.getElementById('stepsCompletedBanner');
     const roleBanner = document.getElementById('roleBanner');
 
-    if (progress) progress.style.display = 'none';
-    if (banner) banner.style.display = 'none';
+    if (mainMenu) mainMenu.style.display = 'block';
     if (modeSelector) modeSelector.style.display = 'none';
     if (dashView) dashView.style.display = 'none';
-    if (mainMenu) mainMenu.style.display = 'block';
+    if (wizard) wizard.style.display = 'none';
+    if (single) single.style.display = 'none';
+    if (progress) progress.style.display = 'none';
+    if (banner) banner.style.display = 'none';
     if (roleBanner) roleBanner.style.display = 'none';
-    currentStep = 1;
+    currentStepIndex = 1;
 }
 
 function selecteazaCategorie(cat) {
@@ -384,75 +387,22 @@ function selecteazaCategorie(cat) {
     const dashView = document.getElementById('dashboardView');
     const modeSelector = document.getElementById('modeSelectorContainer');
     const modTitle = document.getElementById('modSelectorTitle');
-    
-    const formAuto1 = document.getElementById('formAutoStep1');
-    const formAuto2 = document.getElementById('formAutoStep2');
-    const formAuto3 = document.getElementById('formAutoStep3');
-
-    const formImob1 = document.getElementById('formImobiliareStep1');
-
-    const formPrestari1 = document.getElementById('formPrestariStep1');
-    const formPrestari2 = document.getElementById('formPrestariStep2');
-    const formPrestari3 = document.getElementById('formPrestariStep3');
-
-    const formDemisie1 = document.getElementById('formDemisieStep1');
-    const titleStep1 = document.getElementById('titleStep1');
 
     if (mainMenu) mainMenu.style.display = 'none';
     if (dashView) dashView.style.display = 'none';
-    
-    // Ascundem tot preventiv
-    if (formAuto1) formAuto1.style.display = 'none';
-    if (formAuto2) formAuto2.style.display = 'none';
-    if (formAuto3) formAuto3.style.display = 'none';
-    if (formImob1) formImob1.style.display = 'none';
-    if (formPrestari1) formPrestari1.style.display = 'none';
-    if (formPrestari2) formPrestari2.style.display = 'none';
-    if (formPrestari3) formPrestari3.style.display = 'none';
-    if (formDemisie1) formDemisie1.style.display = 'none';
 
     if (cat === 'auto') {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Auto ITL 054";
-        if (formAuto1) formAuto1.style.display = 'grid';
-        if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Vânzătorului";
         if (modeSelector) modeSelector.style.display = 'block';
     } else if (cat === 'imobiliare') {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Imobiliar cu Inventar";
-        if (formImob1) formImob1.style.display = 'grid';
-        if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Părților & Imobilului";
         if (modeSelector) modeSelector.style.display = 'block';
     } else if (cat === 'prestari_servicii') {
-        if (formPrestari1) formPrestari1.style.display = 'grid';
-        if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Prestatorului";
         if (modeSelector) modeSelector.style.display = 'none';
-
-        const progressBar = document.getElementById('progressBarContainer');
-        if (progressBar) progressBar.style.display = 'flex';
-        
-        const p2 = document.getElementById('p2'), p3 = document.getElementById('p3'), p4 = document.getElementById('p4');
-        if(p2) p2.style.display = 'flex';
-        if(p3) p3.style.display = 'flex';
-        if(p4) p4.style.display = 'flex';
-
-        currentStep = 1;
-        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-        const step1 = document.getElementById('step1');
-        if (step1) {
-            step1.style.display = 'block';
-            step1.classList.add('active');
-        }
-        updateProgress();
+        pornesteWizardMultiPas();
     } else if (cat === 'demisie') {
-        if (formDemisie1) formDemisie1.style.display = 'grid';
-        if (titleStep1) titleStep1.innerText = "Cerere de Demisie Oficială";
         if (modeSelector) modeSelector.style.display = 'none';
-
-        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-        const step1 = document.getElementById('step1');
-        if (step1) {
-            step1.style.display = 'block';
-            step1.classList.add('active');
-        }
+        pornesteFormularPasUnic();
     }
 }
 
@@ -554,109 +504,43 @@ function valideazaEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
-function valideazaPasCurent() {
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') return true;
-    if (tipContractCurent === 'prestari_servicii') {
-        if (currentStep === 1) {
-            const prestName = document.getElementById('prestatorNume').value.trim();
-            if (!prestName) { arataNotificare("Introduceți denumirea prestatorului!", true); return false; }
-        } else if (currentStep === 2) {
-            const benName = document.getElementById('beneficiarNume').value.trim();
-            if (!benName) { arataNotificare("Introduceți denumirea beneficiarului!", true); return false; }
-        }
-        return true;
-    }
-    if (currentStep === 1 && userRole === 'vanzator') {
-        const cnpEl = document.getElementById('seller_ci_cnp');
-        const emailEl = document.getElementById('seller_email');
-        const cnp = cnpEl ? cnpEl.value : '';
-        const email = emailEl ? emailEl.value : '';
-
-        if (cnp && !valideazaCNP(cnp)) {
-            arataNotificare("⚠️ CNP-ul vânzătorului trebuie să conțină exact 13 cifre!", true);
-            if (cnpEl) cnpEl.focus();
-            return false;
-        }
-        if (email && !valideazaEmail(email)) {
-            arataNotificare("⚠️ E-mailul vânzătorului nu este valid!", true);
-            if (emailEl) emailEl.focus();
-            return false;
-        }
-    }
-    return true;
-}
-
 function selecteazaModSiPorneste(mod) {
     modLucru = mod;
-    const mainMenu = document.getElementById('mainMenuContainer');
-    const dashView = document.getElementById('dashboardView');
-    const modeSelector = document.getElementById('modeSelectorContainer');
-    const progressBar = document.getElementById('progressBarContainer');
-
-    if (mainMenu) mainMenu.style.display = 'none';
-    if (dashView) dashView.style.display = 'none';
-    if (modeSelector) modeSelector.style.display = 'none';
-    if (progressBar) progressBar.style.display = 'flex';
-    
-    const p2 = document.getElementById('p2'), p3 = document.getElementById('p3'), p4 = document.getElementById('p4');
-    const step4Desc = document.getElementById('step4Desc');
-    const localActions = document.getElementById('localActions');
-    const waitingContainer = document.getElementById('waitingAnimationContainer');
-    const finalDownload = document.getElementById('finalDownloadContainer');
-    const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
-    
+    document.getElementById('modeSelectorContainer').style.display = 'none';
     if (tipContractCurent === 'imobiliare') {
-        if(p2) p2.style.display = 'none';
-        if(p3) p3.style.display = 'none';
-        if(p4) p4.style.display = 'none';
-        if(localActions) localActions.style.display = (mod === 'remote') ? 'block' : 'none';
-        if(waitingContainer) waitingContainer.style.display = 'none';
-        if(finalDownload) finalDownload.style.display = (mod === 'local') ? 'block' : 'none';
-        if(imobSemnaturi) imobSemnaturi.style.display = 'block';
-        
-        if (mod === 'remote') {
-            document.getElementById('proprietarSignBox').style.display = 'block';
-            document.getElementById('chiriasSignBox').style.display = 'none';
-            if(step4Desc) step4Desc.innerText = "Semnați ca proprietar și generați linkul pentru chiriaș.";
-        } else {
-            document.getElementById('proprietarSignBox').style.display = 'block';
-            document.getElementById('chiriasSignBox').style.display = 'block';
-            if(step4Desc) step4Desc.innerText = "Toate datele au fost completate. Semnați și generați contractul.";
-        }
-    } else if (mod === 'local') {
-        if(p2) p2.style.display = 'flex';
-        if(p3) p3.innerText = '3';
-        if(p4) { p4.innerText = '4'; p4.style.display = 'flex'; }
-        
-        if(localActions) localActions.style.display = 'none';
-        if(waitingContainer) waitingContainer.style.display = 'none';
-        if(finalDownload) finalDownload.style.display = 'block';
-        if(imobSemnaturi) imobSemnaturi.style.display = 'none';
-        if(step4Desc) step4Desc.innerText = "Tranzacție locală pregătită. Confirmați pentru descărcare.";
-
-        document.getElementById('formAutoStep1').style.display = 'grid';
+        pornesteFormularPasUnic();
     } else {
-        if(p2) p2.style.display = 'none';
-        if(p3) p3.innerText = '2';
-        if(p4) { p4.style.display = 'none'; }
-
-        if(localActions) localActions.style.display = 'block';
-        if(waitingContainer) waitingContainer.style.display = 'none';
-        if(finalDownload) finalDownload.style.display = 'none';
-        if(imobSemnaturi) imobSemnaturi.style.display = 'none';
-        if(step4Desc) step4Desc.innerText = "Generați linkul securizat pentru a-l trimite cumpărătorului.";
-
-        document.getElementById('formAutoStep1').style.display = 'grid';
+        pornesteWizardMultiPas();
     }
+}
 
-    currentStep = 1;
-    document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-    const step1 = document.getElementById('step1');
-    if (step1) {
-        step1.style.display = 'block';
-        step1.classList.add('active');
-    }
-    updateProgress();
+function pornesteWizardMultiPas() {
+    const wizard = document.getElementById('wizardContainer');
+    const progressBar = document.getElementById('progressBarContainer');
+    if (wizard) wizard.style.display = 'block';
+    if (progressBar) progressBar.style.display = 'flex';
+
+    currentStepIndex = 1;
+    actualizeazaVizibilitatePanouri();
+}
+
+function pornesteFormularPasUnic() {
+    const single = document.getElementById('singleStepContainer');
+    if (single) single.style.display = 'block';
+
+    const subImob = document.getElementById('subFormImobiliare');
+    const subDem = document.getElementById('subFormDemisie');
+
+    if (subImob) subImob.style.display = (tipContractCurent === 'imobiliare') ? 'grid' : 'none';
+    if (subDem) subDem.style.display = (tipContractCurent === 'demisie') ? 'grid' : 'none';
+}
+
+function treciLaFinalizareDirect() {
+    document.getElementById('singleStepContainer').style.display = 'none';
+    const wizard = document.getElementById('wizardContainer');
+    if (wizard) wizard.style.display = 'block';
+    currentStepIndex = 4;
+    actualizeazaVizibilitatePanouri();
 }
 
 function comutaDomiciliuFiscal() {
@@ -682,265 +566,93 @@ function comutaFirmaCumparator() {
     if (sectiune) sectiune.style.display = esteFirmaSauMandatarCumparator ? 'grid' : 'none';
 }
 
-function updateProgress() {
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') return;
-    const total = (tipContractCurent === 'prestari_servicii') ? 4 : ((modLucru === 'remote' && userRole === 'vanzator') ? 2 : 4);
+function updateProgressIndicator() {
     for (let i = 1; i <= 4; i++) {
         const p = document.getElementById('p' + i);
         if (!p) continue;
-        p.style.display = (i > total) ? 'none' : 'flex';
         p.classList.remove('active', 'completed');
-        if (i < currentStep) p.classList.add('completed');
-        if (i === currentStep) p.classList.add('active');
+        if (i < currentStepIndex) p.classList.add('completed');
+        if (i === currentStepIndex) p.classList.add('active');
     }
 }
 
-function nextStep(step) {
-    if (!valideazaPasCurent()) return;
+function actualizeazaVizibilitatePanouri() {
+    for (let i = 1; i <= 4; i++) {
+        const pane = document.getElementById('paneStep' + i);
+        if (pane) {
+            if (i === currentStepIndex) pane.classList.add('active');
+            else pane.classList.remove('active');
+        }
+    }
 
-    if (tipContractCurent === 'prestari_servicii') {
-        const formPrestari1 = document.getElementById('formPrestariStep1');
-        const formPrestari2 = document.getElementById('formPrestariStep2');
-        const formPrestari3 = document.getElementById('formPrestariStep3');
+    // Gestionare interioară sub-formulare în funcție de contract și pas
+    if (tipContractCurent === 'auto') {
+        const f1 = document.getElementById('subFormAuto1');
+        const f2 = document.getElementById('subFormAuto2');
+        const f3 = document.getElementById('subFormAuto3');
 
-        if (step === 1) {
-            if(formPrestari1) formPrestari1.style.display = 'none';
-            if(formPrestari2) formPrestari2.style.display = 'grid';
-            if(formPrestari3) formPrestari3.style.display = 'none';
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-            document.getElementById('titleStep2').innerText = "Pasul 2: Datele Beneficiarului";
-            currentStep = 2;
-            updateProgress();
-            return;
-        } else if (step === 2) {
-            if(formPrestari1) formPrestari1.style.display = 'none';
-            if(formPrestari2) formPrestari2.style.display = 'none';
-            if(formPrestari3) formPrestari3.style.display = 'grid';
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step3').classList.add('active');
-            document.getElementById('titleStep3').innerText = "Pasul 3: Obiectul, Prețul și Termenele";
-            currentStep = 3;
-            updateProgress();
-            return;
-        } else if (step === 3) {
-            const step3 = document.getElementById('step3');
-            const step4 = document.getElementById('step4');
-            const titleStep4 = document.getElementById('titleStep4');
-            const step4Desc = document.getElementById('step4Desc');
-            const localActions = document.getElementById('localActions');
-            const waitingContainer = document.getElementById('waitingAnimationContainer');
-            const finalDownload = document.getElementById('finalDownloadContainer');
-            const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
-            const btnDescarca = document.getElementById('btnDescarcaOficial');
+        if (f1) f1.style.display = (currentStepIndex === 1) ? 'grid' : 'none';
+        if (f2) f2.style.display = (currentStepIndex === 2) ? 'grid' : 'none';
+        if (f3) f3.style.display = (currentStepIndex === 3) ? 'grid' : 'none';
 
-            if (step3) step3.classList.remove('active');
-            if (step4) step4.classList.add('active');
-            if (titleStep4) titleStep4.innerText = "Pasul 4: Semnături & Generare Contract Prestări Servicii";
-            if (step4Desc) step4Desc.innerText = "Verificați datele introduse. Semnați în casetele de mai jos pentru finalizarea contractului B2B/B2C:";
-            if (localActions) localActions.style.display = 'none';
-            if (waitingContainer) waitingContainer.style.display = 'none';
-            if (finalDownload) finalDownload.style.display = 'block';
+        if (document.getElementById('titlePane1')) document.getElementById('titlePane1').innerText = "Pasul 1: Datele Vânzătorului";
+        if (document.getElementById('titlePane2')) document.getElementById('titlePane2').innerText = "Pasul 2: Datele Cumpărătorului";
+        if (document.getElementById('titlePane3')) document.getElementById('titlePane3').innerText = "Pasul 3: Vehiculul și Prețul";
+    } else if (tipContractCurent === 'prestari_servicii') {
+        const f1 = document.getElementById('subFormPrestari1');
+        const f2 = document.getElementById('subFormPrestari2');
+        const f3 = document.getElementById('subFormPrestari3');
+
+        if (f1) f1.style.display = (currentStepIndex === 1) ? 'grid' : 'none';
+        if (f2) f2.style.display = (currentStepIndex === 2) ? 'grid' : 'none';
+        if (f3) f3.style.display = (currentStepIndex === 3) ? 'grid' : 'none';
+
+        if (document.getElementById('titlePane1')) document.getElementById('titlePane1').innerText = "Pasul 1: Datele Prestatorului";
+        if (document.getElementById('titlePane2')) document.getElementById('titlePane2').innerText = "Pasul 2: Datele Beneficiarului";
+        if (document.getElementById('titlePane3')) document.getElementById('titlePane3').innerText = "Pasul 3: Obiectul, Prețul și Termenele";
+    }
+
+    if (currentStepIndex === 4) {
+        const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
+        const localActions = document.getElementById('localActions');
+        const finalDownload = document.getElementById('finalDownloadContainer');
+        
+        if (tipContractCurent === 'imobiliare') {
             if (imobSemnaturi) imobSemnaturi.style.display = 'block';
-            
+            if (localActions) localActions.style.display = (modLucru === 'remote') ? 'block' : 'none';
+            if (finalDownload) finalDownload.style.display = (modLucru === 'local') ? 'block' : 'none';
+            document.getElementById('labelPart1Sign').innerText = "Semnătură Proprietar (Locator)";
+            document.getElementById('chiriasSignLabel').innerText = "Semnătură Chiriaș (Locatar)";
+        } else if (tipContractCurent === 'prestari_servicii') {
+            if (imobSemnaturi) imobSemnaturi.style.display = 'block';
+            if (localActions) localActions.style.display = 'none';
+            if (finalDownload) finalDownload.style.display = 'block';
             document.getElementById('labelPart1Sign').innerText = "Semnătură Prestator";
             document.getElementById('chiriasSignLabel').innerText = "Semnătură Beneficiar";
-            document.getElementById('proprietarSignBox').style.display = 'block';
-            document.getElementById('chiriasSignBox').style.display = 'block';
-
-            if (btnDescarca) btnDescarca.innerText = "📥 Descarcă Contractul de Prestări Servicii PDF";
-            if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractPrestariServiciiPDF()');
-            currentStep = 4;
-            updateProgress();
-            return;
-        }
-    }
-
-    if (tipContractCurent === 'demisie') {
-        if (step === 1) {
-            const step1 = document.getElementById('step1');
-            const step4 = document.getElementById('step4');
-            const titleStep4 = document.getElementById('titleStep4');
-            const step4Desc = document.getElementById('step4Desc');
-            const localActions = document.getElementById('localActions');
-            const waitingContainer = document.getElementById('waitingAnimationContainer');
-            const finalDownload = document.getElementById('finalDownloadContainer');
-            const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
-            const btnDescarca = document.getElementById('btnDescarcaOficial');
-
-            if (step1) step1.classList.remove('active');
-            if (step4) step4.classList.add('active');
-            if (titleStep4) titleStep4.innerText = "Pasul Final: Cerere Demisie Pregătită";
-            if (step4Desc) step4Desc.innerText = "Verificați datele introduse. Cererea oficială conține temeiul legal conform Codului Muncii și semnătura dumneavoastră.";
-            if (localActions) localActions.style.display = 'none';
-            if (waitingContainer) waitingContainer.style.display = 'none';
-            if (finalDownload) finalDownload.style.display = 'block';
+        } else if (tipContractCurent === 'demisie') {
             if (imobSemnaturi) imobSemnaturi.style.display = 'none';
-            if (btnDescarca) btnDescarca.innerText = "📥 Descarcă Cererea de Demisie Oficială PDF";
-            if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaCerereDemisiePDF()');
-            currentStep = 4;
+            if (localActions) localActions.style.display = 'none';
+            if (finalDownload) finalDownload.style.display = 'block';
         }
-        return;
     }
 
-    if (tipContractCurent === 'imobiliare') {
-        if (step === 1) {
-            const step1 = document.getElementById('step1');
-            const step4 = document.getElementById('step4');
-            const titleStep4 = document.getElementById('titleStep4');
-            const step4Desc = document.getElementById('step4Desc');
-            const localActions = document.getElementById('localActions');
-            const waitingContainer = document.getElementById('waitingAnimationContainer');
-            const finalDownload = document.getElementById('finalDownloadContainer');
-            const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
-            const btnDescarca = document.getElementById('btnDescarcaOficial');
+    updateProgressIndicator();
+}
 
-            if (step1) step1.classList.remove('active');
-            if (step4) step4.classList.add('active');
-            if (titleStep4) titleStep4.innerText = isRemoteTenantView ? "Pasul Final: Vizualizare & Semnare Chiriaș" : "Pasul 2: Semnături & Finalizare Contract Imobiliar";
-            
-            if (isRemoteTenantView) {
-                if (step4Desc) step4Desc.innerText = "Verificați detaliile contractului de mai sus și semnați în caseta de mai jos:";
-                if (localActions) localActions.style.display = 'none';
-                if (waitingContainer) waitingContainer.style.display = 'none';
-                if (finalDownload) finalDownload.style.display = 'block';
-                if (imobSemnaturi) imobSemnaturi.style.display = 'block';
-                document.getElementById('proprietarSignBox').style.display = 'none';
-                document.getElementById('chiriasSignBox').style.display = 'block';
-                if (btnDescarca) btnDescarca.innerText = "📥 Semnează și Descarcă Contractul";
-            } else {
-                if (step4Desc) step4Desc.innerText = modLucru === 'remote' ? "Semnați ca proprietar și generați linkul pentru chiriaș:" : "Toate datele au fost completate. Semnați și generați contractul:";
-                if (localActions) localActions.style.display = modLucru === 'remote' ? 'block' : 'none';
-                if (waitingContainer) waitingContainer.style.display = 'none';
-                if (finalDownload) finalDownload.style.display = modLucru === 'local' ? 'block' : 'none';
-                if (imobSemnaturi) imobSemnaturi.style.display = 'block';
-                document.getElementById('labelPart1Sign').innerText = "Semnătură Proprietar (Locator)";
-                document.getElementById('chiriasSignLabel').innerText = "Semnătură Chiriaș (Locatar)";
-                if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractImobiliarPDF()');
-            }
-            currentStep = 4;
-        }
-        return;
+function avanseazaPas() {
+    if (currentStepIndex < 4) {
+        currentStepIndex++;
+        actualizeazaVizibilitatePanouri();
     }
+}
 
-    const stepEl = document.getElementById('step' + step);
-    if (stepEl) stepEl.classList.remove('active');
-    
-    if (modLucru === 'remote' && userRole === 'vanzator' && step === 1) {
-        currentStep = 3;
-    } else if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) {
-        currentStep = 4;
+function daInapoiPas() {
+    if (currentStepIndex > 1) {
+        currentStepIndex--;
+        actualizeazaVizibilitatePanouri();
     } else {
-        currentStep = step + 1;
+        deschideMeniuPrincipal();
     }
-
-    if (currentStep === 2) {
-        document.getElementById('formAutoStep1').style.display = 'none';
-        document.getElementById('formAutoStep2').style.display = 'grid';
-        document.getElementById('titleStep2').innerText = "Pasul 2: Datele Cumpărătorului";
-    } else if (currentStep === 3) {
-        document.getElementById('formAutoStep2').style.display = 'none';
-        document.getElementById('formAutoStep3').style.display = 'grid';
-        document.getElementById('titleStep3').innerText = "Pasul 3: Vehiculul și Prețul";
-    } else if (currentStep === 4) {
-        document.getElementById('formAutoStep3').style.display = 'none';
-        if (modLucru === 'local') {
-            const localActions = document.getElementById('localActions');
-            const waitingContainer = document.getElementById('waitingAnimationContainer');
-            const finalDownload = document.getElementById('finalDownloadContainer');
-            const imobSemnaturi = document.getElementById('imobiliareSemnaturiContainer');
-            const btnDescarca = document.getElementById('btnDescarcaOficial');
-
-            if (localActions) localActions.style.display = 'none';
-            if (waitingContainer) waitingContainer.style.display = 'none';
-            if (finalDownload) finalDownload.style.display = 'block';
-            if (imobSemnaturi) imobSemnaturi.style.display = 'none';
-            if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractOficialPDF()');
-        }
-    }
-
-    const nextStepEl = document.getElementById('step' + currentStep);
-    if (nextStepEl) nextStepEl.classList.add('active');
-    updateProgress();
-}
-
-function prevStep(step) {
-    if (tipContractCurent === 'prestari_servicii') {
-        const formPrestari1 = document.getElementById('formPrestariStep1');
-        const formPrestari2 = document.getElementById('formPrestariStep2');
-        const formPrestari3 = document.getElementById('formPrestariStep3');
-
-        if (step === 2) {
-            if(formPrestari1) formPrestari1.style.display = 'grid';
-            if(formPrestari2) formPrestari2.style.display = 'none';
-            if(formPrestari3) formPrestari3.style.display = 'none';
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step1').classList.add('active');
-            document.getElementById('titleStep1').innerText = "Pasul 1: Datele Prestatorului";
-            currentStep = 1;
-            updateProgress();
-            return;
-        } else if (step === 3) {
-            if(formPrestari1) formPrestari1.style.display = 'none';
-            if(formPrestari2) formPrestari2.style.display = 'grid';
-            if(formPrestari3) formPrestari3.style.display = 'none';
-            document.getElementById('step3').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-            document.getElementById('titleStep2').innerText = "Pasul 2: Datele Beneficiarului";
-            currentStep = 2;
-            updateProgress();
-            return;
-        } else if (step === 4) {
-            if(formPrestari1) formPrestari1.style.display = 'none';
-            if(formPrestari2) formPrestari2.style.display = 'none';
-            if(formPrestari3) formPrestari3.style.display = 'grid';
-            document.getElementById('step4').classList.remove('active');
-            document.getElementById('step3').classList.add('active');
-            document.getElementById('titleStep3').innerText = "Pasul 3: Obiectul, Prețul și Termenele";
-            currentStep = 3;
-            updateProgress();
-            return;
-        }
-    }
-
-    if (tipContractCurent === 'imobiliare' || tipContractCurent === 'demisie') {
-        if (step === 4 && !isRemoteTenantView) {
-            const step4 = document.getElementById('step4');
-            const step1 = document.getElementById('step1');
-            if (step4) step4.classList.remove('active');
-            if (step1) {
-                step1.style.display = 'block';
-                step1.classList.add('active');
-            }
-            currentStep = 1;
-        }
-        return;
-    }
-
-    const stepEl = document.getElementById('step' + step);
-    if (stepEl) stepEl.classList.remove('active');
-
-    if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) { currentStep = 1; }
-    else if (modLucru === 'remote' && userRole === 'vanzator' && step === 4) { currentStep = 3; }
-    else { currentStep = step - 1; }
-
-    if (currentStep === 1) {
-        document.getElementById('formAutoStep2').style.display = 'none';
-        document.getElementById('formAutoStep1').style.display = 'grid';
-    } else if (currentStep === 2) {
-        document.getElementById('formAutoStep3').style.display = 'none';
-        document.getElementById('formAutoStep2').style.display = 'grid';
-    } else if (currentStep === 3) {
-        document.getElementById('formAutoStep3').style.display = 'grid';
-    }
-
-    const prevStepEl = document.getElementById('step' + currentStep);
-    if (prevStepEl) prevStepEl.classList.add('active');
-    updateProgress();
-}
-
-function finalizarePas() {
-    nextStep(currentStep);
 }
 
 window.onload = async function() {
@@ -966,18 +678,19 @@ window.onload = async function() {
         }
 
         document.getElementById('mainMenuContainer').style.display = 'none';
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step4').classList.add('active');
-        document.getElementById('titleStep4').innerText = "Vizualizare Contract & Semnătură Chiriaș";
-        document.getElementById('step4Desc').innerText = "Proprietarul a completat datele de mai jos. Vă rugăm să le verificați și să semnați:";
+        const wizard = document.getElementById('wizardContainer');
+        if (wizard) wizard.style.display = 'block';
+        currentStepIndex = 4;
+        actualizeazaVizibilitatePanouri();
+
+        document.getElementById('titlePane4').innerText = "Vizualizare Contract & Semnătură Chiriaș";
+        document.getElementById('pane4Desc').innerText = "Proprietarul a completat datele. Vă rugăm să le verificați și să semnați:";
         document.getElementById('localActions').style.display = 'none';
         document.getElementById('waitingAnimationContainer').style.display = 'none';
         document.getElementById('finalDownloadContainer').style.display = 'block';
         document.getElementById('imobiliareSemnaturiContainer').style.display = 'block';
         document.getElementById('proprietarSignBox').style.display = 'none';
         document.getElementById('chiriasSignBox').style.display = 'block';
-        document.getElementById('btnDescarcaOficial').innerText = "📥 Semnează și Descarcă Contractul Oficial";
-        document.getElementById('btnDescarcaOficial').setAttribute('onclick', 'genereazaContractImobiliarPDF()');
         document.getElementById('btnGroupBackFinal').style.display = 'none';
     }
 };
@@ -1009,40 +722,13 @@ function pornesteFluxRemote() {
         arataNotificare("✅ Link generat cu succes pentru chiriaș!");
         return;
     }
-
-    pornesteFluxRemoteAuto();
-}
-
-async function pornesteFluxRemoteAuto() {
-    if (!valideazaPasCurent()) return;
-    const d = colecteazaDate();
-    try {
-        const res = await fetch('/api/creeaza-tranzactie', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) });
-        const json = await res.json();
-        if (json.success) {
-            globalSessionId = json.sessionId;
-            linkCumparatorGlobal = `${window.location.origin}${window.location.pathname}?sessionId=${globalSessionId}`;
-            const localActions = document.getElementById('localActions');
-            const waitingContainer = document.getElementById('waitingAnimationContainer');
-            const qrcodeEl = document.getElementById('qrcode');
-            const shareLinkEl = document.getElementById('shareLinkContainer');
-
-            if (localActions) localActions.style.display = 'none';
-            if (waitingContainer) waitingContainer.style.display = 'block';
-            if (qrcodeEl) {
-                qrcodeEl.innerHTML = "";
-                new QRCode(qrcodeEl, { text: linkCumparatorGlobal, width: 120, height: 120 });
-            }
-            if (shareLinkEl) shareLinkEl.innerText = linkCumparatorGlobal;
-        }
-    } catch(e) { arataNotificare("Sesiune locală creată cu succes!", true); }
 }
 
 function copiazaLinkul() {
     navigator.clipboard.writeText(linkCumparatorGlobal).then(() => { arataNotificare("📋 Link copiat în clipboard!"); });
 }
 function trimitePeWhatsApp() {
-    const msg = encodeURIComponent(`Salut! Accesează linkul pentru a vizualiza și semna contractul de închiriere: ${linkCumparatorGlobal}`);
+    const msg = encodeURIComponent(`Salut! Accesează linkul pentru a vizualiza și semna contractul: ${linkCumparatorGlobal}`);
     window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
 }
 
@@ -1054,6 +740,13 @@ const curataDiacritice = (text) => {
         .replace(/Ș/g, 'S').replace(/Ş/g, 'S')
         .replace(/Ț/g, 'T').replace(/Ţ/g, 'T');
 };
+
+function ruleazaDescarcareaFinala() {
+    if (tipContractCurent === 'auto') genereazaContractOficialPDF();
+    else if (tipContractCurent === 'imobiliare') genereazaContractImobiliarPDF();
+    else if (tipContractCurent === 'prestari_servicii') genereazaContractPrestariServiciiPDF();
+    else if (tipContractCurent === 'demisie') genereazaCerereDemisiePDF();
+}
 
 async function genereazaContractOficialPDF() {
     const chassisEl = document.getElementById('chassisSeries');
@@ -1129,16 +822,16 @@ async function genereazaContractImobiliarPDF() {
             y -= 14;
         };
 
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
         const titluText = "CONTRACT DE INCHIRIERE LOCUINTA";
         const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
         const centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });
         y -= 25;
-
-        const getVal = (id) => {
-            const el = document.getElementById(id);
-            return el ? el.value.trim() : '';
-        };
 
         deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
         deseneazaParagraf(`1.1. Locator (Proprietar): ${getVal('proprietarNume') || '....................................'}, CNP: ${getVal('proprietarCnp') || '................'}, CI seria: ${getVal('proprietarAct') || '........'}.`);
@@ -1265,16 +958,16 @@ async function genereazaContractPrestariServiciiPDF() {
             y -= 14;
         };
 
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
         const titluText = "CONTRACT DE PRESTARI SERVICII";
         const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
         const centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });
         y -= 25;
-
-        const getVal = (id) => {
-            const el = document.getElementById(id);
-            return el ? el.value.trim() : '';
-        };
 
         deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
         deseneazaParagraf(`1.1. Prestator: ${getVal('prestatorNume') || '....................................'}, CUI/CIF: ${getVal('prestatorCui') || '........'}, Nr. Reg. Com: ${getVal('prestatorReg') || '........'}, cu sediul in ${getVal('prestatorAdresa') || '....................................'}, reprezentata prin ${getVal('prestatorReprezentant') || '....................'}, avand contul bancar ${getVal('prestatorBanca') || '....................'}.`);
