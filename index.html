@@ -1241,11 +1241,11 @@
         };
 
         function colecteazaDate() {
-            let d = {};
-            elementeFormular.forEach(id => {
-                const el = document.getElementById(id);
-                d[id] = el ? String(el.value || '').toUpperCase().trim() : '';
-            });
+          let d = {};
+    elementeFormular.forEach(id => {
+        const el = document.getElementById(id);
+        d[id] = el ? String(el.value || '').toUpperCase().trim() : '';
+    });
             if (d['seller_email']) d['seller_email'] = document.getElementById('seller_email').value.trim();
             if (d['buyerEmail']) d['buyerEmail'] = document.getElementById('buyerEmail').value.trim();
             if (d['reprEmail']) d['reprEmail'] = document.getElementById('reprEmail').value.trim();
@@ -1309,23 +1309,31 @@
             }, 4000);
         }
 
-        async function salvareDateCumparatorSiFinalizare() {
-            if (!valideazaPasCurent()) return;
-            const d = colecteazaDate();
-            try {
-                const res = await fetch(`/api/actualizeaza-tranzactie/${globalSessionId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) });
-                const json = await res.json();
-                if (json.success) {
-                    arataNotificare("✅ Datele au fost trimise vânzătorului!");
-                    document.getElementById('buyerActions').style.display = 'none';
-                    document.getElementById('progressBarContainer').style.display = 'none';
-                    document.getElementById('stepsCompletedBanner').style.display = 'block';
-                    document.getElementById('titleStep4').innerText = "Tranzacție Finalizată";
-                    document.getElementById('step4Desc').innerText = "Datele tale au fost trimise cu succes către vânzător!";
-                    document.getElementById('finalDownloadContainer').style.display = 'block';
-                }
-            } catch(e) { arataNotificare("Eroare la trimitere.", true); }
+       async function salvareDateCumparatorSiFinalizare() {
+    if (!valideazaPasCurent()) return;
+    
+    // Protecție anti-dublu-click
+    const btn = document.querySelector('#buyerActions .btn-success');
+    if (btn) { btn.disabled = true; btn.innerText = "Se trimite..."; }
+
+    const d = colecteazaDate();
+    try {
+        const res = await fetch(`/api/actualizeaza-tranzactie/${globalSessionId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) });
+        const json = await res.json();
+        if (json.success) {
+            arataNotificare("✅ Datele au fost trimise vânzătorului!");
+            document.getElementById('buyerActions').style.display = 'none';
+            document.getElementById('progressBarContainer').style.display = 'none';
+            document.getElementById('stepsCompletedBanner').style.display = 'block';
+            document.getElementById('titleStep4').innerText = "Tranzacție Finalizată";
+            document.getElementById('step4Desc').innerText = "Datele tale au fost trimise cu succes către vânzător!";
+            document.getElementById('finalDownloadContainer').style.display = 'block';
         }
+    } catch(e) { 
+        arataNotificare("Eroare la trimitere.", true); 
+        if (btn) { btn.disabled = false; btn.innerText = "✅ Trimite Datele Către Vânzător"; }
+    }
+}
 
         const curataDiacritice = (text) => {
             if (!text) return '';
@@ -1337,6 +1345,12 @@
         };
 
         async function genereazaContractOficialPDF() {
+            const vin = document.getElementById('chassisSeries').value.trim();
+    if (vin.length !== 17) {
+        arataNotificare("⚠️ Seria de șasiu (VIN) trebuie să aibă exact 17 caractere!", true);
+        document.getElementById('chassisSeries').focus();
+        return;
+    }
             arataNotificare("Se generează contractul oficial...");
             try {
                 const d = colecteazaDate();
