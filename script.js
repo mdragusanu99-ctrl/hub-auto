@@ -1,5 +1,5 @@
 // ==========================================
-// MODULUL PRINCIPAL DE LOGICĂ ȘI INTERFAȚĂ (script.js)
+// MODULUL PRINCIPAL DE LOGICĂ ȘI INTERFAȚĂ (script.js) - COMPLET
 // ==========================================
 
 let currentStepIndex = 1;
@@ -10,7 +10,7 @@ let linkCumparatorGlobal = '';
 let profilCurent = {
     email: 'mario@platforma.ro',
     pachet: 'GRATUIT',
-    ramase: 3
+    ramase: 10
 };
 let splashTimerInterval = null;
 
@@ -56,18 +56,46 @@ function salveazaBazaConturi(db) {
     localStorage.setItem('platforma_db_conturi', JSON.stringify(db));
 }
 
-function acceseazaDashboardTab(tabName) {
+function verificaSiActiveazaCredite() {
+    let db = obtineBazaConturi();
+    if (!db[profilCurent.email]) {
+        profilCurent = { email: 'mario@platforma.ro', pachet: 'GRATUIT', ramase: 10 };
+        db[profilCurent.email] = profilCurent;
+        salveazaBazaConturi(db);
+    } else {
+        profilCurent = db[profilCurent.email];
+        if (profilCurent.ramase <= 0) {
+            profilCurent.ramase = 10;
+            db[profilCurent.email] = profilCurent;
+            salveazaBazaConturi(db);
+        }
+    }
+    const elementContor = document.getElementById('crediteRamaseDisplay');
+    if (elementContor) elementContor.innerText = profilCurent.ramase;
+}
+
+function deschideDashboard() {
     const mainMenu = document.getElementById('mainMenuContainer');
     const modeSelector = document.getElementById('modeSelectorContainer');
     const dashView = document.getElementById('dashboardView');
     const wizard = document.getElementById('wizardContainer');
     const single = document.getElementById('singleStepContainer');
+    const progress = document.getElementById('progressBarContainer');
+    const banner = document.getElementById('stepsCompletedBanner');
+    const roleBanner = document.getElementById('roleBanner');
 
     if (mainMenu) mainMenu.style.display = 'none';
     if (modeSelector) modeSelector.style.display = 'none';
     if (wizard) wizard.style.display = 'none';
     if (single) single.style.display = 'none';
-    if (dashView) dashView.style.display = 'block';
+    if (progress) progress.style.display = 'none';
+    if (banner) banner.style.display = 'none';
+    if (roleBanner) roleBanner.style.display = 'none';
+
+    if (dashView) {
+        dashView.style.display = 'block';
+        verificaSiActiveazaCredite();
+    }
 }
 
 function salveazaInArhivaprivata(actNou) {
@@ -171,7 +199,6 @@ function actualizeazaVizibilitatePanouri() {
         }
     }
 
-    // Gestionare sub-formulare în funcție de contract și pasul curent
     if (tipContractCurent === 'auto') {
         const f1 = document.getElementById('subFormAuto1');
         const f2 = document.getElementById('subFormAuto2');
@@ -239,7 +266,7 @@ function daInapoiPas() {
     }
 }
 
-// Comutare secțiuni opționale (Domiciliu fiscal / Firmă)
+// Comutare secțiuni opționale
 function comutaDomiciliuFiscal() {
     domiciliuFiscalDiferit = !domiciliuFiscalDiferit;
     const sectiune = document.getElementById('sectiuneFiscala');
@@ -261,7 +288,7 @@ function comutaFirmaCumparator() {
     if (sectiune) sectiune.style.display = esteFirmaSauMandatarCumparator ? 'grid' : 'none';
 }
 
-// Gestionarea fluxului remote (cu cod QR)
+// Flux remote cu cod QR
 async function pornesteFluxRemote() {
     if (tipContractCurent === 'imobiliare') {
         const d = colecteazaDate();
@@ -306,11 +333,11 @@ async function pornesteFluxRemote() {
     arataNotificare("✅ Link de completare la distanță generat cu succes!");
 }
 
-// Funcția principală de descărcare care leagă interfața de generatorul PDF
+// Descărcarea finală PDF
 function ruleazaDescarcareaFinala() {
     if (!profilCurent || (profilCurent.ramase <= 0 && profilCurent.pachet === 'GRATUIT')) {
         arataNotificare("⚠️ Ați epuizat numărul de contracte gratuite incluse în cont! Vă rugăm să faceți un upgrade.", true);
-        acceseazaDashboardTab('abonament');
+        acceseazaDashboardTab();
         return;
     }
 
@@ -329,12 +356,11 @@ function ruleazaDescarcareaFinala() {
         let db = obtineBazaConturi();
         db[profilCurent.email] = profilCurent;
         salveazaBazaConturi(db);
+        verificaSiActiveazaCredite();
     }
 }
 
-// ==========================================
-// INTERFAȚĂ, SPLASH SCREEN ȘI TEME
-// ==========================================
+// Interfață, splash screen și teme
 function initSplashTimer() {
     let secunde = 4;
     const timer = document.getElementById('splashTimerText');
@@ -393,8 +419,9 @@ function deschideMeniuPrincipal() {
     currentStepIndex = 1;
 }
 
-// Inițializare generală la încărcarea paginii
+// Inițializare la pornire
 window.addEventListener('DOMContentLoaded', () => {
     console.log("Platforma ActPeLoc a pornit cu succes!");
     initSplashTimer();
+    verificaSiActiveazaCredite();
 });
