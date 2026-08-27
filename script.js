@@ -1,7 +1,6 @@
-// ==========================================
-// MODULUL PRINCIPAL DE LOGICĂ ȘI INTERFAȚĂ (script.js)
-// ==========================================
 
+let currentStepIndex = 1;
+let modLucru = 'local';
 let tipContractCurent = 'auto'; // Valori posibile: 'auto', 'imobiliare', 'prestari_servicii', 'demisie'
 let globalSessionId = '';
 let linkCumparatorGlobal = '';
@@ -38,34 +37,142 @@ function salveazaInArhivaprivata(actNou) {
 }
 
 function stergeSalvareaLocala() {
-    // Opțional: șterge datele temporare din localStorage după generare
+    // Șterge datele temporare din formulare dacă este cazul
 }
 
-// ==========================================
-// COLECTARE DATELOR UNICE PE FIECARE CONTRACT
-// ==========================================
+// Colectează datele din toate formularele vizibile în interfață
 function colecteazaDate() {
     let d = {};
-    
-    // Colectează toate inputurile, selecturile și text-urile existente în pagină după ID-ul lor
     const elemente = document.querySelectorAll('input, select, textarea');
     elemente.forEach(el => {
         if (el.id) {
             d[el.id] = el.value ? String(el.value).trim() : '';
         }
     });
-
     return d;
 }
 
-// Schimbarea tipului de contract din interfață
-function schimbaTipContract(tip) {
-    tipContractCurent = tip;
-    console.log("Tip contract selectat:", tipContractCurent);
+// ==========================================
+// NAVIGARE CATEGORII ȘI MODURI DE LUCRU
+// ==========================================
+function selecteazaCategorie(cat) {
+    tipContractCurent = cat;
+    const mainMenu = document.getElementById('mainMenuContainer');
+    const dashView = document.getElementById('dashboardView');
+    const modeSelector = document.getElementById('modeSelectorContainer');
+    const modTitle = document.getElementById('modSelectorTitle');
+
+    if (mainMenu) mainMenu.style.display = 'none';
+    if (dashView) dashView.style.display = 'none';
+
+    if (cat === 'auto') {
+        if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Auto ITL 054";
+        if (modeSelector) modeSelector.style.display = 'block';
+    } else if (cat === 'imobiliare') {
+        if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Imobiliar cu Inventar";
+        if (modeSelector) modeSelector.style.display = 'block';
+    } else if (cat === 'prestari_servicii') {
+        if (modeSelector) modeSelector.style.display = 'none';
+        pornesteWizardMultiPas();
+    } else if (cat === 'demisie') {
+        if (modeSelector) modeSelector.style.display = 'none';
+        pornesteFormularPasUnic();
+    }
+}
+
+function selecteazaModSiPorneste(mod) {
+    modLucru = mod;
+    const modeSelector = document.getElementById('modeSelectorContainer');
+    if (modeSelector) modeSelector.style.display = 'none';
+    
+    if (tipContractCurent === 'imobiliare') {
+        pornesteFormularPasUnic();
+    } else {
+        pornesteWizardMultiPas();
+    }
+}
+
+function pornesteWizardMultiPas() {
+    const wizard = document.getElementById('wizardContainer');
+    const progressBar = document.getElementById('progressBarContainer');
+    if (wizard) wizard.style.display = 'block';
+    if (progressBar) progressBar.style.display = 'flex';
+
+    currentStepIndex = 1;
+    actualizeazaVizibilitatePanouri();
+}
+
+function pornesteFormularPasUnic() {
+    const single = document.getElementById('singleStepContainer');
+    if (single) single.style.display = 'block';
+
+    const subImob = document.getElementById('subFormImobiliare');
+    const subDem = document.getElementById('subFormDemisie');
+
+    if (subImob) subImob.style.display = (tipContractCurent === 'imobiliare') ? 'grid' : 'none';
+    if (subDem) subDem.style.display = (tipContractCurent === 'demisie') ? 'grid' : 'none';
+}
+
+function treciLaFinalizareDirect() {
+    const single = document.getElementById('singleStepContainer');
+    if (single) single.style.display = 'none';
+    const wizard = document.getElementById('wizardContainer');
+    if (wizard) wizard.style.display = 'block';
+    currentStepIndex = 4;
+    actualizeazaVizibilitatePanouri();
+}
+
+function actualizeazaVizibilitatePanouri() {
+    for (let i = 1; i <= 4; i++) {
+        const pane = document.getElementById('paneStep' + i);
+        if (pane) {
+            if (i === currentStepIndex) pane.classList.add('active');
+            else pane.classList.remove('active');
+        }
+    }
+}
+
+function avanseazaPas() {
+    if (currentStepIndex < 4) {
+        currentStepIndex++;
+        actualizeazaVizibilitatePanouri();
+    }
+}
+
+function daInapoiPas() {
+    if (currentStepIndex > 1) {
+        currentStepIndex--;
+        actualizeazaVizibilitatePanouri();
+    } else {
+        deschideMeniuPrincipal();
+    }
 }
 
 // Gestionarea fluxului remote (cu cod QR)
 async function pornesteFluxRemote() {
+    if (tipContractCurent === 'imobiliare') {
+        const d = colecteazaDate();
+        localStorage.setItem('act_peloc_remote_imob', JSON.stringify(d));
+        globalSessionId = 'IMOB-' + Math.floor(100000 + Math.random() * 900000);
+        linkCumparatorGlobal = `${window.location.origin}${window.location.pathname}?remote_imob=${globalSessionId}`;
+        
+        const localActions = document.getElementById('localActions');
+        const waitingAnim = document.getElementById('waitingAnimationContainer');
+        if (localActions) localActions.style.display = 'none';
+        if (waitingAnim) waitingAnim.style.display = 'block';
+
+        const qrcodeEl = document.getElementById('qrcode');
+        if (qrcodeEl && typeof QRCode !== 'undefined') {
+            qrcodeEl.innerHTML = "";
+            new QRCode(qrcodeEl, { text: linkCumparatorGlobal, width: 120, height: 120 });
+        }
+        const shareContainer = document.getElementById('shareLinkContainer');
+        if (shareContainer) shareContainer.innerText = linkCumparatorGlobal;
+
+        arataNotificare("✅ Link generat cu succes pentru completare de la distanță!");
+        return;
+    }
+
     const d = colecteazaDate();
     globalSessionId = 'TRX-' + Math.floor(100000 + Math.random() * 900000);
     linkCumparatorGlobal = `${window.location.origin}${window.location.pathname}?sessionId=${globalSessionId}`;
@@ -86,7 +193,7 @@ async function pornesteFluxRemote() {
     arataNotificare("✅ Link de completare la distanță generat cu succes!");
 }
 
-// Funcția principală de descărcare care direcționează corect către contractul activ
+// Funcția principală de descărcare care leagă interfața de generatorul PDF
 function ruleazaDescarcareaFinala() {
     if (!profilCurent || (profilCurent.ramase <= 0 && profilCurent.pachet === 'GRATUIT')) {
         arataNotificare("⚠️ Ați epuizat numărul de contracte gratuite incluse în cont! Vă rugăm să faceți un upgrade.", true);
@@ -94,7 +201,6 @@ function ruleazaDescarcareaFinala() {
         return;
     }
 
-    // Apelează funcția unică din pdf-generator.js în funcție de contractul selectat
     if (tipContractCurent === 'auto') {
         if (typeof genereazaContractOficialPDF === 'function') genereazaContractOficialPDF();
     } else if (tipContractCurent === 'imobiliare') {
@@ -105,7 +211,6 @@ function ruleazaDescarcareaFinala() {
         if (typeof genereazaCerereDemisiePDF === 'function') genereazaCerereDemisiePDF();
     }
 
-    // Scădere contor credite utilizator pentru contul gratuit
     if (profilCurent && profilCurent.pachet === 'GRATUIT' && profilCurent.ramase > 0) {
         profilCurent.ramase--;
         let db = obtineBazaConturi();
@@ -115,7 +220,7 @@ function ruleazaDescarcareaFinala() {
 }
 
 // ==========================================
-// FUNCȚII DE INTERFAȚĂ, SPLASH SCREEN ȘI TEME
+// INTERFAȚĂ, SPLASH SCREEN ȘI TEME
 // ==========================================
 function initSplashTimer() {
     let secunde = 4;
