@@ -317,7 +317,7 @@
                     <div class="category-card" onclick="selecteazaCategorie('demisie')">
                         <div class="category-icon">💼</div>
                         <h4>Muncă & PFA</h4>
-                        <p>Cerere de demisie oficială conform Codului Muncii, cu calcul preaviz și semnătură.</p>
+                        <p>Cerere de demisie oficială (simplă sau detaliată), cu calcul preaviz și semnătură.</p>
                     </div>
                     <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele Pro!', true)">
                         <div class="category-icon">📋</div>
@@ -541,10 +541,17 @@
 
                 <!-- Formular Cerere Demisie (Muncă) -->
                 <div id="formDemisieStep1" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Angajator (Companie)</strong></div>
-                    <div class="full-width"><label>Denumire Firmă / Societate *</label><input type="text" id="demisFirma" placeholder="ex: SC BARBERHUB SRL"></div>
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Tipul Cererii de Demisie</strong></div>
+                    <div class="full-width">
+                        <label>Alege Formatul Dorit</label>
+                        <select id="demisTipFormat">
+                            <option value="simpla">🟢 Varianta Simplă și Rapidă (Recomandată pentru majoritatea)</option>
+                            <option value="detaliata">🔵 Varianta Detaliată & Juridică (Cu cerere de adeverință și drepturi)</option>
+                        </select>
+                    </div>
 
-                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Salariat (Solicitant)</strong></div>
+                    <div class="full-width" style="margin-top: 10px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Angajator & Salariat</strong></div>
+                    <div class="full-width"><label>Denumire Firmă / Societate *</label><input type="text" id="demisFirma" placeholder="ex: SC BARBERHUB SRL"></div>
                     <div class="full-width"><label>Nume și Prenume Salariat *</label><input type="text" id="demisNume" placeholder="ex: DRAGUSANU MARIO"></div>
                     <div><label>Funcția / Meseria *</label><input type="text" id="demisFunctie" placeholder="ex: FRIZER / SPECIALIST"></div>
                     <div><label>Departamentul *</label><input type="text" id="demisDepartament" placeholder="ex: SALON / OPERATIV"></div>
@@ -554,7 +561,7 @@
                     <div><label>Număr Contract Muncă (CIM) *</label><input type="text" id="demisCimNr" placeholder="ex: 45"></div>
                     <div><label>Data Contract Muncă *</label><input type="text" id="demisCimData" placeholder="ex: 15.05.2025"></div>
 
-                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">3. Detalii Preaviz & Încetare</strong></div>
+                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">3. Perioada de Preaviz</strong></div>
                     <div><label>Zile Lucrătoare Preaviz *</label><select id="demisZilePreaviz"><option value="20 ZILE LUCRATOARE">20 Zile Lucrătoare (Execuție)</option><option value="45 ZILE LUCRATOARE">45 Zile Lucrătoare (Conducere)</option></select></div>
                     <div><label>Data Începere Preaviz *</label><input type="text" id="demisDataStart" placeholder="ex: 01.09.2026"></div>
                     <div><label>Ultima Zi de Activitate *</label><input type="text" id="demisDataSfarsit" placeholder="ex: 28.09.2026"></div>

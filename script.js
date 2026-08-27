@@ -411,7 +411,6 @@ function selecteazaCategorie(cat) {
         if (titleStep1) titleStep1.innerText = "Cerere de Demisie (Conform Codului Muncii)";
         if (modeSelector) modeSelector.style.display = 'none';
         
-        // Mergem direct la pasul 4 pentru demisie (generare simplă dintr-un singur ecran)
         document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
         document.getElementById('step1').style.display = 'block';
         document.getElementById('step1').classList.add('active');
@@ -427,7 +426,7 @@ const elementeFormular = [
     'buyerRepresentant', 'buyerQuality', 'buyerRepresCISeries', 'buyerRepresCINumber', 'buyerRepresCNP', 'buyerRepresPhone', 'buyerRepresEmail',
     'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredActType', 'acquiredActDetails', 'figurePrice', 'lettersPrice',
     'proprietarNume', 'proprietarCnp', 'proprietarAct', 'chiriasNume', 'chiriasCnp', 'chiriasAct', 'imobilAdresa', 'imobilInventar', 'imobilDurata', 'imobilDataStart', 'imobilChirie', 'imobilGarantie',
-    'demisFirma', 'demisNume', 'demisFunctie', 'demisDepartament', 'demisAdresa', 'demisAct', 'demisCnp', 'demisCimNr', 'demisCimData', 'demisZilePreaviz', 'demisDataStart', 'demisDataSfarsit'
+    'demisFirma', 'demisNume', 'demisFunctie', 'demisDepartament', 'demisAdresa', 'demisAct', 'demisCnp', 'demisCimNr', 'demisCimData', 'demisZilePreaviz', 'demisDataStart', 'demisDataSfarsit', 'demisTipFormat'
 ];
 
 function initAutoSave() {
@@ -655,7 +654,7 @@ function nextStep(step) {
             if (step1) step1.classList.remove('active');
             if (step4) step4.classList.add('active');
             if (titleStep4) titleStep4.innerText = "Pasul Final: Cerere Demisie Pregătită";
-            if (step4Desc) step4Desc.innerText = "Verificați datele introduse. Cererea conține temeiul legal complet și semnătura dumneavoastră.";
+            if (step4Desc) step4Desc.innerText = "Verificați datele introduse. Cererea conține formatul selectat și semnătura dumneavoastră.";
             if (localActions) localActions.style.display = 'none';
             if (waitingContainer) waitingContainer.style.display = 'none';
             if (finalDownload) finalDownload.style.display = 'block';
@@ -1062,7 +1061,7 @@ async function genereazaContractImobiliarPDF() {
 }
 
 async function genereazaCerereDemisiePDF() {
-    arataNotificare("Se generează cererea de demisie oficială...");
+    arataNotificare("Se generează cererea de demisie...");
     try {
         const { PDFDocument, StandardFonts } = PDFLib;
         const pdfDoc = await PDFDocument.create();
@@ -1077,7 +1076,21 @@ async function genereazaCerereDemisiePDF() {
             return el ? el.value.trim() : '';
         };
 
-        page.drawText(curataDiacritice(`CĂTRE CONDUCEREA: ${getVal('demisFirma') || '...................................................'}`), { x: 45, y, size: 9, font: fontBold });
+        const tipFormat = getVal('demisTipFormat') || 'simpla';
+        const firma = getVal('demisFirma') || '...................................................';
+        const nume = getVal('demisNume') || '...................................................';
+        const functie = getVal('demisFunctie') || '....................';
+        const departament = getVal('demisDepartament') || '....................';
+        const adresa = getVal('demisAdresa') || '....................................................................';
+        const act = getVal('demisAct') || '........';
+        const cnp = getVal('demisCnp') || '...................';
+        const cimNr = getVal('demisCimNr') || '....';
+        const cimData = getVal('demisCimData') || '............';
+        const zilePreaviz = getVal('demisZilePreaviz') || '20 ZILE LUCRATOARE';
+        const dataStart = getVal('demisDataStart') || '............';
+        const dataSfarsit = getVal('demisDataSfarsit') || '............';
+
+        page.drawText(curataDiacritice(`CĂTRE CONDUCEREA: ${firma}`), { x: 45, y, size: 9, font: fontBold });
         y -= 30;
 
         const titluText = "CERERE DE DEMISIE";
@@ -1086,26 +1099,34 @@ async function genereazaCerereDemisiePDF() {
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 13, font: fontBold });
         y -= 35;
 
-        const p1 = `Subsemnatul/a ${getVal('demisNume') || '...................................................'}, având funcția de ${getVal('demisFunctie') || '....................'} în cadrul departamentului ${getVal('demisDepartament') || '....................'}, domiciliat/ă în ${getVal('demisAdresa') || '....................................................................'}, posesor/posesoare al/a CI seria ${getVal('demisAct') || '........'}, CNP ${getVal('demisCnp') || '...................'}, angajat/ă în baza Contractului Individual de Muncă nr. ${getVal('demisCimNr') || '....'} din data de ${getVal('demisCimData') || '............'}.`;
+        const p1 = `Subsemnatul/a ${nume}, având funcția de ${functie} în cadrul departamentului ${departament}, domiciliat/ă în ${adresa}, posesor/posesoare al/a CI seria ${act}, CNP ${cnp}, angajat/ă în baza Contractului Individual de Muncă nr. ${cimNr} din data de ${cimData}.`;
         
-        // Desenează paragraf cu wrap simplu
-        page.drawText(curataDiacritice(p1), { x: 45, y, size: 8.5, font, maxWidth: 505, lineHeights: 14 });
+        page.drawText(curataDiacritice(p1), { x: 45, y, size: 8.5, font, maxWidth: 505 });
         y -= 65;
 
-        const p2 = `Prin prezenta, în conformitate cu prevederile art. 81 din Legea nr. 53/2003 (Codul Muncii), vă aduc la cunoștință încetarea contractului individual de muncă prin demisie.`;
-        page.drawText(curataDiacritice(p2), { x: 45, y, size: 8.5, font, maxWidth: 505, lineHeights: 14 });
-        y -= 45;
+        if (tipFormat === 'simpla') {
+            const pSimpla = `Prin prezenta vă notific încetarea contractului individual de muncă prin demisie, cu respectarea termenului de preaviz de ${zilePreaviz}, începând cu data de ${dataStart} și având ca ultimă zi de activitate data de ${dataSfarsit}.`;
+            page.drawText(curataDiacritice(pSimpla), { x: 45, y, size: 9, font, maxWidth: 505 });
+            y -= 75;
 
-        const p3 = `Termenul de preaviz de ${getVal('demisZilePreaviz') || '20 ZILE LUCRATOARE'}, conform prevederilor legale, va începe să curgă începând cu data de ${getVal('demisDataStart') || '............'}, ultima zi de activitate și de prezență la locul de muncă urmând să fie la data de ${getVal('demisDataSfarsit') || '............'}.`;
-        page.drawText(curataDiacritice(p3), { x: 45, y, size: 8.5, font, maxWidth: 505, lineHeights: 14 });
-        y -= 55;
+            page.drawText(curataDiacritice("Vă rog să luați act de prezenta cerere și să o înregistrați."), { x: 45, y, size: 9, font: fontBold });
+            y -= 50;
+        } else {
+            const p2 = `Prin prezenta, în conformitate cu prevederile art. 81 din Legea nr. 53/2003 (Codul Muncii), vă aduc la cunoștință încetarea contractului individual de muncă prin demisie.`;
+            page.drawText(curataDiacritice(p2), { x: 45, y, size: 8.5, font, maxWidth: 505 });
+            y -= 45;
 
-        const p4 = `Solicit conducerii societății ca la data încetării contractului să îmi fie achitate drepturile salariale cuvenite la zi, inclusiv compensarea în bani a zilelor de concediu de odihnă efectuate sau neefectuate, și să mi se elibereze adeverința de vechime / extrasul REVISAL și nota de lichidare.`;
-        page.drawText(curataDiacritice(p4), { x: 45, y, size: 8.5, font, maxWidth: 505, lineHeights: 14 });
-        y -= 65;
+            const p3 = `Termenul de preaviz de ${zilePreaviz}, conform prevederilor legale, va începe să curgă începând cu data de ${dataStart}, ultima zi de activitate și de prezență la locul de muncă urmând să fie la data de ${dataSfarsit}.`;
+            page.drawText(curataDiacritice(p3), { x: 45, y, size: 8.5, font, maxWidth: 505 });
+            y -= 55;
 
-        page.drawText(curataDiacritice("Vă rog să luați act de prezenta cerere și să o înregistrați la registratura societății."), { x: 45, y, size: 8.5, font: fontBold });
-        y -= 40;
+            const p4 = `Solicit conducerii societății ca la data încetării contractului să îmi fie achitate drepturile salariale cuvenite la zi, inclusiv compensarea în bani a zilelor de concediu de odihnă efectuate sau neefectuate, și să mi se elibereze adeverința de vechime / extrasul REVISAL și nota de lichidare.`;
+            page.drawText(curataDiacritice(p4), { x: 45, y, size: 8.5, font, maxWidth: 505 });
+            y -= 65;
+
+            page.drawText(curataDiacritice("Vă rog să luați act de prezenta cerere și să o înregistrați la registratura societății."), { x: 45, y, size: 8.5, font: fontBold });
+            y -= 40;
+        }
 
         page.drawText(curataDiacritice(`Data formulării: ${new Date().toLocaleDateString('ro-RO')}`), { x: 45, y, size: 8.5, font });
         y -= 40;
