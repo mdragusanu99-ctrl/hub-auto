@@ -547,7 +547,7 @@
                     <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodantAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
                 </div>
 
-                <!-- Formular Imobiliare Pas 1 (Doar Proprietar & Imobil - Chiriașul a fost mutat la Pasul 2) -->
+                <!-- Formular Imobiliare Pas 1 -->
                 <div id="formImobiliareStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Proprietar (Locator)</strong></div>
                     <div class="full-width"><label>Nume și Prenume Proprietar *</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
@@ -596,11 +596,10 @@
                 </div>
             </div>
 
-            <!-- STEP 2: CUMPĂRĂTOR / BENEFICIAR / COMODATAR / CHIRIAȘ / SEMNĂTURĂ DEMISIE -->
+            <!-- STEP 2 -->
             <div class="step-content" id="step2">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
                 
-                <!-- Formular Auto Pas 2 (Cumpărător) -->
                 <div id="formAutoStep2" class="form-grid">
                     <div class="full-width"><label>Nume și Prenume / Denumire</label><input type="text" id="buyerName" placeholder="ex: IONESCU MARIA"></div>
                     <div><label>Județ</label><input type="text" id="buyer_judet" placeholder="ex: BUCUREȘTI"></div>
@@ -647,7 +646,6 @@
                     </div>
                 </div>
 
-                <!-- Formular Prestări Servicii Pas 2 -->
                 <div id="formPrestariStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Beneficiar</strong></div>
                     <div class="full-width"><label>Nume / Denumire Client *</label><input type="text" id="beneficiarNume" placeholder="ex: CLIENT SRL"></div>
@@ -658,7 +656,6 @@
                     <div><label>Contact / Telefon *</label><input type="text" id="beneficiarContact" placeholder="ex: 0722..."></div>
                 </div>
 
-                <!-- Formular Comodat Pas 2 -->
                 <div id="formComodatStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Beneficiar Folosință)</strong></div>
                     <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodatarNume" placeholder="ex: IONESCU MARIA"></div>
@@ -667,7 +664,6 @@
                     <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodatarAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
                 </div>
 
-                <!-- Formular Imobiliare Pas 2 (Chiriaș) -->
                 <div id="formImobiliareStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
                     <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
@@ -675,7 +671,6 @@
                     <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
                 </div>
 
-                <!-- Container Semnătură pentru Demisie (care are doar 3 pași total) -->
                 <div id="demisSignBoxContainer" style="display:none; margin-top: 15px;">
                     <label>Semnătură Salariat</label>
                     <canvas id="sigDemisieCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
@@ -688,11 +683,10 @@
                 </div>
             </div>
 
-            <!-- STEP 3: VEHICUL / SEMNĂTURI -->
+            <!-- STEP 3 -->
             <div class="step-content" id="step3">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep3">Pasul 3: Vehiculul și Prețul</div>
                 
-                <!-- Formular Auto Pas 3 -->
                 <div id="formAutoStep3" class="form-grid">
                     <div><label>Marcă</label><input type="text" id="make" placeholder="ex: AUDI"></div>
                     <div><label>Tipul</label><input type="text" id="type" placeholder="ex: A4 B8"></div>
@@ -706,7 +700,6 @@
                     <div><label>An Fabricație</label><input type="text" id="productionYear" placeholder="ex: 2012"></div>
                     <div><label>Normă Euro</label><input type="text" id="euroStandard" placeholder="ex: EURO 5"></div>
                     <div><label>Data Dobândirii Anterioare</label><input type="text" id="acquiredDate" placeholder="ex: 15.05.2020"></div>
-                    
 
                     <div>
                         <label>Tip Act Anterior Dobândire</label>
@@ -723,14 +716,12 @@
                     <div><label>Preț în Litere</label><input type="text" id="lettersPrice" placeholder="ex: OPT MII CINCI SUTE EURO"></div>
                 </div>
 
-                <!-- Formular Prestări Servicii Pas 3 -->
                 <div id="formPrestariStep3" class="form-grid" style="display:none;">
-                    <div class="full-width"><label>Descriere Detaliată a Serviciilor *</label><textarea id="serviciiDescriere" placeholder="ex: Servicii de consultanta IT, mentenanta web si optimizare cod sursa..." style="height: 100px; text-transform: none;"></textarea></div>
+                    <div class="full-width"><label>Descriere Detaliată a Serviciilor *</label><textarea id="serviciiDescriere" placeholder="ex: Servicii de consultanta IT..." style="height: 100px; text-transform: none;"></textarea></div>
                     <div><label>Preț Total Servicii *</label><input type="text" id="serviciiPret" placeholder="ex: 2500 RON"></div>
-                    <div><label>Termen de Execuție *</label><input type="text" id="serviciiTermen" placeholder="ex: 30 ZILE CALENDARISTICE"></div>
+                    <div><label>Termen de Execuție *</label><input type="text" id="serviciiTermen" placeholder="ex: 30 ZILE"></div>
                 </div>
 
-                <!-- Formular Comodat Pas 3 -->
                 <div id="formComodatStep3" class="form-grid" style="display:none;">
                     <div>
                         <label>Tip Bun Dat în Comodat *</label>
@@ -740,11 +731,10 @@
                         </select>
                     </div>
                     <div><label>Durata Contractului *</label><input type="text" id="comodatDurata" placeholder="ex: 3 ANI"></div>
-                    <div class="full-width"><label>Descriere Bun (Adresă completă imobil sau Marcă, VIN auto) *</label><input type="text" id="comodatDescriereBun" placeholder="ex: APARTAMENT SITUAT IN BÂRLAD, STR. ..."></div>
-                    <div class="full-width"><label>Scopul Folosinței *</label><input type="text" id="comodatScop" placeholder="ex: LOCUINTA / STABILIRE SEDIU SOCIAL CONFORM LEGII 31/1990"></div>
+                    <div class="full-width"><label>Descriere Bun *</label><input type="text" id="comodatDescriereBun" placeholder="ex: APARTAMENT..."></div>
+                    <div class="full-width"><label>Scopul Folosinței *</label><input type="text" id="comodatScop" placeholder="ex: LOCUINTA"></div>
                 </div>
 
-                <!-- ZONA DE SEMNĂTURI PENTRU IMOBILIARE LA PASUL 3 -->
                 <div id="imobiliareSemnaturiContainer" style="display:none; margin-bottom: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                     <div id="proprietarSignBox" style="margin-bottom: 16px;">
                         <label id="labelPart1Sign">Semnătură Proprietar (Locator)</label>
@@ -761,9 +751,9 @@
                 <div style="margin-top: 30px; display: flex; gap: 12px;">
                     <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
                     <button class="btn btn-primary" id="btnNextStep3" onclick="nextStep(3)">Finalizare & Opțiuni ➔</button>
-                   
                 </div>
-                <!-- Bloc Plată Pas 3 -->
+
+                <!-- Un singur Bloc Plată Pas 3 -->
                 <div class="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
                     <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
                     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
@@ -782,12 +772,11 @@
                 </div>
             </div>
 
-            <!-- STEP 4: SEMNĂTURI / LINK LA DISTANȚĂ SAU PLATĂ & DESCĂRCARE -->
+            <!-- STEP 4 -->
             <div class="step-content" id="step4">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep4">Pasul 4: Semnături & Trimitere la Distanță</div>
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Colectați semnăturile sau generați linkul pentru cealaltă parte.</p>
                 
-                <!-- BUTON GENERARE LINK LA DISTANȚĂ -->
                 <div id="localActions" style="display:none;">
                     <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" onclick="pornesteFluxRemote()">📤 Generează Link de Trimitere la Distanță</button>
                 </div>
@@ -803,58 +792,13 @@
                         <button class="btn btn-success" style="font-size: 13px; padding: 10px;" onclick="trimitePeWhatsApp()">💬 Trimite pe WhatsApp</button>
                     </div>
                 </div>
-<!-- PAGINĂ DEDICATĂ DE PLATĂ & CHECKOUT LA ULTIMUL PAS -->
-                <div id="paymentStepContainer" style="display: none; text-align: center; padding: 10px 0;">
-                    <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
-                    
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); max-width: 400px; margin: 0 auto 20px auto; text-align: left;">
-                        <p style="font-size: 13px; margin-bottom: 8px;"><strong>Document:</strong> Contract Oficial Generat</p>
-                        <p style="font-size: 13px;"><strong>Cost generare:</strong> <span style="color: var(--primary); font-weight: bold;">19.00 RON</span> (sau 1 Credit)</p>
-                    </div>
-
-                    <button class="btn btn-primary" style="padding: 14px 20px; font-size: 15px; width: 100%; max-width: 400px;" onclick="proceseazaPlataSiDescarca()">
-                        💳 Plătește cu Cardul & Descarcă PDF
-                    </button>
-                </div>
-
-                <!-- ZONĂ CONFIRMARE / DESCĂRCARE DUPĂ PLATĂ -->
-                <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">✅ Plată Efectuată cu Succes!</div>
-                        <p style="font-size: 12px; color: var(--text-muted);">Documentul tău a fost generat, criptat și salvat în arhivă.</p>
-                    </div>
-                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()">📥 Descarcă Din Nou Documentul PDF</button>
-                </div>
-<!-- PAGINĂ DEDICATĂ DE PLATĂ & CHECKOUT LA PASUL 4 -->
-                <div id="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
-                    <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
-                    
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); max-width: 400px; margin: 0 auto 20px auto; text-align: left;">
-                        <p style="font-size: 13px; margin-bottom: 8px;"><strong>Document:</strong> Contract Oficial Generat</p>
-                        <p style="font-size: 13px;"><strong>Cost generare:</strong> <span style="color: var(--primary); font-weight: bold;">19.00 RON</span> (sau 1 Credit)</p>
-                    </div>
-
-                    <button class="btn btn-primary" style="padding: 14px 20px; font-size: 15px; width: 100%; max-width: 400px; margin: 0 auto;" onclick="proceseazaPlataSiDescarca()">
-                        💳 Plătește cu Cardul & Descarcă PDF
-                    </button>
-                </div>
-
-                <!-- ZONĂ CONFIRMARE / DESCĂRCARE DUPĂ PLATĂ -->
-                <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">✅ Plată Efectuată cu Succes!</div>
-                        <p style="font-size: 12px; color: var(--text-muted);">Documentul tău a fost generat, criptat și salvat în arhivă.</p>
-                    </div>
-                    <button class="btn btn-success" id="btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()" style="max-width: 400px; margin: 0 auto;">📥 Descarcă Din Nou Documentul PDF</button>
-                </div>
 
                 <div style="margin-top: 20px; display: flex; gap: 12px;">
                     <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button>
                     <button class="btn btn-primary" id="btnNextStep4" onclick="nextStep(4)" style="display:none;">Continuă spre Plată ➔</button>
                 </div>
-                <!-- Bloc Plată Pas 4 -->
+
+                <!-- Un singur Bloc Plată Pas 4 -->
                 <div class="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
                     <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
                     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
@@ -873,25 +817,16 @@
                 </div>
             </div>
 
-            <!-- STEP 5: PLATĂ & DESCĂRCARE PDF (PENTRU AUTO 5 PAȘI) -->
+            <!-- STEP 5 -->
             <div class="step-content" id="step5">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep5">Pasul Final: Plată & Descărcare Document</div>
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea documentului oficial în format PDF.</p>
                 
-                <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">💳 Status Plată: <span>Credit Gratuit Disponibil</span></div>
-                    <p style="font-size: 12px; color: var(--text-muted);">Apăsați butonul de mai jos pentru a genera și descărca actul oficial.</p>
-                </div>
-
-                <div id="finalDownloadContainerStep5" style="text-align: center;">
-                    <button class="btn btn-success" id="btnDescarcaOficialStep5" onclick="ruleazaDescarcareaFinala()">📥 Plătește & Descarcă Documentul Oficial PDF</button>
-                </div>
-
                 <div style="margin-top: 20px;">
                     <button class="btn btn-secondary" onclick="prevStep(5)">⬅ Înapoi</button>
                 </div>
-            </div>
-        <!-- Bloc Plată Pas 5 -->
+
+                <!-- Un singur Bloc Plată Pas 5 -->
                 <div class="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
                     <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
                     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
@@ -908,6 +843,9 @@
                     </div>
                     <button class="btn btn-success btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()" style="max-width: 400px; margin: 0 auto;">📥 Descarcă Din Nou Documentul PDF</button>
                 </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- SCRIPT EXTERN -->
