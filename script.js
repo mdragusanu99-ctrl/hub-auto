@@ -371,7 +371,7 @@ function activeazaPasulUI(stepNum) {
         if (localAct) localAct.style.display = (modLucru === 'remote') ? 'block' : 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
         if (paymentContainer) paymentContainer.style.display = 'none';
-
+        if (paymentContainer) paymentContainer.style.display = 'none';
         if (tipContractCurent === 'imobiliare') {
             if (document.getElementById('labelPart1Sign')) document.getElementById('labelPart1Sign').innerText = "Semnătură Proprietar (Locator)";
             if (document.getElementById('chiriasSignLabel')) document.getElementById('chiriasSignLabel').innerText = "Semnătură Chiriaș (Locatar)";
