@@ -232,10 +232,14 @@ function acceseazaDashboardTab(tabName) {
     }
     const mainMenu = document.getElementById('mainMenuContainer');
     const modeSelector = document.getElementById('modeSelectorContainer');
+    const demisieSelector = document.getElementById('demisieSelectorContainer');
     const dashView = document.getElementById('dashboardView');
+    const step1 = document.getElementById('step1');
 
     if (mainMenu) mainMenu.style.display = 'none';
     if (modeSelector) modeSelector.style.display = 'none';
+    if (demisieSelector) demisieSelector.style.display = 'none';
+    if (step1) step1.classList.remove('active');
     document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
     if (dashView) dashView.style.display = 'block';
 
@@ -413,32 +417,42 @@ function selecteazaCategorie(cat) {
         if (formAuto1) formAuto1.style.display = 'none';
         if (formImob1) formImob1.style.display = 'none';
         if (modeSelector) modeSelector.style.display = 'none';
-        if (demisieSelector) demisieSelector.style.display = 'block'; // Deschidem meniul de selecție simplă vs detaliată!
+        if (demisieSelector) demisieSelector.style.display = 'block'; // Afișăm corect meniul de selecție simplă vs detaliată!
     }
 }
 
 function selecteazaTipDemisieSiPorneste(tip) {
     const demisieSelector = document.getElementById('demisieSelectorContainer');
+    const formAuto1 = document.getElementById('formAutoStep1');
+    const formImob1 = document.getElementById('formImobiliareStep1');
     const formDemisie1 = document.getElementById('formDemisieStep1');
     const titleStep1 = document.getElementById('titleStep1');
     const headerTitle = document.getElementById('demisieFormHeaderTitle');
     const formatInput = document.getElementById('demisTipFormat');
+    const infoBanner = document.getElementById('demisieInfoBanner');
 
     if (demisieSelector) demisieSelector.style.display = 'none';
+    if (formAuto1) formAuto1.style.display = 'none';
+    if (formImob1) formImob1.style.display = 'none';
     if (formDemisie1) formDemisie1.style.display = 'grid';
     if (formatInput) formatInput.value = tip;
 
     if (tip === 'simpla') {
         if (titleStep1) titleStep1.innerText = "Cerere de Demisie Simplă și Rapidă";
         if (headerTitle) headerTitle.innerText = "Date Cerere Simplă (Preaviz & Salariat)";
+        if (infoBanner) infoBanner.innerHTML = "🟢 Ai ales <b>Varianta Simplă și Rapidă</b>. Cererea va fi scurtă, aerisită și direct la obiect.";
     } else {
         if (titleStep1) titleStep1.innerText = "Cerere de Demisie Detaliată & Juridică";
-        if (headerTitle) headerTitle.innerText = "Date Cerere Detaliată (Cu Drepturi & Vechime)";
+        if (headerTitle) headerTitle.innerText = "Date Cerere Detaliată (Cu Drepturi, Art. 81 & Vechime)";
+        if (infoBanner) infoBanner.innerHTML = "🔵 Ai ales <b>Varianta Detaliată și Juridică</b>. Documentul va include temeiul legal (Codul Muncii), solicitarea zilelor de concediu și adeverința REVISAL.";
     }
 
     document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-    document.getElementById('step1').style.display = 'block';
-    document.getElementById('step1').classList.add('active');
+    const step1 = document.getElementById('step1');
+    if (step1) {
+        step1.style.display = 'block';
+        step1.classList.add('active');
+    }
 }
 
 const elementeFormular = [
@@ -620,7 +634,10 @@ function selecteazaModSiPorneste(mod) {
     currentStep = 1;
     document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
     const step1 = document.getElementById('step1');
-    if (step1) step1.classList.add('active');
+    if (step1) {
+        step1.style.display = 'block';
+        step1.classList.add('active');
+    }
     updateProgress();
 }
 
@@ -766,7 +783,10 @@ function prevStep(step) {
             const step4 = document.getElementById('step4');
             const step1 = document.getElementById('step1');
             if (step4) step4.classList.remove('active');
-            if (step1) step1.classList.add('active');
+            if (step1) {
+                step1.style.display = 'block';
+                step1.classList.add('active');
+            }
             currentStep = 1;
         }
         return;
