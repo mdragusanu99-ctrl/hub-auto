@@ -634,7 +634,6 @@ function selecteazaModSiPorneste(mod) {
         if(imobSemnaturi) imobSemnaturi.style.display = 'none';
         if(step4Desc) step4Desc.innerText = "Tranzacție locală pregătită. Confirmați pentru descărcare.";
 
-        // Activăm formularul auto corespunzător pașilor
         document.getElementById('formAutoStep1').style.display = 'grid';
     } else {
         if(p2) p2.style.display = 'none';
@@ -824,7 +823,6 @@ function nextStep(step) {
         return;
     }
 
-    // Gestionare flux Auto (Standard)
     const stepEl = document.getElementById('step' + step);
     if (stepEl) stepEl.classList.remove('active');
     
@@ -1122,20 +1120,20 @@ async function genereazaContractImobiliarPDF() {
         const deseneazaTitluSectiune = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
             page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
-            y -= 13;
+            y -= 15;
         };
 
         const deseneazaParagraf = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-            page.drawText(curataDiacritice(text), { x: 45, y, size: 7, font });
-            y -= 11;
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 7.5, font, maxWidth: 505 });
+            y -= 14;
         };
 
         const titluText = "CONTRACT DE INCHIRIERE LOCUINTA";
         const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
         const centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });
-        y -= 20;
+        y -= 25;
 
         const getVal = (id) => {
             const el = document.getElementById(id);
@@ -1143,15 +1141,12 @@ async function genereazaContractImobiliarPDF() {
         };
 
         deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
-        deseneazaParagraf(`1.1. Locator (Proprietar): ${getVal('proprietarNume') || '....................................'},`);
-        deseneazaParagraf(`CNP: ${getVal('proprietarCnp') || '................'}, CI seria: ${getVal('proprietarAct') || '........'}.`);
-        deseneazaParagraf(`1.2. Locatar (Chirias): ${getVal('chiriasNume') || '....................................'},`);
-        deseneazaParagraf(`CNP: ${getVal('chiriasCnp') || '................'}, CI seria: ${getVal('chiriasAct') || '........'}.`);
+        deseneazaParagraf(`1.1. Locator (Proprietar): ${getVal('proprietarNume') || '....................................'}, CNP: ${getVal('proprietarCnp') || '................'}, CI seria: ${getVal('proprietarAct') || '........'}.`);
+        deseneazaParagraf(`1.2. Locatar (Chirias): ${getVal('chiriasNume') || '....................................'}, CNP: ${getVal('chiriasCnp') || '................'}, CI seria: ${getVal('chiriasAct') || '........'}.`);
         y -= 4;
 
         deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
-        deseneazaParagraf(`2.1. Locatorul inchiriaza Locatarului imobilul cu destinatia exclusiva de locuinta, situat in:`);
-        deseneazaParagraf(`${getVal('imobilAdresa') || '..................................................................................................................'}.`);
+        deseneazaParagraf(`2.1. Locatorul inchiriaza Locatarului imobilul cu destinatia exclusiva de locuinta, situat in: ${getVal('imobilAdresa') || '..................................................................................................................'}.`);
         
         const inventarInput = getVal('imobilInventar');
         if (inventarInput) {
@@ -1206,8 +1201,8 @@ async function genereazaContractImobiliarPDF() {
 
         if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
 
-        page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale, conform Codului Civil.`), { x: 45, y, size: 7.5, font: fontBold });
-        y -= 22;
+        page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale, conform Codului Civil.`), { x: 45, y, size: 8, font: fontBold });
+        y -= 25;
         
         deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
         y -= 4;
@@ -1224,8 +1219,8 @@ async function genereazaContractImobiliarPDF() {
             page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
         }
 
-        page.drawText(curataDiacritice("Semnatura Proprietar (Locator)"), { x: 45, y: y - 62, size: 7, font: fontBold });
-        page.drawText(curataDiacritice("Semnatura Chirias (Locatar)"), { x: 310, y: y - 62, size: 7, font: fontBold });
+        page.drawText(curataDiacritice("Semnatura Proprietar (Locator)"), { x: 45, y: y - 62, size: 7.5, font: fontBold });
+        page.drawText(curataDiacritice("Semnatura Chirias (Locatar)"), { x: 310, y: y - 62, size: 7.5, font: fontBold });
 
         deseneazaFooter();
 
@@ -1261,20 +1256,20 @@ async function genereazaContractPrestariServiciiPDF() {
         const deseneazaTitluSectiune = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
             page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
-            y -= 13;
+            y -= 15;
         };
 
         const deseneazaParagraf = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-            page.drawText(curataDiacritice(text), { x: 45, y, size: 7, font, maxWidth: 500 });
-            y -= 11;
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 7.5, font, maxWidth: 505 });
+            y -= 14;
         };
 
         const titluText = "CONTRACT DE PRESTARI SERVICII";
         const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
         const centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });
-        y -= 20;
+        y -= 25;
 
         const getVal = (id) => {
             const el = document.getElementById(id);
@@ -1282,17 +1277,12 @@ async function genereazaContractPrestariServiciiPDF() {
         };
 
         deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
-        deseneazaParagraf(`1.1. Prestator: ${getVal('prestatorNume') || '....................................'}, CUI/CIF: ${getVal('prestatorCui') || '........'},`);
-        deseneazaParagraf(`Nr. Reg. Com: ${getVal('prestatorReg') || '........'}, cu sediul in ${getVal('prestatorAdresa') || '....................................'},`);
-        deseneazaParagraf(`reprezentata prin ${getVal('prestatorReprezentant') || '....................'}, avand contul bancar ${getVal('prestatorBanca') || '....................'}.`);
-        deseneazaParagraf(`1.2. Beneficiar: ${getVal('beneficiarNume') || '....................................'}, CUI/CIF: ${getVal('beneficiarCui') || '........'},`);
-        deseneazaParagraf(`Nr. Reg. Com: ${getVal('beneficiarReg') || '........'}, cu sediul in ${getVal('beneficiarAdresa') || '....................................'},`);
-        deseneazaParagraf(`reprezentata prin ${getVal('beneficiarReprezentant') || '....................'}, contact: ${getVal('beneficiarContact') || '....................'}.`);
+        deseneazaParagraf(`1.1. Prestator: ${getVal('prestatorNume') || '....................................'}, CUI/CIF: ${getVal('prestatorCui') || '........'}, Nr. Reg. Com: ${getVal('prestatorReg') || '........'}, cu sediul in ${getVal('prestatorAdresa') || '....................................'}, reprezentata prin ${getVal('prestatorReprezentant') || '....................'}, avand contul bancar ${getVal('prestatorBanca') || '....................'}.`);
+        deseneazaParagraf(`1.2. Beneficiar: ${getVal('beneficiarNume') || '....................................'}, CUI/CIF: ${getVal('beneficiarCui') || '........'}, Nr. Reg. Com: ${getVal('beneficiarReg') || '........'}, cu sediul in ${getVal('beneficiarAdresa') || '....................................'}, reprezentata prin ${getVal('beneficiarReprezentant') || '....................'}, contact: ${getVal('beneficiarContact') || '....................'}.`);
         y -= 4;
 
         deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI (INDEPENDENTA SI FARA SUBORDONARE)");
-        deseneazaParagraf(`2.1. Obiectul prezentului contract consta in prestarea de catre Prestator a urmatoarelor servicii specializate:`);
-        deseneazaParagraf(`${getVal('serviciiDescriere') || '..................................................................................................................'}.`);
+        deseneazaParagraf(`2.1. Obiectul prezentului contract consta in prestarea de catre Prestator a urmatoarelor servicii specializate: ${getVal('serviciiDescriere') || '..................................................................................................................'}.`);
         deseneazaParagraf(`2.2. Prestatorul isi desfasoara activitatea in mod independent, pe cont propriu si pe riscul sau, fara a exista o subordonare ierarhica sau program fix de lucru specific contractelor individuale de munca, evitand astfel orice risc de reclasificare fiscala (ANAF).`);
         y -= 4;
 
@@ -1333,8 +1323,8 @@ async function genereazaContractPrestariServiciiPDF() {
 
         if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
 
-        page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`), { x: 45, y, size: 7.5, font: fontBold });
-        y -= 22;
+        page.drawText(curataDiacritice(`Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}, in 2 exemplare originale.`), { x: 45, y, size: 8, font: fontBold });
+        y -= 25;
         
         deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
         y -= 4;
@@ -1351,8 +1341,8 @@ async function genereazaContractPrestariServiciiPDF() {
             page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
         }
 
-        page.drawText(curataDiacritice("Semnatura Prestator"), { x: 45, y: y - 62, size: 7, font: fontBold });
-        page.drawText(curataDiacritice("Semnatura Beneficiar"), { x: 310, y: y - 62, size: 7, font: fontBold });
+        page.drawText(curataDiacritice("Semnatura Prestator"), { x: 45, y: y - 62, size: 7.5, font: fontBold });
+        page.drawText(curataDiacritice("Semnatura Beneficiar"), { x: 310, y: y - 62, size: 7.5, font: fontBold });
 
         deseneazaFooter();
 
@@ -1442,7 +1432,6 @@ async function genereazaCerereDemisiePDF() {
 
         page.drawText(curataDiacritice("Semnătura Salariatului"), { x: 45, y: y - 68, size: 8, font: fontBold });
 
-        // Casetă HR
         page.drawRectangle({ x: 310, y: y - 85, width: 240, height: 80, borderColor: PDFLib.rgb(0.3, 0.3, 0.3), borderWidth: 1 });
         page.drawText(curataDiacritice("REZERVAT PENTRU ANGAJATOR (HR)"), { x: 320, y: y - 15, size: 7.5, font: fontBold });
         page.drawText(curataDiacritice("Luat la cunoștință, Data: ........................"), { x: 320, y: y - 35, size: 7, font });
