@@ -456,7 +456,6 @@
                     <div class="full-width"><label>Nume și Prenume Proprietar *</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
                     <div><label>CNP Proprietar *</label><input type="text" id="proprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
                     <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="proprietarAct" placeholder="ex: VS 123456"></div>
-                    <div class="full-width"><label>Adresă Domiciliu Proprietar *</label><input type="text" id="proprietarAdresa" placeholder="ex: STR. UNIRII, NR. 10, BÂRLAD"></div>
 
                     <div class="full-width" style="margin-top: 10px;"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
                     <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
@@ -1063,7 +1062,7 @@
             'sellerRepresentant', 'sellerQuality', 'reprCISeries', 'reprCINumber', 'reprCNP', 'reprPhone', 'reprEmail',
             'buyerName', 'buyer_judet', 'buyerPostalCode', 'buyer_city', 'buyer_sector', 'buyerStreet', 'buyerStreetNo', 'buyerBlock', 'buyerBuilding', 'buyerFloor', 'buyerApartment', 'buyerCISeries', 'buyerCINumber', 'buyerCNP', 'buyerPhone', 'buyerEmail',
             'make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredActType', 'acquiredActDetails', 'figurePrice', 'lettersPrice',
-            'proprietarNume', 'proprietarCnp', 'proprietarAct', 'proprietarAdresa', 
+            'proprietarNume', 'proprietarCnp', 'proprietarAct', 
             'chiriasNume', 'chiriasCnp', 'chiriasAct', 
             'imobilAdresa', 'imobilInventar', 'imobilDurata', 'imobilDataStart', 'imobilChirie', 'imobilGarantie'
         ];
@@ -1099,13 +1098,7 @@
             return /^\d{13}$/.test(cnp.trim());
         }
 
-        function valideazaEmail(email) {
-            if (!email.trim()) return true;
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-        }
-
         function valideazaPasCurent() {
-            // Validare strictă pentru Pasul 1 (Vânzător)
             if (currentStep === 1 && userRole === 'vanzator') {
                 const campuriObligatorii = ['sellerName', 'sellerCounty', 'sellerPostalCode', 'sellerCity', 'sellerStreet', 'sellerStreetNo', 'seller_ci_serie', 'seller_ci_number', 'seller_ci_cnp'];
                 for (let id of campuriObligatorii) {
@@ -1124,7 +1117,6 @@
                 }
             }
 
-            // Validare strictă pentru Pasul 2 (Cumpărător)
             if ((userRole === 'cumparator' && buyerCurrentStep === 1) || (currentStep === 2 && modLucru === 'local')) {
                 const campuriObligatorii = ['buyerName', 'buyer_judet', 'buyerPostalCode', 'buyer_city', 'buyerStreet', 'buyerStreetNo', 'buyerCISeries', 'buyerCINumber', 'buyerCNP'];
                 for (let id of campuriObligatorii) {
@@ -1143,7 +1135,6 @@
                 }
             }
 
-            // Validare strictă pentru Pasul 3 (Vehicul și Preț)
             if (currentStep === 3 && userRole === 'vanzator') {
                 const campuriObligatorii = ['make', 'type', 'chassisSeries', 'motorSeries', 'cilCapacity', 'maxWeight', 'regNumber', 'ITPExpirationDate', 'vehicleIDCardNumber', 'productionYear', 'euroStandard', 'acquiredDate', 'acquiredActDetails', 'figurePrice', 'lettersPrice'];
                 for (let id of campuriObligatorii) {
@@ -1486,7 +1477,7 @@
         async function genereazaContractOficialPDF() {
             const vinInput = document.getElementById('chassisSeries');
             const vin = vinInput.value.trim();
-            vinInput.value = vin; // Curățăm automat spațiile din input
+            vinInput.value = vin;
 
             if (vin.length !== 17) {
                 arataNotificare("⚠️ Seria de șasiu (VIN) trebuie să aibă exact 17 caractere!", true);
@@ -1530,7 +1521,6 @@
         }
 
         async function genereazaContractImobiliarPDF() {
-            // Validare simplă imobiliare
             const pNume = document.getElementById('proprietarNume').value.trim();
             const cNume = document.getElementById('chiriasNume').value.trim();
             const imobil = document.getElementById('imobilAdresa').value.trim();
@@ -1576,7 +1566,7 @@
 
                 deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
                 deseneazaParagraf(`1.1. Locator (Proprietar): ${curataDiacritice(document.getElementById('proprietarNume').value || '....................................')},`);
-                deseneazaParagraf(`CNP: ${document.getElementById('proprietarCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('proprietarAct').value || '........')}, cu domiciliul in: ${curataDiacritice(document.getElementById('proprietarAdresa').value || '................................................................')}.`);
+                deseneazaParagraf(`CNP: ${document.getElementById('proprietarCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('proprietarAct').value || '........')}.`);
                 deseneazaParagraf(`1.2. Locatar (Chirias): ${curataDiacritice(document.getElementById('chiriasNume').value || '....................................')},`);
                 deseneazaParagraf(`CNP: ${document.getElementById('chiriasCnp').value || '................'}, CI seria: ${curataDiacritice(document.getElementById('chiriasAct').value || '........')}.`);
                 y -= 4;
