@@ -364,14 +364,15 @@ function activeazaPasulUI(stepNum) {
     const imobContainer = document.getElementById('imobiliareSemnaturiContainer');
     const localAct = document.getElementById('localActions');
     const finalDownloadContainer = document.getElementById('finalDownloadContainer');
-    const paymentContainer = document.getElementById('paymentStepContainer');
+    const payments = document.querySelectorAll('.paymentStepContainer');
+    const downloads = document.querySelectorAll('.finalDownloadContainer');
 
     if (estePasSemnatura) {
         if (imobContainer) imobContainer.style.display = 'block';
         if (localAct) localAct.style.display = (modLucru === 'remote') ? 'block' : 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
-        if (paymentContainer) paymentContainer.style.display = 'none';
-        if (paymentContainer) paymentContainer.style.display = 'none';
+       payments.forEach(el => el.style.display = 'none');
+       downloads.forEach(el => el.style.display = 'none');
         if (tipContractCurent === 'imobiliare') {
             if (document.getElementById('labelPart1Sign')) document.getElementById('labelPart1Sign').innerText = "Semnătură Proprietar (Locator)";
             if (document.getElementById('chiriasSignLabel')) document.getElementById('chiriasSignLabel').innerText = "Semnătură Chiriaș (Locatar)";
@@ -385,7 +386,7 @@ function activeazaPasulUI(stepNum) {
     }
 
     if (estePasPlataDescarcare) {
-        if (paymentContainer) paymentContainer.style.display = 'block';
+        payments.forEach(el => el.style.display = 'block');
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
 
         // Ascundem formularele și butoanele de navigare / finalizare de la pașii finali
@@ -404,8 +405,8 @@ function activeazaPasulUI(stepNum) {
         const titleFinal = document.getElementById('titleStep' + stepNum) || document.getElementById('titleStep3') || document.getElementById('titleStep4') || document.getElementById('titleStep5');
         if (titleFinal) titleFinal.innerText = `Pasul ${stepNum}: Finalizare și Plată Securizată`;
     } else {
-        if (paymentContainer) paymentContainer.style.display = 'none';
-        if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
+        payments.forEach(el => el.style.display = 'none');
+    downloads.forEach(el => el.style.display = 'none');
         
         const btnNext3 = document.getElementById('btnNextStep3');
         if (btnNext3) btnNext3.style.display = 'inline-block';
