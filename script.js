@@ -384,44 +384,51 @@ function selecteazaCategorie(cat) {
     const dashView = document.getElementById('dashboardView');
     const modeSelector = document.getElementById('modeSelectorContainer');
     const modTitle = document.getElementById('modSelectorTitle');
+    
     const formAuto1 = document.getElementById('formAutoStep1');
+    const formAuto2 = document.getElementById('formAutoStep2');
+    const formAuto3 = document.getElementById('formAutoStep3');
+
     const formImob1 = document.getElementById('formImobiliareStep1');
+
     const formPrestari1 = document.getElementById('formPrestariStep1');
+    const formPrestari2 = document.getElementById('formPrestariStep2');
+    const formPrestari3 = document.getElementById('formPrestariStep3');
+
     const formDemisie1 = document.getElementById('formDemisieStep1');
     const titleStep1 = document.getElementById('titleStep1');
 
     if (mainMenu) mainMenu.style.display = 'none';
     if (dashView) dashView.style.display = 'none';
     
+    // Ascundem tot preventiv
+    if (formAuto1) formAuto1.style.display = 'none';
+    if (formAuto2) formAuto2.style.display = 'none';
+    if (formAuto3) formAuto3.style.display = 'none';
+    if (formImob1) formImob1.style.display = 'none';
+    if (formPrestari1) formPrestari1.style.display = 'none';
+    if (formPrestari2) formPrestari2.style.display = 'none';
+    if (formPrestari3) formPrestari3.style.display = 'none';
+    if (formDemisie1) formDemisie1.style.display = 'none';
+
     if (cat === 'auto') {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Auto ITL 054";
         if (formAuto1) formAuto1.style.display = 'grid';
-        if (formImob1) formImob1.style.display = 'none';
-        if (formPrestari1) formPrestari1.style.display = 'none';
-        if (formDemisie1) formDemisie1.style.display = 'none';
         if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Vânzătorului";
         if (modeSelector) modeSelector.style.display = 'block';
     } else if (cat === 'imobiliare') {
         if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Imobiliar cu Inventar";
-        if (formAuto1) formAuto1.style.display = 'none';
         if (formImob1) formImob1.style.display = 'grid';
-        if (formPrestari1) formPrestari1.style.display = 'none';
-        if (formDemisie1) formDemisie1.style.display = 'none';
         if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Părților & Imobilului";
         if (modeSelector) modeSelector.style.display = 'block';
     } else if (cat === 'prestari_servicii') {
-        // Prestări servicii: Ghidat în pași prin wizard local
-        if (formAuto1) formAuto1.style.display = 'none';
-        if (formImob1) formImob1.style.display = 'none';
         if (formPrestari1) formPrestari1.style.display = 'grid';
-        if (formDemisie1) formDemisie1.style.display = 'none';
         if (titleStep1) titleStep1.innerText = "Pasul 1: Datele Prestatorului";
         if (modeSelector) modeSelector.style.display = 'none';
 
         const progressBar = document.getElementById('progressBarContainer');
         if (progressBar) progressBar.style.display = 'flex';
         
-        // Configurăm titlurile pașilor pentru Prestări Servicii
         const p2 = document.getElementById('p2'), p3 = document.getElementById('p3'), p4 = document.getElementById('p4');
         if(p2) p2.style.display = 'flex';
         if(p3) p3.style.display = 'flex';
@@ -436,9 +443,6 @@ function selecteazaCategorie(cat) {
         }
         updateProgress();
     } else if (cat === 'demisie') {
-        if (formAuto1) formAuto1.style.display = 'none';
-        if (formImob1) formImob1.style.display = 'none';
-        if (formPrestari1) formPrestari1.style.display = 'none';
         if (formDemisie1) formDemisie1.style.display = 'grid';
         if (titleStep1) titleStep1.innerText = "Cerere de Demisie Oficială";
         if (modeSelector) modeSelector.style.display = 'none';
@@ -629,6 +633,9 @@ function selecteazaModSiPorneste(mod) {
         if(finalDownload) finalDownload.style.display = 'block';
         if(imobSemnaturi) imobSemnaturi.style.display = 'none';
         if(step4Desc) step4Desc.innerText = "Tranzacție locală pregătită. Confirmați pentru descărcare.";
+
+        // Activăm formularul auto corespunzător pașilor
+        document.getElementById('formAutoStep1').style.display = 'grid';
     } else {
         if(p2) p2.style.display = 'none';
         if(p3) p3.innerText = '2';
@@ -639,6 +646,8 @@ function selecteazaModSiPorneste(mod) {
         if(finalDownload) finalDownload.style.display = 'none';
         if(imobSemnaturi) imobSemnaturi.style.display = 'none';
         if(step4Desc) step4Desc.innerText = "Generați linkul securizat pentru a-l trimite cumpărătorului.";
+
+        document.getElementById('formAutoStep1').style.display = 'grid';
     }
 
     currentStep = 1;
@@ -694,9 +703,6 @@ function nextStep(step) {
         const formPrestari1 = document.getElementById('formPrestariStep1');
         const formPrestari2 = document.getElementById('formPrestariStep2');
         const formPrestari3 = document.getElementById('formPrestariStep3');
-        const formAuto1 = document.getElementById('formAutoStep1');
-        const formAuto2 = document.getElementById('formAutoStep2');
-        const formAuto3 = document.getElementById('formAutoStep3');
 
         if (step === 1) {
             if(formPrestari1) formPrestari1.style.display = 'none';
@@ -709,6 +715,7 @@ function nextStep(step) {
             updateProgress();
             return;
         } else if (step === 2) {
+            if(formPrestari1) formPrestari1.style.display = 'none';
             if(formPrestari2) formPrestari2.style.display = 'none';
             if(formPrestari3) formPrestari3.style.display = 'grid';
             document.getElementById('step2').classList.remove('active');
@@ -817,6 +824,7 @@ function nextStep(step) {
         return;
     }
 
+    // Gestionare flux Auto (Standard)
     const stepEl = document.getElementById('step' + step);
     if (stepEl) stepEl.classList.remove('active');
     
@@ -828,7 +836,16 @@ function nextStep(step) {
         currentStep = step + 1;
     }
 
-    if (currentStep === 4) {
+    if (currentStep === 2) {
+        document.getElementById('formAutoStep1').style.display = 'none';
+        document.getElementById('formAutoStep2').style.display = 'grid';
+        document.getElementById('titleStep2').innerText = "Pasul 2: Datele Cumpărătorului";
+    } else if (currentStep === 3) {
+        document.getElementById('formAutoStep2').style.display = 'none';
+        document.getElementById('formAutoStep3').style.display = 'grid';
+        document.getElementById('titleStep3').innerText = "Pasul 3: Vehiculul și Prețul";
+    } else if (currentStep === 4) {
+        document.getElementById('formAutoStep3').style.display = 'none';
         if (modLucru === 'local') {
             const localActions = document.getElementById('localActions');
             const waitingContainer = document.getElementById('waitingAnimationContainer');
@@ -908,6 +925,16 @@ function prevStep(step) {
     if (modLucru === 'remote' && userRole === 'vanzator' && step === 3) { currentStep = 1; }
     else if (modLucru === 'remote' && userRole === 'vanzator' && step === 4) { currentStep = 3; }
     else { currentStep = step - 1; }
+
+    if (currentStep === 1) {
+        document.getElementById('formAutoStep2').style.display = 'none';
+        document.getElementById('formAutoStep1').style.display = 'grid';
+    } else if (currentStep === 2) {
+        document.getElementById('formAutoStep3').style.display = 'none';
+        document.getElementById('formAutoStep2').style.display = 'grid';
+    } else if (currentStep === 3) {
+        document.getElementById('formAutoStep3').style.display = 'grid';
+    }
 
     const prevStepEl = document.getElementById('step' + currentStep);
     if (prevStepEl) prevStepEl.classList.add('active');
@@ -1425,7 +1452,7 @@ async function genereazaCerereDemisiePDF() {
         deseneazaFooter();
 
         const bytes = await pdfDoc.save();
-        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const blob = new Blob([bytes], { type: 'application/pdf' };
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url; a.download = "CERERE_DEMISIE_OFICIALA.pdf";
