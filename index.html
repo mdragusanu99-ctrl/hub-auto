@@ -175,7 +175,7 @@
 </head>
 <body data-theme="light">
 
-    <!-- SPLASH SCREEN / HERO ENTRY 2026 -->
+    <!-- SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-glow"></div>
         <div class="splash-content">
@@ -190,7 +190,7 @@
         </div>
     </div>
 
-    <!-- MODAL AUTENTIFICARE / ÎNREGISTRARE -->
+    <!-- MODAL AUTENTIFICARE -->
     <div id="authModal">
         <div class="auth-box">
             <button class="auth-close" onclick="inchideModalAuth()">✕</button>
@@ -312,7 +312,7 @@
                     <div class="category-card" onclick="selecteazaCategorie('imobiliare')">
                         <div class="category-icon">🏠</div>
                         <h4>Imobiliare</h4>
-                        <p>Contracte de închiriere locuințe cu inventar de bunuri și garanție.</p>
+                        <p>Contracte de închiriere locuințe cu inventar opțional de bunuri și garanție.</p>
                     </div>
                     <div class="category-card" onclick="arataNotificare('Această categorie va fi disponibilă în curând în pachetele Pro!', true)">
                         <div class="category-icon">💼</div>
@@ -364,7 +364,7 @@
                 <!-- Tab 2: Creează Nou -->
                 <div id="dashTabNou" class="dash-section">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Porniți o Tranzacție Nouă</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Selectați categoria dorită:</p>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Selectați tipul de contract pe care doriți să îl generați:</p>
                     <div class="categories-grid" style="margin-top: 0;">
                         <div class="category-card" onclick="selecteazaCategorie('auto')">
                             <div class="category-icon">🚗</div>
@@ -424,10 +424,10 @@
                 </div>
             </div>
 
-            <!-- ECRAN SELECTARE MOD LUCRU (AUTO / IMOBILIARE) -->
+            <!-- ECRAN SELECTARE MOD -->
             <div id="modeSelectorContainer" style="display:none;">
                 <div class="step-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div style="font-size: 18px; font-weight: 800;" id="modSelectorTitle">Alege Modul de Lucru</div>
+                    <div style="font-size: 18px; font-weight: 800;" id="modSelectorTitle">Mod de Lucru</div>
                     <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">⬅ Înapoi</button>
                 </div>
                 <div class="categories-grid" style="margin-top: 0;">
@@ -439,7 +439,7 @@
                     <div class="category-card" onclick="selecteazaModSiPorneste('remote')">
                         <div class="category-icon">📱</div>
                         <h4>Completare la Distanță</h4>
-                        <p>Completați prima parte și trimiteți linkul securizat celeilalte părți.</p>
+                        <p>Trimiteți un link securizat celeilalte părți pe telefon sau WhatsApp.</p>
                     </div>
                 </div>
             </div>
@@ -463,22 +463,49 @@
                 
                 <!-- Formular Auto Pas 1 -->
                 <div id="formAutoStep1" class="form-grid">
-                    <div class="full-width"><label>Nume și Prenume (Subsemnatul) *</label><input type="text" id="sellerName" placeholder="ex: DRAGUSANU MARIO"></div>
-                    <div><label>Județ *</label><input type="text" id="sellerCounty" placeholder="ex: VASLUI"></div>
-                    <div><label>Cod Poștal *</label><input type="text" id="sellerPostalCode" placeholder="ex: 731184"></div>
-                    <div><label>Municipiul / Oraș / Comună *</label><input type="text" id="sellerCity" placeholder="ex: BÂRLAD"></div>
+                    <div class="full-width"><label>Nume și Prenume (Subsemnatul)</label><input type="text" id="sellerName" placeholder="ex: DRAGUSANU MARIO"></div>
+                    <div><label>Județ</label><input type="text" id="sellerCounty" placeholder="ex: VASLUI"></div>
+                    <div><label>Cod Poștal</label><input type="text" id="sellerPostalCode" placeholder="ex: 731184"></div>
+                    <div><label>Municipiul / Oraș / Comună</label><input type="text" id="sellerCity" placeholder="ex: BÂRLAD"></div>
                     <div><label>Sat / Sector</label><input type="text" id="seller_sector" placeholder="ex: -"></div>
-                    <div><label>Stradă *</label><input type="text" id="sellerStreet" placeholder="ex: G-RAL MILEA"></div>
-                    <div><label>Număr Stradă *</label><input type="text" id="sellerStreetNo" placeholder="ex: 2"></div>
+                    <div><label>Stradă</label><input type="text" id="sellerStreet" placeholder="ex: G-RAL MILEA"></div>
+                    <div><label>Număr Stradă</label><input type="text" id="sellerStreetNo" placeholder="ex: 2"></div>
                     <div><label>Bloc (Bl.)</label><input type="text" id="sellerBlock" placeholder="ex: B1"></div>
                     <div><label>Scară</label><input type="text" id="sellerBuilding" placeholder="ex: 1"></div>
                     <div><label>Etaj</label><input type="text" id="sellerFloor" placeholder="ex: 2"></div>
                     <div><label>Apartament</label><input type="text" id="sellerApartment" placeholder="ex: 10"></div>
-                    <div><label>Seria Act Identitate *</label><input type="text" id="seller_ci_serie" placeholder="ex: VS"></div>
-                    <div><label>Număr Act Identitate *</label><input type="text" id="seller_ci_number" placeholder="ex: 123456"></div>
-                    <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere) *</label><input type="text" id="seller_ci_cnp" placeholder="ex: 5040101123456" maxlength="13"></div>
+                    <div><label>Seria Act Identitate</label><input type="text" id="seller_ci_serie" placeholder="ex: VS"></div>
+                    <div><label>Număr Act Identitate</label><input type="text" id="seller_ci_number" placeholder="ex: 123456"></div>
+                    <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere)</label><input type="text" id="seller_ci_cnp" placeholder="ex: 5040101123456" maxlength="13"></div>
                     <div><label>Telefon / Fax</label><input type="text" id="seller_phone" placeholder="ex: 0749685347"></div>
                     <div><label>E-mail</label><input type="text" id="seller_email" placeholder="ex: dragusanumario@gmail.com" style="text-transform: none;"></div>
+
+                    <div class="full-width">
+                        <button type="button" class="btn btn-secondary" id="btnToggleFiscal" onclick="comutaDomiciliuFiscal()" style="margin-top: 10px;">➕ Adaugă Domiciliu Fiscal Diferit (Opțional)</button>
+                        <div id="sectiuneFiscala" class="form-grid" style="display:none; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 12px;">
+                            <div class="full-width"><strong style="font-size: 13px;">Date Domiciliu Fiscal</strong></div>
+                            <div><label>Județ Fiscal</label><input type="text" id="sellerFiscalCounty"></div>
+                            <div><label>Cod Poștal</label><input type="text" id="sellerFiscalPostalCode"></div>
+                            <div><label>Localitate</label><input type="text" id="sellerFiscalCity"></div>
+                            <div><label>Sector / Sat</label><input type="text" id="sellerFiscalSector"></div>
+                            <div><label>Stradă</label><input type="text" id="sellerFiscalStreet"></div>
+                            <div><label>Număr</label><input type="text" id="sellerFiscalStreetNo"></div>
+                        </div>
+                    </div>
+
+                    <div class="full-width">
+                        <button type="button" class="btn btn-secondary" id="btnToggleFirma" onclick="comutaFirma()" style="margin-top: 10px;">🏢 Vânzarea prin Firmă / Mandatar (Opțional)</button>
+                        <div id="sectiuneFirma" class="form-grid" style="display:none; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 12px;">
+                            <div class="full-width"><strong style="font-size: 13px;">Date Reprezentant / Firmă</strong></div>
+                            <div><label>Reprezentată prin (Nume)</label><input type="text" id="sellerRepresentant"></div>
+                            <div><label>În calitate de</label><input type="text" id="sellerQuality" placeholder="ex: ADMINISTRATOR"></div>
+                            <div><label>Seria Act Reprezentant</label><input type="text" id="reprCISeries"></div>
+                            <div><label>Număr Act Reprezentant</label><input type="text" id="reprCINumber"></div>
+                            <div class="full-width"><label>CNP / CIF Reprezentant (13 caractere)</label><input type="text" id="reprCNP" maxlength="13"></div>
+                            <div><label>Telefon Reprezentant</label><input type="text" id="reprPhone"></div>
+                            <div><label>E-mail Reprezentant</label><input type="text" id="reprEmail" style="text-transform: none;"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Formular Imobiliare Pas 1 (Proprietar) -->
@@ -487,6 +514,7 @@
                     <div class="full-width"><label>Nume și Prenume Proprietar *</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
                     <div><label>CNP Proprietar *</label><input type="text" id="proprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
                     <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="proprietarAct" placeholder="ex: VS 123456"></div>
+                    <div class="full-width"><label>Domiciliu Complet Proprietar *</label><input type="text" id="proprietarAdresa" placeholder="ex: STR. UNIRII, NR. 10, BÂRLAD"></div>
                 </div>
 
                 <div style="margin-top: 30px;">
@@ -500,16 +528,16 @@
                 
                 <!-- Formular Auto Pas 2 -->
                 <div id="formAutoStep2" class="form-grid">
-                    <div class="full-width"><label>Nume și Prenume / Denumire *</label><input type="text" id="buyerName" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>Județ *</label><input type="text" id="buyer_judet" placeholder="ex: BUCUREȘTI"></div>
-                    <div><label>Cod Poștal *</label><input type="text" id="buyerPostalCode" placeholder="ex: 010101"></div>
-                    <div><label>Municipiul / Oraș / Comună *</label><input type="text" id="buyer_city" placeholder="ex: BUCUREȘTI"></div>
+                    <div class="full-width"><label>Nume și Prenume / Denumire</label><input type="text" id="buyerName" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>Județ</label><input type="text" id="buyer_judet" placeholder="ex: BUCUREȘTI"></div>
+                    <div><label>Cod Poștal</label><input type="text" id="buyerPostalCode" placeholder="ex: 010101"></div>
+                    <div><label>Municipiul / Oraș / Comună</label><input type="text" id="buyer_city" placeholder="ex: BUCUREȘTI"></div>
                     <div><label>Sat / Sector</label><input type="text" id="buyer_sector" placeholder="ex: SECTOR 1"></div>
-                    <div><label>Stradă *</label><input type="text" id="buyerStreet" placeholder="ex: STR. VICTORIEI"></div>
-                    <div><label>Număr *</label><input type="text" id="buyerStreetNo" placeholder="ex: 5"></div>
-                    <div><label>Tip Act & Serie *</label><input type="text" id="buyerCISeries" placeholder="ex: CI RX"></div>
-                    <div><label>Număr Act *</label><input type="text" id="buyerCINumber" placeholder="ex: 654321"></div>
-                    <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere) *</label><input type="text" id="buyerCNP" placeholder="ex: 2950505654321" maxlength="13"></div>
+                    <div><label>Stradă</label><input type="text" id="buyerStreet" placeholder="ex: STR. VICTORIEI"></div>
+                    <div><label>Număr</label><input type="text" id="buyerStreetNo" placeholder="ex: 5"></div>
+                    <div><label>Tip Act & Serie</label><input type="text" id="buyerCISeries" placeholder="ex: CI RX"></div>
+                    <div><label>Număr Act</label><input type="text" id="buyerCINumber" placeholder="ex: 654321"></div>
+                    <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere)</label><input type="text" id="buyerCNP" placeholder="ex: 2950505654321" maxlength="13"></div>
                     <div><label>Telefon / Fax</label><input type="text" id="buyerPhone" placeholder="ex: 0733000000"></div>
                     <div><label>E-mail</label><input type="text" id="buyerEmail" placeholder="ex: cumparator@email.com" style="text-transform: none;"></div>
                 </div>
@@ -557,25 +585,25 @@
                 </div>
             </div>
 
-            <!-- STEP 3: VEHICUL ȘI PREȚ (DOAR AUTO) -->
+            <!-- STEP 3: VEHICUL ȘI PREȚ -->
             <div class="step-content" id="step3">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep3">Pasul 3: Vehiculul și Prețul</div>
                 <div class="form-grid">
-                    <div><label>Marcă *</label><input type="text" id="make" placeholder="ex: AUDI"></div>
-                    <div><label>Tipul *</label><input type="text" id="type" placeholder="ex: A4 B8"></div>
-                    <div class="full-width"><label>Număr de Identificare (VIN - 17 caractere) *</label><input type="text" id="chassisSeries" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
-                    <div><label>Serie Motor *</label><input type="text" id="motorSeries" placeholder="ex: CAGA123456"></div>
-                    <div><label>Capacitate Cilindrică (cm³) *</label><input type="text" id="cilCapacity" placeholder="ex: 1968"></div>
-                    <div><label>Greutate Maximă Admisă (fără kg) *</label><input type="text" id="maxWeight" placeholder="ex: 1800"></div>
-                    <div><label>Număr Înmatriculare *</label><input type="text" id="regNumber" placeholder="ex: VS12XYZ"></div>
-                    <div><label>Data Expirare ITP *</label><input type="text" id="ITPExpirationDate" placeholder="ex: 12.10.2027"></div>
-                    <div><label>Număr C.I.V. *</label><input type="text" id="vehicleIDCardNumber" placeholder="ex: B123456"></div>
-                    <div><label>An Fabricație *</label><input type="text" id="productionYear" placeholder="ex: 2012"></div>
-                    <div><label>Normă Euro *</label><input type="text" id="euroStandard" placeholder="ex: EURO 5"></div>
-                    <div><label>Data Dobândirii Anterioare *</label><input type="text" id="acquiredDate" placeholder="ex: 15.05.2020"></div>
+                    <div><label>Marcă</label><input type="text" id="make" placeholder="ex: AUDI"></div>
+                    <div><label>Tipul</label><input type="text" id="type" placeholder="ex: A4 B8"></div>
+                    <div class="full-width"><label>Număr de Identificare (VIN - 17 caractere)</label><input type="text" id="chassisSeries" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
+                    <div><label>Serie Motor</label><input type="text" id="motorSeries" placeholder="ex: CAGA123456"></div>
+                    <div><label>Capacitate Cilindrică (cm³)</label><input type="text" id="cilCapacity" placeholder="ex: 1968"></div>
+                    <div><label>Greutate Maximă Admisă (fără kg)</label><input type="text" id="maxWeight" placeholder="ex: 1800"></div>
+                    <div><label>Număr Înmatriculare</label><input type="text" id="regNumber" placeholder="ex: VS12XYZ"></div>
+                    <div><label>Data Expirare ITP</label><input type="text" id="ITPExpirationDate" placeholder="ex: 12.10.2027"></div>
+                    <div><label>Număr C.I.V.</label><input type="text" id="vehicleIDCardNumber" placeholder="ex: B123456"></div>
+                    <div><label>An Fabricație</label><input type="text" id="productionYear" placeholder="ex: 2012"></div>
+                    <div><label>Normă Euro</label><input type="text" id="euroStandard" placeholder="ex: EURO 5"></div>
+                    <div><label>Data Dobândirii Anterioare</label><input type="text" id="acquiredDate" placeholder="ex: 15.05.2020"></div>
 
                     <div>
-                        <label>Tip Act Anterior Dobândire *</label>
+                        <label>Tip Act Anterior Dobândire</label>
                         <select id="acquiredActType">
                             <option value="CONTRACT DE VANZARE-CUMPARARE">CONTRACT DE VANZARE-CUMPARARE</option>
                             <option value="FACTURA FISCALA">FACTURA FISCALA</option>
@@ -583,10 +611,10 @@
                             <option value="CONTRACT DE DONATIE">CONTRACT DE DONATIE</option>
                         </select>
                     </div>
-                    <div><label>Număr și Dată Act Dobândire *</label><input type="text" id="acquiredActDetails" placeholder="ex: NR. 45 DIN 12.05.2023"></div>
+                    <div><label>Număr și Dată Act Dobândire</label><input type="text" id="acquiredActDetails" placeholder="ex: NR. 45 DIN 12.05.2023"></div>
 
-                    <div><label>Preț în Cifre *</label><input type="text" id="figurePrice" placeholder="ex: 8.500 EUR"></div>
-                    <div><label>Preț în Litere *</label><input type="text" id="lettersPrice" placeholder="ex: OPT MII CINCI SUTE EURO"></div>
+                    <div><label>Preț în Cifre</label><input type="text" id="figurePrice" placeholder="ex: 8.500 EUR"></div>
+                    <div><label>Preț în Litere</label><input type="text" id="lettersPrice" placeholder="ex: OPT MII CINCI SUTE EURO"></div>
                 </div>
                 <div style="margin-top: 30px; display: flex; gap: 12px;">
                     <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
@@ -600,17 +628,17 @@
                 <p id="step4Desc" style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Sistemul este pregătit pentru generarea documentului oficial.</p>
                 
                 <div id="localActions">
-                    <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cealaltă Parte (Mod Distanță)</button>
+                    <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" onclick="pornesteFluxRemote()">📤 Trimite Link Către Cumpărător (Mod Distanță)</button>
                 </div>
 
                 <div id="buyerActions" style="display:none;">
-                    <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Trimite Datele</button>
+                    <button class="btn btn-success" onclick="salvareDateCumparatorSiFinalizare()">✅ Trimite Datele Către Vânzător</button>
                 </div>
 
                 <div id="waitingAnimationContainer" style="display:none; background: var(--bg-body); border: 1px dashed var(--border-color); padding: 24px; border-radius: var(--radius-md); text-align: center; margin-top: 16px;">
                     <div class="spinner"></div>
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 4px;">Sesiune securizată creată!</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Trimite linkul de mai jos celeilalte părți:</p>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Trimite linkul de mai jos cumpărătorului:</p>
                     <div style="display: inline-block; background: var(--bg-card); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" id="qrcode"></div>
                     <div style="font-family: monospace; font-size: 12px; margin: 12px 0; background: var(--bg-card); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); word-break: break-all;" id="shareLinkContainer"></div>
                     <div style="display: flex; gap: 10px; margin-top: 12px;">
@@ -632,7 +660,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT EXTERN PENTRU LOGICĂ -->
+    <!-- SCRIPT EXTERN -->
     <script src="script.js"></script>
 </body>
 </html>
