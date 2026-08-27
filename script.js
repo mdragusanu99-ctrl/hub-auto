@@ -4,9 +4,7 @@ let modLucru = 'local';
 let tipContractCurent = 'auto';
 let globalSessionId = null;
 let userRole = 'vanzator';
-let pollInterval = null;
-let domiciliuFiscalDiferit = false;
-let esteFirmaSauMandatar = false;
+let isRemoteTenantView = false;
 let linkCumparatorGlobal = "";
 
 let profilCurent = null;
@@ -537,11 +535,20 @@ function selecteazaModSiPorneste(mod) {
         if(p2) p2.style.display = 'none';
         if(p3) p3.style.display = 'none';
         if(p4) p4.style.display = 'none';
-        if(localActions) localActions.style.display = 'none';
+        if(localActions) localActions.style.display = (mod === 'remote') ? 'block' : 'none';
         if(waitingContainer) waitingContainer.style.display = 'none';
-        if(finalDownload) finalDownload.style.display = 'block';
+        if(finalDownload) finalDownload.style.display = (mod === 'local') ? 'block' : 'none';
         if(imobSemnaturi) imobSemnaturi.style.display = 'block';
-        if(step4Desc) step4Desc.innerText = "Toate datele imobilului și chiriașului au fost completate. Semnați mai jos și generați contractul.";
+        
+        if (mod === 'remote') {
+            document.getElementById('proprietarSignBox').style.display = 'block';
+            document.getElementById('chiriasSignBox').style.display = 'none'; // Chiriasul semneaza de pe linkul lui remote
+            if(step4Desc) step4Desc.innerText = "Semnați ca proprietar și generați linkul pentru chiriaș.";
+        } else {
+            document.getElementById('proprietarSignBox').style.display = 'block';
+            document.getElementById('chiriasSignBox').style.display = 'block';
+            if(step4Desc) step4Desc.innerText = "Toate datele au fost completate. Semnați și generați contractul.";
+        }
     } else if (mod === 'local') {
         if(p2) p2.style.display = 'flex';
         if(p3) p3.innerText = '3';
@@ -612,13 +619,25 @@ function nextStep(step) {
 
             if (step1) step1.classList.remove('active');
             if (step4) step4.classList.add('active');
-            if (titleStep4) titleStep4.innerText = "Pasul 2: Semnături & Finalizare Contract Imobiliar";
-            if (step4Desc) step4Desc.innerText = "Toate datele proprietarului, chiriașului și imobilului au fost completate mai sus. Semnați mai jos:";
-            if (localActions) localActions.style.display = 'none';
-            if (waitingContainer) waitingContainer.style.display = 'none';
-            if (finalDownload) finalDownload.style.display = 'block';
-            if (imobSemnaturi) imobSemnaturi.style.display = 'block';
-            if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractImobiliarPDF()');
+            if (titleStep4) titleStep4.innerText = isRemoteTenantView ? "Pasul Final: Vizualizare & Semnare Chiriaș" : "Pasul 2: Semnături & Finalizare Contract Imobiliar";
+            
+            if (isRemoteTenantView) {
+                if (step4Desc) step4Desc.innerText = "Verificați detaliile contractului de mai sus și semnați în caseta de mai jos:";
+                if (localActions) localActions.style.display = 'none';
+                if (waitingContainer) waitingContainer.style.display = 'none';
+                if (finalDownload) finalDownload.style.display = 'block';
+                if (imobSemnaturi) imobSemnaturi.style.display = 'block';
+                document.getElementById('proprietarSignBox').style.display = 'none';
+                document.getElementById('chiriasSignBox').style.display = 'block';
+                if (btnDescarca) btnDescarca.innerText = "📥 Semnează și Descarcă Contractul";
+            } else {
+                if (step4Desc) step4Desc.innerText = modLucru === 'remote' ? "Semnați ca proprietar și generați linkul pentru chiriaș:" : "Toate datele au fost completate. Semnați și generați contractul:";
+                if (localActions) localActions.style.display = modLucru === 'remote' ? 'block' : 'none';
+                if (waitingContainer) waitingContainer.style.display = 'none';
+                if (finalDownload) finalDownload.style.display = modLucru === 'local' ? 'block' : 'none';
+                if (imobSemnaturi) imobSemnaturi.style.display = 'block';
+                if (btnDescarca) btnDescarca.setAttribute('onclick', 'genereazaContractImobiliarPDF()');
+            }
             currentStep = 4;
         }
         return;
@@ -658,7 +677,7 @@ function nextStep(step) {
 
 function prevStep(step) {
     if (tipContractCurent === 'imobiliare') {
-        if (step === 4) {
+        if (step === 4 && !isRemoteTenantView) {
             const step4 = document.getElementById('step4');
             const step1 = document.getElementById('step1');
             if (step4) step4.classList.remove('active');
@@ -695,6 +714,34 @@ window.onload = async function() {
         if (referralBanner) referralBanner.style.display = 'flex';
         setTimeout(() => { deschideModalAuth('inregistrare'); }, 1200);
     }
+
+    // Gestionare link Remote pentru Chiriaș (Imobiliare)
+    if (params.has('remote_imob')) {
+        isRemoteTenantView = true;
+        tipContractCurent = 'imobiliare';
+        
+        // Citim datele stocate sau transmise din sesiune
+        const dateSalvate = JSON.parse(localStorage.getItem('act_peloc_remote_imob') || '{}');
+        for (let key in dateSalvate) {
+            const el = document.getElementById(key);
+            if (el) el.value = dateSalvate[key];
+        }
+
+        // Ascundem ecranul principal și ducem chiriașul direct la pasul de vizualizare și semnătură
+        document.getElementById('mainMenuContainer').style.display = 'none';
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step4').classList.add('active');
+        document.getElementById('titleStep4').innerText = "Vizualizare Contract & Semnătură Chiriaș";
+        document.getElementById('step4Desc').innerText = "Proprietarul a completat datele de mai jos. Vă rugăm să le verificați și să semnați:";
+        document.getElementById('localActions').style.display = 'none';
+        document.getElementById('waitingAnimationContainer').style.display = 'none';
+        document.getElementById('finalDownloadContainer').style.display = 'block';
+        document.getElementById('imobiliareSemnaturiContainer').style.display = 'block';
+        document.getElementById('proprietarSignBox').style.display = 'none'; // Chiriasul nu are acces la semnatura proprietarului
+        document.getElementById('btnDescarcaOficial').innerText = "📥 Semnează și Descarcă Contractul Oficial";
+        document.getElementById('btnDescarcaOficial').setAttribute('onclick', 'genereazaContractImobiliarPDF()');
+        document.getElementById('btnGroupBackFinal').style.display = 'none';
+    }
 };
 
 function colecteazaDate() {
@@ -706,7 +753,30 @@ function colecteazaDate() {
     return d;
 }
 
-async function pornesteFluxRemote() {
+function pornesteFluxRemote() {
+    if (tipContractCurent === 'imobiliare') {
+        const d = colecteazaDate();
+        localStorage.setItem('act_peloc_remote_imob', JSON.stringify(d));
+        globalSessionId = 'IMOB-' + Math.floor(100000 + Math.random() * 900000);
+        linkCumparatorGlobal = `${window.location.origin}${window.location.pathname}?remote_imob=${globalSessionId}`;
+        
+        document.getElementById('localActions').style.display = 'none';
+        document.getElementById('waitingAnimationContainer').style.display = 'block';
+        const qrcodeEl = document.getElementById('qrcode');
+        if (qrcodeEl) {
+            qrcodeEl.innerHTML = "";
+            new QRCode(qrcodeEl, { text: linkCumparatorGlobal, width: 120, height: 120 });
+        }
+        document.getElementById('shareLinkContainer').innerText = linkCumparatorGlobal;
+        arataNotificare("✅ Link generat cu succes pentru chiriaș!");
+        return;
+    }
+
+    // Flux Auto Remote
+    pornesteFluxRemoteAuto();
+}
+
+async function pornesteFluxRemoteAuto() {
     if (!valideazaPasCurent()) return;
     const d = colecteazaDate();
     try {
@@ -735,7 +805,7 @@ function copiazaLinkul() {
     navigator.clipboard.writeText(linkCumparatorGlobal).then(() => { arataNotificare("📋 Link copiat în clipboard!"); });
 }
 function trimitePeWhatsApp() {
-    const msg = encodeURIComponent(`Salut! Completează datele pentru contract: ${linkCumparatorGlobal}`);
+    const msg = encodeURIComponent(`Salut! Accesează linkul pentru a vizualiza și semna contractul de închiriere: ${linkCumparatorGlobal}`);
     window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
 }
 
@@ -906,11 +976,12 @@ async function genereazaContractImobiliarPDF() {
         const sigPropCanvas = document.getElementById('sigProprietarCanvas');
         const sigChirCanvas = document.getElementById('sigChiriasCanvas');
         
-        if (sigPropCanvas && sigChirCanvas) {
+        if (sigPropCanvas && sigPropCanvas.offsetParent !== null) {
             const sigPImageBytes = await pdfDoc.embedPng(sigPropCanvas.toDataURL('image/png'));
-            const sigCImageBytes = await pdfDoc.embedPng(sigChirCanvas.toDataURL('image/png'));
-
             page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
+        }
+        if (sigChirCanvas && sigChirCanvas.offsetParent !== null) {
+            const sigCImageBytes = await pdfDoc.embedPng(sigChirCanvas.toDataURL('image/png'));
             page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
         }
 
