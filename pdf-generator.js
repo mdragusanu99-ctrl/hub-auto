@@ -393,21 +393,27 @@ async function genereazaContractPrestariServiciiPDF() {
         deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
         y -= 4;
 
-        const sigPropCanvas = document.getElementById('sigProprietarCanvas');
-        const sigChirCanvas = document.getElementById('sigChiriasCanvas');
-        
-        if (sigPropCanvas && sigPropCanvas.offsetParent !== null) {
-            const sigPImageBytes = await pdfDoc.embedPng(sigPropCanvas.toDataURL('image/png'));
-            page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
+    const sigPrestatorCanvas = document.getElementById('sigProprietarCanvas');
+    const sigBeneficiarCanvas = document.getElementById('sigChiriasCanvas');
+        if (sigPrestatorCanvas) {
+            try {
+                const sigPImageBytes = await pdfDoc.embedPng(sigPrestatorCanvas.toDataURL('image/png'));
+                page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
+            } catch (err) {
+                console.log("Canvas prestator gol sau neinițializat");
+            }
         }
-        if (sigChirCanvas && sigChirCanvas.offsetParent !== null) {
-            const sigCImageBytes = await pdfDoc.embedPng(sigChirCanvas.toDataURL('image/png'));
-            page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
+        if (sigBeneficiarCanvas) {
+            try {
+                const sigCImageBytes = await pdfDoc.embedPng(sigBeneficiarCanvas.toDataURL('image/png'));
+                page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
+            } catch (err) {
+                console.log("Canvas beneficiar gol sau neinițializat");
+            }
         }
 
         page.drawText(curataDiacritice("Semnatura Prestator"), { x: 45, y: y - 62, size: 7.5, font: fontBold });
         page.drawText(curataDiacritice("Semnatura Beneficiar"), { x: 310, y: y - 62, size: 7.5, font: fontBold });
-
         deseneazaFooter();
 
         const bytes = await pdfDoc.save();
