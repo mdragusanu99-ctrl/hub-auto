@@ -814,9 +814,9 @@ async function genereazaContractComodatImobilPDF() {
     } catch(e) { arataNotificare("Eroare PDF Comodat Imobil: " + e.message, true); }
 }
 
-// GENERATOR CONTRACT INDIVIDUAL DE MUNCĂ (CIM) - VERSIUNEA JURIDICĂ RIGUROASĂ 2026
+// GENERATOR CONTRACT INDIVIDUAL DE MUNCĂ (CIM) - VERSIUNEA JURIDICĂ COMPLETĂ 2026
 async function genereazaContractCimPDF() {
-    arataNotificare("Se generează Contractul Individual de Muncă (versiunea juridică extinsă)...");
+    arataNotificare("Se generează Contractul Individual de Muncă (versiunea juridică completă)...");
     try {
         const { PDFDocument, StandardFonts } = PDFLib;
         const pdfDoc = await PDFDocument.create();
@@ -849,7 +849,7 @@ async function genereazaContractCimPDF() {
                 const testWidth = customFont.widthOfTextAtSize(testLine, size);
                 if (testWidth > maxWidth && i > 0) {
                     if (y < 75) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                    page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                    page.drawText(curataDiacritice(line.trim()), { x: 45, y, size, font: customFont });
                     y -= lineHeight;
                     line = words[i] + ' ';
                 } else {
@@ -858,7 +858,7 @@ async function genereazaContractCimPDF() {
             }
             if (line.trim().length > 0) {
                 if (y < 75) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                page.drawText(curataDiacritice(line.trim()), { x: 45, y, size, font: customFont });
                 y -= lineHeight;
             }
             y -= 2;
@@ -866,7 +866,7 @@ async function genereazaContractCimPDF() {
 
         const getVal = (id) => {
             const el = document.getElementById(id);
-            return el ? el.value.trim() : '';
+            return el ? curataDiacritice(el.value.trim()) : '';
         };
 
         // Antet Oficial
@@ -912,7 +912,7 @@ async function genereazaContractCimPDF() {
         // Salarizarea
         deseneazaTitluSectiune("E. SALARIUL DE BAZĂ LUNAR BRUT ȘI ALTE ELEMENTE SALARIALE");
         deseneazaParagraf(`E.1. Salariul de bază lunar brut este în cuantum de ${getVal('cimSalariuBrut') || '0'} lei. La acesta se adaugă, după caz, sporurile, indemnizațiile și adaosurile prevăzute de lege sau de regulamentul intern.`);
-        deseneazaParagraf(`E.2. Data la care se plătește salariul este 10 ale lunii următoare celei pentru care s-a prestat munca. Plata se efectuează prin virament bancar în contul salariatului.`);
+       deseneazaParagraf(`E.2. Data la care se plătește salariul este 10 ale lunii următoare celei pentru care s-a prestat munca. Plata se efectuează prin virament bancar în contul salariatului nr. ${getVal('cimSalariatIban') || '...................................................'}.`);
         deseneazaParagraf(`E.3. Reținerea și virarea impozitului pe venit și a contribuțiilor sociale obligatorii se realizează de către angajator în conformitate cu legislația fiscală în vigoare.`);
         y -= 2;
 
@@ -924,7 +924,7 @@ async function genereazaContractCimPDF() {
         y -= 2;
 
         // Condiții de muncă
-        deseneazaTitluSectiune("G. SECURITATEA ȘI SĂNĂTATEA ÎN MUNCĂ");
+        deseneazaTitluSectiune("G. SECURITATEa ȘI SĂNĂTATEA ÎN MUNCĂ");
         deseneazaParagraf(`G.1. Angajatorul are obligația să asigure securitatea și sănătatea salariatului în toate aspectele legate de muncă. Salariatul are o strictă obligație să respecte instructiunile de SSM primite la instruirea periodică.`);
         y -= 2;
 
@@ -983,7 +983,7 @@ async function genereazaContractCimPDF() {
                 data: new Date().toLocaleDateString('ro-RO')
             });
         }
-        arataNotificare("✅ Contractul Individual de Muncă (CIM) rigorizat a fost generat!");
+        arataNotificare("✅ Contractul Individual de Muncă (CIM) rigorizat și complet a fost generat!");
     } catch(e) { 
         arataNotificare("Eroare PDF CIM: " + e.message, true); 
     }

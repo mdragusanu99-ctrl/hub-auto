@@ -228,8 +228,8 @@ function colecteazaDate() {
         'comodantImobilNume', 'comodantImobilCnp', 'comodantImobilAct', 'comodantImobilAdresa',
         'comodatarImobilNume', 'comodatarImobilCnp', 'comodatarImobilAct', 'comodatarImobilAdresa',
         'comodatImobilAdresaBun', 'comodatImobilCf', 'comodatCadastru', 'comodatImobilScop', 'comodatImobilDurata',
-       'cimAngajatorNume', 'cimAngajatorCui', 'cimAngajatorReg', 'cimAngajatorAdresa', 'cimAngajatorReprezentant', 'cimAngajatorBanca',
-        'cimSalariatNume', 'cimSalariatCnp', 'cimSalariatAct', 'cimSalariatAdresa', 'cimFunctie', 'cimTipDurata', 'cimTimpMunca', 'cimSalariuBrut', 'cimDataStart', 'cimLocMunca'
+       'cimAngajatorNume', 'cimAngajatorCui', 'cimAngajatorReg', 'cimAngajatorAdresa', 'cimAngajatorReprezentant',
+        'cimSalariatNume', 'cimSalariatCnp', 'cimSalariatAct', 'cimSalariatAdresa', 'cimSalariatIban', 'cimFunctie', 'cimTipDurata', 'cimTimpMunca', 'cimSalariuBrut', 'cimDataStart', 'cimLocMunca'
     ];
     ids.forEach(id => {
         const el = document.getElementById(id);
