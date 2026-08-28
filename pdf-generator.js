@@ -170,9 +170,9 @@ async function genereazaContractImobiliarPDF() {
         y -= 4;
     };
 
-        const getVal = (id) => {
+       const getVal = (id) => {
             const el = document.getElementById(id);
-            return el ? el.value.trim() : '';
+            return el ? curataDiacritice(el.value) : '';
         };
 
         const titluText = "CONTRACT DE INCHIRIERE LOCUINTA";
