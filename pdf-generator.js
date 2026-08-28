@@ -1,15 +1,17 @@
 // ==========================================
 // MODULUL DE GENERARE PDF ȘI SEMNĂTURI
 // ==========================================
-
-const curataDiacritice = (text) => {
+// Funcție utilitară globală pentru curățarea diacriticelor românești
+// Funcție unică și sigură pentru curățarea diacriticelor
+function curataDiacritice(text) {
     if (!text) return '';
     return String(text).toUpperCase()
-        .replace(/Ă/g, 'A').replace(/Â/g, 'A').replace(/ă/g, 'A').replace(/â/g, 'A')
-        .replace(/Î/g, 'I').replace(/î/g, 'I')
-        .replace(/Ș/g, 'S').replace(/Ş/g, 'S').replace(/ș/g, 'S').replace(/ş/g, 'S')
-        .replace(/Ț/g, 'T').replace(/Ţ/g, 'T').replace(/ț/g, 'T').replace(/ţ/g, 'T');
-};
+        .replace(/Ă/g, 'A').replace(/ă/g, 'a')
+        .replace(/Â/g, 'A').replace(/â/g, 'a')
+        .replace(/Î/g, 'I').replace(/î/g, 'i')
+        .replace(/Ș/g, 'S').replace(/Ş/g, 'S').replace(/ș/g, 's').replace(/ş/g, 's')
+        .replace(/Ț/g, 'T').replace(/Ţ/g, 'T').replace(/ț/g, 't').replace(/ţ/g, 't');
+}
 
 function initCanvasSemnatura(canvasId) {
     const canvas = document.getElementById(canvasId);
@@ -873,12 +875,13 @@ async function genereazaContractCimPDF() {
         const titluText = "CONTRACT INDIVIDUAL DE MUNCĂ";
         const subTitluText = "încheiat și înregistrat în Registrul General de Evidență a Salariaților sub nr. _____ / ____________";
         
-        let textWidth = fontBold.widthOfTextAtSize(titluText, 10);
+        let textWidth = fontBold.widthOfTextAtSize(curataDiacritice(titluText), 10);
         let centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 10, font: fontBold });
         y -= 12;
+        
 
-        textWidth = font.widthOfTextAtSize(subTitluText, 7);
+        textWidth = font.widthOfTextAtSize(curataDiacritice(subTitluText), 7);
         centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 7, font });
         y -= 18;
