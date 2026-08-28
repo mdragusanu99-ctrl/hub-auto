@@ -310,8 +310,8 @@ function selecteazaModSiPorneste(mod) {
         maxStepsTotal = 4;
     } else if (tipContractCurent === 'auto') {
         maxStepsTotal = (mod === 'remote') ? 5 : 4;
-    } else if (tipContractCurent === 'prestari_servicii') {
-        maxStepsTotal = (mod === 'remote') ? 4 : 3;
+   } else if (tipContractCurent === 'prestari_servicii') {
+        maxStepsTotal = 4;
     } else if (tipContractCurent === 'demisie') {
         maxStepsTotal = 3;
     }
@@ -447,9 +447,9 @@ function activeazaPasulUI(stepNum) {
     if (maxStepsTotal === 4 && (tipContractCurent === 'imobiliare' || tipContractCurent === 'comodat_auto' || tipContractCurent === 'comodat_imobil')) {
         estePasSemnatura = (stepNum === 3);
         estePasPlataDescarcare = (stepNum === 4);
-    } else if (maxStepsTotal === 4 && tipContractCurent === 'auto') {
-        estePasPlataDescarcare = (stepNum === 4);
-    } else if (maxStepsTotal === 3) {
+   } else if (maxStepsTotal === 4 && (tipContractCurent === 'auto' || tipContractCurent === 'prestari_servicii')) {
+    estePasPlataDescarcare = (stepNum === 4);
+} else if (maxStepsTotal === 3) {
         estePasPlataDescarcare = (stepNum === 3);
     } else {
         estePasSemnatura = (stepNum === maxStepsTotal - 1);
