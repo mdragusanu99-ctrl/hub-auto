@@ -814,6 +814,181 @@ async function genereazaContractComodatImobilPDF() {
     } catch(e) { arataNotificare("Eroare PDF Comodat Imobil: " + e.message, true); }
 }
 
+// GENERATOR CONTRACT INDIVIDUAL DE MUNCĂ (CIM) - VERSIUNEA JURIDICĂ RIGUROASĂ 2026
+async function genereazaContractCimPDF() {
+    arataNotificare("Se generează Contractul Individual de Muncă (versiunea juridică extinsă)...");
+    try {
+        const { PDFDocument, StandardFonts } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]);
+        let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Document oficial conform Legii nr. 53/2003 (Codul Muncii) și H.G. 905/2017"), { 
+                x: 45, y: 25, size: 7, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
+            });
+        };
+
+        const deseneazaTitluSectiune = (text) => {
+            if (y < 75) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 8, font: fontBold });
+            y -= 14;
+        };
+
+        const deseneazaParagraf = (text, customFont = font, size = 7, maxWidth = 505) => {
+            if (!text) return;
+            const words = curataDiacritice(text).split(' ');
+            let line = '';
+            const lineHeight = 10;
+
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const testWidth = customFont.widthOfTextAtSize(testLine, size);
+                if (testWidth > maxWidth && i > 0) {
+                    if (y < 75) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                    y -= lineHeight;
+                    line = words[i] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            if (line.trim().length > 0) {
+                if (y < 75) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+            }
+            y -= 2;
+        };
+
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
+        // Antet Oficial
+        const titluText = "CONTRACT INDIVIDUAL DE MUNCĂ";
+        const subTitluText = "încheiat și înregistrat în Registrul General de Evidență a Salariaților sub nr. _____ / ____________";
+        
+        let textWidth = fontBold.widthOfTextAtSize(titluText, 10);
+        let centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 10, font: fontBold });
+        y -= 12;
+
+        textWidth = font.widthOfTextAtSize(subTitluText, 7);
+        centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 7, font });
+        y -= 18;
+
+        // Părțile Contractante
+        deseneazaTitluSectiune("A. PĂRȚILE CONTRACTANTE");
+        deseneazaParagraf(`A.1. Angajator: ${getVal('cimAngajatorNume') || '...................................................'}, cu sediul social în ${getVal('cimAngajatorAdresa') || '...................................................'}, înregistrată la Oficiul Registrului Comerțului sub nr. ${getVal('cimAngajatorReg') || '........'}, cod unic de înregistrare CUI ${getVal('cimAngajatorCui') || '........'}, cont bancar IBAN ${getVal('cimAngajatorBanca') || '....................................'}, deschis la Banca ...................................., reprezentată legal prin ${getVal('cimAngajatorReprezentant') || '....................................'}, în calitatea de administrator.`);
+        deseneazaParagraf(`A.2. Salariatul/a: ${getVal('cimSalariatNume') || '...................................................'}, domiciliat/ă în ${getVal('cimSalariatAdresa') || '...................................................'}, posesor/oare al/a actului de identitate CI seria ${getVal('cimSalariatAct') || '....'} nr. ................, eliberat de SPCLEP la data de ................, CNP: ${getVal('cimSalariatCnp') || '................'}.`);
+        y -= 2;
+
+        // Obiectul și locul muncii
+        deseneazaTitluSectiune("B. OBIECTUL CONTRACTULUI ȘI LOCUL MUNCII");
+        deseneazaParagraf(`B.1. Obiectul contractului îl constituie prestarea muncii de către salariat în conformitate cu funcția / meseria prevăzută în Clasificarea Ocupațiilor din România (COR): ${getVal('cimFunctie') || '...................................................'}. Atribuțiile postului sunt stabilite în fișa postului, anexă integrantă la prezentul contract.`);
+        deseneazaParagraf(`B.2. Locul muncii este: ${getVal('cimLocMunca') || 'La sediul / punctul de lucru al angajatorului'}, activitatea putând fi desfășurată și în regim de telemuncă sau muncă la domiciliu, cu acordul scris al părților, dacă specificul o cere.`);
+        deseneazaParagraf(`B.3. Salariatul poate fi delegat sau detașat în alt loc de muncă în condițiile prevăzute de Codul Muncii.`);
+        y -= 2;
+
+        // Durata contractului
+        deseneazaTitluSectiune("C. DURATA CONTRACTULUI");
+        deseneazaParagraf(`C.1. Prezentul contract individual de muncă se încheie pe durată ${getVal('cimTipDurata') || 'NEDETERMINATĂ'}, începând cu data de ${getVal('cimDataStart') || new Date().toLocaleDateString('ro-RO')}.`);
+        deseneazaParagraf(`C.2. Perioada de probă este de 90 de zile calendaristice pentru funcții de execuție / 120 de zile calendaristice pentru funcții de conducere, timp în care contractul poate înceta printr-o simplă notificare scrisă, fără preaviz, la inițiativa oricăreia dintre părți.`);
+        y -= 2;
+
+        // Timpul de muncă
+        deseneazaTitluSectiune("D. TIMPUL DE MUNCĂ ȘI REPAUSUL");
+        deseneazaParagraf(`D.1. Durata timpului de muncă este de ${getVal('cimTimpMunca') || '8 ore/zi, 40 ore/săptămână'}. Repartizarea timpului de muncă se face uniform: 8 ore/zi, de luni până vineri.`);
+        deseneazaParagraf(`D.2. Munca suplimentară se compensează prin ore libere plătite în următoarele 90 de zile calendaristice după efectuarea acesteia sau prin spor la salariu conform legii.`);
+        deseneazaParagraf(`D.3. Salariatul beneficiază de repaus zilnic, repaus săptămânal și de un concediu de odihnă anual în durată de minimum 20 de zile lucrătoare.`);
+        y -= 2;
+
+        // Salarizarea
+        deseneazaTitluSectiune("E. SALARIUL DE BAZĂ LUNAR BRUT ȘI ALTE ELEMENTE SALARIALE");
+        deseneazaParagraf(`E.1. Salariul de bază lunar brut este în cuantum de ${getVal('cimSalariuBrut') || '0'} lei. La acesta se adaugă, după caz, sporurile, indemnizațiile și adaosurile prevăzute de lege sau de regulamentul intern.`);
+        deseneazaParagraf(`E.2. Data la care se plătește salariul este 10 ale lunii următoare celei pentru care s-a prestat munca. Plata se efectuează prin virament bancar în contul salariatului.`);
+        deseneazaParagraf(`E.3. Reținerea și virarea impozitului pe venit și a contribuțiilor sociale obligatorii se realizează de către angajator în conformitate cu legislația fiscală în vigoare.`);
+        y -= 2;
+
+        // Drepturi și obligații fundamentale
+        deseneazaTitluSectiune("F. DREPTURI ȘI OBLIGAȚII PRINCIPALE ALE PĂRȚILOR");
+        deseneazaParagraf(`F.1. Salariatul are dreptul la: salarizare pentru munca depusă, repaus zilnic și săptămânal, securitate și sănătate în muncă, acces la formare profesională, protecție în caz de concediere nelegală.`);
+        deseneazaParagraf(`F.2. Angajatorul are dreptul să dea dispoziții cu caracter obligatoriu pentru salariat (sub rezerva legalității lor), să exercite controlul asupra modului de îndeplinire a sarcinilor de serviciu și să constate abaterile disciplinare.`);
+        deseneazaParagraf(`F.3. Salariatul are obligația de a respecta disciplina muncii, de a îndeplini atribuțiile conform fișei postului, de a respecta normele de SSM (Legea 319/2006) și de a păstra confidențialitatea informațiilor de serviciu.`);
+        y -= 2;
+
+        // Condiții de muncă
+        deseneazaTitluSectiune("G. SECURITATEA ȘI SĂNĂTATEA ÎN MUNCĂ");
+        deseneazaParagraf(`G.1. Angajatorul are obligația să asigure securitatea și sănătatea salariatului în toate aspectele legate de muncă. Salariatul are o strictă obligație să respecte instructiunile de SSM primite la instruirea periodică.`);
+        y -= 2;
+
+        // Dispoziții finale
+        deseneazaTitluSectiune("H. DISPOZIȚII FINALE");
+        deseneazaParagraf(`H.1. Prezentul contract se completează cu prevederile Codului Muncii (Legea 53/2003) și ale legislației muncii aplicabile în România.`);
+        deseneazaParagraf(`H.2. Orice modificare a clauzelor contractuale impune încheierea unui act adițional în formă scrisă, acceptat și semnat de ambele părți, sub sancțiunea nulității.`);
+        y -= 12;
+
+        if (y < 130) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+
+        page.drawText(curataDiacritice(`Încheiat astăzi, ${new Date().toLocaleDateString('ro-RO')}, în 2 exemplare originale, câte unul pentru fiecare parte.`), { x: 45, y, size: 7, font: fontBold });
+        y -= 20;
+        
+        deseneazaTitluSectiune("SEMNĂTURILE PĂRȚILOR:");
+        y -= 4;
+
+        // Preluare semnături canvas
+        const sigAngajatorCanvas = document.getElementById('sigProprietarCanvas');
+        const sigSalariatCanvas = document.getElementById('sigChiriasCanvas');
+        
+        if (sigAngajatorCanvas) {
+            try {
+                const sigABytes = await pdfDoc.embedPng(sigAngajatorCanvas.toDataURL('image/png'));
+                page.drawImage(sigABytes, { x: 45, y: y - 40, width: 100, height: 32 });
+            } catch (err) {
+                console.log("Canvas angajator gol");
+            }
+        }
+        if (sigSalariatCanvas) {
+            try {
+                const sigSBytes = await pdfDoc.embedPng(sigSalariatCanvas.toDataURL('image/png'));
+                page.drawImage(sigSBytes, { x: 310, y: y - 40, width: 100, height: 32 });
+            } catch (err) {
+                console.log("Canvas salariat gol");
+            }
+        }
+
+        page.drawText(curataDiacritice("ANGAJATOR,"), { x: 45, y: y - 50, size: 7, font: fontBold });
+        page.drawText(curataDiacritice("SALARIAT,"), { x: 310, y: y - 50, size: 7, font: fontBold });
+
+        deseneazaFooter();
+
+        const bytes = await pdfDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = "CONTRACT_INDIVIDUAL_MUNCA_CIM_OFICIAL.pdf";
+        a.click();
+
+        if (typeof salveazaInArhivaprivata === 'function') {
+            salveazaInArhivaprivata({ 
+                idAct: 'CIM-' + Math.floor(1000 + Math.random()*9000), 
+                numeClient: curataDiacritice(getVal('cimSalariatNume') || 'Salariat'),
+                tip: 'CIM',
+                data: new Date().toLocaleDateString('ro-RO')
+            });
+        }
+        arataNotificare("✅ Contractul Individual de Muncă (CIM) rigorizat a fost generat!");
+    } catch(e) { 
+        arataNotificare("Eroare PDF CIM: " + e.message, true); 
+    }
+}
+
 // Inițializare canvas la încărcarea paginii pentru semnături
 window.addEventListener('DOMContentLoaded', () => {
     initCanvasSemnatura('sigProprietarCanvas');

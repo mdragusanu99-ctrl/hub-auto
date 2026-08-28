@@ -618,6 +618,16 @@
                     <div><label>Chirie Lunară *</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
                     <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
                 </div>
+                <!-- Formular CIM Pas 1 -->
+                <div id="formCimStep1" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Angajator</strong></div>
+                    <div class="full-width"><label>Denumire Firmă / Societate *</label><input type="text" id="cimAngajatorNume" placeholder="ex: SC BARBERHUB SRL"></div>
+                    <div><label>CUI / CIF *</label><input type="text" id="cimAngajatorCui" placeholder="ex: RO12345678"></div>
+                    <div><label>Nr. Reg. Com. *</label><input type="text" id="cimAngajatorReg" placeholder="ex: J37/123/2025"></div>
+                    <div class="full-width"><label>Sediul Social Complet *</label><input type="text" id="cimAngajatorAdresa" placeholder="ex: STR. REPUBLICII, NR. 10, BÂRLAD"></div>
+                    <div><label>Reprezentant Legal (Administrator) *</label><input type="text" id="cimAngajatorReprezentant" placeholder="ex: POPESCU ION"></div>
+                    <div><label>Cont Bancar (IBAN) *</label><input type="text" id="cimAngajatorBanca" placeholder="ex: RO49BTRL..."></div>
+                </div>
 
                 <!-- Formular Demisie Pas 1 -->
                 <div id="formDemisieStep1" class="form-grid" style="display:none;">
@@ -718,6 +728,29 @@
                     <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodatarAutoAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
                 </div>
 
+                <!-- Formular CIM Pas 2 -->
+                <div id="formCimStep2" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Salariat & Detalii Post</strong></div>
+                    <div class="full-width"><label>Nume și Prenume Salariat *</label><input type="text" id="cimSalariatNume" placeholder="ex: DRAGUSANU MARIO"></div>
+                    <div><label>CNP Salariat *</label><input type="text" id="cimSalariatCnp" placeholder="ex: 5040101123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="cimSalariatAct" placeholder="ex: VS 123456"></div>
+                    <div class="full-width"><label>Adresă Domiciliu Salariat *</label><input type="text" id="cimSalariatAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2, BÂRLAD"></div>
+                    
+                    <div class="full-width" style="margin-top: 10px;"><strong style="color: var(--primary); font-size: 13px;">Condiții de Muncă & Salarizare</strong></div>
+                    <div><label>Funcția / Meseria (COR) *</label><input type="text" id="cimFunctie" placeholder="ex: FRIZER - 514201"></div>
+                    <div>
+                        <label>Tip Contract *</label>
+                        <select id="cimTipDurata">
+                            <option value="NEDETERMINATA">Durată Nedeterminată (Regulă)</option>
+                            <option value="DETERMINATA">Durată Determinată</option>
+                        </select>
+                    </div>
+                    <div><label>Durata Timpului de Muncă *</label><input type="text" id="cimTimpMunca" value="8 ORE/ZI, 40 ORE/SAPTAMANA"></div>
+                    <div><label>Salariul de Bazin Brut (RON) *</label><input type="text" id="cimSalariuBrut" placeholder="ex: 4000 RON"></div>
+                    <div><label>Data Începerii Activității *</label><input type="text" id="cimDataStart" placeholder="ex: 01.09.2026"></div>
+                    <div><label>Locul Desfășurării Activității *</label><input type="text" id="cimLocMunca" value="LA SEDIUL / PUNCTUL DE LUCRU"></div>
+                </div>
+                
                 <!-- Formular Comodat Imobil Pas 2 -->
                 <div id="formComodatImobilStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Beneficiar Imobil / Sediu)</strong></div>
