@@ -444,10 +444,10 @@ function activeazaPasulUI(stepNum) {
     let estePasSemnatura = false;
     let estePasPlataDescarcare = false;
 
-    if (maxStepsTotal === 4 && (tipContractCurent === 'imobiliare' || tipContractCurent === 'comodat_auto' || tipContractCurent === 'comodat_imobil')) {
-        estePasSemnatura = (stepNum === 3);
-        estePasPlataDescarcare = (stepNum === 4);
-   } else if (maxStepsTotal === 4 && (tipContractCurent === 'auto' || tipContractCurent === 'prestari_servicii')) {
+   if (maxStepsTotal === 4 && (tipContractCurent === 'imobiliare' || tipContractCurent === 'comodat_auto' || tipContractCurent === 'comodat_imobil' || tipContractCurent === 'prestari_servicii')) {
+    estePasSemnatura = (stepNum === 3);
+    estePasPlataDescarcare = (stepNum === 4);
+}else if (maxStepsTotal === 4 && (tipContractCurent === 'auto' || tipContractCurent === 'prestari_servicii')) {
     estePasPlataDescarcare = (stepNum === 4);
 } else if (maxStepsTotal === 3) {
         estePasPlataDescarcare = (stepNum === 3);
@@ -476,6 +476,9 @@ function activeazaPasulUI(stepNum) {
             if (tipContractCurent === 'comodat_imobil' || tipContractCurent === 'comodat_auto') {
                 lblPart1.innerText = "Semnătură Comodant (Proprietar)";
                 lblPart2.innerText = "Semnătură Comodatar (Beneficiar)";
+            } else if (tipContractCurent === 'prestari_servicii') {
+                lblPart1.innerText = "Semnătură Prestator (Executant)";
+                lblPart2.innerText = "Semnătură Beneficiar (Client)";
             } else {
                 lblPart1.innerText = "Semnătură Proprietar (Locator)";
                 lblPart2.innerText = "Semnătură Chiriaș (Locatar)";
