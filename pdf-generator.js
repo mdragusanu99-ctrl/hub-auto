@@ -622,7 +622,7 @@ async function genereazaContractComodatAutoPDF() {
 
         deseneazaTitluSectiune("ARTICOLUL 5: OBLIGATIILE SI RESPUNDEREA PARTILOR");
         deseneazaParagraf(`5.1. Comodatarul se obligă să îngrijească și să conserve bunul ca un bun proprietar, conform art. 2148 din Codul Civil, suportând toate cheltuielile curente de funcționare (combustibil, ITP, RCA, rovinietă, întreținere tehnică periodică).`);
-        deseneazaParagraf(`5.2. Comodatarul răspunde pentru pierderea sau deteriorarea bunului, exceptând uzura normală cauzată de o folosințăคุ and forța majoră, conform art. 2150 din Codul Civil.`);
+        deseneazaParagraf(`5.2. Comodatarul răspunde pentru pierderea sau deteriorarea bunului, exceptând uzura normală cauzată de o folosință normală și forța majoră, conform art. 2150 din Codul Civil.`);
         y -= 4;
 
         deseneazaTitluSectiune("ARTICOLUL 6: INCETAREA SI REZILIEREA CONTRACTULUI");
