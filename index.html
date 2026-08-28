@@ -291,44 +291,88 @@
             <!-- TOAST NOTIFICARE -->
             <div id="toastNotification">Acțiune realizată cu succes!</div>
 
-            <!-- PAGINA PRINCIPALĂ (HUB CATEGORII) -->
-            <div id="mainMenuContainer" style="display:block;">
-                <div class="hero-welcome">
-                    <h2>Bun venit pe ActPeLoc 🚀</h2>
-                    <p>Platforma ta de încredere pentru generarea rapidă și sigură a actelor oficiale. Alege categoria dorită pentru a începe.</p>
-                </div>
+            <!-- SECȚIUNEA PRINCIPALĂ: HUB-UL DE CATEGORII (BENTO GRID 2026) -->
+<div id="hubCategorii" class="max-w-4xl mx-auto p-4 sm:p-6">
+    <div class="text-center mb-8">
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            Generator Oficial de Acte & Contracte
+        </h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Alege categoria dorită pentru a accesa documentele oficiale valabile la nivel național.
+        </p>
+    </div>
 
-                <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Categorii Documente</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Toate documentele respectă legislația în vigoare.</p>
-                
-                <div class="categories-grid">
-                    <div class="category-card" onclick="selecteazaCategorie('auto')">
-                        <div class="category-icon">🚗</div>
-                        <h4>Auto & Transport</h4>
-                        <p>Contracte de vânzare-cumpărare auto oficiale ITL 054, închiriere și comodat.</p>
-                    </div>
-                    <div class="category-card" onclick="selecteazaCategorie('imobiliare')">
-                        <div class="category-icon">🏠</div>
-                        <h4>Imobiliare</h4>
-                        <p>Contracte de închiriere locuințe cu inventar opțional de bunuri și garanție.</p>
-                    </div>
-                    <div class="category-card" onclick="selecteazaCategorie('prestari_servicii')">
-                        <div class="category-icon">💼</div>
-                        <h4>Prestări Servicii B2B</h4>
-                        <p>Contracte de prestări servicii independente cu protecție ANAF.</p>
-                    </div>
-                    <div class="category-card" onclick="selecteazaCategorie('demisie')">
-                        <div class="category-icon">📄</div>
-                        <h4>Muncă & PFA</h4>
-                        <p>Cerere de demisie oficială standard cu calcul preaviz și semnătură.</p>
-                    </div>
-                    <div class="category-card" onclick="selecteazaCategorie('comodat')">
-                        <div class="category-icon">🤝</div>
-                        <h4>Contract de Comodat</h4>
-                        <p>Contracte de comodat folosință gratuită pentru imobil sau auto.</p>
-                    </div>
+    <!-- Grid-ul principal de categorii -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        
+        <!-- Categoria Auto -->
+        <div onclick="deschideCategorie('auto')" class="group relative overflow-hidden rounded-3xl p-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-100/50 dark:shadow-none hover:shadow-xl hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                    🚗
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Auto & Transport</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Contracte vânzare-cumpărare, comodat auto</p>
                 </div>
             </div>
+        </div>
+
+        <!-- Categoria Imobiliare -->
+        <div onclick="deschideCategorie('imobiliare')" class="group relative overflow-hidden rounded-3xl p-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-100/50 dark:shadow-none hover:shadow-xl hover:border-emerald-500/50 transition-all duration-300 cursor-pointer">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                    🏠
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Imobiliare & Locuințe</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Închirieri cu inventar, comodat imobil / sediu</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria Prestări Servicii / B2B -->
+        <div onclick="deschideCategorie('b2b')" class="group relative overflow-hidden rounded-3xl p-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-100/50 dark:shadow-none hover:shadow-xl hover:border-purple-500/50 transition-all duration-300 cursor-pointer">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400 text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                    💼
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Prestări Servicii B2B</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Contracte independente, clauze anti-ANAF</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria Muncă & PFA -->
+        <div onclick="deschideCategorie('munca')" class="group relative overflow-hidden rounded-3xl p-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-100/50 dark:shadow-none hover:shadow-xl hover:border-amber-500/50 transition-all duration-300 cursor-pointer">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-600 dark:text-amber-400 text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                    📄
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Muncă & carieră</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Cereri de demisie oficiale cu preaviz</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- CONTAINERUL PENTRU LISTA DE DOCUMENTE DIN CATEGORIE (Ascuns inițial) -->
+<div id="listaDocumenteContainer" class="max-w-4xl mx-auto p-4 sm:p-6 hidden">
+    <button onclick="inchideListaCategorii()" class="mb-6 inline-flex items-center space-x-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">
+        <span>← Înapoi la categorii</span>
+    </button>
+
+    <h2 id="titluCategorieSelectata" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-4"></h2>
+    
+    <!-- Lista dinamică a actelor -->
+    <div id="elementeListaActe" class="space-y-3">
+        <!-- Aici se injectează actele specifice prin JavaScript -->
+    </div>
+</div>
 
             <!-- DASHBOARD VIEW -->
             <div id="dashboardView" class="dash-section">

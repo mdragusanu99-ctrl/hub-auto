@@ -521,9 +521,19 @@ async function genereazaCerereDemisiePDF() {
     } catch(e) { arataNotificare("Eroare PDF Demisie: " + e.message, true); }
 }
 
-// 5. NOU: GENERATOR CONTRACT DE COMODAT (IMOBIL SAU AUTO)
-async function genereazaContractComodatPDF() {
-    arataNotificare("Se generează contractul de comodat oficial...");
+// 5.1. GENERATOR CONTRACT DE COMODAT AUTO (COMPLET SI BLINDAT JURIDIC)
+async function genereazaContractComodatAutoPDF() {
+    const chassisEl = document.getElementById('comodatAutoVin');
+    if (chassisEl) {
+        const vin = chassisEl.value.trim();
+        if (vin.length !== 17) {
+            arataNotificare("⚠️ Seria de șasiu (VIN) trebuie să aibă exact 17 caractere!", true);
+            chassisEl.focus();
+            return;
+        }
+    }
+
+    arataNotificare("Se generează contractul de comodat auto oficial...");
     try {
         const { PDFDocument, StandardFonts } = PDFLib;
         const pdfDoc = await PDFDocument.create();
@@ -541,70 +551,91 @@ async function genereazaContractComodatPDF() {
 
         const deseneazaTitluSectiune = (text) => {
             if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            y -= 6;
             page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
-            y -= 20;
+            y -= 18;
         };
 
-       const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
-        if (!text) return;
-        const words = curataDiacritice(text).split(' ');
-        let line = '';
-        const lineHeight = 11;
+        const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
+            if (!text) return;
+            const words = curataDiacritice(text).split(' ');
+            let line = '';
+            const lineHeight = 11;
 
-        for (let i = 0; i < words.length; i++) {
-            const testLine = line + words[i] + ' ';
-            const testWidth = customFont.widthOfTextAtSize(testLine, size);
-            if (testWidth > maxWidth && i > 0) {
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const testWidth = customFont.widthOfTextAtSize(testLine, size);
+                if (testWidth > maxWidth && i > 0) {
+                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                    y -= lineHeight;
+                    line = words[i] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            if (line.trim().length > 0) {
                 if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
                 page.drawText(line.trim(), { x: 45, y, size, font: customFont });
                 y -= lineHeight;
-                line = words[i] + ' ';
-            } else {
-                line = testLine;
             }
-        }
-        if (line.trim().length > 0) {
-            if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
-            page.drawText(line.trim(), { x: 45, y, size, font: customFont });
-            y -= lineHeight;
-        }
-        y -= 4;
-    };
+            y -= 4;
+        };
 
         const getVal = (id) => {
             const el = document.getElementById(id);
             return el ? el.value.trim() : '';
         };
 
-        const titluText = "CONTRACT DE COMODAT (FOLOSINTA GRATUITA)";
-        const textWidth = fontBold.widthOfTextAtSize(titluText, 12);
-        const centerX = (595.28 - textWidth) / 2;
-        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });
+        const titluText = "CONTRACT DE COMODAT (IMPRUMUT DE FOLOSINTA AUTO)";
+        const subTitluText = "In temeiul art. 2146 – 2157 din Legea nr. 287/2009 privind Codul Civil";
+        
+        let textWidth = fontBold.widthOfTextAtSize(titluText, 11);
+        let centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 11, font: fontBold });
+        y -= 15;
+
+        textWidth = font.widthOfTextAtSize(subTitluText, 8);
+        centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 8, font });
         y -= 25;
 
         deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
-        deseneazaParagraf(`1.1. Comodant (Proprietar): ${getVal('comodantNume') || '....................................'}, identificat prin CNP/CUI: ${getVal('comodantCnp') || '................'}, CI/Reg.Com: ${getVal('comodantAct') || '........'}, cu domiciliul/sediul in ${getVal('comodantAdresa') || '....................................'}.`);
-        deseneazaParagraf(`1.2. Comodatar (Beneficiar): ${getVal('comodatarNume') || '....................................'}, identificat prin CNP/CUI: ${getVal('comodatarCnp') || '................'}, CI/Reg.Com: ${getVal('comodatarAct') || '........'}, cu domiciliul/sediul in ${getVal('comodatarAdresa') || '....................................'}.`);
+        deseneazaParagraf(`1.1. Comodant (Proprietar): ${getVal('comodantAutoNume') || '....................................'}, CNP/CUI: ${getVal('comodantAutoCnp') || '................'}, CI seria: ${getVal('comodantAutoAct') || '........'}, domiciliat in ${getVal('comodantAutoAdresa') || '....................................'}.`);
+        deseneazaParagraf(`1.2. Comodatar (Utilizator): ${getVal('comodatarAutoNume') || '....................................'}, CNP/CUI: ${getVal('comodatarAutoCnp') || '................'}, CI seria: ${getVal('comodatarAutoAct') || '........'}, domiciliat in ${getVal('comodatarAutoAdresa') || '....................................'}.`);
         y -= 4;
 
-        deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI DESTINATIA");
-        deseneazaParagraf(`2.1. Comodantul da spre folosința gratuita Comodatarului următorul bun: ${getVal('comodatDescriereBun') || '..................................................................................................................'}.`);
-        deseneazaParagraf(`2.2. Destinația bunului este: ${getVal('comodatScop') || 'Locuinta / Stabilire Sediu Social conform Legii nr. 31/1990'}. Comodantul in calitate de proprietar acorda acordul expres pentru aceasta destinatie.`);
+        deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI");
+        deseneazaParagraf(`2.1. Comodantul dă spre folosință gratuită Comodatarului autoturismul marca ${getVal('comodatAutoMarca') || '....................'}, model ${getVal('comodatAutoModel') || '....................'}, seria de sasiu (VIN) ${getVal('comodatAutoVin') || '................................'}, număr de înmatriculare ${getVal('comodatAutoNr') || '........'}, serie motor ${getVal('comodatAutoMotor') || '................'}, cilindree ${getVal('comodatAutoCmc') || '........'} cmc.`);
+        deseneazaParagraf(`2.2. Predarea-primirea autovehiculului se face pe baza stării tehnice actuale, cunoscute și acceptate de ambele părți, bunul fiind apt pentru utilizare în siguranță pe drumurile publice.`);
         y -= 4;
 
         deseneazaTitluSectiune("ARTICOLUL 3: DURATA CONTRACTULUI");
-        deseneazaParagraf(`3.1. Prezentul contract se încheie pe o perioadă de ${getVal('comodatDurata') || '3 ANI'}, începând cu data de ${new Date().toLocaleDateString('ro-RO')}.`);
-        deseneazaParagraf(`3.2. La expirarea termenului, contractul poate fi prelungit prin acordul scris al ambelor părți.`);
+        deseneazaParagraf(`3.1. Prezentul contract se încheie pe o perioadă de ${getVal('comodatAutoDurata') || '1 AN'}, începând cu data de ${new Date().toLocaleDateString('ro-RO')}.`);
+        deseneazaParagraf(`3.2. La expirarea termenului, contractul poate fi prelungit prin acordul scris al ambelor părți sau încetează de drept prin restituirea bunului.`);
         y -= 4;
 
-        deseneazaTitluSectiune("ARTICOLUL 4: OBLIGAȚIILE COMODATARULUI");
-        deseneazaParagraf(`4.1. Comodatarul se obligă să îngrijească și să conserve bunul ca un bun proprietar, suportând toate cheltuielile curente de întreținere.`);
-        deseneazaParagraf(`4.2. Este strict interzisă subcomodarea, închirierea sau schimbarea destinației bunului fără acordul prealabil scris al Comodantului.`);
+        deseneazaTitluSectiune("ARTICOLUL 4: DESTINATIA SI FOLOSINTA BUNULUI");
+        deseneazaParagraf(`4.1. Autovehiculul va fi utilizat exclusiv în scop personal sau profesional. Este strict interzisă subcomodarea, închirierea sau transmiterea folosinței către terți fără acordul scris al Comodantului.`);
+        deseneazaParagraf(`4.2. Comodatarul are obligația de a folosi bunul conform destinației sale economice și tehnice.`);
         y -= 4;
 
-        deseneazaTitluSectiune("ARTICOLUL 5: DISPOZIȚII FINALE");
-        deseneazaParagraf(`5.1. Prezentul contract constituie titlu executoriu în condițiile legii și s-a încheiat astăzi în 2 exemplare originale.`);
-        y -= 25;
+        deseneazaTitluSectiune("ARTICOLUL 5: OBLIGATIILE SI RESPUNDEREA PARTILOR");
+        deseneazaParagraf(`5.1. Comodatarul se obligă să îngrijească și să conserve bunul ca un bun proprietar, conform art. 2148 din Codul Civil, suportând toate cheltuielile curente de funcționare (combustibil, ITP, RCA, rovinietă, întreținere tehnică periodică).`);
+        deseneazaParagraf(`5.2. Comodatarul răspunde pentru pierderea sau deteriorarea bunului, exceptând uzura normală cauzată de o folosințăคุ and forța majoră, conform art. 2150 din Codul Civil.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 6: INCETAREA SI REZILIEREA CONTRACTULUI");
+        deseneazaParagraf(`6.1. Prezentul contract încetează la expirarea termenului sau prin restituirea bunului de către Comodatar.`);
+        deseneazaParagraf(`6.2. Nerespectarea obligațiilor contractuale dă dreptul Comodantului să considere contractul reziliat de plin drept, fără intervenția instanței (pact comisoriu).`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 7: LITIGII SI DISPOZITII FINALE");
+        deseneazaParagraf(`7.1. Litigiile decurgând din acest contract se vor soluționa pe cale amiabilă sau, în caz de eșec, de către instanțele judecătorești competente.`);
+        deseneazaParagraf(`7.2. Prezentul contract constituie titlu executoriu în condițiile legii și s-a încheiat astăzi în 2 exemplare originale.`);
+        y -= 20;
+
+        if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
 
         deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
         y -= 4;
@@ -630,14 +661,151 @@ async function genereazaContractComodatPDF() {
         const blob = new Blob([bytes], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url; a.download = "CONTRACT_COMODAT_ACTPELOC.pdf";
+        a.href = url; a.download = "CONTRACT_COMODAT_AUTO_ACTPELOC.pdf";
         a.click();
 
         if (typeof salveazaInArhivaprivata === 'function') {
-            salveazaInArhivaprivata({ idAct: 'COM-' + Math.floor(1000 + Math.random()*9000), numeClient: curataDiacritice(getVal('comodatarNume') || 'Comodatar') });
+            salveazaInArhivaprivata({ idAct: 'COMAUTO-' + Math.floor(1000 + Math.random()*9000), numeClient: curataDiacritice(getVal('comodatarAutoNume') || 'Comodatar Auto') });
         }
-        arataNotificare("✅ Contractul de comodat a fost generat și descărcat cu succes!");
-    } catch(e) { arataNotificare("Eroare PDF Comodat: " + e.message, true); }
+        arataNotificare("✅ Contractul de comodat auto a fost generat cu succes!");
+    } catch(e) { arataNotificare("Eroare PDF Comodat Auto: " + e.message, true); }
+}
+
+
+// 5.2. GENERATOR CONTRACT DE COMODAT IMOBIL (COMPLET SI BLINDAT JURIDIC - ONRC / ANAF)
+async function genereazaContractComodatImobilPDF() {
+    arataNotificare("Se generează contractul de comodat imobil (sediu/locuință)...");
+    try {
+        const { PDFDocument, StandardFonts } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]);
+        let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Toate drepturile rezervate"), { 
+                x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
+            });
+        };
+
+        const deseneazaTitluSectiune = (text) => {
+            if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            y -= 6;
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
+            y -= 18;
+        };
+
+        const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
+            if (!text) return;
+            const words = curataDiacritice(text).split(' ');
+            let line = '';
+            const lineHeight = 11;
+
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const testWidth = customFont.widthOfTextAtSize(testLine, size);
+                if (testWidth > maxWidth && i > 0) {
+                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                    y -= lineHeight;
+                    line = words[i] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            if (line.trim().length > 0) {
+                if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+            }
+            y -= 4;
+        };
+
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
+        const titluText = "CONTRACT DE COMODAT (IMPRUMUT FOLOSINTA IMOBIL)";
+        const subTitluText = "Conform art. 2146-2157 C.Civ. si Legii nr. 31/1990 (pentru sediu social)";
+        
+        let textWidth = fontBold.widthOfTextAtSize(titluText, 11);
+        let centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 11, font: fontBold });
+        y -= 15;
+
+        textWidth = font.widthOfTextAtSize(subTitluText, 8);
+        centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 8, font });
+        y -= 25;
+
+        deseneazaTitluSectiune("ARTICOLUL 1: PARTILE CONTRACTANTE");
+        deseneazaParagraf(`1.1. Comodant (Proprietar): ${getVal('comodantImobilNume') || '....................................'}, CNP/CUI: ${getVal('comodantImobilCnp') || '................'}, CI/Reg.Com: ${getVal('comodantImobilAct') || '........'}, domiciliat/sediu în ${getVal('comodantImobilAdresa') || '....................................'}.`);
+        deseneazaParagraf(`1.2. Comodatar (Beneficiar): ${getVal('comodatarImobilNume') || '....................................'}, CNP/CUI: ${getVal('comodatarImobilCnp') || '................'}, CI/Reg.Com: ${getVal('comodatarImobilAct') || '........'}, domiciliat/sediu în ${getVal('comodatarImobilAdresa') || '....................................'}.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 2: OBIECTUL CONTRACTULUI SI SITUAȚIA JURIDICĂ");
+        deseneazaParagraf(`2.1. Comodantul dă în folosință gratuită Comodatarului imobilul situat în ${getVal('comodatImobilAdresaBun') || '..................................................................................................................'}.`);
+        deseneazaParagraf(`2.2. Imobilul este înscris în Cartea Funciară (CF) nr. ${getVal('comodatImobilCf') || '................'} a localității și număr cadastral ${getVal('comodatCadastru') || '................'}.`);
+        deseneazaParagraf(`2.3. Destinația aprobată a imobilului este: ${getVal('comodatImobilScop') || 'Stabilire Sediu Social și/sau Locuință'}. Comodantul în calitate de proprietar exclusiv acordă acordul său expres pentru această destinație în relația cu ONRC, ANAF și autoritățile competente.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 3: DURATA CONTRACTULUI");
+        deseneazaParagraf(`3.1. Prezentul contract se încheie pe o perioadă de ${getVal('comodatImobilDurata') || '3 ANI'}, începând cu data de ${new Date().toLocaleDateString('ro-RO')}.`);
+        deseneazaParagraf(`3.2. La expirarea termenului, contractul poate fi prelungit prin act adițional scris încheiat între părți.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 4: OBLIGAȚIILE ȘI DREPTURILE PĂRȚILOR");
+        deseneazaParagraf(`4.1. Comodantul garantează folosința pașnică, lipsită de evicțiune și că deține dreptul legal de proprietate asupra imobilului ce face obiectul prezentului contract.`);
+        deseneazaParagraf(`4.2. Comodatarul se obligă să îngrijească imobilul ca un bun proprietar, să achite la termen utilitățile consumate (energie electrică, gaze, apă, salubritate) și să nu schimbe destinația fără acordul scris al Comodantului.`);
+        deseneazaParagraf(`4.3. Subcomodarea sau închirierea totală ori parțială a imobilului către terți este strict interzisă.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 5: INCETAREA SI REZILIEREA");
+        deseneazaParagraf(`5.1. Contractul încetează la termen sau prin acordul scris al părților.`);
+        deseneazaParagraf(`5.2. Nerespectarea clauzelor dă dreptul Comodantului să declare contractul reziliat de plin drept, fără intervenția instanței.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("ARTICOLUL 6: DISPOZIȚII FINALE ȘI ADMINISTRATIVE");
+        deseneazaParagraf(`6.1. Prezentul contract servește la Oficiul Registrului Comerțului (ONRC), ANAF sau evidența populației și s-a încheiat astăzi în 2 exemplare originale.`);
+        y -= 20;
+
+        if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+
+        deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
+        y -= 4;
+
+        const sigPropCanvas = document.getElementById('sigProprietarCanvas');
+        const sigChirCanvas = document.getElementById('sigChiriasCanvas');
+        
+        if (sigPropCanvas && sigPropCanvas.offsetParent !== null) {
+            const sigPImageBytes = await pdfDoc.embedPng(sigPropCanvas.toDataURL('image/png'));
+            page.drawImage(sigPImageBytes, { x: 45, y: y - 50, width: 120, height: 40 });
+        }
+        if (sigChirCanvas && sigChirCanvas.offsetParent !== null) {
+            const sigCImageBytes = await pdfDoc.embedPng(sigChirCanvas.toDataURL('image/png'));
+            page.drawImage(sigCImageBytes, { x: 310, y: y - 50, width: 120, height: 40 });
+        }
+
+        page.drawText(curataDiacritice("Semnatura Comodant"), { x: 45, y: y - 62, size: 7.5, font: fontBold });
+        page.drawText(curataDiacritice("Semnatura Comodatar"), { x: 310, y: y - 62, size: 7.5, font: fontBold });
+
+        deseneazaFooter();
+
+        const bytes = await pdfDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = "CONTRACT_COMODAT_IMOBIL_ACTPELOC.pdf";
+        a.click();
+
+        if (typeof salveazaInArhivaprivata === 'function') {
+            salveazaInArhivaprivata({ idAct: 'COMIMOB-' + Math.floor(1000 + Math.random()*9000), numeClient: curataDiacritice(getVal('comodatarImobilNume') || 'Comodatar Imobil') });
+        }
+        arataNotificare("✅ Contractul de comodat imobil a fost generat cu succes!");
+    } catch(e) { arataNotificare("Eroare PDF Comodat Imobil: " + e.message, true); }
 }
 
 // Inițializare canvas la încărcarea paginii pentru semnături

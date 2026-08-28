@@ -195,27 +195,24 @@ function colecteazaDate() {
 }
 
 // ==========================================
-// CONFIGURARE DINAMICĂ PAȘI PE CATEGORII
+// CONFIGURARE DINAMICĂ PAȘI PE CATEGORII (ACTUALIZATĂ PENTRU COMODAT SEPARAT)
+// ==========================================
 function selecteazaCategorie(cat) {
-    tipContractCurent = cat;
-    const mainMenu = document.getElementById('mainMenuContainer');
+    tipContractCurent = cat; // Valori posibile: 'auto', 'comodat_auto', 'imobiliare', 'comodat_imobil', 'prestari_servicii', 'demisie'
+    const mainMenu = document.getElementById('hubCategorii') || document.getElementById('mainMenuContainer');
+    const listaDoc = document.getElementById('listaDocumenteContainer');
     const dashView = document.getElementById('dashboardView');
     const modeSelector = document.getElementById('modeSelectorContainer');
     const modTitle = document.getElementById('modSelectorTitle');
 
     if (mainMenu) mainMenu.style.display = 'none';
+    if (listaDoc) listaDoc.style.display = 'none';
     if (dashView) dashView.style.display = 'none';
 
-    if (cat === 'auto') {
-        if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Auto ITL 054";
+    if (cat === 'auto' || cat === 'imobiliare') {
+        if (modTitle) modTitle.innerText = `Mod de Lucru - ${cat === 'auto' ? 'Contract Auto ITL 054' : 'Contract Închiriere Locuință'}`;
         if (modeSelector) modeSelector.style.display = 'block';
-    } else if (cat === 'imobiliare') {
-        if (modTitle) modTitle.innerText = "Mod de Lucru - Contract Închiriere Locuință";
-        if (modeSelector) modeSelector.style.display = 'block';
-    } else if (cat === 'prestari_servicii' || cat === 'comodat') {
-        if (modeSelector) modeSelector.style.display = 'none';
-        selecteazaModSiPorneste('local');
-    } else if (cat === 'demisie') {
+    } else if (cat === 'comodat_auto' || cat === 'comodat_imobil' || cat === 'prestari_servicii' || cat === 'demisie') {
         if (modeSelector) modeSelector.style.display = 'none';
         selecteazaModSiPorneste('local');
     }
@@ -275,26 +272,30 @@ function activeazaPasulUI(stepNum) {
     // Ascundem toate formularele de la Pasul 1
     const fAuto1 = document.getElementById('formAutoStep1');
     const fPrest1 = document.getElementById('formPrestariStep1');
-    const fComod1 = document.getElementById('formComodatStep1');
+    const fComodAuto1 = document.getElementById('formComodatAutoStep1');
+    const fComodImob1 = document.getElementById('formComodatImobilStep1');
     const fImob1 = document.getElementById('formImobiliareStep1');
     const fDem1 = document.getElementById('formDemisieStep1');
 
     if (fAuto1) fAuto1.style.display = 'none';
     if (fPrest1) fPrest1.style.display = 'none';
-    if (fComod1) fComod1.style.display = 'none';
+    if (fComodAuto1) fComodAuto1.style.display = 'none';
+    if (fComodImob1) fComodImob1.style.display = 'none';
     if (fImob1) fImob1.style.display = 'none';
     if (fDem1) fDem1.style.display = 'none';
 
     if (stepNum === 1) {
         if (tipContractCurent === 'auto' && fAuto1) fAuto1.style.display = 'grid';
         else if (tipContractCurent === 'prestari_servicii' && fPrest1) fPrest1.style.display = 'grid';
-        else if (tipContractCurent === 'comodat' && fComod1) fComod1.style.display = 'grid';
+        else if (tipContractCurent === 'comodat_auto' && fComodAuto1) fComodAuto1.style.display = 'grid';
+        else if (tipContractCurent === 'comodat_imobil' && fComodImob1) fComodImob1.style.display = 'grid';
         else if (tipContractCurent === 'imobiliare' && fImob1) fImob1.style.display = 'grid';
         else if (tipContractCurent === 'demisie' && fDem1) fDem1.style.display = 'grid';
 
         if (tipContractCurent === 'auto') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Vânzătorului";
         else if (tipContractCurent === 'prestari_servicii') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Prestatorului";
-        else if (tipContractCurent === 'comodat') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Comodantului";
+        else if (tipContractCurent === 'comodat_auto') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Comodantului (Proprietar Auto)";
+        else if (tipContractCurent === 'comodat_imobil') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Comodantului (Proprietar Imobil)";
         else if (tipContractCurent === 'imobiliare') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Proprietarului & Imobilului";
         else if (tipContractCurent === 'demisie') document.getElementById('titleStep1').innerText = "Cerere de Demisie Oficială";
     }
@@ -567,18 +568,19 @@ function proceseazaPlataSiDescarca() {
     }, 1000);
 }
 
-// Generarea efectivă a PDF-ului și salvarea în arhivă
 function ruleazaDescarcareaFinala() {
     if (tipContractCurent === 'auto') {
         if (typeof genereazaContractOficialPDF === 'function') genereazaContractOficialPDF();
     } else if (tipContractCurent === 'imobiliare') {
         if (typeof genereazaContractImobiliarPDF === 'function') genereazaContractImobiliarPDF();
+    } else if (tipContractCurent === 'comodat_auto') {
+        if (typeof genereazaContractComodatAutoPDF === 'function') genereazaContractComodatAutoPDF();
+    } else if (tipContractCurent === 'comodat_imobil') {
+        if (typeof genereazaContractComodatImobilPDF === 'function') genereazaContractComodatImobilPDF();
     } else if (tipContractCurent === 'prestari_servicii') {
         if (typeof genereazaContractPrestariServiciiPDF === 'function') genereazaContractPrestariServiciiPDF();
     } else if (tipContractCurent === 'demisie') {
         if (typeof genereazaCerereDemisiePDF === 'function') genereazaCerereDemisiePDF();
-    } else if (tipContractCurent === 'comodat') {
-        if (typeof genereazaContractComodatPDF === 'function') genereazaContractComodatPDF();
     }
 
     if (profilCurent && profilCurent.pachet === 'GRATUIT' && profilCurent.ramase > 0) {
@@ -592,7 +594,7 @@ function ruleazaDescarcareaFinala() {
     let dateFormular = colecteazaDate();
     salveazaInArhivaprivata({
         idAct: 'DOC-' + Math.floor(1000 + Math.random() * 9000),
-        numeClient: dateFormular.buyerName || dateFormular.chiriasNume || dateFormular.beneficiarNume || dateFormular.comodatarNume || dateFormular.demisNume || 'Client Necunoscut',
+        numeClient: dateFormular.buyerName || dateFormular.chiriasNume || dateFormular.beneficiarNume || dateFormular.comodatarAutoNume || dateFormular.comodatarImobilNume || dateFormular.demisNume || 'Client Necunoscut',
         tip: tipContractCurent.toUpperCase(),
         data: new Date().toLocaleDateString('ro-RO')
     });
