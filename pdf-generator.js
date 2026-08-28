@@ -871,6 +871,12 @@ async function genereazaContractCimPDF() {
             return el ? curataDiacritice(el.value.trim()) : '';
         };
 
+        // Preluarea variabilelor noi pentru CI și IBAN
+        const serieCI = getVal('cimSalariatSerie') || '....';
+        const numarCI = getVal('cimSalariatNumar') || '........';
+        const emitentCI = getVal('cimSalariatEmitent') || 'SPCLEP';
+        const ibanSalariat = getVal('cimSalariatIban') || '....................................';
+
         // Antet Oficial
         const titluText = "CONTRACT INDIVIDUAL DE MUNCĂ";
         const subTitluText = "încheiat și înregistrat în Registrul General de Evidență a Salariaților sub nr. _____ / ____________";
@@ -879,7 +885,6 @@ async function genereazaContractCimPDF() {
         let centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 10, font: fontBold });
         y -= 12;
-        
 
         textWidth = font.widthOfTextAtSize(curataDiacritice(subTitluText), 7);
         centerX = (595.28 - textWidth) / 2;
@@ -889,7 +894,7 @@ async function genereazaContractCimPDF() {
         // Părțile Contractante
         deseneazaTitluSectiune("A. PĂRȚILE CONTRACTANTE");
         deseneazaParagraf(`A.1. Angajator: ${getVal('cimAngajatorNume') || '...................................................'}, cu sediul social în ${getVal('cimAngajatorAdresa') || '...................................................'}, înregistrată la Oficiul Registrului Comerțului sub nr. ${getVal('cimAngajatorReg') || '........'}, cod unic de înregistrare CUI ${getVal('cimAngajatorCui') || '........'}, cont bancar IBAN ${getVal('cimAngajatorBanca') || '....................................'}, deschis la Banca ...................................., reprezentată legal prin ${getVal('cimAngajatorReprezentant') || '....................................'}, în calitatea de administrator.`);
-        deseneazaParagraf(`A.2. Salariatul/a: ${getVal('cimSalariatNume') || '...................................................'}, domiciliat/ă în ${getVal('cimSalariatAdresa') || '...................................................'}, posesor/oare al/a actului de identitate CI seria ${getVal('cimSalariatAct') || '....'} nr. ................, eliberat de SPCLEP la data de ................, CNP: ${getVal('cimSalariatCnp') || '................'}.`);
+        deseneazaParagraf(`A.2. Salariatul/a: ${getVal('cimSalariatNume') || '...................................................'}, domiciliat/ă în ${getVal('cimSalariatAdresa') || '...................................................'}, posesor/oare al actului de identitate CI seria ${serieCI} nr. ${numarCI}, eliberat de ${emitentCI}, CNP: ${getVal('cimSalariatCnp') || '................'}.`);
         y -= 2;
 
         // Obiectul și locul muncii
@@ -915,7 +920,7 @@ async function genereazaContractCimPDF() {
         // Salarizarea
         deseneazaTitluSectiune("E. SALARIUL DE BAZĂ LUNAR BRUT ȘI ALTE ELEMENTE SALARIALE");
         deseneazaParagraf(`E.1. Salariul de bază lunar brut este în cuantum de ${getVal('cimSalariuBrut') || '0'} lei. La acesta se adaugă, după caz, sporurile, indemnizațiile și adaosurile prevăzute de lege sau de regulamentul intern.`);
-       deseneazaParagraf(`E.2. Data la care se plătește salariul este 10 ale lunii următoare celei pentru care s-a prestat munca. Plata se efectuează prin virament bancar în contul salariatului nr. ${getVal('cimSalariatIban') || '...................................................'}.`);
+        deseneazaParagraf(`E.2. Data la care se plătește salariul este 10 ale lunii următoare celei pentru care s-a prestat munca. Plata se efectuează prin virament bancar în contul salariatului nr. ${ibanSalariat}.`);
         deseneazaParagraf(`E.3. Reținerea și virarea impozitului pe venit și a contribuțiilor sociale obligatorii se realizează de către angajator în conformitate cu legislația fiscală în vigoare.`);
         y -= 2;
 
@@ -927,7 +932,7 @@ async function genereazaContractCimPDF() {
         y -= 2;
 
         // Condiții de muncă
-        deseneazaTitluSectiune("G. SECURITATEa ȘI SĂNĂTATEA ÎN MUNCĂ");
+        deseneazaTitluSectiune("G. SECURITATEA ȘI SĂNĂTATEA ÎN MUNCĂ");
         deseneazaParagraf(`G.1. Angajatorul are obligația să asigure securitatea și sănătatea salariatului în toate aspectele legate de muncă. Salariatul are o strictă obligație să respecte instructiunile de SSM primite la instruirea periodică.`);
         y -= 2;
 
