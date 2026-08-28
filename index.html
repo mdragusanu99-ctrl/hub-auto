@@ -582,13 +582,22 @@
                     <div><label>Cont Bancar (IBAN) *</label><input type="text" id="prestatorBanca" placeholder="ex: RO49BTRL..."></div>
                 </div>
 
-                <!-- Formular Comodat Pas 1 -->
-                <div id="formComodatStep1" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Comodant (Proprietar Bun)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodantNume" placeholder="ex: POPESCU ION"></div>
-                    <div><label>CNP / CUI *</label><input type="text" id="comodantCnp" placeholder="ex: 1800101123456"></div>
-                    <div><label>Act Identitate / Reg. Com. *</label><input type="text" id="comodantAct" placeholder="ex: VS 123456 sau J40/.."></div>
-                    <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodantAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
+                <!-- Formular Comodat Auto Pas 1 -->
+                <div id="formComodatAutoStep1" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Comodant (Proprietar Auto)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodantAutoNume" placeholder="ex: POPESCU ION"></div>
+                    <div><label>CNP / CUI *</label><input type="text" id="comodantAutoCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="comodantAutoAct" placeholder="ex: VS 123456"></div>
+                    <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodantAutoAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
+                </div>
+
+                <!-- Formular Comodat Imobil Pas 1 -->
+                <div id="formComodatImobilStep1" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Comodant (Proprietar Imobil)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodantImobilNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>CNP / CUI *</label><input type="text" id="comodantImobilCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+                    <div><label>Act / Reg. Com. *</label><input type="text" id="comodantImobilAct" placeholder="ex: BZ 654321"></div>
+                    <div class="full-width"><label>Adresă / Sediu Completă *</label><input type="text" id="comodantImobilAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
                 </div>
 
                 <!-- Formular Imobiliare Pas 1 -->
@@ -700,12 +709,22 @@
                     <div><label>Contact / Telefon *</label><input type="text" id="beneficiarContact" placeholder="ex: 0722..."></div>
                 </div>
 
-                <div id="formComodatStep2" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Beneficiar Folosință)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodatarNume" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>CNP / CUI *</label><input type="text" id="comodatarCnp" placeholder="ex: 2950505123456"></div>
-                    <div><label>Act Identitate / Reg. Com. *</label><input type="text" id="comodatarAct" placeholder="ex: BZ 654321 sau J37/.."></div>
-                    <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="comodatarAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
+               <!-- Formular Comodat Auto Pas 2 -->
+                <div id="formComodatAutoStep2" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Utilizator Auto)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodatarAutoNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>CNP / CUI *</label><input type="text" id="comodatarAutoCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="comodatarAutoAct" placeholder="ex: BZ 654321"></div>
+                    <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodatarAutoAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
+                </div>
+
+                <!-- Formular Comodat Imobil Pas 2 -->
+                <div id="formComodatImobilStep2" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Beneficiar Imobil / Sediu)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodatarImobilNume" placeholder="ex: SC BUSINESS SRL"></div>
+                    <div><label>CNP / CUI *</label><input type="text" id="comodatarImobilCnp" placeholder="ex: RO12345678"></div>
+                    <div><label>Act / Reg. Com. *</label><input type="text" id="comodatarImobilAct" placeholder="ex: J40/123/2026"></div>
+                    <div class="full-width"><label>Adresă Sediu / Domiciliu *</label><input type="text" id="comodatarImobilAdresa" placeholder="ex: STR. LICEULUI, NR. 10"></div>
                 </div>
 
                 <div id="formImobiliareStep2" class="form-grid" style="display:none;">
@@ -766,17 +785,26 @@
                     <div><label>Termen de Execuție *</label><input type="text" id="serviciiTermen" placeholder="ex: 30 ZILE"></div>
                 </div>
 
-                <div id="formComodatStep3" class="form-grid" style="display:none;">
-                    <div>
-                        <label>Tip Bun Dat în Comodat *</label>
-                        <select id="comodatTipBun">
-                            <option value="imobil">Bun Imobil (Locuință / Sediu Social)</option>
-                            <option value="auto">Bun Mobil (Autovehicul)</option>
-                        </select>
-                    </div>
-                    <div><label>Durata Contractului *</label><input type="text" id="comodatDurata" placeholder="ex: 3 ANI"></div>
-                    <div class="full-width"><label>Descriere Bun *</label><input type="text" id="comodatDescriereBun" placeholder="ex: APARTAMENT..."></div>
-                    <div class="full-width"><label>Scopul Folosinței *</label><input type="text" id="comodatScop" placeholder="ex: LOCUINTA"></div>
+                <!-- Formular Comodat Auto Pas 3 -->
+                <div id="formComodatAutoStep3" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Detalii Autoturism & Durată</strong></div>
+                    <div><label>Marcă Auto *</label><input type="text" id="comodatAutoMarca" placeholder="ex: AUDI"></div>
+                    <div><label>Model Auto *</label><input type="text" id="comodatAutoModel" placeholder="ex: A4"></div>
+                    <div class="full-width"><label>Serie Șasiu (VIN - 17 caractere) *</label><input type="text" id="comodatAutoVin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
+                    <div><label>Număr Înmatriculare *</label><input type="text" id="comodatAutoNr" placeholder="ex: VS12XYZ"></div>
+                    <div><label>Serie Motor *</label><input type="text" id="comodatAutoMotor" placeholder="ex: CAGA123456"></div>
+                    <div><label>Capacitate Cilindrică (cmc) *</label><input type="text" id="comodatAutoCmc" placeholder="ex: 1968"></div>
+                    <div><label>Durata Contractului *</label><input type="text" id="comodatAutoDurata" placeholder="ex: 1 AN"></div>
+                </div>
+
+                <!-- Formular Comodat Imobil Pas 3 -->
+                <div id="formComodatImobilStep3" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Detalii Imobil & Situație Juridică</strong></div>
+                    <div class="full-width"><label>Adresă Completă Imobil (Locuință / Sediu) *</label><input type="text" id="comodatImobilAdresaBun" placeholder="ex: STR. STEFAN CEL MARE, NR. 12, BÂRLAD"></div>
+                    <div><label>Număr Carte Funciară (CF) *</label><input type="text" id="comodatImobilCf" placeholder="ex: 123456"></div>
+                    <div><label>Număr Cadastral *</label><input type="text" id="comodatCadastru" placeholder="ex: 123456-C1"></div>
+                    <div class="full-width"><label>Scopul / Destinația *</label><input type="text" id="comodatImobilScop" placeholder="ex: Stabilire Sediu Social și/sau Locuință"></div>
+                    <div><label>Durata Contractului *</label><input type="text" id="comodatImobilDurata" placeholder="ex: 3 ANI"></div>
                 </div>
 
                 <div id="imobiliareSemnaturiContainer" style="display:none; margin-bottom: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
