@@ -414,7 +414,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'demisie') document.getElementById('titleStep2').innerText = "Pasul 2: Semnătură Salariat";
     }
 
-    // Gestionare vizibilitate formulare Pas 3
+   // Gestionare vizibilitate formulare Pas 3
     const fAuto3 = document.getElementById('formAutoStep3');
     const fPrest3 = document.getElementById('formPrestariStep3');
     const fComodAuto3 = document.getElementById('formComodatAutoStep3');
@@ -430,8 +430,17 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'prestari_servicii' && fPrest3) fPrest3.style.display = 'grid';
         else if (tipContractCurent === 'comodat_auto' && fComodAuto3) fComodAuto3.style.display = 'grid';
         else if (tipContractCurent === 'comodat_imobil' && fComodImob3) fComodImob3.style.display = 'grid';
-    }
 
+        // Actualizare dinamică titlu Pas 3
+        const titleStep3El = document.getElementById('titleStep3');
+        if (titleStep3El) {
+            if (tipContractCurent === 'auto') titleStep3El.innerText = "Pasul 3: Vehiculul și Prețul";
+            else if (tipContractCurent === 'prestari_servicii') titleStep3El.innerText = "Pasul 3: Detalii & Preț Servicii";
+            else if (tipContractCurent === 'comodat_auto') titleStep3El.innerText = "Pasul 3: Detalii Autoturism & Semnături";
+            else if (tipContractCurent === 'comodat_imobil') titleStep3El.innerText = "Pasul 3: Detalii Imobil & Semnături";
+            else if (tipContractCurent === 'imobiliare') titleStep3El.innerText = "Pasul 3: Condiții, Inventar & Semnături";
+        }
+    }
     let estePasSemnatura = false;
     let estePasPlataDescarcare = false;
 
@@ -453,18 +462,31 @@ function activeazaPasulUI(stepNum) {
     const payments = document.querySelectorAll('.paymentStepContainer');
     const downloads = document.querySelectorAll('.finalDownloadContainer');
 
-    if (estePasSemnatura) {
+   if (estePasSemnatura) {
         if (imobContainer) imobContainer.style.display = 'block';
         if (localAct) localAct.style.display = (modLucru === 'remote') ? 'block' : 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
         payments.forEach(el => el.style.display = 'none');
         downloads.forEach(el => el.style.display = 'none');
+
+        // Actualizare dinamică etichete semnături în funcție de contract
+        const lblPart1 = document.getElementById('labelPart1Sign');
+        const lblPart2 = document.getElementById('chiriasSignLabel');
+        if (lblPart1 && lblPart2) {
+            if (tipContractCurent === 'comodat_imobil' || tipContractCurent === 'comodat_auto') {
+                lblPart1.innerText = "Semnătură Comodant (Proprietar)";
+                lblPart2.innerText = "Semnătură Comodatar (Beneficiar)";
+            } else {
+                lblPart1.innerText = "Semnătură Proprietar (Locator)";
+                lblPart2.innerText = "Semnătură Chiriaș (Locatar)";
+            }
+        }
+
         initCanvasSemnatura('sigProprietarCanvas');
         initCanvasSemnatura('sigChiriasCanvas');
     } else {
         if (imobContainer) imobContainer.style.display = 'none';
     }
-
     if (estePasPlataDescarcare) {
         payments.forEach(el => el.style.display = 'block');
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
