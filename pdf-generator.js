@@ -5,10 +5,10 @@
 const curataDiacritice = (text) => {
     if (!text) return '';
     return String(text).toUpperCase()
-        .replace(/Ă/g, 'A').replace(/Â/g, 'A')
-        .replace(/Î/g, 'I')
-        .replace(/Ș/g, 'S').replace(/Ş/g, 'S')
-        .replace(/Ț/g, 'T').replace(/Ţ/g, 'T');
+        .replace(/Ă/g, 'A').replace(/Â/g, 'A').replace(/ă/g, 'A').replace(/â/g, 'A')
+        .replace(/Î/g, 'I').replace(/î/g, 'I')
+        .replace(/Ș/g, 'S').replace(/Ş/g, 'S').replace(/ș/g, 'S').replace(/ş/g, 'S')
+        .replace(/Ț/g, 'T').replace(/Ţ/g, 'T').replace(/ț/g, 'T').replace(/ţ/g, 'T');
 };
 
 function initCanvasSemnatura(canvasId) {
