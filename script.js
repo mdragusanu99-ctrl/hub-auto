@@ -279,7 +279,7 @@ function pornesteFluxDocument(cat) {
 }
 
 function selecteazaCategorieTip(cat) {
-    tipContractCurent = cat; // 'auto', 'comodat_auto', 'imobiliare', 'comodat_imobil', 'prestari_servicii', 'demisie'
+    tipContractCurent = cat; // 'auto', 'comodat_auto', 'imobiliare', 'comodat_imobil', 'prestari_servicii', 'demisie', 'cim'
     const hub = document.getElementById('hubCategorii');
     const listaDoc = document.getElementById('listaDocumenteContainer');
     const mainMenu = document.getElementById('mainMenuContainer');
@@ -295,7 +295,7 @@ function selecteazaCategorieTip(cat) {
     if (cat === 'auto' || cat === 'imobiliare') {
         if (modTitle) modTitle.innerText = `Mod de Lucru - ${cat === 'auto' ? 'Contract Auto ITL 054' : 'Contract Închiriere Locuință'}`;
         if (modeSelector) modeSelector.style.display = 'block';
-    } else if (cat === 'comodat_auto' || cat === 'comodat_imobil' || cat === 'prestari_servicii' || cat === 'demisie') {
+    } else if (cat === 'comodat_auto' || cat === 'comodat_imobil' || cat === 'prestari_servicii' || cat === 'demisie' || cat === 'cim') {
         if (modeSelector) modeSelector.style.display = 'none';
         selecteazaModSiPorneste('local');
     }
