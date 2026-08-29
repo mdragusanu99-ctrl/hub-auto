@@ -528,7 +528,7 @@ function activeazaPasulUI(stepNum) {
     const downloads = document.querySelectorAll('.finalDownloadContainer');
 
     if (estePasSemnatura) {
-        if (imobContainer) imobContainer.style.display = 'block';
+        if (imobContainer) imobContainer.style.display = (tipContractCurent === 'imobiliare') ? 'block' : 'none';
         if (localAct) localAct.style.display = (modLucru === 'remote') ? 'block' : 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
         payments.forEach(el => el.style.display = 'none');
