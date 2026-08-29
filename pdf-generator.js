@@ -1373,7 +1373,8 @@ async function genereazaActAditionalPDF() {
 
         // Colectare date complete formular
         const d = colecteazaDate();
-        const cimNr = d.actCimNr || '45';
+    const angajator = d.actAngajator || 'SC BARBERHUB SRL';
+    const salariat = d.actSalariat || 'DRAGUSANU MARIO';
         const cimData = d.actCimData || '15.05.2025';
         const tipModificare = d.actTipModificare || 'SALARIU';
         const dataAplicarii = d.actDataAplicarii || '01.09.2026';
@@ -1457,8 +1458,6 @@ async function genereazaActAditionalPDF() {
         page.drawText("Semnătura Olografă Salariat", { x: 350, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
 
         // Salvare și descărcare PDF
-        const angajator = eliminaDiacritice(d.actAngajator || 'SC BARBERHUB SRL');
-const salariat = eliminaDiacritice(d.actSalariat || 'DRAGUSANU MARIO');
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
         const link = document.createElement('a');
