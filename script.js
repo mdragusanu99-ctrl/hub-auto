@@ -42,11 +42,12 @@ const dateCategorii = {
             { id: 'prestari-servicii', nume: "Contract de Prestări Servicii Independent", desc: "Clauze solide de protecție IP și evitare reclasificare ANAF.", func: "pornesteFluxDocument('prestari_servicii')" }
         ]
     },
-   munca: {
+  munca: {
         titlu: "Muncă & Carieră",
         acte: [
             { id: 'contract-munca', nume: "Contract Individual de Muncă (CIM)", desc: "Model cadru legal conform Codului Muncii, cu clauze de salariu, program și semnături.", func: "pornesteFluxDocument('cim')" },
             { id: 'fisa-postului', nume: "Fișa Postului", desc: "Anexă obligatorie la CIM cu atribuții, responsabilități și cerințe.", func: "pornesteFluxDocument('fisa_postului')" },
+            { id: 'act-aditional', nume: "Act Adițional la CIM", desc: "Modificare salariu, funcție, program sau loc de muncă conform Art. 41 Codul Muncii.", func: "pornesteFluxDocument('act_aditional')" },
             { id: 'cerere-demisie', nume: "Cerere de Demisie Oficială", desc: "Calcul automat termen preaviz conform Codului Muncii.", func: "pornesteFluxDocument('demisie')" },
             { id: 'proces-verbal', nume: "Proces-Verbal de Predare-Primire", desc: "Inventar active, echipamente, scule sau chei cu semnături.", func: "pornesteFluxDocument('proces_verbal')" }
         ]
@@ -236,7 +237,8 @@ function colecteazaDate() {
         'fisaAngajator', 'fisaSalariat', 'fisaFunctie', 'fisaCor', 'fisaDepartament', 'fisaSubordonare', 'fisaAtributii', 'fisaResponsabilitati', 'fisaStudii', 'fisaVechime',
         'pvPredatorNume', 'pvPredatorCuiCnp', 'pvPredatorCalitate', 'pvPredatorAdresa',
     'pvPrimitorNume', 'pvPrimitorCnp', 'pvPrimitorAct', 'pvPrimitorFunctie', 'pvPrimitorAdresa',
-    'pvTemei', 'pvInventar'
+    'pvTemei', 'pvInventar',
+    'actAngajator', 'actSalariat', 'actCimNr', 'actCimData', 'actTipModificare', 'actDataAplicarii', 'actContinutNou'
     ];
     ids.forEach(id => {
         const el = document.getElementById(id);
@@ -317,7 +319,7 @@ function selecteazaModSiPorneste(mod) {
     const progressBar = document.getElementById('progressBarContainer');
     if (progressBar) progressBar.style.display = 'flex';
 
-    if (tipContractCurent === 'fisa_postului') {
+    if (tipContractCurent === 'fisa_postului'|| tipContractCurent === 'act_aditional') {
         maxStepsTotal = 5;
     } else if (tipContractCurent === 'proces_verbal') {
         maxStepsTotal = 4;
@@ -372,6 +374,7 @@ function activeazaPasulUI(stepNum) {
     const fCim1 = document.getElementById('formCimStep1');
     const fFisa1 = document.getElementById('formFisaStep1');
     const fPv1 = document.getElementById('formPvStep1');
+    const fAct1 = document.getElementById('formActAditionalStep1');
 
     if (fAuto1) fAuto1.style.display = 'none';
     if (fPrest1) fPrest1.style.display = 'none';
@@ -382,6 +385,7 @@ function activeazaPasulUI(stepNum) {
     if (fCim1) fCim1.style.display = 'none';
     if (fFisa1) fFisa1.style.display = 'none';
     if (fPv1) fPv1.style.display = 'none';
+    if (fAct1) fAct1.style.display = 'none';
 
     if (stepNum === 1) {
         if (tipContractCurent === 'auto' && fAuto1) fAuto1.style.display = 'grid';
@@ -392,6 +396,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'demisie' && fDem1) fDem1.style.display = 'grid';
         else if (tipContractCurent === 'cim' && fCim1) fCim1.style.display = 'grid';
         else if (tipContractCurent === 'fisa_postului' && fFisa1) fFisa1.style.display = 'grid';
+        else if (tipContractCurent === 'act_aditional' && fAct1) fAct1.style.display = 'grid';
         else if (tipContractCurent === 'proces_verbal' && fPv1) fPv1.style.display = 'grid';
 
         if (tipContractCurent === 'auto') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Vânzătorului";
@@ -403,6 +408,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'cim') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Angajatorului";
         else if (tipContractCurent === 'fisa_postului') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Angajatorului, Salariatului & Postului";
         else if (tipContractCurent === 'proces_verbal') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Predătorului";
+        else if (tipContractCurent === 'act_aditional') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Părților & CIM";
     }
 
     // Gestionare vizibilitate formulare Pas 2
@@ -415,7 +421,8 @@ function activeazaPasulUI(stepNum) {
     const fCim2 = document.getElementById('formCimStep2');
     const fFisa2 = document.getElementById('formFisaStep2');
     const fPv2 = document.getElementById('formPvStep2');
-
+    const fAct2 = document.getElementById('formActAditionalStep2');
+    
     if (fAuto2) fAuto2.style.display = 'none';
     if (fPrest2) fPrest2.style.display = 'none';
     if (fComodAuto2) fComodAuto2.style.display = 'none';
@@ -425,6 +432,7 @@ function activeazaPasulUI(stepNum) {
     if (fCim2) fCim2.style.display = 'none';
     if (fFisa2) fFisa2.style.display = 'none';
     if (fPv2) fPv2.style.display = 'none';
+    if (fAct2) fAct2.style.display = 'none';
 
     if (stepNum === 2) {
         if (tipContractCurent === 'auto' && fAuto2) fAuto2.style.display = 'grid';
@@ -434,6 +442,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'imobiliare' && fImob2) fImob2.style.display = 'grid';
         else if (tipContractCurent === 'cim' && fCim2) fCim2.style.display = 'grid';
         else if (tipContractCurent === 'fisa_postului' && fFisa2) fFisa2.style.display = 'grid';
+        else if (tipContractCurent === 'act_aditional' && fAct2) fAct2.style.display = 'grid';
         else if (tipContractCurent === 'proces_verbal' && fPv2) fPv2.style.display = 'grid';
         else if (tipContractCurent === 'demisie') {
             if (demisSign) demisSign.style.display = 'block';
@@ -449,6 +458,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'cim') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Salariatului & Condiții Post";
         else if (tipContractCurent === 'fisa_postului') document.getElementById('titleStep2').innerText = "Pasul 2: Atribuții și Responsabilități";
         else if (tipContractCurent === 'proces_verbal') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Primitorului";
+        else if (tipContractCurent === 'act_aditional') document.getElementById('titleStep2').innerText = "Pasul 2: Obiectul Modificării";
     }
 
     // Gestionare vizibilitate formulare Pas 3
@@ -458,6 +468,7 @@ function activeazaPasulUI(stepNum) {
     const fComodImob3 = document.getElementById('formComodatImobilStep3');
     const fFisa3 = document.getElementById('formFisaStep3');
     const fPv3 = document.getElementById('formPvStep3');
+    const fAct3 = document.getElementById('formActAditionalStep3');
 
     if (fAuto3) fAuto3.style.display = 'none';
     if (fPrest3) fPrest3.style.display = 'none';
@@ -465,6 +476,7 @@ function activeazaPasulUI(stepNum) {
     if (fComodImob3) fComodImob3.style.display = 'none';
     if (fFisa3) fFisa3.style.display = 'none';
     if (fPv3) fPv3.style.display = 'none';
+    if (fAct3) fAct3.style.display = 'none';
 
     if (stepNum === 3) {
         if (tipContractCurent === 'auto' && fAuto3) fAuto3.style.display = 'grid';
@@ -475,6 +487,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'comodat_auto' && fComodAuto3) fComodAuto3.style.display = 'grid';
         else if (tipContractCurent === 'comodat_imobil' && fComodImob3) fComodImob3.style.display = 'grid';
         else if (tipContractCurent === 'fisa_postului' && fFisa3) fFisa3.style.display = 'grid';
+        else if (tipContractCurent === 'act_aditional' && fAct3) fAct3.style.display = 'grid';
 
         const pvSemnContainer = document.getElementById('pvSemnaturiContainer');
     if (pvSemnContainer) {
@@ -495,6 +508,7 @@ function activeazaPasulUI(stepNum) {
             else if (tipContractCurent === 'cim') titleStep3El.innerText = "Pasul 3: Datele Contractului & Semnături";
             else if (tipContractCurent === 'fisa_postului') titleStep3El.innerText = "Pasul 3: Cerințele Postului";
             else if (tipContractCurent === 'proces_verbal') titleStep3El.innerText = "Pasul 3: Detalii Proces Verbal";
+            else if (tipContractCurent === 'act_aditional') document.getElementById('titleStep3').innerText = "Pasul 3: Noile Condiții & Data";
         }
     }
 
@@ -506,6 +520,10 @@ function activeazaPasulUI(stepNum) {
     let estePasSemnatura = false;
     let estePasPlataDescarcare = false;
 
+    if (tipContractCurent === 'fisa_postului' || tipContractCurent === 'act_aditional') {
+        estePasSemnatura = (stepNum === 4);
+        estePasPlataDescarcare = (stepNum === 5);
+    }
     if (tipContractCurent === 'fisa_postului') {
         estePasSemnatura = (stepNum === 4);
         estePasPlataDescarcare = (stepNum === 5);
@@ -526,11 +544,13 @@ function activeazaPasulUI(stepNum) {
     const finalDownloadContainer = document.getElementById('finalDownloadContainer');
     const payments = document.querySelectorAll('.paymentStepContainer');
     const downloads = document.querySelectorAll('.finalDownloadContainer');
+    const fAct4 = document.getElementById('formActAditionalStep4');
 
     if (estePasSemnatura) {
         if (imobContainer) imobContainer.style.display = (tipContractCurent === 'imobiliare') ? 'block' : 'none';
         if (localAct) localAct.style.display = (modLucru === 'remote') ? 'block' : 'none';
         if (finalDownloadContainer) finalDownloadContainer.style.display = 'none';
+        if (fAct4) fAct4.style.display = (tipContractCurent === 'act_aditional' && stepNum === 4) ? 'block' : 'none';
         payments.forEach(el => el.style.display = 'none');
         downloads.forEach(el => el.style.display = 'none');
 
@@ -558,6 +578,8 @@ function activeazaPasulUI(stepNum) {
         initCanvasSemnatura('sigFisaSalariatCanvas');
         initCanvasSemnatura('sigProprietarCanvas');
         initCanvasSemnatura('sigChiriasCanvas');
+        initCanvasSemnatura('sigActAngajatorCanvas');
+        initCanvasSemnatura('sigActSalariatCanvas');
     } else {
         if (imobContainer) imobContainer.style.display = 'none';
     }
@@ -749,6 +771,8 @@ function ruleazaDescarcareaFinala() {
         if (typeof genereazaFisaPostuluiPDF === 'function') genereazaFisaPostuluiPDF();
     } else if (tipContractCurent === 'proces_verbal') {
         if (typeof genereazaProcesVerbalPDF === 'function') genereazaProcesVerbalPDF();
+    } else if (tipContractCurent === 'act_aditional') {
+        if (typeof genereazaActAditionalPDF === 'function') genereazaActAditionalPDF();
     }
 
     if (profilCurent && profilCurent.pachet === 'GRATUIT' && profilCurent.ramase > 0) {

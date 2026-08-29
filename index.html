@@ -618,6 +618,16 @@
                     <div><label>Chirie Lunară *</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
                     <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
                 </div>
+
+                <!-- Formular Act Adițional Pas 1 -->
+                <div id="formActAditionalStep1" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Angajator & Salariat & Contract de Referință</strong></div>
+                    <div class="full-width"><label>Denumire Firmă (Angajator) *</label><input type="text" id="actAngajator" placeholder="ex: SC BARBERHUB SRL"></div>
+                    <div class="full-width"><label>Nume și Prenume Salariat *</label><input type="text" id="actSalariat" placeholder="ex: DRAGUSANU MARIO"></div>
+                    <div><label>Număr CIM Inițial *</label><input type="text" id="actCimNr" placeholder="ex: 45"></div>
+                    <div><label>Data CIM Inițial *</label><input type="text" id="actCimData" placeholder="ex: 15.05.2025"></div>
+                </div>
+
                 <!-- Formular CIM Pas 1 -->
                 <div id="formCimStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Angajator</strong></div>
@@ -780,6 +790,20 @@
     <div class="full-width"><label>Responsabilitățile Postului *</label><textarea id="fisaResponsabilitati" placeholder="ex: Răspunde de uneltele primite și respectarea normelor SSM..." style="height: 80px; text-transform: none;"></textarea></div>
 </div>
                 
+<!-- Formular Act Adițional Pas 2 -->
+                <div id="formActAditionalStep2" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Obiectul Modificării (Conform Art. 41 Codul Muncii)</strong></div>
+                    <div class="full-width">
+                        <label>Tipul Modificării Aduse *</label>
+                        <select id="actTipModificare" onchange="schimbaTipModificareAct()">
+                            <option value="SALARIU">Modificare Salariu de Bazin / Lunar</option>
+                            <option value="FUNCTIE">Modificare Funcție / Meserie (COR)</option>
+                            <option value="PROGRAM">Modificare Program / Timp de Muncă</option>
+                            <option value="LOC">Modificare Loc de Muncă</option>
+                        </select>
+                    </div>
+                </div>
+
 <!-- Formular Proces-Verbal Pas 2 -->
                 <div id="formPvStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Primitor (Cine preia bunul)</strong></div>
@@ -867,6 +891,13 @@
                     <div><label>Serie Motor *</label><input type="text" id="comodatAutoMotor" placeholder="ex: CAGA123456"></div>
                     <div><label>Capacitate Cilindrică (cmc) *</label><input type="text" id="comodatAutoCmc" placeholder="ex: 1968"></div>
                     <div><label>Durata Contractului *</label><input type="text" id="comodatAutoDurata" placeholder="ex: 1 AN"></div>
+                </div>
+
+                <!-- Formular Act Adițional Pas 3 -->
+                <div id="formActAditionalStep3" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Noile Condiții & Data Intrării în Vigoare</strong></div>
+                    <div><label>Data de la care produce efecte *</label><input type="text" id="actDataAplicarii" placeholder="ex: 01.09.2026"></div>
+                    <div class="full-width"><label>Conținutul Nou al Clauzei Modificate *</label><textarea id="actContinutNou" placeholder="ex: Salariul de bază lunar brut este de 4.500 lei." style="height: 100px; text-transform: none;"></textarea></div>
                 </div>
 
 <!-- Formular Fișa Postului Pas 3 -->
@@ -972,7 +1003,27 @@
                     <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button>
                     <button class="btn btn-primary" id="btnNextStep4" onclick="nextStep(4)" style="display:none;">Continuă spre Plată ➔</button>
                 </div>
-<!-- Formular Fișa Postului Pas 4 - Semnături -->
+
+<!-- Formular Act Adițional Pas 4 - Semnături -->
+<div id="formActAditionalStep4" style="display:none;">
+    <div style="font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">4. Semnături Electronice Olografe</div>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Desenați semnăturile pentru validarea oficială a actului adițional.</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <label style="margin-bottom: 6px;">Semnătură Angajator (Reprezentant)</label>
+            <canvas id="sigActAngajatorCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 8px;" onclick="curataCanvas('sigActAngajatorCanvas')">Resetează</button>
+        </div>
+        <div style="background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <label style="margin-bottom: 6px;">Semnătură Salariat</label>
+            <canvas id="sigActSalariatCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 8px;" onclick="curataCanvas('sigActSalariatCanvas')">Resetează</button>
+        </div>
+    </div>
+</div>
+
+                <!-- Formular Fișa Postului Pas 4 - Semnături -->
 <div id="formFisaStep4" style="display:none;">
     <div style="font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">4. Semnături Electronice de Luare la Cunoștință</div>
     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Desenați semnăturile în casetele de mai jos pentru validarea oficială a fișei.</p>
