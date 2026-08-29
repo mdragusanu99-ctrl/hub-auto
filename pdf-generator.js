@@ -1410,10 +1410,12 @@ const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
         y -= 30;
 
         // Preambul Juridic Extins (Obligatoriu ITM)
-        const preambulText = `Încheiat astăzi, ${dataAplicarii}, între:\n\n` +
-            `1. Societatea ${angajator}, cu sediul social în România, reprezentată legal prin Administrator/Împuternicit, în calitate de Angajator, pe de o parte, și\n` +
-            `2. Subsemnatul/a ${salariat}, posesor/oare al/a actului de identitate, în calitate de Salariat, pe de altă parte,\n\n` +
-            `În temeiul prevederilor art. 41 din Legea nr. 53/2003 – Codul Muncii, republicată, cu modificările și completările ulterioare, intervenind acordul de voință al părților contractante, se încheie prezentul act adițional prin care se modifică clauzele contractuale după cum urmează:`;
+        const preambulText = curataDiacritice(
+    `Încheiat astăzi, ${dataAplicarii}, între:\n\n` +
+    `1. Societatea ${angajator}, cu sediul social în România, reprezentată legal prin Administrator/Împuternicit, în calitate de Angajator, pe de o parte, și\n` +
+    `2. Subsemnatul/a ${salariat}, posesor/oare al/a actului de identitate, în calitate de Salariat, pe de altă parte,\n\n` +
+    `În temeiul prevederilor art. 41 din Legea nr. 53/2003 – Codul Muncii, republicată, cu modificările și completările ulterioare, intervenind acordul de voință al părților contractante, se încheie prezentul act adițional prin care se modifică clauzele contractuale după cum urmează:`
+);
 
         y = deseneazaParagraf(page, preambulText, 50, y, 495, 9, fontRegular, 13);
         y -= 12;
