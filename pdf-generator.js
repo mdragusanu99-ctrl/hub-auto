@@ -1281,8 +1281,8 @@ async function genereazaProcesVerbalPDF() {
         };
 
         const titluText = "PROCES-VERBAL DE PREDARE-PRIMIRE";
-        const subTitluText = `Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}`;
-        
+       const subTitluText = "Nr. .......... din ....................";
+       
         let textWidth = fontBold.widthOfTextAtSize(titluText, 12);
         let centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });

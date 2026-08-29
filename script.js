@@ -585,6 +585,10 @@ function activeazaPasulUI(stepNum) {
 }
 
 function nextStep(current) {
+    if (tipContractCurent === 'proces_verbal' && current === 3) {
+        activeazaPasulUI(4);
+        return;  
+    }
     if (current < maxStepsTotal) {
         activeazaPasulUI(current + 1);
     } else {
