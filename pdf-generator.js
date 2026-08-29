@@ -1021,6 +1021,27 @@ async function genereazaFisaPostuluiPDF() {
             }
         }
 
+        // Funcție sigură de split text pentru pdf-lib
+        function imparteTextInLinii(text, maxWidth, fontSize) {
+            if (!text) return [];
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0] || '';
+
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const widthTest = fontRegular.widthOfTextAtSize(currentLine + ' ' + word, fontSize);
+                if (widthTest < maxWidth) {
+                    currentLine += ' ' + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
         // Date colectate din formular
         const d = colecteazaDate();
         const angajator = d.fisaAngajator || 'SC [DENUMIRE FIRMA] SRL';
@@ -1057,7 +1078,7 @@ async function genereazaFisaPostuluiPDF() {
         ];
 
         infoPost.forEach(linie => {
-            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            page.drawText(curataDiacritice(linie), { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
             y -= 13;
         });
 
@@ -1068,7 +1089,7 @@ async function genereazaFisaPostuluiPDF() {
         page.drawText('2. ATRIBUȚII ȘI SARCINI DE SERVICIU', { x: margin, y, size: 10, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
         y -= 14;
 
-        const splitAtributii = fontRegular.wordWrapText(atributii, contentWidth - 20, 8.5);
+        const splitAtributii = imparteTextInLinii(curataDiacritice(atributii), contentWidth - 20, 8.5);
         splitAtributii.forEach(linie => {
             verificaSpatiu(30);
             page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
@@ -1083,7 +1104,7 @@ async function genereazaFisaPostuluiPDF() {
         y -= 14;
 
         const textRespExtins = `${responsabilitati} Salariatul are obligația de a respecta normele de Securitate și Sănătate în Muncă (SSM), PSI, utilizarea corectă a echipamentelor de protecție și aducerea imediată la cunoștința conducerii a oricăror disfuncționalități sau accidente.`;
-        const splitResp = fontRegular.wordWrapText(textRespExtins, contentWidth - 20, 8.5);
+        const splitResp = imparteTextInLinii(curataDiacritice(textRespExtins), contentWidth - 20, 8.5);
         splitResp.forEach(linie => {
             verificaSpatiu(30);
             page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
@@ -1105,7 +1126,7 @@ async function genereazaFisaPostuluiPDF() {
 
         infoCerinte.forEach(linie => {
             verificaSpatiu(30);
-            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            page.drawText(curataDiacritice(linie), { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
             y -= 13;
         });
 
@@ -1124,7 +1145,7 @@ async function genereazaFisaPostuluiPDF() {
 
         infoConditii.forEach(linie => {
             verificaSpatiu(30);
-            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            page.drawText(curataDiacritice(linie), { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
             y -= 13;
         });
 
@@ -1136,7 +1157,7 @@ async function genereazaFisaPostuluiPDF() {
         y -= 14;
         
         const textLuare = `Prezenta fișă face parte integrantă din Contractul Individual de Muncă înregistrat la angajator. Am luat la cunoștință prevederile, îmi asum sarcinile descrise și am primit un exemplar original.`;
-        const splitLuare = fontRegular.wordWrapText(textLuare, contentWidth - 20, 8.5);
+        const splitLuare = imparteTextInLinii(curataDiacritice(textLuare), contentWidth - 20, 8.5);
         splitLuare.forEach(linie => {
             page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
             y -= 12;
@@ -1176,8 +1197,8 @@ async function genereazaFisaPostuluiPDF() {
         page.drawText('Salariat,', { x: width - margin - 110, y, size: 8.5, font: fontBold, color: rgb(0.3, 0.3, 0.3) });
         
         y -= 11;
-        page.drawText(angajator, { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
-        page.drawText(salariat, { x: width - margin - 110, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+        page.drawText(curataDiacritice(angajator), { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+        page.drawText(curataDiacritice(salariat), { x: width - margin - 110, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
 
         // Salvare și descărcare
         const pdfBytes = await pdfDoc.save();
