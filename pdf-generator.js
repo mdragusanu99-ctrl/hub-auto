@@ -1208,6 +1208,20 @@ async function genereazaFisaPostuluiPDF() {
     }
 }
 
+// Funcție globală sigură pentru curățarea diacriticelor
+function curataDiacritice(text) {
+    if (!text) return '';
+    return String(text)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ă/g, 'a').replace(/Ă/g, 'A')
+        .replace(/â/g, 'a').replace(/Â/g, 'A')
+        .replace(/î/g, 'i').replace(/Î/g, 'I')
+        .replace(/ș/g, 's').replace(/Ș/g, 'S')
+        .replace(/ş/g, 's').replace(/Ş/g, 'S')
+        .replace(/ț/g, 't').replace(/Ț/g, 'T')
+        .replace(/ţ/g, 't').replace(/Ţ/g, 'T');
+}
 
 // 8. GENERATOR PROCES-VERBAL DE PREDARE-PRIMIRE OFICIAL
 async function genereazaProcesVerbalPDF() {
@@ -1221,20 +1235,6 @@ async function genereazaProcesVerbalPDF() {
         let page = pdfDoc.addPage([595.28, 841.89]);
         let y = 780;
 
-        const curataDiacritice = (text) => {
-            if (!text) return '';
-            return text
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/ă/g, 'a').replace(/Ă/g, 'A')
-                .replace(/â/g, 'a').replace(/Â/g, 'A')
-                .replace(/î/g, 'i').replace(/Î/g, 'I')
-                .replace(/ș/g, 's').replace(/Ș/g, 'S')
-                .replace(/ş/g, 's').replace(/Ş/g, 'S')
-                .replace(/ț/g, 't').replace(/Ț/g, 'T')
-                .replace(/ţ/g, 't').replace(/Ţ/g, 'T');
-        };
-        
         const deseneazaFooter = () => {
             page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Document oficial în conformitate cu legislația din România"), { 
                 x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
