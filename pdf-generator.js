@@ -1208,9 +1208,140 @@ async function genereazaFisaPostuluiPDF() {
     }
 }
 
+
+// 8. GENERATOR PROCES-VERBAL DE PREDARE-PRIMIRE OFICIAL
+async function genereazaProcesVerbalPDF() {
+    arataNotificare("Se generează Procesul-Verbal de Predare-Primire...");
+    try {
+        const { PDFDocument, StandardFonts } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]);
+        let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Document oficial în conformitate cu legislația din România"), { 
+                x: 45, y: 30, size: 8, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
+            });
+        };
+
+        const deseneazaTitluSectiune = (text) => {
+            if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            y -= 6;
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
+            y -= 18;
+        };
+
+        const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
+            if (!text) return;
+            const words = curataDiacritice(text).split(' ');
+            let line = '';
+            const lineHeight = 11;
+
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const testWidth = customFont.widthOfTextAtSize(testLine, size);
+                if (testWidth > maxWidth && i > 0) {
+                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                    y -= lineHeight;
+                    line = words[i] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            if (line.trim().length > 0) {
+                if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+            }
+            y -= 4;
+        };
+
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
+        const titluText = "PROCES-VERBAL DE PREDARE-PRIMIRE";
+        const subTitluText = `Încheiat astăzi, ${new Date().toLocaleDateString('ro-RO')}`;
+        
+        let textWidth = fontBold.widthOfTextAtSize(titluText, 12);
+        let centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });
+        y -= 15;
+
+        textWidth = font.widthOfTextAtSize(subTitluText, 8.5);
+        centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 8.5, font });
+        y -= 25;
+
+        deseneazaTitluSectiune("1. PĂRȚILE CONTRACTANTE / PREDĂTOARE");
+        deseneazaParagraf(`1.1. PREDĂTOR: ${getVal('pvPredatorNume') || '....................................'}, CUI/CNP: ${getVal('pvPredatorCuiCnp') || '................'}, Calitate: ${getVal('pvPredatorCalitate') || '................'}, cu sediul/domiciliul în ${getVal('pvPredatorAdresa') || '....................................'}.`);
+        deseneazaParagraf(`1.2. PRIMITOR: ${getVal('pvPrimitorNume') || '....................................'}, CNP: ${getVal('pvPrimitorCnp') || '................'}, CI seria și nr: ${getVal('pvPrimitorAct') || '........'}, Funcție/Departament: ${getVal('pvPrimitorFunctie') || '................'}, domiciliat în ${getVal('pvPrimitorAdresa') || '....................................'}.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("2. TEMEIUL LEGAL ȘI CONTEXTUL");
+        deseneazaParagraf(`Prezentul proces-verbal se încheie în temeiul: ${getVal('pvTemei') || 'În baza raporturilor juridice și a contractului de bază dintre părți'}.`);
+        y -= 4;
+
+        deseneazaTitluSectiune("3. OBIECTUL PREDĂRII-PRIMIRII (INVENTAR ACTIVE / ECHIPAMENTE)");
+        deseneazaParagraf(`Predătorul predă, iar Primitorul preia în deplină folosință / custodie următoarele bunuri, active sau echipamente, aflate în stare corespunzătoare de funcționare:`);
+        y -= 4;
+
+        const inventarText = getVal('pvInventar') || '- Niciun bun specificat -';
+        deseneazaParagraf(inventarText);
+        y -= 4;
+
+        deseneazaTitluSectiune("4. CONDIȚII DE UTILIZARE ȘI RĂSPUNDERE");
+        deseneazaParagraf(`4.1. Primitorul confirmă că a verificat bunurile de mai sus, că acestea corespund cantitativ și calitativ și că le preia în bună stare.`);
+        deseneazaParagraf(`4.2. Primitorul se obligă să folosească activele conform destinației lor, să le întrețină corespunzător și să suporte eventualele pagube produse din vina sa exclusivă prin neglijență sau uz abuziv.`);
+        deseneazaParagraf(`4.3. La încetarea raporturilor de muncă sau la cererea Predătorului, Primitorul se obligă să restituie bunurile în aceeași stare în care le-a primit, exceptând uzura normală.`);
+        y -= 20;
+
+        if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+
+        deseneazaTitluSectiune("SEMNĂTURILE PĂRȚILOR:");
+        y -= 4;
+
+        const sigPredatorCanvas = document.getElementById('sigPvPredatorCanvas');
+        const sigPrimitorCanvas = document.getElementById('sigPvPrimitorCanvas');
+        
+        if (sigPredatorCanvas && sigPredatorCanvas.offsetParent !== null) {
+            const sigPBytes = await pdfDoc.embedPng(sigPredatorCanvas.toDataURL('image/png'));
+            page.drawImage(sigPBytes, { x: 45, y: y - 50, width: 120, height: 40 });
+        }
+        if (sigPrimitorCanvas && sigPrimitorCanvas.offsetParent !== null) {
+            const sigCBytes = await pdfDoc.embedPng(sigPrimitorCanvas.toDataURL('image/png'));
+            page.drawImage(sigCBytes, { x: 310, y: y - 50, width: 120, height: 40 });
+        }
+
+        page.drawText(curataDiacritice("Semnătura Predător"), { x: 45, y: y - 62, size: 7.5, font: fontBold });
+        page.drawText(curataDiacritice("Semnătura Primitor"), { x: 310, y: y - 62, size: 7.5, font: fontBold });
+
+        deseneazaFooter();
+
+        const bytes = await pdfDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = "PROCES_VERBAL_PREDARE_PRIMIRE.pdf";
+        a.click();
+
+        if (typeof salveazaInArhivaprivata === 'function') {
+            salveazaInArhivaprivata({ idAct: 'PV-' + Math.floor(1000 + Math.random()*9000), numeClient: curataDiacritice(getVal('pvPrimitorNume') || 'Primitor') });
+        }
+        arataNotificare("✅ Procesul-Verbal de Predare-Primire a fost generat și descărcat cu succes!");
+    } catch(e) { arataNotificare("Eroare PDF Proces-Verbal: " + e.message, true); }
+}
+
 // Inițializare canvas la încărcarea paginii pentru semnături
 window.addEventListener('DOMContentLoaded', () => {
     initCanvasSemnatura('sigProprietarCanvas');
     initCanvasSemnatura('sigChiriasCanvas');
     initCanvasSemnatura('sigDemisieCanvas');
+    initCanvasSemnatura('sigPvPredatorCanvas');
+    initCanvasSemnatura('sigPvPrimitorCanvas');
 });

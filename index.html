@@ -639,6 +639,15 @@
     <div class="full-width"><label>Relații Ierarhice (Subordonare) *</label><input type="text" id="fisaSubordonare" placeholder="ex: Se subordonează Administratorului"></div>
 </div>
 
+<!-- Formular Proces-Verbal Pas 1 -->
+                <div id="formPvStep1" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Predător (Cine predă bunul)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="pvPredatorNume" placeholder="ex: SC BARBERHUB SRL / POPESCU ION"></div>
+                    <div><label>CUI / CNP *</label><input type="text" id="pvPredatorCuiCnp" placeholder="ex: RO12345678 sau 180..."></div>
+                    <div><label>Calitate / Funcție *</label><input type="text" id="pvPredatorCalitate" placeholder="ex: Administrator / Proprietar"></div>
+                    <div class="full-width"><label>Adresă / Sediu *</label><input type="text" id="pvPredatorAdresa" placeholder="ex: STR. 1 DECEMBRIE, NR. 9, BÂRLAD"></div>
+                </div>
+
                 <!-- Formular Demisie Pas 1 -->
                 <div id="formDemisieStep1" class="form-grid" style="display:none;">
                     <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
@@ -763,6 +772,7 @@
                     <div><label>Data Începerii Activității *</label><input type="text" id="cimDataStart" placeholder="ex: 01.09.2026"></div>
                     <div><label>Locul Desfășurării Activității *</label><input type="text" id="cimLocMunca" value="LA SEDIUL / PUNCTUL DE LUCRU"></div>
                 </div>
+             
                 <!-- Formular Fișa Postului Pas 2 -->
 <div id="formFisaStep2" class="form-grid" style="display:none;">
     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Atribuții și Responsabilități</strong></div>
@@ -770,6 +780,16 @@
     <div class="full-width"><label>Responsabilitățile Postului *</label><textarea id="fisaResponsabilitati" placeholder="ex: Răspunde de uneltele primite și respectarea normelor SSM..." style="height: 80px; text-transform: none;"></textarea></div>
 </div>
                 
+<!-- Formular Proces-Verbal Pas 2 -->
+                <div id="formPvStep2" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Primitor (Cine preia bunul)</strong></div>
+                    <div class="full-width"><label>Nume și Prenume *</label><input type="text" id="pvPrimitorNume" placeholder="ex: DRAGUSANU MARIO"></div>
+                    <div><label>CNP *</label><input type="text" id="pvPrimitorCnp" placeholder="ex: 5040101123456" maxlength="13"></div>
+                    <div><label>Serie și Număr CI *</label><input type="text" id="pvPrimitorAct" placeholder="ex: VS 123456"></div>
+                    <div class="full-width"><label>Funcție / Departament / Calitate *</label><input type="text" id="pvPrimitorFunctie" placeholder="ex: Frizer / Angajat"></div>
+                    <div class="full-width"><label>Adresă Domiciliu *</label><input type="text" id="pvPrimitorAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2"></div>
+                </div>
+
                 <!-- Formular Comodat Imobil Pas 2 -->
                 <div id="formComodatImobilStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Beneficiar Imobil / Sediu)</strong></div>
@@ -848,12 +868,21 @@
                     <div><label>Capacitate Cilindrică (cmc) *</label><input type="text" id="comodatAutoCmc" placeholder="ex: 1968"></div>
                     <div><label>Durata Contractului *</label><input type="text" id="comodatAutoDurata" placeholder="ex: 1 AN"></div>
                 </div>
+
 <!-- Formular Fișa Postului Pas 3 -->
 <div id="formFisaStep3" class="form-grid" style="display:none;">
     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Cerințele Postului</strong></div>
     <div><label>Nivel de Studii *</label><input type="text" id="fisaStudii" placeholder="ex: STUDII MEDII / CALIFICARE"></div>
     <div><label>Vechime în Specialitate *</label><input type="text" id="fisaVechime" placeholder="ex: MINIM 1 AN"></div>
 </div>
+
+<!-- Formular Proces-Verbal Pas 3 (Temei & Inventar) -->
+                <div id="formPvStep3" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Temeiul Legal & Inventarul Bunurilor</strong></div>
+                    <div class="full-width"><label>Temei / Context Predare *</label><input type="text" id="pvTemei" placeholder="ex: În baza Contractului Individual de Muncă nr. 12 / 2026"></div>
+                    <div class="full-width"><label>Lista Bunurilor / Echipamentelor / Uneltelor (Inventar detaliat cu serii) *</label><textarea id="pvInventar" placeholder="ex: 1. Mașină de tuns JRL Onyx - Serie: JRL9988 - Stare Nouă; 2. Trimmer Kemei - Stare Bună; 3. Chei acces salon - 2 buc." style="height: 120px; text-transform: none;"></textarea></div>
+                </div>
+
                 <!-- Formular Comodat Imobil Pas 3 -->
                 <div id="formComodatImobilStep3" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Detalii Imobil & Situație Juridică</strong></div>
@@ -874,6 +903,23 @@
                         <label id="chiriasSignLabel">Semnătură Chiriaș (Locatar)</label>
                         <canvas id="sigChiriasCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
                         <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează Semnătura</button>
+                    </div>
+                </div>
+
+                <!-- Container Semnături Dedicat Proces-Verbal (Pasul 3) -->
+                <div id="pvSemnaturiContainer" style="display:none; margin-top: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Semnături Electronice Olografe</div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label>Semnătură Predător (Cine predă)</label>
+                        <canvas id="sigPvPredatorCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigPvPredatorCanvas')">Resetează Semnătura</button>
+                    </div>
+
+                    <div>
+                        <label>Semnătură Primitor (Cine preia)</label>
+                        <canvas id="sigPvPrimitorCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigPvPrimitorCanvas')">Resetează Semnătura</button>
                     </div>
                 </div>
 
