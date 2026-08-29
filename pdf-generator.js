@@ -1208,24 +1208,25 @@ async function genereazaFisaPostuluiPDF() {
     }
 }
 
-// Funcție globală sigură pentru curățarea diacriticelor
+// Funcție globală blindată pentru eliminarea oricărui semn diacritic
 function curataDiacritice(text) {
     if (!text) return '';
     return String(text)
         .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/ă/g, 'a').replace(/Ă/g, 'A')
-        .replace(/â/g, 'a').replace(/Â/g, 'A')
-        .replace(/î/g, 'i').replace(/Î/g, 'I')
-        .replace(/ș/g, 's').replace(/Ș/g, 'S')
-        .replace(/ş/g, 's').replace(/Ş/g, 'S')
-        .replace(/ț/g, 't').replace(/Ț/g, 'T')
-        .replace(/ţ/g, 't').replace(/Ţ/g, 'T');
+        .replace(/[\u0300-\u036f]/g, "") // Elimină toate diacriticele / accentele Unicode
+        .replace(/[ăâ]/g, 'a')
+        .replace(/[ĂÂ]/g, 'A')
+        .replace(/î/g, 'i')
+        .replace(/Î/g, 'I')
+        .replace(/[șş]/g, 's')
+        .replace(/[ȘŞ]/g, 'S')
+        .replace(/[țţ]/g, 't')
+        .replace(/[ȚŢ]/g, 'T');
 }
 
 // 8. GENERATOR PROCES-VERBAL DE PREDARE-PRIMIRE OFICIAL
 async function genereazaProcesVerbalPDF() {
-    arataNotificare("Se generează Procesul-Verbal de Predare-Primire...");
+    arataNotificare(curataDiacritice("Se generează Procesul-Verbal de Predare-Primire..."));
     try {
         const { PDFDocument, StandardFonts } = PDFLib;
         const pdfDoc = await PDFDocument.create();
@@ -1276,11 +1277,11 @@ async function genereazaProcesVerbalPDF() {
 
         const getVal = (id) => {
             const el = document.getElementById(id);
-            return el ? el.value.trim() : '';
+            return el ? curataDiacritice(el.value.trim()) : '';
         };
 
         const titluText = "PROCES-VERBAL DE PREDARE-PRIMIRE";
-        const subTitluText = `Încheiat astăzi, ${new Date().toLocaleDateString('ro-RO')}`;
+        const subTitluText = `Incheiat astazi, ${new Date().toLocaleDateString('ro-RO')}`;
         
         let textWidth = fontBold.widthOfTextAtSize(titluText, 12);
         let centerX = (595.28 - textWidth) / 2;
@@ -1292,32 +1293,32 @@ async function genereazaProcesVerbalPDF() {
         page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 8.5, font });
         y -= 25;
 
-        deseneazaTitluSectiune("1. PĂRȚILE CONTRACTANTE / PREDĂTOARE");
-        deseneazaParagraf(`1.1. PREDĂTOR: ${getVal('pvPredatorNume') || '....................................'}, CUI/CNP: ${getVal('pvPredatorCuiCnp') || '................'}, Calitate: ${getVal('pvPredatorCalitate') || '................'}, cu sediul/domiciliul în ${getVal('pvPredatorAdresa') || '....................................'}.`);
-        deseneazaParagraf(`1.2. PRIMITOR: ${getVal('pvPrimitorNume') || '....................................'}, CNP: ${getVal('pvPrimitorCnp') || '................'}, CI seria și nr: ${getVal('pvPrimitorAct') || '........'}, Funcție/Departament: ${getVal('pvPrimitorFunctie') || '................'}, domiciliat în ${getVal('pvPrimitorAdresa') || '....................................'}.`);
+        deseneazaTitluSectiune("1. PARTILE CONTRACTANTE / PREDATOARE");
+        deseneazaParagraf(`1.1. PREDATOR: ${getVal('pvPredatorNume') || '....................................'}, CUI/CNP: ${getVal('pvPredatorCuiCnp') || '................'}, Calitate: ${getVal('pvPredatorCalitate') || '................'}, cu sediul/domiciliul in ${getVal('pvPredatorAdresa') || '....................................'}.`);
+        deseneazaParagraf(`1.2. PRIMITOR: ${getVal('pvPrimitorNume') || '....................................'}, CNP: ${getVal('pvPrimitorCnp') || '................'}, CI seria si nr: ${getVal('pvPrimitorAct') || '........'}, Functie/Departament: ${getVal('pvPrimitorFunctie') || '................'}, domiciliat in ${getVal('pvPrimitorAdresa') || '....................................'}.`);
         y -= 4;
 
-        deseneazaTitluSectiune("2. TEMEIUL LEGAL ȘI CONTEXTUL");
-        deseneazaParagraf(`Prezentul proces-verbal se încheie în temeiul: ${getVal('pvTemei') || 'În baza raporturilor juridice și a contractului de bază dintre părți'}.`);
+        deseneazaTitluSectiune("2. TEMEIUL LEGAL SI CONTEXTUL");
+        deseneazaParagraf(`Prezentul proces-verbal se incheie in temeiul: ${getVal('pvTemei') || 'In baza raporturilor juridice si a contractului de baza dintre parti'}.`);
         y -= 4;
 
-        deseneazaTitluSectiune("3. OBIECTUL PREDĂRII-PRIMIRII (INVENTAR ACTIVE / ECHIPAMENTE)");
-        deseneazaParagraf(`Predătorul predă, iar Primitorul preia în deplină folosință / custodie următoarele bunuri, active sau echipamente, aflate în stare corespunzătoare de funcționare:`);
+        deseneazaTitluSectiune("3. OBIECTUL PREDARII-PRIMIRII (INVENTAR ACTIVE / ECHIPAMENTE)");
+        deseneazaParagraf(`Predatorul preda, iar Primitorul preia in deplina folosinta / custodie urmatoarele bunuri, active sau echipamente, aflate in stare corespunzatoare de functionare:`);
         y -= 4;
 
         const inventarText = getVal('pvInventar') || '- Niciun bun specificat -';
         deseneazaParagraf(inventarText);
         y -= 4;
 
-        deseneazaTitluSectiune("4. CONDIȚII DE UTILIZARE ȘI RĂSPUNDERE");
-        deseneazaParagraf(`4.1. Primitorul confirmă că a verificat bunurile de mai sus, că acestea corespund cantitativ și calitativ și că le preia în bună stare.`);
-        deseneazaParagraf(`4.2. Primitorul se obligă să folosească activele conform destinației lor, să le întrețină corespunzător și să suporte eventualele pagube produse din vina sa exclusivă prin neglijență sau uz abuziv.`);
-        deseneazaParagraf(`4.3. La încetarea raporturilor de muncă sau la cererea Predătorului, Primitorul se obligă să restituie bunurile în aceeași stare în care le-a primit, exceptând uzura normală.`);
+        deseneazaTitluSectiune("4. CONDITII DE UTILIZARE SI RASPUNDERE");
+        deseneazaParagraf(`4.1. Primitorul confirma ca a verificat bunurile de mai sus, ca acestea corespund cantitativ si calitativ si ca le preia in buna stare.`);
+        deseneazaParagraf(`4.2. Primitorul se obliga sa foloseasca activele conform destinatiei lor, sa le intretina corespunzator si sa suporte eventualele pagube produse din vina sa exclusiva prin neglijenta sau uz abuziv.`);
+        deseneazaParagraf(`4.3. La incetarea raporturilor de munca sau la cererea Predatorului, Primitorul se obliga sa restituie bunurile in aceeasi stare in care le-a primit, exceptand uzura normala.`);
         y -= 20;
 
         if (y < 160) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
 
-        deseneazaTitluSectiune("SEMNĂTURILE PĂRȚILOR:");
+        deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
         y -= 4;
 
         const sigPredatorCanvas = document.getElementById('sigPvPredatorCanvas');
@@ -1332,8 +1333,8 @@ async function genereazaProcesVerbalPDF() {
             page.drawImage(sigCBytes, { x: 310, y: y - 50, width: 120, height: 40 });
         }
 
-        page.drawText(curataDiacritice("Semnătura Predător"), { x: 45, y: y - 62, size: 7.5, font: fontBold });
-        page.drawText(curataDiacritice("Semnătura Primitor"), { x: 310, y: y - 62, size: 7.5, font: fontBold });
+        page.drawText(curataDiacritice("Semnatura Predator"), { x: 45, y: y - 62, size: 7.5, font: fontBold });
+        page.drawText(curataDiacritice("Semnatura Primitor"), { x: 310, y: y - 62, size: 7.5, font: fontBold });
 
         deseneazaFooter();
 
@@ -1345,9 +1346,9 @@ async function genereazaProcesVerbalPDF() {
         a.click();
 
         if (typeof salveazaInArhivaprivata === 'function') {
-            salveazaInArhivaprivata({ idAct: 'PV-' + Math.floor(1000 + Math.random()*9000), numeClient: curataDiacritice(getVal('pvPrimitorNume') || 'Primitor') });
+            salveazaInArhivaprivata({ idAct: 'PV-' + Math.floor(1000 + Math.random()*9000), numeClient: getVal('pvPrimitorNume') || 'Primitor' });
         }
-        arataNotificare("✅ Procesul-Verbal de Predare-Primire a fost generat și descărcat cu succes!");
+        arataNotificare(curataDiacritice("Procesul-Verbal de Predare-Primire a fost generat și descărcat cu succes!"));
     } catch(e) { arataNotificare("Eroare PDF Proces-Verbal: " + e.message, true); }
 }
 
