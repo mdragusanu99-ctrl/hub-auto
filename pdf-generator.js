@@ -1363,6 +1363,19 @@ async function genereazaActAditionalPDF() {
             return;
         }
 
+        function curataDiacritice(text) {
+    if (!text) return '';
+    return text
+        .toString()
+        .replace(/ă/g, 'a').replace(/Ă/g, 'A')
+        .replace(/â/g, 'a').replace(/Â/g, 'A')
+        .replace(/î/g, 'i').replace(/Î/g, 'I')
+        .replace(/ș/g, 's').replace(/Ș/g, 'S')
+        .replace(/ț/g, 't').replace(/Ț/g, 'T')
+        .replace(/ş/g, 's').replace(/Ş/g, 'S') // variantă sedilă
+        .replace(/ţ/g, 't').replace(/Ţ/g, 'T'); // variantă sedilă
+}
+
         const { PDFDocument, rgb, StandardFonts } = PDFLib;
         const pdfDoc = await PDFDocument.create();
         let page = pdfDoc.addPage([595.28, 841.89]); // Format A4
@@ -1373,13 +1386,14 @@ async function genereazaActAditionalPDF() {
 
         // Colectare date complete formular
         const d = colecteazaDate();
-    const angajator = d.actAngajator || 'SC BARBERHUB SRL';
-    const salariat = d.actSalariat || 'DRAGUSANU MARIO';
-        const cimData = d.actCimData || '15.05.2025';
-        const tipModificare = d.actTipModificare || 'SALARIU';
-        const dataAplicarii = d.actDataAplicarii || '01.09.2026';
-        const continutNou = d.actContinutNou || 'Modificarea clauzelor contractuale conform acordului părților.';
-        const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
+const angajator = curataDiacritice(d.actAngajator || 'SC BARBERHUB SRL');
+const salariat = curataDiacritice(d.actSalariat || 'DRAGUSANU MARIO');
+const cimNr = curataDiacritice(d.actCimNr || '45');
+const cimData = curataDiacritice(d.actCimData || '15.05.2025');
+const tipModificare = curataDiacritice(d.actTipModificare || 'SALARIU');
+const dataAplicarii = curataDiacritice(d.actDataAplicarii || '01.09.2026');
+const continutNou = curataDiacritice(d.actContinutNou || 'Modificarea clauzelor contractuale conform acordului părților.');
+const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
 
         let y = height - 40;
 
