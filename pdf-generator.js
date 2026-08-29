@@ -996,6 +996,204 @@ async function genereazaContractCimPDF() {
         arataNotificare("Eroare PDF CIM: " + e.message, true); 
     }
 }
+// ==========================================
+// GENERATOR PDF: FIȘA POSTULUI OFICIALĂ EXTINSĂ (pdf-generator.js)
+// ==========================================
+
+async function genereazaFisaPostuluiPDF() {
+    try {
+        const { PDFDocument, rgb, StandardFonts } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        
+        const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]);
+        let { width, height } = page.getSize();
+        let margin = 40;
+        let contentWidth = width - (margin * 2);
+        let y = height - 40;
+
+        function verificaSpatiu(necesar) {
+            if (y < necesar) {
+                page = pdfDoc.addPage([595.28, 841.89]);
+                y = height - 40;
+            }
+        }
+
+        // Date colectate din formular
+        const d = colecteazaDate();
+        const angajator = d.fisaAngajator || 'SC [DENUMIRE FIRMA] SRL';
+        const salariat = d.fisaSalariat || '[NUME PRENUME SALARIAT]';
+        const functie = d.fisaFunctie || '[FUNCTIA / MESERIA]';
+        const cor = d.fisaCor || '[COD COR]';
+        const departament = d.fisaDepartament || '[DEPARTAMENT]';
+        const subordonare = d.fisaSubordonare || '[RELATII IERARHICE]';
+        const atributii = d.fisaAtributii || 'Executarea sarcinilor specifice postului conform dispozițiilor conducerii și standardelor de calitate.';
+        const responsabilitati = d.fisaResponsabilitati || 'Răspunde de uneltele primite în gestiune, respectarea normelor SSM, PSI și a regulamentului intern.';
+        const studii = d.fisaStudii || 'STUDII MEDII / CALIFICARE DE SPECIALITATE';
+        const vechime = d.fisaVechime || 'MINIM 1 AN';
+
+        // Antet Oficial
+        page.drawText('ANEXĂ LA CONTRACTUL INDIVIDUAL DE MUNCĂ', { x: margin, y, size: 9, font: fontBold, color: rgb(0.3, 0.3, 0.3) });
+        y -= 16;
+        page.drawText('FIȘA POSTULUI ȘI ATRIBUȚII DE SERVICIU', { x: margin, y, size: 16, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 22;
+
+        page.drawLine({ start: { x: margin, y }, end: { x: width - margin, y }, thickness: 1.5, color: rgb(0.2, 0.2, 0.8) });
+        y -= 20;
+
+        // 1. Identificare Post
+        verificaSpatiu(120);
+        page.drawText('1. IDENTIFICAREA POSTULUI DE MUNCĂ', { x: margin, y, size: 10, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 14;
+
+        const infoPost = [
+            `Denumirea angajatorului: ${angajator}`,
+            `Numele și prenumele salariatului: ${salariat}`,
+            `Denumirea postului: ${functie} | Cod COR: ${cor}`,
+            `Departamentul / Compartimentul: ${departament}`,
+            `Relații ierarhice: ${subordonare}`
+        ];
+
+        infoPost.forEach(linie => {
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            y -= 13;
+        });
+
+        y -= 10;
+
+        // 2. Atribuții și Sarcini
+        verificaSpatiu(100);
+        page.drawText('2. ATRIBUȚII ȘI SARCINI DE SERVICIU', { x: margin, y, size: 10, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 14;
+
+        const splitAtributii = fontRegular.wordWrapText(atributii, contentWidth - 20, 8.5);
+        splitAtributii.forEach(linie => {
+            verificaSpatiu(30);
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            y -= 12;
+        });
+
+        y -= 10;
+
+        // 3. Responsabilitățile Postului
+        verificaSpatiu(100);
+        page.drawText('3. RESPONSABILITĂȚILE POSTULUI ȘI SSM', { x: margin, y, size: 10, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 14;
+
+        const textRespExtins = `${responsabilitati} Salariatul are obligația de a respecta normele de Securitate și Sănătate în Muncă (SSM), PSI, utilizarea corectă a echipamentelor de protecție și aducerea imediată la cunoștința conducerii a oricăror disfuncționalități sau accidente.`;
+        const splitResp = fontRegular.wordWrapText(textRespExtins, contentWidth - 20, 8.5);
+        splitResp.forEach(linie => {
+            verificaSpatiu(30);
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            y -= 12;
+        });
+
+        y -= 10;
+
+        // 4. Cerințele Postului
+        verificaSpatiu(80);
+        page.drawText('4. CERINȚELE POSTULUI', { x: margin, y, size: 10, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 14;
+
+        const infoCerinte = [
+            `Nivel de studii / Calificare: ${studii}`,
+            `Vechime în specialitate solicitată: ${vechime}`,
+            `Aptitudini: Spirit de disciplină, rezistență la stres, corectitudine, orientare spre rezultate.`
+        ];
+
+        infoCerinte.forEach(linie => {
+            verificaSpatiu(30);
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            y -= 13;
+        });
+
+        y -= 10;
+
+        // 5. Condiții de muncă și Program
+        verificaSpatiu(90);
+        page.drawText('5. CONDIȚII DE MUNCĂ ȘI PROGRAM', { x: margin, y, size: 10, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 14;
+
+        const infoConditii = [
+            `Program de lucru: Conform Contractului Individual de Muncă (normă întreagă / parțială).`,
+            `Condiții materiale: Unelte, echipamente și materiale puse la dispoziție de angajator.`,
+            `Locul de desfășurare: La sediul / punctele de lucru ale angajatorului sau în teren conform atribuțiilor.`
+        ];
+
+        infoConditii.forEach(linie => {
+            verificaSpatiu(30);
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            y -= 13;
+        });
+
+        y -= 15;
+
+        // 6. Luare la cunoștință
+        verificaSpatiu(150);
+        page.drawText('6. LUARE LA CUNOȘTINȚĂ DE CĂTRE SALARIAT', { x: margin, y, size: 10, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 14;
+        
+        const textLuare = `Prezenta fișă face parte integrantă din Contractul Individual de Muncă înregistrat la angajator. Am luat la cunoștință prevederile, îmi asum sarcinile descrise și am primit un exemplar original.`;
+        const splitLuare = fontRegular.wordWrapText(textLuare, contentWidth - 20, 8.5);
+        splitLuare.forEach(linie => {
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            y -= 12;
+        });
+
+        y -= 35;
+        verificaSpatiu(80);
+
+        // Inserare Semnături Digitale
+        const canvasAngajator = document.getElementById('sigFisaAngajatorCanvas');
+        const canvasSalariat = document.getElementById('sigFisaSalariatCanvas');
+
+        if (canvasAngajator) {
+            try {
+                const dataUrlAngajator = canvasAngajator.toDataURL('image/png');
+                if (dataUrlAngajator && dataUrlAngajator.startsWith('data:image')) {
+                    const pngBytes = await fetch(dataUrlAngajator).then(res => res.arrayBuffer());
+                    const pngImg = await pdfDoc.embedPng(pngBytes);
+                    page.drawImage(pngImg, { x: margin, y: y - 45, width: 130, height: 40 });
+                }
+            } catch (e) { console.log("Fără semnătură angajator"); }
+        }
+
+        if (canvasSalariat) {
+            try {
+                const dataUrlSalariat = canvasSalariat.toDataURL('image/png');
+                if (dataUrlSalariat && dataUrlSalariat.startsWith('data:image')) {
+                    const pngBytes = await fetch(dataUrlSalariat).then(res => res.arrayBuffer());
+                    const pngImg = await pdfDoc.embedPng(pngBytes);
+                    page.drawImage(pngImg, { x: width - margin - 130, y: y - 45, width: 130, height: 40 });
+                }
+            } catch (e) { console.log("Fără semnătură salariat"); }
+        }
+
+        y -= 50;
+        page.drawText('Reprezentant Angajator,', { x: margin, y, size: 8.5, font: fontBold, color: rgb(0.3, 0.3, 0.3) });
+        page.drawText('Salariat,', { x: width - margin - 110, y, size: 8.5, font: fontBold, color: rgb(0.3, 0.3, 0.3) });
+        
+        y -= 11;
+        page.drawText(angajator, { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+        page.drawText(salariat, { x: width - margin - 110, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+
+        // Salvare și descărcare
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Fisa_Postului_${salariat.replace(/\s+/g, '_')}.pdf`;
+        link.click();
+
+        arataNotificare("✅ Fișa Postului extinsă și completă a fost descărcată cu succes!");
+
+    } catch (error) {
+        console.error("Eroare la generarea fișei:", error);
+        arataNotificare("❌ Eroare la generarea PDF-ului.", true);
+    }
+}
 
 // Inițializare canvas la încărcarea paginii pentru semnături
 window.addEventListener('DOMContentLoaded', () => {

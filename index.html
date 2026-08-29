@@ -628,6 +628,17 @@
                     <div><label>Reprezentant Legal (Administrator) *</label><input type="text" id="cimAngajatorReprezentant" placeholder="ex: POPESCU ION"></div>
                 </div>
 
+               <!-- Formular Fișa Postului Pas 1 -->
+<div id="formFisaStep1" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Angajator & Salariat</strong></div>
+    <div class="full-width"><label>Denumire Firmă (Angajator) *</label><input type="text" id="fisaAngajator" placeholder="ex: SC BARBERHUB SRL"></div>
+    <div class="full-width"><label>Nume și Prenume Salariat *</label><input type="text" id="fisaSalariat" placeholder="ex: DRAGUSANU MARIO"></div>
+    <div><label>Denumirea Postului *</label><input type="text" id="fisaFunctie" placeholder="ex: FRIZER / STILIST"></div>
+    <div><label>Cod COR *</label><input type="text" id="fisaCor" placeholder="ex: 514201"></div>
+    <div class="full-width"><label>Departamentul / Compartimentul *</label><input type="text" id="fisaDepartament" placeholder="ex: SALON / OPERAȚIONAL"></div>
+    <div class="full-width"><label>Relații Ierarhice (Subordonare) *</label><input type="text" id="fisaSubordonare" placeholder="ex: Se subordonează Administratorului"></div>
+</div>
+
                 <!-- Formular Demisie Pas 1 -->
                 <div id="formDemisieStep1" class="form-grid" style="display:none;">
                     <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
@@ -752,6 +763,12 @@
                     <div><label>Data Începerii Activității *</label><input type="text" id="cimDataStart" placeholder="ex: 01.09.2026"></div>
                     <div><label>Locul Desfășurării Activității *</label><input type="text" id="cimLocMunca" value="LA SEDIUL / PUNCTUL DE LUCRU"></div>
                 </div>
+                <!-- Formular Fișa Postului Pas 2 -->
+<div id="formFisaStep2" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Atribuții și Responsabilități</strong></div>
+    <div class="full-width"><label>Atribuții și Sarcini de Serviciu *</label><textarea id="fisaAtributii" placeholder="ex: Executarea tunsorilor, igienizarea postului de lucru..." style="height: 100px; text-transform: none;"></textarea></div>
+    <div class="full-width"><label>Responsabilitățile Postului *</label><textarea id="fisaResponsabilitati" placeholder="ex: Răspunde de uneltele primite și respectarea normelor SSM..." style="height: 80px; text-transform: none;"></textarea></div>
+</div>
                 
                 <!-- Formular Comodat Imobil Pas 2 -->
                 <div id="formComodatImobilStep2" class="form-grid" style="display:none;">
@@ -831,7 +848,12 @@
                     <div><label>Capacitate Cilindrică (cmc) *</label><input type="text" id="comodatAutoCmc" placeholder="ex: 1968"></div>
                     <div><label>Durata Contractului *</label><input type="text" id="comodatAutoDurata" placeholder="ex: 1 AN"></div>
                 </div>
-
+<!-- Formular Fișa Postului Pas 3 -->
+<div id="formFisaStep3" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Cerințele Postului</strong></div>
+    <div><label>Nivel de Studii *</label><input type="text" id="fisaStudii" placeholder="ex: STUDII MEDII / CALIFICARE"></div>
+    <div><label>Vechime în Specialitate *</label><input type="text" id="fisaVechime" placeholder="ex: MINIM 1 AN"></div>
+</div>
                 <!-- Formular Comodat Imobil Pas 3 -->
                 <div id="formComodatImobilStep3" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Detalii Imobil & Situație Juridică</strong></div>
@@ -904,7 +926,24 @@
                     <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button>
                     <button class="btn btn-primary" id="btnNextStep4" onclick="nextStep(4)" style="display:none;">Continuă spre Plată ➔</button>
                 </div>
-
+<!-- Formular Fișa Postului Pas 4 - Semnături -->
+<div id="formFisaStep4" style="display:none;">
+    <div style="font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">4. Semnături Electronice de Luare la Cunoștință</div>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Desenați semnăturile în casetele de mai jos pentru validarea oficială a fișei.</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <label style="margin-bottom: 6px;">Semnătură Reprezentant (Angajator)</label>
+            <canvas id="sigFisaAngajatorCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 8px;" onclick="curataCanvas('sigFisaAngajatorCanvas')">Resetează</button>
+        </div>
+        <div style="background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <label style="margin-bottom: 6px;">Semnătură Salariat</label>
+            <canvas id="sigFisaSalariatCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 8px;" onclick="curataCanvas('sigFisaSalariatCanvas')">Resetează</button>
+        </div>
+    </div>
+</div>     
                 <!-- Un singur Bloc Plată Pas 4 -->
                 <div class="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
                     <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
