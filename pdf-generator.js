@@ -1282,7 +1282,7 @@ async function genereazaProcesVerbalPDF() {
 
         const titluText = "PROCES-VERBAL DE PREDARE-PRIMIRE";
        const subTitluText = "Nr. .......... din ....................";
-       
+
         let textWidth = fontBold.widthOfTextAtSize(titluText, 12);
         let centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 12, font: fontBold });
@@ -1350,6 +1350,128 @@ async function genereazaProcesVerbalPDF() {
         }
         arataNotificare(curataDiacritice("Procesul-Verbal de Predare-Primire a fost generat și descărcat cu succes!"));
     } catch(e) { arataNotificare("Eroare PDF Proces-Verbal: " + e.message, true); }
+}
+
+// ==========================================
+// GENERATOR PDF: ACT ADIȚIONAL LA CIM (Conform ITM & Codul Muncii)
+// ==========================================
+
+async function genereazaActAditionalPDF() {
+    try {
+        if (typeof PDFLib === 'undefined') {
+            arataNotificare("Erore: Librătia PDF-Lib nu este încărcată.", true);
+            return;
+        }
+
+        const { PDFDocument, rgb, StandardFonts } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        let page = pdfDoc.addPage([595.28, 841.89]); // Format A4
+        const { width, height } = page.getSize();
+
+        const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+        // Colectare date complete formular
+        const d = colecteazaDate();
+        const cimNr = d.actCimNr || '45';
+        const cimData = d.actCimData || '15.05.2025';
+        const tipModificare = d.actTipModificare || 'SALARIU';
+        const dataAplicarii = d.actDataAplicarii || '01.09.2026';
+        const continutNou = d.actContinutNou || 'Modificarea clauzelor contractuale conform acordului părților.';
+        const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
+
+        let y = height - 40;
+
+        // Antet Oficial & Antet Societate
+        page.drawText(angajator.toUpperCase(), { x: 50, y, size: 11, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 14;
+        page.drawText(`Înregistrat în Registrul de Evidență cu ID Unic: ${idUnic}`, { x: 50, y, size: 7.5, font: fontRegular, color: rgb(0.4, 0.4, 0.4) });
+        y -= 25;
+
+        // Titlu Document
+        page.drawText(`ACT ADIȚIONAL NR. 1`, { x: width / 2 - 70, y, size: 12, font: fontBold, color: rgb(0.05, 0.05, 0.3) });
+        y -= 15;
+        page.drawText(`la Contractul Individual de Muncă Nr. ${cimNr} din data de ${cimData}`, { x: width / 2 - 130, y, size: 9.5, font: fontBold, color: rgb(0.2, 0.2, 0.2) });
+        y -= 30;
+
+        // Preambul Juridic Extins (Obligatoriu ITM)
+        const preambulText = `Încheiat astăzi, ${dataAplicarii}, între:\n\n` +
+            `1. Societatea ${angajator}, cu sediul social în România, reprezentată legal prin Administrator/Împuternicit, în calitate de Angajator, pe de o parte, și\n` +
+            `2. Subsemnatul/a ${salariat}, posesor/oare al/a actului de identitate, în calitate de Salariat, pe de altă parte,\n\n` +
+            `În temeiul prevederilor art. 41 din Legea nr. 53/2003 – Codul Muncii, republicată, cu modificările și completările ulterioare, intervenind acordul de voință al părților contractante, se încheie prezentul act adițional prin care se modifică clauzele contractuale după cum urmează:`;
+
+        y = deseneazaParagraf(page, preambulText, 50, y, 495, 9, fontRegular, 13);
+        y -= 12;
+
+        // Articole Conținut
+        let titluClauza = "MODIFICARE SALARIU DE BAZĂ";
+        if (tipModificare === 'FUNCTIE') titluClauza = "MODIFICARE FUNCȚIE / COR";
+        else if (tipModificare === 'PROGRAM') titluClauza = "MODIFICARE PROGRAM DE MUNCĂ / TIMP DE MUNCĂ";
+        else if (tipModificare === 'LOC') titluClauza = "MODIFICARE LOC DE MUNCĂ";
+
+        page.drawText(`Art. 1. Începând cu data de ${dataAplicarii}, clauza referitoare la ${titluClauza} din Contractul Individual de Muncă se modifică în mod expres și va avea următorul conținut:`, { x: 50, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
+        y -= 16;
+
+        y = deseneazaParagraf(page, `"${continutNou}"`, 70, y, 475, 9, fontRegular, 13);
+        y -= 16;
+
+        const art2Text = `Art. 2. Toate celelalte clauze, drepturi și obligații prevăzute în Contractul Individual de Muncă nr. ${cimNr} din ${cimData} care nu contravin prezentului act adițional rămân neschimbate, continuând să își producă efectele juridice de deplină valabilitate.`;
+        y = deseneazaParagraf(page, art2Text, 50, y, 495, 9, fontRegular, 13);
+        y -= 16;
+
+        const art3Text = `Art. 3. Prezentul act adițional s-a întocmit și semnat în 2 (două) exemplare originale cu valoare juridică egală, câte unul pentru fiecare parte, urmând a fi comunicat Inspectoratului Teritorial de Muncă competent prin intermediul aplicației REGES / Revisal în termenele legale stabilite.`;
+        y = deseneazaParagraf(page, art3Text, 50, y, 495, 9, fontRegular, 13);
+        y -= 35;
+
+        // Secțiune Semnături Oficiale
+        page.drawText("ANGAJATOR,", { x: 70, y, size: 9.5, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        page.drawText("SALARIAT,", { x: 350, y, size: 9.5, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        y -= 14;
+
+        page.drawText(angajator, { x: 70, y, size: 8.5, font: fontRegular, color: rgb(0.3, 0.3, 0.3) });
+        page.drawText(salariat, { x: 350, y, size: 8.5, font: fontRegular, color: rgb(0.3, 0.3, 0.3) });
+        y -= 40;
+
+        // Inserare semnături olografe din canvas dacă există
+        const canvasAngajator = document.getElementById('sigActAngajatorCanvas');
+        const canvasSalariat = document.getElementById('sigActSalariatCanvas');
+
+        if (canvasAngajator) {
+            try {
+                const imgAngajatorData = canvasAngajator.toDataURL('image/png');
+                const pngImageAngajator = await pdfDoc.embedPng(imgAngajatorData);
+                page.drawImage(pngImageAngajator, { x: 70, y: y - 8, width: 110, height: 36 });
+            } catch (err) { console.error("Eșec randare semnătură angajator"); }
+        }
+
+        if (canvasSalariat) {
+            try {
+                const imgSalariatData = canvasSalariat.toDataURL('image/png');
+                const pngImageSalariat = await pdfDoc.embedPng(imgSalariatData);
+                page.drawImage(pngImageSalariat, { x: 350, y: y - 8, width: 110, height: 36 });
+            } catch (err) { console.error("Eșec randare semnătură salariat"); }
+        }
+
+        y -= 45;
+        page.drawText("Reprezentant Legal / Administrator", { x: 70, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+        page.drawText("Semnătura Olografă Salariat", { x: 350, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+
+        // Salvare și descărcare PDF
+        const angajator = eliminaDiacritice(d.actAngajator || 'SC BARBERHUB SRL');
+const salariat = eliminaDiacritice(d.actSalariat || 'DRAGUSANU MARIO');
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Act_Aditional_CIM_${salariat.replace(/\s+/g, '_')}.pdf`;
+        link.click();
+
+        arataNotificare("📥 Actul Adițional complet și conform ITM a fost descărcat cu succes!");
+    } catch (e) {
+        console.error(e);
+        arataNotificare("Erore la generarea PDF-ului: " + e.message, true);
+    }
+    
 }
 
 // Inițializare canvas la încărcarea paginii pentru semnături
