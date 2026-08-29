@@ -1017,6 +1017,7 @@ async function genereazaFisaPostuluiPDF() {
                 page = pdfDoc.addPage([595.28, 841.89]);
                 y = height - 40;
             }
+            
         }
 
         function imparteTextInLinii(text, maxWidth, fontSize) {
@@ -1187,6 +1188,10 @@ async function genereazaFisaPostuluiPDF() {
         y -= 11;
         page.drawText(angajator, { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
         page.drawText(salariat, { x: width - margin - 110, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+
+        page.drawText(curataDiacritice("ActPeLoc.ro — Document oficial generat in conditiile legii"), { 
+            x: margin, y: 25, size: 7, font: fontRegular, color: rgb(0.5, 0.5, 0.5) 
+        });
 
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
