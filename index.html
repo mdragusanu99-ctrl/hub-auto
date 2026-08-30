@@ -592,7 +592,7 @@
                 </div>
 
  <!-- Formular Proces-Verbal Locuință Pas 1 -->
-<div id="formPvLocuintaStep1" class="form-grid" style="display:none;">
+<div id="fPvLoc1" class="form-grid" style="display:none;">
     <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
         📄 Proces-Verbal de Predare-Primire Locuință (Anexă la Contractul de Închiriere)
     </div>
@@ -944,7 +944,7 @@
                 </div>
 
                 <!-- Formular Proces-Verbal Locuință Pas 2 -->
-<div id="formPvLocuintaStep2" class="form-grid" style="display:none;">
+<div id="fPvLoc2" class="form-grid" style="display:none;">
     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Locatar (Chiriaș / Cel care preia) & Imobil</strong></div>
     <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="pvChiriasNume" placeholder="ex: IONESCU MARIA"></div>
     <div><label>CNP Chiriaș *</label><input type="text" id="pvChiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
@@ -1019,12 +1019,29 @@
                 </div>
 
 <!-- Formular Proces-Verbal Locuință Pas 3 -->
-    <div id="formPvLocuintaStep3" class="form-grid" style="display:none;">
-        <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Inventar Bunuri, Stare Tehnică & Semnături</strong></div>
-        <div class="full-width">
-            <label style="color: var(--primary); margin-bottom: 6px;">Inventar Mobilier & Electrocasnice lăsate în folosință *</label>
-            <textarea id="pvInventarBunuri" placeholder="ex: 1. Centrală termică Bosch; 2. Frigider Arctic; 3. Mașină de spălat rufe. Stare generală bună." style="height: 100px; text-transform: none;"></textarea>
+<div id="fPvLoc3" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Inventar Bunuri, Stare Tehnică & Semnături</strong></div>
+    <div class="full-width">
+        <label style="color: var(--primary); margin-bottom: 6px;">Inventar Mobilier & Electrocasnice lăsate în folosință *</label>
+        <textarea id="pvInventarBunuri" placeholder="ex: 1. Centrală termică Bosch; 2. Frigider Arctic; 3. Mașină de spălat rufe. Stare generală bună." style="height: 100px; text-transform: none;"></textarea>
+    </div>
+
+    <div class="full-width" style="margin-top: 10px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Semnături Electronice Olografe</div>
+        
+        <div style="margin-bottom: 16px;">
+            <label>Semnătură Locator (Proprietar)</label>
+            <canvas id="sigProprietarCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează Semnătura</button>
         </div>
+
+        <div>
+            <label>Semnătură Chiriaș (Locatar)</label>
+            <canvas id="sigChiriasCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează Semnătura</button>
+        </div>
+    </div>
+</div>
 
                 <!-- Formular Comodat Auto Pas 3 -->
                 <div id="formComodatAutoStep3" class="form-grid" style="display:none;">
