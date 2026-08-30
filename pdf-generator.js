@@ -1815,9 +1815,11 @@ async function genereazaItl016PDF() {
 
         // Inserare semnătură olografă din canvas (dacă există)
        const sigItlCanvas = document.getElementById('sigItlDeclarantCanvas');
-        if (sigItlCanvas && sigItlCanvas.offsetParent !== null) {
+        if (sigItlCanvas) {
             try {
                 const dataUrl = sigItlCanvas.toDataURL('image/png');
+                console.log("DataURL obținut din canvas:", dataUrl.substring(0, 50)); // Verifică în F12 dacă nu e gol
+                
                 const base64Data = dataUrl.split(',')[1];
                 const binaryString = atob(base64Data);
                 const len = binaryString.length;
@@ -1833,12 +1835,15 @@ async function genereazaItl016PDF() {
                     width: 130, 
                     height: 42 
                 });
+                console.log("Semnătura a fost inserată cu succes în PDF!");
             } catch (err) {
                 console.error("Eroare la randarea semnăturii olografe în PDF:", err);
             }
+        } else {
+            console.warn("Elementul canvas 'sigItlDeclarantCanvas' nu a fost găsit în DOM!");
         }
 
-        page.drawText(curataDiacritice("Semnătura Contribuabil (Declarant)"), { x: 45, y: y - 58, size: 8, font: fontBold });
+        page.drawText(curataDiacritice("Semnătura Contribuabil (Declarant)"), { x: 45, y: 180, size: 8, font: fontBold });
 
         // Chenar rezervat organului fiscal
         page.drawRectangle({
