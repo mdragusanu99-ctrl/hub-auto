@@ -590,7 +590,7 @@ const procuraSignContainer = document.getElementById('procuraSignContainer');
             else if (tipContractCurent === 'procura') document.getElementById('titleStep3').innerText = "Pasul 3: Vehicul, Instituții & Semnătură";
             else if (tipContractCurent === 'itl_016') titleStep3El.innerText = "Pasul 3: Act Doveditor, Noul Proprietar & Semnătură";
             else if (tipContractCurent === 'itl_005') titleStep3El.innerText = "Pasul 3: Anexe, Facilități & Semnătură Olografă";
-            if (tipContractCurent === 'pv_locuinta') titleStep3El.innerText = "Pasul 3: Inventar, Stare Tehnică & Semnături";
+            else if (tipContractCurent === 'pv_locuinta') titleStep3El.innerText = "Pasul 3: Inventar, Stare Tehnică & Semnături";
         }
     }
 
