@@ -256,7 +256,7 @@ function colecteazaDate() {
         'itl005Co2', 'itl005PutereKw',
         'itl005Scutire', 'itl005Anexa1', 'itl005Anexa2', 'itl005Anexa3',
         'proprietarNume', 'proprietarCnp', 'proprietarAct', 'proprietarAdresa',
-'chiriasNume', 'chiriasCnp', 'chiriasAct', 'imobilAdresa', 'imobilInventar',
+        'pvProprietarNume', 'pvProprietarCnp', 'pvProprietarAct', 'pvProprietarAdresa',
     ];
     ids.forEach(id => {
         const el = document.getElementById(id);

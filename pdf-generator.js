@@ -2143,7 +2143,7 @@ async function genereazaProcesVerbalLocuintaPDF() {
         y -= 22;
 
         deseneazaTitluSectiune("1. DATELE PARTILOR CONTRACTANTE");
-        deseneazaParagraf(`1.1. Locator (Proprietar): ${getVal('proprietarNume') || '................................................'}, CNP: ${getVal('proprietarCnp') || '...................'}, CI seria si nr: ${getVal('proprietarAct') || '..............'}, domiciliat in: ${getVal('proprietarAdresa') || '..................................................................................................................'}.`);
+        deseneazaParagraf(`1.1. Locator (Proprietar): ${getVal('pvProprietarNume') || '................................................'}, CNP: ${getVal('pvProprietarCnp') || '...................'}, CI seria si nr: ${getVal('pvProprietarAct') || '..............'}, domiciliat in: ${getVal('pvProprietarAdresa') || '..................................................................................................................'}.`);
         deseneazaParagraf(`1.2. Locatar (Chirias): ${getVal('chiriasNume') || '................................................'}, CNP: ${getVal('chiriasCnp') || '...................'}, CI seria si nr: ${getVal('chiriasAct') || '..............'}.`);
         y -= 2;
 
