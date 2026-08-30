@@ -1403,6 +1403,12 @@ function deseneazaParagraf(page, text, x, y, maxWidth, fontSize, font, lineHeigh
 
         const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+       
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("ActPeLoc.ro — Document oficial conform Codului Muncii și reglementărilor ITM"), { 
+                x: 50, y: 30, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) 
+            });
+        };
 
         // Colectare date complete formular
         const d = colecteazaDate();
@@ -1493,7 +1499,7 @@ function deseneazaParagraf(page, text, x, y, maxWidth, fontSize, font, lineHeigh
         page.drawText(curataDiacritice("Reprezentant Legal / Administrator"), { x: 70, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
         page.drawText(curataDiacritice("Semnătura Olografă Salariat"), { x: 350, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
 
-        deseneazaFooter();
+      deseneazaFooter();
 
         // Salvare și descărcare PDF
         const pdfBytes = await pdfDoc.save();
