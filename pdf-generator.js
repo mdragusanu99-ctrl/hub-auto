@@ -1815,32 +1815,33 @@ async function genereazaItl016PDF() {
 
         // Inserare semnătură olografă din canvas (dacă există)
        const sigItlCanvas = document.getElementById('sigItlDeclarantCanvas');
-if (sigItlCanvas && sigItlCanvas.offsetParent !== null) {
-    try {
-        // Obținem datele sub formă de șir base64 din canvas
-        const dataUrl = sigItlCanvas.toDataURL('image/png');
-        
-        // Transformăm base64-ul în bytes binari (Uint8Array) ceruți de pdf-lib
-        const base64Data = dataUrl.split(',')[1];
-        const binaryString = atob(base64Data);
-        const len = binaryString.length;
-        const bytes = new Uint8Array(len);
-        for (let i = 0; i < len; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
+        if (sigItlCanvas && sigItlCanvas.offsetParent !== null) {
+            try {
+                const dataUrl = sigItlCanvas.toDataURL('image/png');
+                const base64Data = dataUrl.split(',')[1];
+                const binaryString = atob(base64Data);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+
+                const sigImage = await pdfDoc.embedPng(bytes);
+                
+                // Forțăm o poziție fixă sigură pe axa Y (de exemplu la 185 puncte de jos în sus)
+                page.drawImage(sigImage, { 
+                    x: 45, 
+                    y: 195, 
+                    width: 130, 
+                    height: 42 
+                });
+            } catch (err) {
+                console.error("Eroare la randarea semnăturii olografe în PDF:", err);
+            }
         }
 
-        // Inserăm imaginea binară în documentul PDF
-        const sigImage = await pdfDoc.embedPng(bytes);
-        page.drawImage(sigImage, { 
-            x: 45, 
-            y: y - 45, 
-            width: 130, 
-            height: 42 
-        });
-    } catch (err) {
-        console.error("Eroare la randarea semnăturii olografe în PDF:", err);
-    }
-}
+        // Desenăm eticheta text dedesubt
+        page.drawText(curataDiacritice("Semnătura Contribuabil (Declarant)"), { x: 45, y: 180, size: 8, font: fontBold });
 
         page.drawText(curataDiacritice("Semnătura Contribuabil (Declarant)"), { x: 45, y: y - 58, size: 8, font: fontBold });
 
