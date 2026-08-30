@@ -548,7 +548,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'fisa_postului' && fFisa3) fFisa3.style.display = 'grid';
         else if (tipContractCurent === 'act_aditional' && fAct3) fAct3.style.display = 'grid';
         else if (tipContractCurent === 'procura' && fProcura3) fProcura3.style.display = 'grid';
-        else if (tipContractCurent === 'itl_016' && fItl3) { fItl3.style.display = 'grid';
+        else if (tipContractCurent === 'itl_016' && fItl3) {fItl3.style.display = 'grid';
             initCanvasSemnatura('sigItlDeclarantCanvas');
         } else if (tipContractCurent === 'itl_005' && fItl005_3) {
             fItl005_3.style.display = 'grid';
