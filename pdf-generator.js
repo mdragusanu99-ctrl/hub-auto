@@ -1814,15 +1814,17 @@ async function genereazaItl016PDF() {
         y -= 25;
 
         // Inserare semnătură olografă din canvas (dacă există)
-        const sigItlCanvas = document.getElementById('sigItlDeclarantCanvas');
-        if (sigItlCanvas && sigItlCanvas.offsetParent !== null) {
-            try {
-                const sigBytes = await pdfDoc.embedPng(sigItlCanvas.toDataURL('image/png'));
-                page.drawImage(sigBytes, { x: 45, y: y - 45, width: 130, height: 42 });
-            } catch (err) {
-                console.log("Canvas semnătură ITL gol sau neinițializat");
-            }
-        }
+       const sigItlCanvas = document.getElementById('sigItlDeclarantCanvas');
+if (sigItlCanvas && sigItlCanvas.offsetParent !== null) {
+    try {
+        const dataUrl = sigItlCanvas.toDataURL('image/png');
+        // Verifică dacă utilizatorul a desenat ceva (nu este un canvas gol)
+        const sigBytes = await pdfDoc.embedPng(dataUrl);
+        page.drawImage(sigBytes, { x: 45, y: y - 45, width: 130, height: 42 });
+    } catch (err) {
+        console.log("Eroare la preluarea semnăturii olografe: ", err);
+    }
+}
 
         page.drawText(curataDiacritice("Semnătura Contribuabil (Declarant)"), { x: 45, y: y - 58, size: 8, font: fontBold });
 
