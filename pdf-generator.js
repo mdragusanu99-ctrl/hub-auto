@@ -2070,10 +2070,6 @@ async function genereazaItl005PDF() {
         arataNotificare("❌ Eroare la generarea documentului oficial PDF.", true);
     }
 }
-// ==========================================
-// MODULUL DE GENERARE PDF - PROCES-VERBAL PREDARE-PRIMIRE LOCUINȚĂ (pdf-generator.js)
-// ==========================================
-
 async function genereazaProcesVerbalLocuintaPDF() {
     arataNotificare("Se generează Procesul-Verbal de Predare-Primire Locuință...");
     try {
@@ -2144,7 +2140,8 @@ async function genereazaProcesVerbalLocuintaPDF() {
 
         deseneazaTitluSectiune("1. DATELE PARTILOR CONTRACTANTE");
         deseneazaParagraf(`1.1. Locator (Proprietar): ${getVal('pvProprietarNume') || '................................................'}, CNP: ${getVal('pvProprietarCnp') || '...................'}, CI seria si nr: ${getVal('pvProprietarAct') || '..............'}, domiciliat in: ${getVal('pvProprietarAdresa') || '..................................................................................................................'}.`);
-        deseneazaParagraf(`1.2. Locatar (Chirias): ${getVal('chiriasNume') || '................................................'}, CNP: ${getVal('chiriasCnp') || '...................'}, CI seria si nr: ${getVal('chiriasAct') || '..............'}.`);
+        // Corectat cu ID-ul real pvChiriasNume, pvChiriasCnp, pvChiriasAct
+        deseneazaParagraf(`1.2. Locatar (Chirias): ${getVal('pvChiriasNume') || '................................................'}, CNP: ${getVal('pvChiriasCnp') || '...................'}, CI seria si nr: ${getVal('pvChiriasAct') || '..............'}.`);
         y -= 2;
 
         deseneazaTitluSectiune("2. OBIECTUL PREDARII SI ADRESA IMOBILULUI");
@@ -2156,12 +2153,13 @@ async function genereazaProcesVerbalLocuintaPDF() {
         deseneazaParagraf(`Pentru stabilirea clara a consumurilor si decontarea corecta a utilitatilor aferente perioadei de inchiriere, la data de astazi s-au consemnat urmatoarele indexuri:`);
         deseneazaParagraf(`- Apa rece / Apa calda: .................................................... (Conform contoarelor de apartament sigilate)`);
         deseneazaParagraf(`- Energie electrica: ....................................................... (Conform contorului individual de pe panou)`);
-        deseneazaParagraf(`- Gaze naturale (dupa caz): ............................................ (Conform contorului de </i>gaz</i> dedicat)`);
+        deseneazaParagraf(`- Gaze naturale (dupa caz): ............................................ (Conform contorului de gaz dedicat)`);
         y -= 2;
 
         deseneazaTitluSectiune("4. INVENTARUL BUNURILOR SI STAREA TEHNICA");
         deseneazaParagraf(`4.1. Imobilul este dotat cu urmatoarele bunuri mobile, mobilier si electrocasnice, preluate in buna stare de functionare, fara defecte ascunse:`);
-        deseneazaParagraf(`${getVal('imobilInventar') || 'Fara bunuri suplimentare declarate sau conform intelegerii prealabile intre parti.'}`);
+        // Corectat cu ID-ul real pvInventarBunuri
+        deseneazaParagraf(`${getVal('pvInventarBunuri') || 'Fara bunuri suplimentare declarate sau conform intelegerii prealabile intre parti.'}`);
         deseneazaParagraf(`4.2. Starea elementelor de finisaj (zugraveli, pardoseli, usi interioare, tamplarie si instalatii sanitare/electrice): Inspectate vizual de ambele parti si gasite in stare corespunzatoare de utilizare.`);
         y -= 2;
 
@@ -2175,8 +2173,9 @@ async function genereazaProcesVerbalLocuintaPDF() {
         deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
         y -= 4;
 
-        const sigPropCanvas = document.getElementById('sigProprietarCanvas');
-        const sigChirCanvas = document.getElementById('sigChiriasCanvas');
+        // ID-urile pentru canvas actualizate conform legăturii cu script.js și index.html
+        const sigPropCanvas = document.getElementById('sigPvProprietarCanvas');
+        const sigChirCanvas = document.getElementById('sigPvChiriasCanvas');
         
         if (sigPropCanvas && sigPropCanvas.offsetParent !== null) {
             try {

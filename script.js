@@ -508,7 +508,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'procura') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Mandatarului (Împuternicit)";
         else if (tipContractCurent === 'itl_016') document.getElementById('titleStep2').innerText = "Pasul 2: Vehiculul și Motivul Radierii";
         else if (tipContractCurent === 'itl_005') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Mijlocului de Transport Dobândit";
-        else if (tipContractCurent === 'pv_locuinta') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Locatarului & Imobil";
+        if (tipContractCurent === 'pv_locuinta') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Locatarului & Imobil";
         
     }
 
@@ -555,10 +555,10 @@ function activeazaPasulUI(stepNum) {
             fItl005_3.style.display = 'grid';
             initCanvasSemnatura('sigItl005Canvas');
         } else if (tipContractCurent === 'pv_locuinta' && fPvLoc3) {
-    fPvLoc3.style.display = 'grid';
-    initCanvasSemnatura('sigProprietarCanvas');
-    initCanvasSemnatura('sigChiriasCanvas');
-}
+            fPvLoc3.style.display = 'grid';
+            initCanvasSemnatura('sigProprietarCanvas');
+            initCanvasSemnatura('sigChiriasCanvas');
+        }
 const procuraSignContainer = document.getElementById('procuraSignContainer');
     if (procuraSignContainer) {
         procuraSignContainer.style.display = (tipContractCurent === 'procura' && stepNum === 3) ? 'block' : 'none';
@@ -590,7 +590,7 @@ const procuraSignContainer = document.getElementById('procuraSignContainer');
             else if (tipContractCurent === 'procura') document.getElementById('titleStep3').innerText = "Pasul 3: Vehicul, Instituții & Semnătură";
             else if (tipContractCurent === 'itl_016') titleStep3El.innerText = "Pasul 3: Act Doveditor, Noul Proprietar & Semnătură";
             else if (tipContractCurent === 'itl_005') titleStep3El.innerText = "Pasul 3: Anexe, Facilități & Semnătură Olografă";
-            else if (tipContractCurent === 'pv_locuinta') titleStep3El.innerText = "Pasul 3: Inventar, Stare Tehnică & Semnături";
+            if (tipContractCurent === 'pv_locuinta') titleStep3El.innerText = "Pasul 3: Inventar, Stare Tehnică & Semnături";
         }
     }
 
