@@ -591,6 +591,36 @@
                     <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodantAutoAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
                 </div>
 
+                <!-- Formular ITL-005 Pas 1: Date Contribuabil / Dobânditor -->
+<div id="formItl005Step1" class="form-grid" style="display:none;">
+    <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
+        📄 Declarație Fiscală ITL-005: Pentru stabilirea impozitului pe mijloacele de transport (Persoane Fizice / Juridice)
+    </div>
+    
+    <div class="full-width">
+        <label>Tip Contribuabil *</label>
+        <select id="itl005TipContribuabil">
+            <option value="pf">Persoană Fizică (PF)</option>
+            <option value="pj">Persoană Juridică (PJ)</option>
+        </select>
+    </div>
+
+    <!-- Câmpuri PF -->
+    <div class="full-width"><label>Nume și Prenume (Subsemnatul / Împuternicit) *</label><input type="text" id="itl005Nume" placeholder="ex: IONESCU MARIA"></div>
+    <div><label>Seria și Număr Act Identitate (B.I./C.I./A.I.) *</label><input type="text" id="itl005Act" placeholder="ex: BZ 654321"></div>
+    <div><label>CNP *</label><input type="text" id="itl005Cnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+    <div class="full-width"><label>Adresă Domiciliu (Județ, Localitate, Str., Nr., Bl., Sc., Ap.) *</label><input type="text" id="itl005Adresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
+    <div><label>Telefon / Fax *</label><input type="text" id="itl005Telefon" placeholder="ex: 0733000000"></div>
+    <div class="full-width"><label>Adresă E-mail *</label><input type="email" id="itl005Email" placeholder="ex: client@email.ro" style="text-transform: none;"></div>
+
+    <!-- Câmpuri PJ (opționale dacă e firmă) -->
+    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--text-main);">Date firmă (dacă este cazul PJ):</strong></div>
+    <div><label>Denumire Firmă (PJ)</label><input type="text" id="itl005PjNume" placeholder="ex: SC TRANSPORT SRL"></div>
+    <div><label>Cod de Identificare Fiscală (CUI)</label><input type="text" id="itl005PjCui" placeholder="ex: RO12345678"></div>
+    <div><label>Nr. Reg. Comerțului</label><input type="text" id="itl005PjReg" placeholder="ex: J40/123/2026"></div>
+    <div><label>Cont IBAN</label><input type="text" id="itl005PjIban" placeholder="ex: RO49BTRL..."></div>
+</div>
+
                 <!-- Formular ITL-016 Pas 1: Date Contribuabil -->
 <div id="formItl016Step1" class="form-grid" style="display:none;">
     <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
@@ -792,6 +822,25 @@
                     <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodatarAutoAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
                 </div>
 
+<!-- Formular ITL-005 Pas 2: Detalii Mijloc de Transport -->
+<div id="formItl005Step2" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Datele Mijlocului de Transport Dobândit</strong></div>
+    
+    <div><label>Mod de Dobândire *</label><input type="text" id="itl005ModDobandire" value="vanzare-cumparare"></div>
+    <div><label>Marcă și Tipul Auto *</label><input type="text" id="itl005Marca" placeholder="ex: AUDI A4"></div>
+    <div class="full-width"><label>Serie Șasiu (VIN - 17 caractere) *</label><input type="text" id="itl005Vin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
+    <div><label>Serie Motor *</label><input type="text" id="itl005Motor" placeholder="ex: CAGA123456"></div>
+    <div><label>Capacitate Cilindrică (cm³) sau Tonaj *</label><input type="text" id="itl005Capacitate" placeholder="ex: 1968"></div>
+    <div><label>Anul Fabricației *</label><input type="text" id="itl005An" placeholder="ex: 2012"></div>
+    <div><label>Normă de Poluare (Non-euro, E0-E6) *</label><input type="text" id="itl005Norma" placeholder="ex: E5"></div>
+    <div><label>Data Dobândirii *</label><input type="text" id="itl005DataDobandirii" placeholder="ex: 01.09.2026"></div>
+    
+    <!-- Specifice hibrid / electric -->
+    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--text-main);">Mențiuni speciale ecologice (dacă este cazul):</strong></div>
+    <div><label>Emisii CO2 (g/km) - pentru hibride</label><input type="text" id="itl005Co2" placeholder="ex: 115"></div>
+    <div><label>Putere Motor în kW sau CP - pentru electrice</label><input type="text" id="itl005PutereKw" placeholder="ex: 150 kW"></div>
+</div>
+
 <!-- Formular ITL-016 Pas 2: Vehicul & Motiv -->
 <div id="formItl016Step2" class="form-grid" style="display:none;">
     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Datele Mijlocului de Transport & Motivul Radierii</strong></div>
@@ -960,6 +1009,34 @@
                     <div><label>Capacitate Cilindrică (cmc) *</label><input type="text" id="comodatAutoCmc" placeholder="ex: 1968"></div>
                     <div><label>Durata Contractului *</label><input type="text" id="comodatAutoDurata" placeholder="ex: 1 AN"></div>
                 </div>
+
+<!-- Formular ITL-005 Pas 3: Anexe, Acord & Semnătură Olografă Opțională -->
+<div id="formItl005Step3" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Facilități, Anexe și Comunicare Oficială</strong></div>
+    
+    <div class="full-width">
+        <label style="display: flex; align-items: center; gap: 8px; text-transform: none; font-weight: 500; cursor: pointer;">
+            <input type="checkbox" id="itl005AcordEmail" checked style="width: auto;"> Sunt de acord ca actele administrative fiscale să-mi fie comunicate exclusiv la adresa de poștă electronică[cite: 13].
+        </label>
+    </div>
+
+    <div class="full-width"><label>Beneficiez de scutire/reducere în calitate de (dacă este cazul):</label><input type="text" id="itl005Scutire" placeholder="ex: - (fără scutire)"></div>
+
+    <div class="full-width"><strong style="font-size: 13px; color: var(--text-main); margin-top: 10px; display: block;">Documente Anexate (copii certificate cu originalul)[cite: 13]:</strong></div>
+    <div><label>1. Act doveditor dobândire</label><input type="text" id="itl005Anexa1" value="Contract de vanzare-cumparare / Factura"></div>
+    <div><label>2. C.I.V. (Cartea de Identitate a Vehiculului)</label><input type="text" id="itl005Anexa2" value="CIV autovehicul"></div>
+    <div><label>3. Act de identitate dobânditor</label><input type="text" id="itl005Anexa3" value="Copie C.I. / B.I."></div>
+
+    <!-- Căsuță opțională semnătură olografă -->
+    <div class="full-width" id="itl005SignContainer" style="margin-top: 20px; background: var(--bg-body); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <label style="margin: 0; color: var(--primary); font-weight: 700;">Semnătură Olografă Contribuabil (Opțional)</label>
+            <span style="font-size: 11px; color: var(--text-muted);">Pentru vizualizare în PDF (Necesită semnătură fizică la ghișeu)</span>
+        </div>
+        <canvas id="sigItl005Canvas" width="320" height="100" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block;"></canvas>
+        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; width: auto; margin-top: 8px;" onclick="curataCanvas('sigItl005Canvas')">🔄 Resetează Semnătura</button>
+    </div>
+</div>
 
 <!-- Formular ITL-016 Pas 3: Noul Proprietar, Act Doveditor & Casetă Dedicată Semnătură -->
 <div id="formItl016Step3" class="form-grid" style="display:none;">

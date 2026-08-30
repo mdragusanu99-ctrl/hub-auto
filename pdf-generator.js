@@ -1884,6 +1884,179 @@ async function genereazaItl016PDF() {
     }
 }
 
+// ==========================================
+// MODULUL DE GENERARE PDF - DECLARAȚIA FISCALĂ ITL-005 (Model Oficial 2026)
+// ==========================================
+
+async function genereazaItl005PDF() {
+    try {
+        const { PDFDocument, rgb, StandardFonts } = PDFLib;
+
+        // Creăm un document PDF nou format A4 (standard legal românesc)
+        const pdfDoc = await PDFDocument.create();
+        const page = pdfDoc.addPage([595.28, 841.89]); // Dimensiune A4 în puncte (72 DPI)
+        const { width, height } = page.getSize();
+
+        // Încărcăm fonturile standard PDF-lib ( Helvetica suportă text standard)
+        const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+        // Preluăm datele colectate din formularele introduse de utilizator
+        const d = colecteazaDate();
+
+        let y = height - 40; // Coordonata verticală de pornire (sus)
+        const margin = 40;
+        const printableWidth = width - (margin * 2);
+
+        // --- ANTETUL OFICIAL INSTITUȚIONAL ---
+        page.drawText('ROMÂNIA', { x: width / 2 - 30, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
+        y -= 14;
+        page.drawText('Ministerul Dezvoltării, Lucrărilor Publice și Administrației', { x: width / 2 - 120, y, size: 9, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+        y -= 12;
+        page.drawText('DECLARAȚIE FISCALĂ:', { x: width / 2 - 60, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
+        y -= 14;
+        page.drawText('PENTRU STABILIREA IMPOZITULUI/TAXEI PE MIJLOACELE DE TRANSPORT', { x: width / 2 - 175, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
+        y -= 12;
+        page.drawText('ÎN CAZUL PERSOANELOR FIZICE / JURIDICE (MODEL ITL-005)', { x: width / 2 - 145, y, size: 9, font: fontRegular, color: rgb(0.3, 0.3, 0.3) });
+
+        y -= 18;
+        // Linie despărțitoare sub antet
+        page.drawLine({ start: { x: margin, y }, end: { x: width - margin, y }, thickness: 1, color: rgb(0, 0, 0) });
+        y -= 22;
+
+        // --- TEMEI LEGAL (Conform Codului Fiscal & HCL Local) ---
+        page.drawText('Temei legal: Art. 469 - 471 din Legea nr. 227/2015 privind Codul Fiscal, cu modificările și completările ulterioare,', { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+        y -= 10;
+        page.drawText('și H.G. nr. 1/2016 pentru aprobarea Normelor metodologice de aplicare a Legii nr. 227/2015 privind Codul Fiscal.', { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+
+        y -= 20;
+
+        // --- SECȚIUNEA I: DATELE DE IDENTIFICARE ALE CONTRIBUABILULUI ---
+        page.drawText('I. DATELE DE IDENTIFICARE ALE CONTRIBUABILULUI', { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
+        y -= 14;
+
+        const tipContribuabilText = d.itl005TipContribuabil === 'pj' ? 'PERSOANĂ JURIDICĂ' : 'PERSOANĂ FIZICĂ';
+        let liniiContribuabil = [
+            `Tip Contribuabil: ${tipContribuabilText}`,
+            `Nume / Denumire: ${d.itl005Nume || d.itl005PjNume || '-'}`,
+            `CNP / CUI: ${d.itl005Cnp || d.itl005PjCui || '-'}  |  Act Identitate / Reg. Com.: ${d.itl005Act || d.itl005PjReg || '-'}`,
+            `Adresă Domiciliu / Sediu: ${d.itl005Adresa || '-'}`,
+            `Telefon: ${d.itl005Telefon || '-'}  |  E-mail: ${d.itl005Email || '-'}`
+        ];
+
+        if (d.itl005TipContribuabil === 'pj') {
+            liniiContribuabil.push(`Cont IBAN: ${d.itl005PjIban || '-'}`);
+        }
+
+        liniiContribuabil.forEach(linie => {
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
+            y -= 13;
+        });
+
+        y -= 10;
+
+        // --- SECȚIUNEA II: DATELE MIJLOCULUI DE TRANSPORT DOBÂNDIT ---
+        page.drawText('II. DATELE MIJLOCULUI DE TRANSPORT DOBÂNDIT', { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
+        y -= 14;
+
+        let liniiTransport = [
+            `Mod de dobândire: ${d.itl005ModDobandire || 'Vânzare-cumpărare'}  |  Data dobândirii: ${d.itl005DataDobandirii || '-'}`,
+            `Marcă și tipul auto: ${d.itl005Marca || '-'}`,
+            `Număr de identificare (VIN - 17 caractere): ${d.itl005Vin || '-'}`,
+            `Serie motor: ${d.itl005Motor || '-'}  |  Capacitate cilindrică / Tonaj: ${d.itl005Capacitate || '-'} cmc`,
+            `An fabricație: ${d.itl005An || '-'}  |  Normă de poluare: ${d.itl005Norma || '-'}`,
+            `Mențiuni ecologice (Hibrid/Electric): Emisii CO2: ${d.itl005Co2 || '-'} g/km | Putere motor: ${d.itl005PutereKw || '-'}`
+        ];
+
+        liniiTransport.forEach(linie => {
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
+            y -= 13;
+        });
+
+        y -= 10;
+
+        // --- SECȚIUNEA III: SCUTIRI, ANEXE ȘI COMUNICARE ELECTRONICĂ ---
+        page.drawText('III. FACILITĂȚI FISCALE, ANEXE ȘI COMUNICARE ELECTRONICĂ', { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
+        y -= 14;
+
+        let liniiAnexe = [
+            `Calitate scutire / reducere fiscală (dacă este cazul): ${d.itl005Scutire || 'Fără scutire / Impozit standard'}`,
+            `Acord comunicare electronică acte fiscale (Art. 47 Cod Procedură Fiscală): DA`,
+            `Documente anexate depuse în copie:`,
+            `  1. ${d.itl005Anexa1 || 'Contract de vânzare-cumpărare / Factură'}`,
+            `  2. ${d.itl005Anexa2 || 'Cartea de Identitate a Vehiculului (CIV)'}`,
+            `  3. ${d.itl005Anexa3 || 'Act de identitate dobânditor'}`
+        ];
+
+        liniiAnexe.forEach(linie => {
+            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
+            y -= 13;
+        });
+
+        y -= 15;
+
+        // --- DECLARAȚIE PE PROPRIA RĂSPUNDERE & ATENȚIONARE JURIDICĂ ---
+        page.drawText('DECLARAȚIE PE PROPRIA RĂSPUNDERE:', { x: margin, y, size: 8.5, font: fontBold, color: rgb(0, 0, 0) });
+        y -= 12;
+        
+        const textDeclarație = "Subsemnatul(a), identificat(ă) cu datele de mai sus, cunoscând prevederile Codului Penal referitoare la falsul în declarații, declar pe propria răspundere că datele înscrise în prezenta declarație sunt corecte, complete și corespund realității.";
+        
+        // Randare text pe rânduri multiple (wrap simplu)
+        const wrappedText = textDeclarație.match(/.{1,100}(\s|$)/g) || [textDeclarație];
+        wrappedText.forEach(linieSegment => {
+            page.drawText(linieSegment.trim(), { x: margin, y, size: 8, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            y -= 11;
+        });
+
+        y -= 25;
+
+        // --- ZONA DE SEMNĂTURI ȘI DATĂ ---
+        const dataCurenta = new Date().toLocaleDateString('ro-RO');
+        page.drawText(`Data întocmirii: ${dataCurenta}`, { x: margin, y, size: 9, font: fontRegular, color: rgb(0, 0, 0) });
+        page.drawText('Semnătura contribuabilului / împuternicitului:', { x: width - margin - 200, y, size: 9, font: fontRegular, color: rgb(0, 0, 0) });
+        
+        y -= 50;
+
+        // Capturare și inserare semnătură olografă digitalizată dacă există pe canvas
+        const canvasSig = document.getElementById('sigItl005Canvas');
+        if (canvasSig) {
+            try {
+                const dataURL = canvasSig.toDataURL('image/png');
+                if (dataURL && dataURL.length > 100) {
+                    const signatureImageBytes = await fetch(dataURL).then(res => res.arrayBuffer());
+                    const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
+                    page.drawImage(signatureImage, {
+                        x: width - margin - 160,
+                        y: y - 10,
+                        width: 130,
+                        height: 45,
+                    });
+                }
+            } catch (err) {
+                console.warn("Nu s-a putut randa semnătura pe PDF:", err);
+            }
+        }
+
+        // Linie de semnătură fizică jos
+        page.drawLine({ start: { x: width - margin - 180, y: y - 15 }, end: { x: width - margin, y: y - 15 }, thickness: 0.75, color: rgb(0, 0, 0) });
+
+        // --- SALVARE ȘI DESCĂRCARE FIȘIER PDF ---
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Declaratie_Fiscala_ITL_005_${d.itl005Cnp || d.itl005PjCui || 'Auto'}.pdf`;
+        link.click();
+
+        arataNotificare("✅ Declarația Fiscală ITL-005 a fost generată și descărcată cu succes în format oficial!");
+
+    } catch (eroare) {
+        console.error("Eroare la generarea PDF-ului ITL-005:", eroare);
+        arataNotificare("❌ Eroare la generarea documentului oficial PDF.", true);
+    }
+}
+
+
 // Inițializare canvas la încărcarea paginii pentru semnături
 window.addEventListener('DOMContentLoaded', () => {
     initCanvasSemnatura('sigProprietarCanvas');
