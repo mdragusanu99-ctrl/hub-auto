@@ -760,11 +760,6 @@
                     <div><label>Ultima Zi de Activitate *</label><input type="text" id="demisDataSfarsit" placeholder="ex: 28.09.2026"></div>
                 </div>
 
-                <div style="margin-top: 30px;">
-                    <button class="btn btn-primary" onclick="nextStep(1)">Înainte ➔</button>
-                </div>
-            </div>
-
             <!-- STEP 2 -->
             <div class="step-content" id="step2">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
@@ -824,15 +819,6 @@
                     <div><label>Reprezentat Prin *</label><input type="text" id="beneficiarReprezentant" placeholder="ex: MARIA IONESCU"></div>
                     <div><label>Contact / Telefon *</label><input type="text" id="beneficiarContact" placeholder="ex: 0722..."></div>
                 </div>
-
-<!-- Formular Proces-Verbal Locuință Pas 2 -->
-<div id="formPvLocuintaStep2" class="form-grid" style="display:none;">
-    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Locatar (Chiriaș / Cel care preia) & Imobil</strong></div>
-    <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="pvChiriasNume" placeholder="ex: IONESCU MARIA"></div>
-    <div><label>CNP Chiriaș *</label><input type="text" id="pvChiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="pvChiriasAct" placeholder="ex: BZ 654321"></div>
-    <div class="full-width"><label>Adresa Exactă a Imobilului predat *</label><input type="text" id="pvImobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
-</div>
 
                <!-- Formular Comodat Auto Pas 2 -->
                 <div id="formComodatAutoStep2" class="form-grid" style="display:none;">
@@ -952,6 +938,15 @@
                     <div class="full-width"><label>Adresă Domiciliu *</label><input type="text" id="pvPrimitorAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2"></div>
                 </div>
 
+                <!-- Formular Proces-Verbal Locuință Pas 2 -->
+<div id="formPvLocuintaStep2" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Locatar (Chiriaș / Cel care preia) & Imobil</strong></div>
+    <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="pvChiriasNume" placeholder="ex: IONESCU MARIA"></div>
+    <div><label>CNP Chiriaș *</label><input type="text" id="pvChiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="pvChiriasAct" placeholder="ex: BZ 654321"></div>
+    <div class="full-width"><label>Adresa Exactă a Imobilului predat *</label><input type="text" id="pvImobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
+</div>
+
                 <!-- Formular Comodat Imobil Pas 2 -->
                 <div id="formComodatImobilStep2" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Beneficiar Imobil / Sediu)</strong></div>
@@ -973,12 +968,6 @@
                     <canvas id="sigDemisieCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
                     <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigDemisieCanvas')">Resetează Semnătura</button>
                 </div>
-
-                <div style="margin-top: 30px; display: flex; gap: 12px;" id="btnGroupStep2">
-                    <button class="btn btn-secondary" id="btnPrevStep2" onclick="prevStep(2)">⬅ Înapoi</button>
-                    <button class="btn btn-primary" onclick="nextStep(2)">Înainte ➔</button>
-                </div>
-            </div>
 
             <!-- STEP 3 -->
             <div class="step-content" id="step3">
@@ -1020,46 +1009,17 @@
                 </div>
 
 <!-- Formular Proces-Verbal Locuință Pas 3 -->
-<div id="formPvLocuintaStep3" class="form-grid" style="display:none;">
-    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Inventar Bunuri, Stare Tehnică & Semnături</strong></div>
-    <div class="full-width">
-        <label style="color: var(--primary); margin-bottom: 6px;">Inventar Mobilier & Electrocasnice lăsate în folosință *</label>
-        <textarea id="pvInventarBunuri" placeholder="ex: 1. Centrală termică Bosch; 2. Frigider Arctic; 3. Mașină de spălat rufe. Stare generală bună." style="height: 100px; text-transform: none;"></textarea>
-    </div>
+                <div id="formPvLocuintaStep3" class="form-grid" style="display:none;">
+                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Inventar Bunuri, Stare Tehnică & Semnături</strong></div>
+                    <div class="full-width">
+                        <label style="color: var(--primary); margin-bottom: 6px;">Inventar Mobilier & Electrocasnice lăsate în folosință *</label>
+                        <textarea id="pvInventarBunuri" placeholder="ex: 1. Centrală termică Bosch; 2. Frigider Arctic; 3. Mașină de spălat rufe. Stare generală bună." style="height: 100px; text-transform: none;"></textarea>
+                    </div>
 
-    <div class="full-width" style="margin-top: 10px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-        <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Semnături Electronice Olografe</div>
-        
-        <div style="margin-bottom: 16px;">
-            <label>Semnătură Locator (Proprietar)</label>
-            <canvas id="sigPvProprietarCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigPvProprietarCanvas')">Resetează Semnătura</button>
-        </div>
-
-        <div>
-            <label>Semnătură Locatar (Chiriaș)</label>
-            <canvas id="sigPvChiriasCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigPvChiriasCanvas')">Resetează Semnătura</button>
-        </div>
-    </div>
-</div>
-
-    <div class="full-width" style="margin-top: 10px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-        <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Semnături Electronice Olografe</div>
-        
-        <div style="margin-bottom: 16px;">
-            <label>Semnătură Locator (Proprietar)</label>
-            <canvas id="sigProprietarCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează Semnătura</button>
-        </div>
-
-        <div>
-            <label>Semnătură Locatar (Chiriaș)</label>
-            <canvas id="sigChiriasCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-            <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează Semnătura</button>
-        </div>
-    </div>
-</div>
+                    <div class="full-width" style="margin-top: 10px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Semnături Electronice Olografe</div>
+                        
+                </div>
 
                 <!-- Formular Comodat Auto Pas 3 -->
                 <div id="formComodatAutoStep3" class="form-grid" style="display:none;">
