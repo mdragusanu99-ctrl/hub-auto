@@ -1592,12 +1592,13 @@ async function genereazaProcuraPDF() {
         const titluText = "PROCURĂ SPECIALĂ AUTO";
         const subTitluText = "MODEL / PROIECT PENTRU AUTENTIFICARE NOTARIALĂ";
         
-        let textWidth = fontBold.widthOfTextAtSize(titluText, 10);
+        // Aplicăm curataDiacritice înainte de a măsura lățimea textului pentru a evita eroarea WinAnsi
+        let textWidth = fontBold.widthOfTextAtSize(curataDiacritice(titluText), 10);
         let centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 10, font: fontBold });
         y -= 12;
 
-        textWidth = fontBold.widthOfTextAtSize(subTitluText, 7.5);
+        textWidth = fontBold.widthOfTextAtSize(curataDiacritice(subTitluText), 7.5);
         centerX = (595.28 - textWidth) / 2;
         page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 7.5, font: fontBold, color: rgb(0.7, 0.2, 0.2) });
         y -= 22;
