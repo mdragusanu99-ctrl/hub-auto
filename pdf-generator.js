@@ -1888,6 +1888,16 @@ async function genereazaItl016PDF() {
 // MODULUL DE GENERARE PDF - DECLARAȚIA FISCALĂ ITL-005 (Model Oficial 2026)
 // ==========================================
 
+function curataDiacritice(text) {
+    if (!text) return '';
+    return String(text)
+        .replace(/ă/g, 'a').replace(/Ă/g, 'A')
+        .replace(/â/g, 'a').replace(/Â/g, 'A')
+        .replace(/î/g, 'i').replace(/Î/g, 'I')
+        .replace(/ș/g, 's').replace(/Ș/g, 'S')
+        .replace(/ț/g, 't').replace(/Ț/g, 'T');
+}
+
 async function genereazaItl005PDF() {
     try {
         const { PDFDocument, rgb, StandardFonts } = PDFLib;
@@ -1909,15 +1919,15 @@ async function genereazaItl005PDF() {
         const printableWidth = width - (margin * 2);
 
         // --- ANTETUL OFICIAL INSTITUȚIONAL ---
-        page.drawText('ROMÂNIA', { x: width / 2 - 30, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice('ROMÂNIA'), { x: width / 2 - 30, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
         y -= 14;
-        page.drawText('Ministerul Dezvoltării, Lucrărilor Publice și Administrației', { x: width / 2 - 120, y, size: 9, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+        page.drawText(curataDiacritice('Ministerul Dezvoltării, Lucrărilor Publice și Administrației'), { x: width / 2 - 120, y, size: 9, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
         y -= 12;
-        page.drawText('DECLARAȚIE FISCALĂ:', { x: width / 2 - 60, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice('DECLARAȚIE FISCALĂ:'), { x: width / 2 - 60, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
         y -= 14;
-        page.drawText('PENTRU STABILIREA IMPOZITULUI/TAXEI PE MIJLOACELE DE TRANSPORT', { x: width / 2 - 175, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice('PENTRU STABILIREA IMPOZITULUI/TAXEI PE MIJLOACELE DE TRANSPORT'), { x: width / 2 - 175, y, size: 10, font: fontBold, color: rgb(0, 0, 0) });
         y -= 12;
-        page.drawText('ÎN CAZUL PERSOANELOR FIZICE / JURIDICE (MODEL ITL-005)', { x: width / 2 - 145, y, size: 9, font: fontRegular, color: rgb(0.3, 0.3, 0.3) });
+        page.drawText(curataDiacritice('ÎN CAZUL PERSOANELOR FIZICE / JURIDICE (MODEL ITL-005)'), { x: width / 2 - 145, y, size: 9, font: fontRegular, color: rgb(0.3, 0.3, 0.3) });
 
         y -= 18;
         // Linie despărțitoare sub antet
@@ -1925,14 +1935,14 @@ async function genereazaItl005PDF() {
         y -= 22;
 
         // --- TEMEI LEGAL (Conform Codului Fiscal & HCL Local) ---
-        page.drawText('Temei legal: Art. 469 - 471 din Legea nr. 227/2015 privind Codul Fiscal, cu modificările și completările ulterioare,', { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+        page.drawText(curataDiacritice('Temei legal: Art. 469 - 471 din Legea nr. 227/2015 privind Codul Fiscal, cu modificările și completările ulterioare,'), { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
         y -= 10;
-        page.drawText('și H.G. nr. 1/2016 pentru aprobarea Normelor metodologice de aplicare a Legii nr. 227/2015 privind Codul Fiscal.', { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+        page.drawText(curataDiacritice('și H.G. nr. 1/2016 pentru aprobarea Normelor metodologice de aplicare a Legii nr. 227/2015 privind Codul Fiscal.'), { x: margin, y, size: 7.5, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
 
         y -= 20;
 
         // --- SECȚIUNEA I: DATELE DE IDENTIFICARE ALE CONTRIBUABILULUI ---
-        page.drawText('I. DATELE DE IDENTIFICARE ALE CONTRIBUABILULUI', { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice('I. DATELE DE IDENTIFICARE ALE CONTRIBUABILULUI'), { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
         y -= 14;
 
         const tipContribuabilText = d.itl005TipContribuabil === 'pj' ? 'PERSOANĂ JURIDICĂ' : 'PERSOANĂ FIZICĂ';
@@ -1949,14 +1959,14 @@ async function genereazaItl005PDF() {
         }
 
         liniiContribuabil.forEach(linie => {
-            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
+            page.drawText(curataDiacritice(linie), { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
             y -= 13;
         });
 
         y -= 10;
 
         // --- SECȚIUNEA II: DATELE MIJLOCULUI DE TRANSPORT DOBÂNDIT ---
-        page.drawText('II. DATELE MIJLOCULUI DE TRANSPORT DOBÂNDIT', { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice('II. DATELE MIJLOCULUI DE TRANSPORT DOBÂNDIT'), { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
         y -= 14;
 
         let liniiTransport = [
@@ -1969,14 +1979,14 @@ async function genereazaItl005PDF() {
         ];
 
         liniiTransport.forEach(linie => {
-            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
+            page.drawText(curataDiacritice(linie), { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
             y -= 13;
         });
 
         y -= 10;
 
         // --- SECȚIUNEA III: SCUTIRI, ANEXE ȘI COMUNICARE ELECTRONICĂ ---
-        page.drawText('III. FACILITĂȚI FISCALE, ANEXE ȘI COMUNICARE ELECTRONICĂ', { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice('III. FACILITĂȚI FISCALE, ANEXE ȘI COMUNICARE ELECTRONICĂ'), { x: margin, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
         y -= 14;
 
         let liniiAnexe = [
@@ -1989,14 +1999,14 @@ async function genereazaItl005PDF() {
         ];
 
         liniiAnexe.forEach(linie => {
-            page.drawText(linie, { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
+            page.drawText(curataDiacritice(linie), { x: margin + 10, y, size: 8.5, font: fontRegular, color: rgb(0, 0, 0) });
             y -= 13;
         });
 
         y -= 15;
 
         // --- DECLARAȚIE PE PROPRIA RĂSPUNDERE & ATENȚIONARE JURIDICĂ ---
-        page.drawText('DECLARAȚIE PE PROPRIA RĂSPUNDERE:', { x: margin, y, size: 8.5, font: fontBold, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice('DECLARAȚIE PE PROPRIA RĂSPUNDERE:'), { x: margin, y, size: 8.5, font: fontBold, color: rgb(0, 0, 0) });
         y -= 12;
         
         const textDeclarație = "Subsemnatul(a), identificat(ă) cu datele de mai sus, cunoscând prevederile Codului Penal referitoare la falsul în declarații, declar pe propria răspundere că datele înscrise în prezenta declarație sunt corecte, complete și corespund realității.";
@@ -2004,7 +2014,7 @@ async function genereazaItl005PDF() {
         // Randare text pe rânduri multiple (wrap simplu)
         const wrappedText = textDeclarație.match(/.{1,100}(\s|$)/g) || [textDeclarație];
         wrappedText.forEach(linieSegment => {
-            page.drawText(linieSegment.trim(), { x: margin, y, size: 8, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
+            page.drawText(curataDiacritice(linieSegment.trim()), { x: margin, y, size: 8, font: fontRegular, color: rgb(0.2, 0.2, 0.2) });
             y -= 11;
         });
 
@@ -2012,8 +2022,8 @@ async function genereazaItl005PDF() {
 
         // --- ZONA DE SEMNĂTURI ȘI DATĂ ---
         const dataCurenta = new Date().toLocaleDateString('ro-RO');
-        page.drawText(`Data întocmirii: ${dataCurenta}`, { x: margin, y, size: 9, font: fontRegular, color: rgb(0, 0, 0) });
-        page.drawText('Semnătura contribuabilului / împuternicitului:', { x: width - margin - 200, y, size: 9, font: fontRegular, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice(`Data întocmirii: ${dataCurenta}`), { x: margin, y, size: 9, font: fontRegular, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice('Semnătura contribuabilului / împuternicitului:'), { x: width - margin - 200, y, size: 9, font: fontRegular, color: rgb(0, 0, 0) });
         
         y -= 50;
 
