@@ -1363,6 +1363,29 @@ async function genereazaActAditionalPDF() {
             return;
         }
 
+function deseneazaParagraf(page, text, x, y, maxWidth, fontSize, font, lineHeight) {
+    if (!text) return y;
+    const words = curataDiacritice(text).split(' ');
+    let line = '';
+
+    for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+        if (testWidth > maxWidth && i > 0) {
+            page.drawText(line.trim(), { x, y, size: fontSize, font, color: PDFLib.rgb(0.1, 0.1, 0.1) });
+            y -= lineHeight;
+            line = words[i] + ' ';
+        } else {
+            line = testLine;
+        }
+    }
+    if (line.trim().length > 0) {
+        page.drawText(line.trim(), { x, y, size: fontSize, font, color: PDFLib.rgb(0.1, 0.1, 0.1) });
+        y -= lineHeight;
+    }
+    return y;
+}
+
         const { PDFDocument, rgb, StandardFonts } = PDFLib;
         const pdfDoc = await PDFDocument.create();
         let page = pdfDoc.addPage([595.28, 841.89]); // Format A4
