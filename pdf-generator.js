@@ -1827,8 +1827,6 @@ async function genereazaItl016PDF() {
                 }
 
                 const sigImage = await pdfDoc.embedPng(bytes);
-                
-                // Forțăm o poziție fixă sigură pe axa Y (de exemplu la 185 puncte de jos în sus)
                 page.drawImage(sigImage, { 
                     x: 45, 
                     y: 195, 
@@ -1839,9 +1837,6 @@ async function genereazaItl016PDF() {
                 console.error("Eroare la randarea semnăturii olografe în PDF:", err);
             }
         }
-
-        // Desenăm eticheta text dedesubt
-        page.drawText(curataDiacritice("Semnătura Contribuabil (Declarant)"), { x: 45, y: 180, size: 8, font: fontBold });
 
         page.drawText(curataDiacritice("Semnătura Contribuabil (Declarant)"), { x: 45, y: y - 58, size: 8, font: fontBold });
 
