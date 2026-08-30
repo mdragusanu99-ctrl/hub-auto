@@ -1817,12 +1817,28 @@ async function genereazaItl016PDF() {
        const sigItlCanvas = document.getElementById('sigItlDeclarantCanvas');
 if (sigItlCanvas && sigItlCanvas.offsetParent !== null) {
     try {
+        // Obținem datele sub formă de șir base64 din canvas
         const dataUrl = sigItlCanvas.toDataURL('image/png');
-        // Verifică dacă utilizatorul a desenat ceva (nu este un canvas gol)
-        const sigBytes = await pdfDoc.embedPng(dataUrl);
-        page.drawImage(sigBytes, { x: 45, y: y - 45, width: 130, height: 42 });
+        
+        // Transformăm base64-ul în bytes binari (Uint8Array) ceruți de pdf-lib
+        const base64Data = dataUrl.split(',')[1];
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        // Inserăm imaginea binară în documentul PDF
+        const sigImage = await pdfDoc.embedPng(bytes);
+        page.drawImage(sigImage, { 
+            x: 45, 
+            y: y - 45, 
+            width: 130, 
+            height: 42 
+        });
     } catch (err) {
-        console.log("Eroare la preluarea semnăturii olografe: ", err);
+        console.error("Eroare la randarea semnăturii olografe în PDF:", err);
     }
 }
 
