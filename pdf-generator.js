@@ -2050,6 +2050,11 @@ async function genereazaItl005PDF() {
         // Linie de semnătură fizică jos
         page.drawLine({ start: { x: width - margin - 180, y: y - 15 }, end: { x: width - margin, y: y - 15 }, thickness: 0.75, color: rgb(0, 0, 0) });
 
+        // --- FOOTER INSTITUȚIONAL ---
+        page.drawLine({ start: { x: margin, y: 35 }, end: { x: width - margin, y: 35 }, thickness: 0.5, color: rgb(0.6, 0.6, 0.6) });
+        page.drawText(curataDiacritice('Document generat electronic prin platforma ActPeLoc | Model conform Legii nr. 227/2015 privind Codul Fiscal'), { x: margin, y: 22, size: 7, font: fontRegular, color: rgb(0.4, 0.4, 0.4) });
+        page.drawText(curataDiacritice('Pagina 1 / 1'), { x: width - margin - 45, y: 22, size: 7, font: fontRegular, color: rgb(0.4, 0.4, 0.4) });
+
         // --- SALVARE ȘI DESCĂRCARE FIȘIER PDF ---
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -2063,6 +2068,146 @@ async function genereazaItl005PDF() {
     } catch (eroare) {
         console.error("Eroare la generarea PDF-ului ITL-005:", eroare);
         arataNotificare("❌ Eroare la generarea documentului oficial PDF.", true);
+    }
+}
+// ==========================================
+// MODULUL DE GENERARE PDF - PROCES-VERBAL PREDARE-PRIMIRE LOCUINȚĂ (pdf-generator.js)
+// ==========================================
+
+async function genereazaProcesVerbalLocuintaPDF() {
+    arataNotificare("Se generează Procesul-Verbal de Predare-Primire Locuință...");
+    try {
+        const { PDFDocument, StandardFonts } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]);
+        let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Platformă Oficială de Documente Juridice"), { 
+                x: 45, y: 30, size: 7.5, font, color: PDFLib.rgb(0.5, 0.5, 0.5) 
+            });
+        };
+
+        const deseneazaTitluSectiune = (text) => {
+            if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            y -= 6;
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 8.5, font: fontBold });
+            y -= 16;
+        };
+
+        const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
+            if (!text) return;
+            const words = curataDiacritice(text).split(' ');
+            let line = '';
+            const lineHeight = 11;
+
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const testWidth = customFont.widthOfTextAtSize(testLine, size);
+                if (testWidth > maxWidth && i > 0) {
+                    if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                    y -= lineHeight;
+                    line = words[i] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            if (line.trim().length > 0) {
+                if (y < 80) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+            }
+            y -= 3;
+        };
+
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? curataDiacritice(el.value.trim()) : '';
+        };
+
+        const titluText = "PROCES-VERBAL DE PREDARE-PRIMIRE LOCUINTA";
+        const subTitluText = "Anexa la Contractul de Inchiriere / Document Oficial de Predare";
+
+        let textWidth = fontBold.widthOfTextAtSize(titluText, 11);
+        let centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 11, font: fontBold });
+        y -= 14;
+
+        textWidth = font.widthOfTextAtSize(subTitluText, 8);
+        centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 8, font });
+        y -= 22;
+
+        deseneazaTitluSectiune("1. DATELE PARTILOR CONTRACTANTE");
+        deseneazaParagraf(`1.1. Locator (Proprietar): ${getVal('proprietarNume') || '................................................'}, CNP: ${getVal('proprietarCnp') || '...................'}, CI seria si nr: ${getVal('proprietarAct') || '..............'}, domiciliat in: ${getVal('proprietarAdresa') || '..................................................................................................................'}.`);
+        deseneazaParagraf(`1.2. Locatar (Chirias): ${getVal('chiriasNume') || '................................................'}, CNP: ${getVal('chiriasCnp') || '...................'}, CI seria si nr: ${getVal('chiriasAct') || '..............'}.`);
+        y -= 2;
+
+        deseneazaTitluSectiune("2. OBIECTUL PREDARII SI ADRESA IMOBILULUI");
+        deseneazaParagraf(`2.1. Subsemnatul Locator predau, iar subsemnatul Locatar preiau in posesie si folosinta exclusiva imobilul cu destinatia de locuinta situat la adresa: ${getVal('imobilAdresa') || '..................................................................................................................'}.`);
+        deseneazaParagraf(`2.2. Imobilul se preda in stare curata, igienizata, structural integra si complet apta pentru exploatare normala conform destinatiei sale.`);
+        y -= 2;
+
+        deseneazaTitluSectiune("3. INDICII CONTOARELOR LA MOMENTUL PREDARII");
+        deseneazaParagraf(`Pentru stabilirea clara a consumurilor si decontarea corecta a utilitatilor aferente perioadei de inchiriere, la data de astazi s-au consemnat urmatoarele indexuri:`);
+        deseneazaParagraf(`- Apa rece / Apa calda: .................................................... (Conform contoarelor de apartament sigilate)`);
+        deseneazaParagraf(`- Energie electrica: ....................................................... (Conform contorului individual de pe panou)`);
+        deseneazaParagraf(`- Gaze naturale (dupa caz): ............................................ (Conform contorului de </i>gaz</i> dedicat)`);
+        y -= 2;
+
+        deseneazaTitluSectiune("4. INVENTARUL BUNURILOR SI STAREA TEHNICA");
+        deseneazaParagraf(`4.1. Imobilul este dotat cu urmatoarele bunuri mobile, mobilier si electrocasnice, preluate in buna stare de functionare, fara defecte ascunse:`);
+        deseneazaParagraf(`${getVal('imobilInventar') || 'Fara bunuri suplimentare declarate sau conform intelegerii prealabile intre parti.'}`);
+        deseneazaParagraf(`4.2. Starea elementelor de finisaj (zugraveli, pardoseli, usi interioare, tamplarie si instalatii sanitare/electrice): Inspectate vizual de ambele parti si gasite in stare corespunzatoare de utilizare.`);
+        y -= 2;
+
+        deseneazaTitluSectiune("5. DISPOZITII FINALE");
+        deseneazaParagraf(`5.1. Predarea-primirea imobilului produce efecte juridice incepand de astazi, data semnarii prezentului document.`);
+        deseneazaParagraf(`5.2. Prezentul proces-verbal s-a intocmit si semnat in 2 (doua) exemplare originale, cate unul pentru fiecare parte contractanta.`);
+        y -= 16;
+
+        if (y < 150) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+
+        deseneazaTitluSectiune("SEMNATURILE PARTILOR:");
+        y -= 4;
+
+        const sigPropCanvas = document.getElementById('sigProprietarCanvas');
+        const sigChirCanvas = document.getElementById('sigChiriasCanvas');
+        
+        if (sigPropCanvas && sigPropCanvas.offsetParent !== null) {
+            try {
+                const sigPBytes = await pdfDoc.embedPng(sigPropCanvas.toDataURL('image/png'));
+                page.drawImage(sigPBytes, { x: 45, y: y - 48, width: 110, height: 35 });
+            } catch(err) { console.error("Eroare inserare semnatura locator", err); }
+        }
+        if (sigChirCanvas && sigChirCanvas.offsetParent !== null) {
+            try {
+                const sigCBytes = await pdfDoc.embedPng(sigChirCanvas.toDataURL('image/png'));
+                page.drawImage(sigCBytes, { x: 310, y: y - 48, width: 110, height: 35 });
+            } catch(err) { console.error("Eroare inserare semnatura locatar", err); }
+        }
+
+        page.drawText(curataDiacritice("Locator (Proprietar)"), { x: 45, y: y - 58, size: 7.5, font: fontBold });
+        page.drawText(curataDiacritice("Locatar (Chirias)"), { x: 310, y: y - 58, size: 7.5, font: fontBold });
+
+        deseneazaFooter();
+
+        const bytes = await pdfDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; 
+        a.download = "PROCES_VERBAL_PREDARE_PRIMIRE_LOCUINTA.pdf";
+        a.click();
+
+        arataNotificare("✅ Procesul-verbal de predare-primire locuință a fost generat cu succes!");
+    } catch(e) { 
+        arataNotificare("Eroare PDF PV Locuință: " + e.message, true); 
+        console.error(e);
     }
 }
 

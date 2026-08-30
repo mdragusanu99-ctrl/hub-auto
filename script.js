@@ -5,7 +5,7 @@
 let currentStepIndex = 1;
 let maxStepsTotal = 4;
 let modLucru = 'local';
-let tipContractCurent = 'auto'; // Valori: 'auto', 'comodat_auto', 'imobiliare', 'comodat_imobil', 'prestari_servicii', 'demisie', 'cim', 'fisa_postului', 'proces_verbal', 'act_aditional','procura', 'itl_016','itl-005'
+let tipContractCurent = 'auto'; // Valori: 'auto', 'comodat_auto', 'imobiliare', 'comodat_imobil', 'prestari_servicii', 'demisie', 'cim', 'fisa_postului', 'proces_verbal', 'act_aditional','procura', 'itl_016','itl-005','pv_locuinta'
 let globalSessionId = '';
 let linkCumparatorGlobal = '';
 let profilCurent = {
@@ -33,13 +33,14 @@ const dateCategorii = {
             
         ]
     },
-    imobiliare: {
-        titlu: "Imobiliare & Locuințe",
-        acte: [
-            { id: 'imob-inchiriere', nume: "Contract de Închiriere Locuință", desc: "Include inventar detaliat și clauze fiscale ANAF.", func: "pornesteFluxDocument('imobiliare')" },
-            { id: 'comodat-imobil', nume: "Contract de Comodat Imobil", desc: "Pentru stabilire sediu social (ONRC) sau locuință (cu CF).", func: "pornesteFluxDocument('comodat_imobil')" }
-        ]
-    },
+   imobiliare: {
+    titlu: "Imobiliare & Locuințe",
+    acte: [
+        { id: 'imob-inchiriere', nume: "Contract de Închiriere Locuință", desc: "Include inventar detaliat și clauze fiscale ANAF.", func: "pornesteFluxDocument('imobiliare')" },
+        { id: 'comodat-imobil', nume: "Contract de Comodat Imobil", desc: "Pentru stabilire sediu social (ONRC) sau locuință (cu CF).", func: "pornesteFluxDocument('comodat_imobil')" },
+        { id: 'pv-locuinta', nume: "Proces-Verbal Predare-Primire Locuință", desc: "Inventar bunuri, indici contoare & stare tehnică.", func: "pornesteFluxDocument('pv_locuinta')" } // ➔ Adăugat aici
+    ]
+},
     b2b: {
         titlu: "Prestări Servicii B2B",
         acte: [
@@ -254,6 +255,8 @@ function colecteazaDate() {
         'itl005ModDobandire', 'itl005Marca', 'itl005Vin', 'itl005Motor', 'itl005Capacitate', 'itl005An', 'itl005Norma', 'itl005DataDobandirii',
         'itl005Co2', 'itl005PutereKw',
         'itl005Scutire', 'itl005Anexa1', 'itl005Anexa2', 'itl005Anexa3',
+        'proprietarNume', 'proprietarCnp', 'proprietarAct', 'proprietarAdresa',
+'chiriasNume', 'chiriasCnp', 'chiriasAct', 'imobilAdresa', 'imobilInventar',
     ];
     ids.forEach(id => {
         const el = document.getElementById(id);
@@ -338,7 +341,7 @@ function selecteazaModSiPorneste(mod) {
         maxStepsTotal = 5;
     } else if (tipContractCurent === 'proces_verbal' || tipContractCurent === 'procura' || tipContractCurent === 'itl_016' || tipContractCurent === 'itl_005') {
         maxStepsTotal = 4;
-    } else if (tipContractCurent === 'imobiliare' || tipContractCurent === 'comodat_auto' || tipContractCurent === 'comodat_imobil' || tipContractCurent === 'prestari_servicii' || tipContractCurent === 'cim') {
+    } else if (tipContractCurent === 'imobiliare' || tipContractCurent === 'pv_locuinta' || tipContractCurent === 'comodat_auto' || tipContractCurent === 'comodat_imobil' || tipContractCurent === 'prestari_servicii' || tipContractCurent === 'cim') {
         maxStepsTotal = 4;
     } else if (tipContractCurent === 'auto') {
         maxStepsTotal = (mod === 'remote') ? 5 : 4;
@@ -393,6 +396,7 @@ function activeazaPasulUI(stepNum) {
     const fProcura1 = document.getElementById('formProcuraStep1');
     const fItl1 = document.getElementById('formItl016Step1');
     const fItl005_1 = document.getElementById('formItl005Step1');
+    const fPvLoc1 = document.getElementById('formPvLocuintaStep1');
 
     if (fAuto1) fAuto1.style.display = 'none';
     if (fPrest1) fPrest1.style.display = 'none';
@@ -407,6 +411,7 @@ function activeazaPasulUI(stepNum) {
     if (fProcura1) fProcura1.style.display = 'none';
     if (fItl1) fItl1.style.display = 'none';
     if (fItl005_1) fItl005_1.style.display = 'none';
+    if (fPvLoc1) fPvLoc1.style.display = 'none';
 
     if (stepNum === 1) {
         if (tipContractCurent === 'auto' && fAuto1) fAuto1.style.display = 'grid';
@@ -422,6 +427,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'procura' && fProcura1) fProcura1.style.display = 'grid';
         else if (tipContractCurent === 'itl_016' && fItl1) fItl1.style.display = 'grid';
         else if (tipContractCurent === 'itl_005' && fItl005_1) fItl005_1.style.display = 'grid';
+        else if (tipContractCurent === 'pv_locuinta' && fPvLoc1) fPvLoc1.style.display = 'grid';
 
         if (tipContractCurent === 'auto') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Vânzătorului";
         else if (tipContractCurent === 'prestari_servicii') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Prestatorului";
@@ -436,6 +442,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'procura') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Mandantului (Proprietar)";
         else if (tipContractCurent === 'itl_016') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Contribuabilului (Declarant)";
         else if (tipContractCurent === 'itl_005') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Contribuabilului / Dobânditorului";
+        else if (tipContractCurent === 'pv_locuinta') document.getElementById('titleStep1').innerText = "Pasul 1: Datele Locatorului";
     }
 
     // Gestionare vizibilitate formulare Pas 2
@@ -452,6 +459,7 @@ function activeazaPasulUI(stepNum) {
     const fProcura2 = document.getElementById('formProcuraStep2');
     const fItl2 = document.getElementById('formItl016Step2');
     const fItl005_2 = document.getElementById('formItl005Step2');
+    const fPvLoc2 = document.getElementById('formPvLocuintaStep2');
 
     if (fAuto2) fAuto2.style.display = 'none';
     if (fPrest2) fPrest2.style.display = 'none';
@@ -466,6 +474,7 @@ function activeazaPasulUI(stepNum) {
     if (fProcura2) fProcura2.style.display = 'none';
     if (fItl2) fItl2.style.display = 'none';
     if (fItl005_2) fItl005_2.style.display = 'none';
+    if (fPvLoc2) fPvLoc2.style.display = 'none';
 
     if (stepNum === 2) {
         if (tipContractCurent === 'auto' && fAuto2) fAuto2.style.display = 'grid';
@@ -479,6 +488,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'proces_verbal' && fPv2) fPv2.style.display = 'grid';
         else if (tipContractCurent === 'procura' && fProcura2) fProcura2.style.display = 'grid';
         else if (tipContractCurent === 'itl_016' && fItl2) fItl2.style.display = 'grid';
+        else if (tipContractCurent === 'pv_locuinta' && fPvLoc2) fPvLoc2.style.display = 'grid';
         else if (tipContractCurent === 'itl_005' && fItl005_2) fItl005_2.style.display = 'grid';
         else if (tipContractCurent === 'demisie') {
             if (demisSign) demisSign.style.display = 'block';
@@ -498,6 +508,7 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'procura') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Mandatarului (Împuternicit)";
         else if (tipContractCurent === 'itl_016') document.getElementById('titleStep2').innerText = "Pasul 2: Vehiculul și Motivul Radierii";
         else if (tipContractCurent === 'itl_005') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Mijlocului de Transport Dobândit";
+        else if (tipContractCurent === 'pv_locuinta') document.getElementById('titleStep2').innerText = "Pasul 2: Datele Locatarului & Imobil";
         
     }
 
@@ -512,6 +523,7 @@ function activeazaPasulUI(stepNum) {
     const fProcura3 = document.getElementById('formProcuraStep3');
     const fItl3 = document.getElementById('formItl016Step3');
     const fItl005_3 = document.getElementById('formItl005Step3');
+    const fPvLoc3 = document.getElementById('formPvLocuintaStep3');
 
     if (fAuto3) fAuto3.style.display = 'none';
     if (fPrest3) fPrest3.style.display = 'none';
@@ -523,6 +535,7 @@ function activeazaPasulUI(stepNum) {
     if (fProcura3) fProcura3.style.display = 'none';
     if (fItl3) fItl3.style.display = 'none';
     if (fItl005_3) fItl005_3.style.display = 'none';
+    if (fPvLoc3) fPvLoc3.style.display = 'none';
 
     if (stepNum === 3) {
         if (tipContractCurent === 'auto' && fAuto3) fAuto3.style.display = 'grid';
@@ -538,11 +551,14 @@ function activeazaPasulUI(stepNum) {
         else if (tipContractCurent === 'itl_016' && fItl3) {
             fItl3.style.display = 'grid';
             initCanvasSemnatura('sigItlDeclarantCanvas');
-        }
-        else if (tipContractCurent === 'itl_005' && fItl005_3) {
+        } else if (tipContractCurent === 'itl_005' && fItl005_3) {
             fItl005_3.style.display = 'grid';
             initCanvasSemnatura('sigItl005Canvas');
-        }
+        } else if (tipContractCurent === 'pv_locuinta' && fPvLoc3) {
+    fPvLoc3.style.display = 'grid';
+    initCanvasSemnatura('sigProprietarCanvas');
+    initCanvasSemnatura('sigChiriasCanvas');
+}
 const procuraSignContainer = document.getElementById('procuraSignContainer');
     if (procuraSignContainer) {
         procuraSignContainer.style.display = (tipContractCurent === 'procura' && stepNum === 3) ? 'block' : 'none';
@@ -574,6 +590,7 @@ const procuraSignContainer = document.getElementById('procuraSignContainer');
             else if (tipContractCurent === 'procura') document.getElementById('titleStep3').innerText = "Pasul 3: Vehicul, Instituții & Semnătură";
             else if (tipContractCurent === 'itl_016') titleStep3El.innerText = "Pasul 3: Act Doveditor, Noul Proprietar & Semnătură";
             else if (tipContractCurent === 'itl_005') titleStep3El.innerText = "Pasul 3: Anexe, Facilități & Semnătură Olografă";
+            else if (tipContractCurent === 'pv_locuinta') titleStep3El.innerText = "Pasul 3: Inventar, Stare Tehnică & Semnături";
         }
     }
 
@@ -592,7 +609,7 @@ const procuraSignContainer = document.getElementById('procuraSignContainer');
     if (tipContractCurent === 'fisa_postului') {
         estePasSemnatura = (stepNum === 4);
         estePasPlataDescarcare = (stepNum === 5);
-    } else if (maxStepsTotal === 4 && (tipContractCurent === 'imobiliare' || tipContractCurent === 'comodat_auto' || tipContractCurent === 'comodat_imobil' || tipContractCurent === 'prestari_servicii' || tipContractCurent === 'proces_verbal' || tipContractCurent === 'cim')) {
+    } else if (maxStepsTotal === 4 && (tipContractCurent === 'imobiliare' || tipContractCurent === 'pv_locuinta'|| tipContractCurent === 'comodat_auto' || tipContractCurent === 'comodat_imobil' || tipContractCurent === 'prestari_servicii' || tipContractCurent === 'proces_verbal' || tipContractCurent === 'cim')) {
         estePasSemnatura = (stepNum === 3);
         estePasPlataDescarcare = (stepNum === 4);
     } else if (maxStepsTotal === 4 && (tipContractCurent === 'auto' || tipContractCurent === 'prestari_servicii')) {
@@ -844,8 +861,9 @@ function ruleazaDescarcareaFinala() {
         if (typeof genereazaItl016PDF === 'function') genereazaItl016PDF(); // ➔ Adăugat
     } else if (tipContractCurent === 'itl_005') {
         if (typeof genereazaItl005PDF === 'function') genereazaItl005PDF();
+    } else if (tipContractCurent === 'pv_locuinta') {
+    if (typeof genereazaProcesVerbalLocuintaPDF === 'function') genereazaProcesVerbalLocuintaPDF();
     }
-    
 
     if (profilCurent && profilCurent.pachet === 'GRATUIT' && profilCurent.ramase > 0) {
         profilCurent.ramase--;
@@ -858,7 +876,7 @@ function ruleazaDescarcareaFinala() {
     let dateFormular = colecteazaDate();
     salveazaInArhivaprivata({
         idAct: 'DOC-' + Math.floor(1000 + Math.random() * 9000),
-        numeClient: dateFormular.buyerName || dateFormular.chiriasNume || dateFormular.beneficiarNume || dateFormular.comodatarAutoNume || dateFormular.comodatarImobilNume || dateFormular.demisNume || dateFormular.cimSalariatNume || dateFormular.fisaSalariat || dateFormular.pvPrimitorNume ||
+        numeClient: dateFormular.buyerName || dateFormular.chiriasNume || dateFormular.proprietarNume || dateFormular.beneficiarNume || dateFormular.comodatarAutoNume || dateFormular.comodatarImobilNume || dateFormular.demisNume || dateFormular.cimSalariatNume || dateFormular.fisaSalariat || dateFormular.pvPrimitorNume ||
         dateFormular.procuraMandantNume || dateFormular.itlNoulProprietarNume || dateFormular.itlContribuabilNume || dateFormular.itl005Nume || 'Client Necunoscut',
         tip: tipContractCurent.toUpperCase(),
         data: new Date().toLocaleDateString('ro-RO')
