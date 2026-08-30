@@ -1493,6 +1493,8 @@ function deseneazaParagraf(page, text, x, y, maxWidth, fontSize, font, lineHeigh
         page.drawText(curataDiacritice("Reprezentant Legal / Administrator"), { x: 70, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
         page.drawText(curataDiacritice("Semnătura Olografă Salariat"), { x: 350, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
 
+        deseneazaFooter();
+
         // Salvare și descărcare PDF
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
