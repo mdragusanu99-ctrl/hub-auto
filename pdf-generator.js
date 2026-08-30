@@ -1695,6 +1695,175 @@ async function genereazaProcuraPDF() {
         arataNotificare("✅ Proiectul de procură pregătit pentru notar a fost generat cu succes!");
     } catch(e) { arataNotificare("Eroare PDF Procură: " + e.message, true); }
 }
+// ==========================================
+// GENERATOR PDF: DECLARAȚIE FISCALĂ ITL-016 (Scoatere din evidență mijloace de transport)
+// ==========================================
+async function genereazaItl016PDF() {
+    const chassisEl = document.getElementById('itlAutoVin');
+    if (chassisEl) {
+        const vin = chassisEl.value.trim();
+        if (vin.length !== 17) {
+            arataNotificare("⚠️ Seria de șasiu (VIN) trebuie să aibă exact 17 caractere!", true);
+            chassisEl.focus();
+            return;
+        }
+    }
+
+    arataNotificare("Se generează Declarația fiscală ITL-016 oficială...");
+    try {
+        const { PDFDocument, StandardFonts, rgb } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]); // Format A4
+        let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("Generat prin ActPeLoc.ro — Model conform H.G. / Ordinului de impunere locală (ITL-016)"), { 
+                x: 45, y: 25, size: 7.5, font, color: rgb(0.5, 0.5, 0.5) 
+            });
+        };
+
+        const deseneazaTitluSectiune = (text) => {
+            if (y < 90) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            y -= 6;
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 8, font: fontBold });
+            y -= 15;
+        };
+
+        const deseneazaParagraf = (text, customFont = font, size = 7.5, maxWidth = 505) => {
+            if (!text) return;
+            const words = curataDiacritice(text).split(' ');
+            let line = '';
+            const lineHeight = 11;
+
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const testWidth = customFont.widthOfTextAtSize(testLine, size);
+                if (testWidth > maxWidth && i > 0) {
+                    if (y < 90) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                    y -= lineHeight;
+                    line = words[i] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            if (line.trim().length > 0) {
+                if (y < 90) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+            }
+            y -= 3;
+        };
+
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
+        const titluText = "DECLARAȚIE FISCALĂ:";
+        const subTitluText = "pentru stabilirea impozitului asupra mijloacelor de transport în caz de scoatere din evidență (ITL-016)";
+        
+        let textWidth = fontBold.widthOfTextAtSize(curataDiacritice(titluText), 11);
+        let centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 11, font: fontBold });
+        y -= 14;
+
+        textWidth = font.widthOfTextAtSize(curataDiacritice(subTitluText), 8);
+        centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 8, font, color: rgb(0.2, 0.2, 0.2) });
+        y -= 25;
+
+        deseneazaTitluSectiune("1. DATE DE IDENTIFICARE A CONTRIBUABILULUI (DECLARANTULUI)");
+        deseneazaParagraf(`Subsemnatul / Subscrisa: ${getVal('itlContribuabilNume') || '...................................................'}, având CNP / CUI: ${getVal('itlContribuabilCnp') || '................'}, act de identitate / B.I / C.I / Pașaport seria și numărul: ${getVal('itlContribuabilAct') || '........'}, cu domiciliul / sediul în: ${getVal('itlContribuabilAdresa') || '...................................................'}.`);
+        deseneazaParagraf(`Calitatea contribuabilului: ${getVal('itlContribuabilCalitate') || 'proprietar'}, Telefon / Fax: ${getVal('itlContribuabilTelefon') || '................'}, E-mail: ${getVal('itlContribuabilEmail') || '................'}.`);
+        y -= 3;
+
+        deseneazaTitluSectiune("2. DATELE MIJLOCULUI DE TRANSPORT SCOS DIN EVIDENȚĂ");
+        deseneazaParagraf(`- Marcă autovehicul: ${getVal('itlAutoMarca') || '...................................................'}`);
+        deseneazaParagraf(`- Serie Motor: ${getVal('itlAutoMotor') || '...................................................'}`);
+        deseneazaParagraf(`- Seria de Șasiu (VIN - 17 caractere): ${getVal('itlAutoVin') || '...................................................'}`);
+        deseneazaParagraf(`- Capacitate cilindrică / Tonaj: ${getVal('itlAutoCapacitate') || '................................'}`);
+        deseneazaParagraf(`- Data dobândirii inițiale: ${getVal('itlAutoDataDobandirii') || '................................'}`);
+        y -= 3;
+
+        deseneazaTitluSectiune("3. MOTIVUL SCOATERII DIN EVIDENȚĂ ȘI ACTUL DOVEDITOR");
+        deseneazaParagraf(`În conformitate cu dispozițiile legale în vigoare, solicit scoaterea din evidența fiscală a mijlocului de transport de mai sus ca efect al: ${getVal('itlMotivRadiere') || 'instrinarii / transferului'}, începând cu data de ${getVal('itlDataEfectiva') || '................................'}.`);
+        deseneazaParagraf(`Temeiul legal / Actul doveditor: ${getVal('itlTipActDoveditor') || 'Contract de vanzare-cumparare'}, înregistrat cu nr. și data: ${getVal('itlNumarDataAct') || '................................'}.`);
+        y -= 3;
+
+        deseneazaTitluSectiune("4. DATELE NOULUI PROPRIETAR (ÎN CAZ DE ÎNSTRĂINARE)");
+        deseneazaParagraf(`Nume / Denumire noul proprietar: ${getVal('itlNoulProprietarNume') || '...................................................'}`);
+        deseneazaParagraf(`Adresă / Localitate / Județ noul proprietar: ${getVal('itlNoulProprietarAdresa') || '...................................................'}`);
+        y -= 15;
+
+        // Verificare spațiu pentru secțiunea de semnătură și încheiere fiscală
+        if (y < 200) { 
+            deseneazaFooter(); 
+            page = pdfDoc.addPage([595.28, 841.89]); 
+            y = 780; 
+        }
+
+        page.drawText(curataDiacritice("Sub sancțiunile prevăzute de Codul Penal pentru falsul în declarații, declar că datele " +
+            "înscrise în prezentul formular sunt corecte și complete."), { x: 45, y, size: 7.5, font, maxWidth: 505 });
+        y -= 30;
+
+        page.drawText(curataDiacritice(`Data întocmirii: ${new Date().toLocaleDateString('ro-RO')}`), { x: 45, y, size: 8, font: fontBold });
+        y -= 25;
+
+        // Inserare semnătură olografă din canvas (dacă există)
+        const sigItlCanvas = document.getElementById('sigItlDeclarantCanvas');
+        if (sigItlCanvas && sigItlCanvas.offsetParent !== null) {
+            try {
+                const sigBytes = await pdfDoc.embedPng(sigItlCanvas.toDataURL('image/png'));
+                page.drawImage(sigBytes, { x: 45, y: y - 45, width: 130, height: 42 });
+            } catch (err) {
+                console.log("Canvas semnătură ITL gol sau neinițializat");
+            }
+        }
+
+        page.drawText(curataDiacritice("Semnătura Contribuabil (Declarant)"), { x: 45, y: y - 58, size: 8, font: fontBold });
+
+        // Chenar rezervat organului fiscal
+        page.drawRectangle({
+            x: 310,
+            y: y - 75,
+            width: 240,
+            height: 75,
+            borderColor: rgb(0.3, 0.3, 0.3),
+            borderWidth: 1,
+            color: rgb(0.96, 0.96, 0.96),
+        });
+        page.drawText(curataDiacritice("REZERVAT PENTRU ORGANUL FISCAL LOCAL"), { x: 320, y: y - 12, size: 7, font: fontBold });
+        page.drawText(curataDiacritice("Primit în data de: ...................................."), { x: 320, y: y - 30, size: 6.5, font });
+        page.drawText(curataDiacritice("Operator fiscal / Funcționar: ...................."), { x: 320, y: y - 45, size: 6.5, font });
+        page.drawText(curataDiacritice("Semnătura și ștampila: ........................"), { x: 320, y: y - 60, size: 6.5, font });
+
+        deseneazaFooter();
+
+        const bytes = await pdfDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; 
+        a.download = "DECLARATIE_FISCALA_ITL_016.pdf";
+        a.click();
+
+        if (typeof salveazaInArhivaprivata === 'function') {
+            salveazaInArhivaprivata({ 
+                idAct: 'ITL016-' + Math.floor(1000 + Math.random()*9000), 
+                numeClient: curataDiacritice(getVal('itlContribuabilNume') || 'Contribuabil'),
+                tip: 'ITL-016',
+                data: new Date().toLocaleDateString('ro-RO')
+            });
+        }
+        arataNotificare("✅ Declarația fiscală ITL-016 a fost generată și descărcată cu succes!");
+    } catch(e) { 
+        arataNotificare("Eroare PDF ITL-016: " + e.message, true); 
+    }
+}
 
 // Inițializare canvas la încărcarea paginii pentru semnături
 window.addEventListener('DOMContentLoaded', () => {

@@ -591,6 +591,29 @@
                     <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodantAutoAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
                 </div>
 
+                <!-- Formular ITL-016 Pas 1: Date Contribuabil -->
+<div id="formItl016Step1" class="form-grid" style="display:none;">
+    <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
+        📄 Declarație pentru scoaterea din evidență a mijloacelor de transport (Model 2016 ITL-016)
+    </div>
+    <div class="full-width"><label>Nume și Prenume / Denumire Firmă (Subsemnatul / Subscrisa) *</label><input type="text" id="itlContribuabilNume" placeholder="ex: DRAGUSANU MARIO"></div>
+    <div><label>CNP / CUI *</label><input type="text" id="itlContribuabilCnp" placeholder="ex: 5040101123456" maxlength="13"></div>
+    <div><label>Act Identitate (B.I. / C.I. / Pașaport Serie și Nr) *</label><input type="text" id="itlContribuabilAct" placeholder="ex: VS 123456"></div>
+    <div class="full-width"><label>Adresă Domiciliu / Sediu Completă (Județ, Localitate, Stradă, Nr.) *</label><input type="text" id="itlContribuabilAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2, BÂRLAD, JUD. VASLUI"></div>
+    <div>
+        <label>Calitatea Contribuabilului *</label>
+        <select id="itlContribuabilCalitate">
+            <option value="proprietar">Proprietar</option>
+            <option value="coproprietar">Coproprietar</option>
+            <option value="mostenitor">Moștenitor (cu certificat de moștenitor)</option>
+            <option value="mandatar">Mandatar / Împuternicit</option>
+            <option value="administrator">Administrator / Reprezentant Firmă</option>
+        </select>
+    </div>
+    <div><label>Telefon / Fax *</label><input type="text" id="itlContribuabilTelefon" placeholder="ex: 0749685347"></div>
+    <div class="full-width"><label>Adresă E-mail pentru comunicare oficială *</label><input type="email" id="itlContribuabilEmail" placeholder="ex: dragusanumario@gmail.com" style="text-transform: none;"></div>
+</div>
+
                 <!-- Formular Procură / Împuternicire Pas 1: Date Mandant -->
 <div id="formProcuraStep1" class="form-grid" style="display:none;">
     <div class="full-width" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); border: 1px solid var(--accent); color: var(--accent); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
@@ -769,6 +792,30 @@
                     <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodatarAutoAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
                 </div>
 
+<!-- Formular ITL-016 Pas 2: Vehicul & Motiv -->
+<div id="formItl016Step2" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Datele Mijlocului de Transport & Motivul Radierii</strong></div>
+    <div><label>Marcă Auto *</label><input type="text" id="itlAutoMarca" placeholder="ex: AUDI"></div>
+    <div><label>Serie Motor *</label><input type="text" id="itlAutoMotor" placeholder="ex: CAGA123456"></div>
+    <div class="full-width"><label>Serie Șasiu (VIN - exact 17 caractere) *</label><input type="text" id="itlAutoVin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
+    <div><label>Capacitate Cilindrică (cm³) sau Tonaj *</label><input type="text" id="itlAutoCapacitate" placeholder="ex: 1968 cm³"></div>
+    <div><label>Data Dobândirii Inițiale *</label><input type="text" id="itlAutoDataDobandirii" placeholder="ex: 15.05.2023"></div>
+    
+    <div class="full-width" style="margin-top: 10px;">
+        <label style="color: var(--primary); margin-bottom: 8px;">Solicit scoaterea din evidență ca efect al: *</label>
+        <select id="itlMotivRadiere" style="margin-bottom: 12px;">
+            <option value="instrinarii / transferului">Înstrăinării / Transferului (Vânzare)</option>
+            <option value="transferului la un alt punct de lucru">Transferului la un alt punct de lucru</option>
+            <option value="furtului">Furtului</option>
+            <option value="scoaterii din functiune">Scoaterii din funcțiune</option>
+            <option value="schimbarii domiciliului">Schimbării domiciliului</option>
+            <option value="incetarii contractului de leasing inainte de scadenta">Încetării contractului de leasing înainte de scadență</option>
+            <option value="scoaterii definitive din tara">Scoaterii definitive din țară</option>
+        </select>
+    </div>
+    <div><label>Începând cu data de *</label><input type="text" id="itlDataEfectiva" placeholder="ex: 01.09.2026"></div>
+</div>
+
                 <!-- Formular Procură / Împuternicire Pas 2: Date Mandatar -->
 <div id="formProcuraStep2" class="form-grid" style="display:none;">
     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Mandatar (Persoana Împuternicită)</strong></div>
@@ -913,6 +960,27 @@
                     <div><label>Capacitate Cilindrică (cmc) *</label><input type="text" id="comodatAutoCmc" placeholder="ex: 1968"></div>
                     <div><label>Durata Contractului *</label><input type="text" id="comodatAutoDurata" placeholder="ex: 1 AN"></div>
                 </div>
+
+<!-- Formular ITL-016 Pas 3: Noul Proprietar, Act Doveditor & Casetă Dedicată Semnătură -->
+<div id="formItl016Step3" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Act Doveditor & Noul Proprietar</strong></div>
+    <div><label>Tip Act Doveditor *</label><input type="text" id="itlTipActDoveditor" value="Contract de vanzare-cumparare"></div>
+    <div><label>Număr și Dată Act *</label><input type="text" id="itlNumarDataAct" placeholder="ex: nr. 12 din 01.09.2026"></div>
+    
+    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--text-main);">Date Noul Proprietar (în caz de înstrăinare):</strong></div>
+    <div class="full-width"><label>Nume / Denumire Noul Proprietar *</label><input type="text" id="itlNoulProprietarNume" placeholder="ex: IONESCU MARIA"></div>
+    <div class="full-width"><label>Adresă / Localitate / Județ Noul Proprietar *</label><input type="text" id="itlNoulProprietarAdresa" placeholder="ex: BUCUREȘTI, SECTOR 1"></div>
+
+    <!-- Căsuță separată și elegantă pentru semnătura ITL-016 -->
+    <div class="full-width" id="itlSignContainer" style="margin-top: 20px; background: var(--bg-body); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <label style="margin: 0; color: var(--primary); font-weight: 700;">Semnătură Olografă Contribuabil (Declarant)</label>
+            <span style="font-size: 11px; color: var(--text-muted);">Desenați în chenar</span>
+        </div>
+        <canvas id="sigItlDeclarantCanvas" width="320" height="100" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; width: 100%; max-width: 350px;"></canvas>
+        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; width: auto; margin-top: 8px;" onclick="curataCanvas('sigItlDeclarantCanvas')">🔄 Resetează Semnătura</button>
+    </div>
+</div>
 
                 <!-- Formular Procură / Împuternicire Pas 3: Vehicul & Instituții -->
 <div id="formProcuraStep3" class="form-grid" style="display:none;">
