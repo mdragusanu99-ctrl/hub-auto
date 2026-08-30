@@ -1019,17 +1019,12 @@
                 </div>
 
 <!-- Formular Proces-Verbal Locuință Pas 3 -->
-                <div id="formPvLocuintaStep3" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Inventar Bunuri, Stare Tehnică & Semnături</strong></div>
-                    <div class="full-width">
-                        <label style="color: var(--primary); margin-bottom: 6px;">Inventar Mobilier & Electrocasnice lăsate în folosință *</label>
-                        <textarea id="pvInventarBunuri" placeholder="ex: 1. Centrală termică Bosch; 2. Frigider Arctic; 3. Mașină de spălat rufe. Stare generală bună." style="height: 100px; text-transform: none;"></textarea>
-                    </div>
-
-                    <div class="full-width" style="margin-top: 10px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                        <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Semnături Electronice Olografe</div>
-                        
-                </div>
+    <div id="formPvLocuintaStep3" class="form-grid" style="display:none;">
+        <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Inventar Bunuri, Stare Tehnică & Semnături</strong></div>
+        <div class="full-width">
+            <label style="color: var(--primary); margin-bottom: 6px;">Inventar Mobilier & Electrocasnice lăsate în folosință *</label>
+            <textarea id="pvInventarBunuri" placeholder="ex: 1. Centrală termică Bosch; 2. Frigider Arctic; 3. Mașină de spălat rufe. Stare generală bună." style="height: 100px; text-transform: none;"></textarea>
+        </div>
 
                 <!-- Formular Comodat Auto Pas 3 -->
                 <div id="formComodatAutoStep3" class="form-grid" style="display:none;">
@@ -1185,11 +1180,6 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
-                    <button class="btn btn-primary" id="btnNextStep3" onclick="nextStep(3)">Finalizare & Opțiuni ➔</button>
-                </div>
-
                 <!-- Un singur Bloc Plată Pas 3 -->
                 <div class="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
                     <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
@@ -1208,6 +1198,11 @@
                     <button class="btn btn-success btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()" style="max-width: 400px; margin: 0 auto;">📥 Descarcă Din Nou Documentul PDF</button>
                 </div>
             </div>
+            
+                <div style="margin-top: 30px; display: flex; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
+                    <button class="btn btn-primary" id="btnNextStep3" onclick="nextStep(3)">Finalizare & Opțiuni ➔</button>
+                </div>
 
             <!-- STEP 4 -->
             <div class="step-content" id="step4">
