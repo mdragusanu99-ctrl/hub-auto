@@ -1363,19 +1363,6 @@ async function genereazaActAditionalPDF() {
             return;
         }
 
-        function curataDiacritice(text) {
-    if (!text) return '';
-    return text
-        .toString()
-        .replace(/ă/g, 'a').replace(/Ă/g, 'A')
-        .replace(/â/g, 'a').replace(/Â/g, 'A')
-        .replace(/î/g, 'i').replace(/Î/g, 'I')
-        .replace(/ș/g, 's').replace(/Ș/g, 'S')
-        .replace(/ț/g, 't').replace(/Ț/g, 'T')
-        .replace(/ş/g, 's').replace(/Ş/g, 'S') // variantă sedilă
-        .replace(/ţ/g, 't').replace(/Ţ/g, 'T'); // variantă sedilă
-}
-
         const { PDFDocument, rgb, StandardFonts } = PDFLib;
         const pdfDoc = await PDFDocument.create();
         let page = pdfDoc.addPage([595.28, 841.89]); // Format A4
@@ -1386,36 +1373,36 @@ async function genereazaActAditionalPDF() {
 
         // Colectare date complete formular
         const d = colecteazaDate();
-const angajator = curataDiacritice(d.actAngajator || 'SC BARBERHUB SRL');
-const salariat = curataDiacritice(d.actSalariat || 'DRAGUSANU MARIO');
-const cimNr = curataDiacritice(d.actCimNr || '45');
-const cimData = curataDiacritice(d.actCimData || '15.05.2025');
-const tipModificare = curataDiacritice(d.actTipModificare || 'SALARIU');
-const dataAplicarii = curataDiacritice(d.actDataAplicarii || '01.09.2026');
-const continutNou = curataDiacritice(d.actContinutNou || 'Modificarea clauzelor contractuale conform acordului părților.');
-const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
+        const angajator = curataDiacritice(d.actAngajator || 'SC BARBERHUB SRL');
+        const salariat = curataDiacritice(d.actSalariat || 'DRAGUSANU MARIO');
+        const cimNr = curataDiacritice(d.actCimNr || '45');
+        const cimData = curataDiacritice(d.actCimData || '15.05.2025');
+        const tipModificare = curataDiacritice(d.actTipModificare || 'SALARIU');
+        const dataAplicarii = curataDiacritice(d.actDataAplicarii || '01.09.2026');
+        const continutNou = curataDiacritice(d.actContinutNou || 'Modificarea clauzelor contractuale conform acordului părților.');
+        const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
 
         let y = height - 40;
 
         // Antet Oficial & Antet Societate
-        page.drawText(angajator.toUpperCase(), { x: 50, y, size: 11, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        page.drawText(angajator, { x: 50, y, size: 11, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
         y -= 14;
-        page.drawText(`Înregistrat în Registrul de Evidență cu ID Unic: ${idUnic}`, { x: 50, y, size: 7.5, font: fontRegular, color: rgb(0.4, 0.4, 0.4) });
+        page.drawText(curataDiacritice(`Înregistrat în Registrul de Evidență cu ID Unic: ${idUnic}`), { x: 50, y, size: 7.5, font: fontRegular, color: rgb(0.4, 0.4, 0.4) });
         y -= 25;
 
         // Titlu Document
-        page.drawText(`ACT ADIȚIONAL NR. 1`, { x: width / 2 - 70, y, size: 12, font: fontBold, color: rgb(0.05, 0.05, 0.3) });
+        page.drawText(curataDiacritice(`ACT ADIȚIONAL NR. 1`), { x: width / 2 - 70, y, size: 12, font: fontBold, color: rgb(0.05, 0.05, 0.3) });
         y -= 15;
-        page.drawText(`la Contractul Individual de Muncă Nr. ${cimNr} din data de ${cimData}`, { x: width / 2 - 130, y, size: 9.5, font: fontBold, color: rgb(0.2, 0.2, 0.2) });
+        page.drawText(curataDiacritice(`la Contractul Individual de Muncă Nr. ${cimNr} din data de ${cimData}`), { x: width / 2 - 130, y, size: 9.5, font: fontBold, color: rgb(0.2, 0.2, 0.2) });
         y -= 30;
 
         // Preambul Juridic Extins (Obligatoriu ITM)
         const preambulText = curataDiacritice(
-    `Încheiat astăzi, ${dataAplicarii}, între:\n\n` +
-    `1. Societatea ${angajator}, cu sediul social în România, reprezentată legal prin Administrator/Împuternicit, în calitate de Angajator, pe de o parte, și\n` +
-    `2. Subsemnatul/a ${salariat}, posesor/oare al/a actului de identitate, în calitate de Salariat, pe de altă parte,\n\n` +
-    `În temeiul prevederilor art. 41 din Legea nr. 53/2003 – Codul Muncii, republicată, cu modificările și completările ulterioare, intervenind acordul de voință al părților contractante, se încheie prezentul act adițional prin care se modifică clauzele contractuale după cum urmează:`
-);
+            `Încheiat astăzi, ${dataAplicarii}, între:\n\n` +
+            `1. Societatea ${angajator}, cu sediul social în România, reprezentată legal prin Administrator/Împuternicit, în calitate de Angajator, pe de o parte, și\n` +
+            `2. Subsemnatul/a ${salariat}, posesor/oare al/a actului de identitate, în calitate de Salariat, pe de altă parte,\n\n` +
+            `În temeiul prevederilor art. 41 din Legea nr. 53/2003 – Codul Muncii, republicată, cu modificările și completările ulterioare, intervenind acordul de voință al părților contractante, se încheie prezentul act adițional prin care se modifică clauzele contractuale după cum urmează:`
+        );
 
         y = deseneazaParagraf(page, preambulText, 50, y, 495, 9, fontRegular, 13);
         y -= 12;
@@ -1426,23 +1413,23 @@ const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
         else if (tipModificare === 'PROGRAM') titluClauza = "MODIFICARE PROGRAM DE MUNCĂ / TIMP DE MUNCĂ";
         else if (tipModificare === 'LOC') titluClauza = "MODIFICARE LOC DE MUNCĂ";
 
-        page.drawText(`Art. 1. Începând cu data de ${dataAplicarii}, clauza referitoare la ${titluClauza} din Contractul Individual de Muncă se modifică în mod expres și va avea următorul conținut:`, { x: 50, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
+        page.drawText(curataDiacritice(`Art. 1. Începând cu data de ${dataAplicarii}, clauza referitoare la ${titluClauza} din Contractul Individual de Muncă se modifică în mod expres și va avea următorul conținut:`), { x: 50, y, size: 9, font: fontBold, color: rgb(0, 0, 0) });
         y -= 16;
 
         y = deseneazaParagraf(page, `"${continutNou}"`, 70, y, 475, 9, fontRegular, 13);
         y -= 16;
 
-        const art2Text = `Art. 2. Toate celelalte clauze, drepturi și obligații prevăzute în Contractul Individual de Muncă nr. ${cimNr} din ${cimData} care nu contravin prezentului act adițional rămân neschimbate, continuând să își producă efectele juridice de deplină valabilitate.`;
+        const art2Text = curataDiacritice(`Art. 2. Toate celelalte clauze, drepturi și obligații prevăzute în Contractul Individual de Muncă nr. ${cimNr} din ${cimData} care nu contravin prezentului act adițional rămân neschimbate, continuând să își producă efectele juridice de deplină valabilitate.`);
         y = deseneazaParagraf(page, art2Text, 50, y, 495, 9, fontRegular, 13);
         y -= 16;
 
-        const art3Text = `Art. 3. Prezentul act adițional s-a întocmit și semnat în 2 (două) exemplare originale cu valoare juridică egală, câte unul pentru fiecare parte, urmând a fi comunicat Inspectoratului Teritorial de Muncă competent prin intermediul aplicației REGES / Revisal în termenele legale stabilite.`;
+        const art3Text = curataDiacritice(`Art. 3. Prezentul act adițional s-a întocmit și semnat în 2 (două) exemplare originale cu valoare juridică egală, câte unul pentru fiecare parte, urmând a fi comunicat Inspectoratului Teritorial de Muncă competent prin intermediul aplicației REGES / Revisal în termenele legale stabilite.`);
         y = deseneazaParagraf(page, art3Text, 50, y, 495, 9, fontRegular, 13);
         y -= 35;
 
         // Secțiune Semnături Oficiale
-        page.drawText("ANGAJATOR,", { x: 70, y, size: 9.5, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
-        page.drawText("SALARIAT,", { x: 350, y, size: 9.5, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        page.drawText(curataDiacritice("ANGAJATOR,"), { x: 70, y, size: 9.5, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
+        page.drawText(curataDiacritice("SALARIAT,"), { x: 350, y, size: 9.5, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
         y -= 14;
 
         page.drawText(angajator, { x: 70, y, size: 8.5, font: fontRegular, color: rgb(0.3, 0.3, 0.3) });
@@ -1470,8 +1457,8 @@ const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
         }
 
         y -= 45;
-        page.drawText("Reprezentant Legal / Administrator", { x: 70, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
-        page.drawText("Semnătura Olografă Salariat", { x: 350, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+        page.drawText(curataDiacritice("Reprezentant Legal / Administrator"), { x: 70, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
+        page.drawText(curataDiacritice("Semnătura Olografă Salariat"), { x: 350, y, size: 7.5, font: fontRegular, color: rgb(0.5, 0.5, 0.5) });
 
         // Salvare și descărcare PDF
         const pdfBytes = await pdfDoc.save();
@@ -1486,7 +1473,6 @@ const idUnic = 'ACT-' + Math.floor(1000 + Math.random() * 9000);
         console.error(e);
         arataNotificare("Erore la generarea PDF-ului: " + e.message, true);
     }
-    
 }
 
 // Inițializare canvas la încărcarea paginii pentru semnături
