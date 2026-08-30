@@ -1516,6 +1516,185 @@ function deseneazaParagraf(page, text, x, y, maxWidth, fontSize, font, lineHeigh
     }
 }
 
+// ==========================================
+// 9. GENERATOR PROCURĂ / ÎMPUTERNICIRE RAR & ÎNMATRICULĂRI (PREGĂTIT PENTRU NOTARIAT)
+// ==========================================
+async function genereazaProcuraPDF() {
+    const chassisEl = document.getElementById('procuraAutoVin');
+    if (chassisEl) {
+        const vin = chassisEl.value.trim();
+        if (vin.length !== 17) {
+            arataNotificare("⚠️ Seria de șasiu (VIN) trebuie să aibă exact 17 caractere!", true);
+            chassisEl.focus();
+            return;
+        }
+    }
+
+    arataNotificare("Se generează proiectul de procură pentru notar...");
+    try {
+        const { PDFDocument, StandardFonts, rgb } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        
+        let page = pdfDoc.addPage([595.28, 841.89]);
+        let y = 780;
+
+        const deseneazaFooter = () => {
+            page.drawText(curataDiacritice("ActPeLoc.ro — Proiect de împuternicire (Necesită autentificare notarială conform legii)"), { 
+                x: 45, y: 25, size: 7.5, font, color: rgb(0.5, 0.5, 0.5) 
+            });
+        };
+
+        const deseneazaTitluSectiune = (text) => {
+            if (y < 120) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+            y -= 6;
+            page.drawText(curataDiacritice(text), { x: 45, y, size: 8, font: fontBold });
+            y -= 15;
+        };
+
+        const deseneazaParagraf = (text, customFont = font, size = 7, maxWidth = 505) => {
+            if (!text) return;
+            const words = curataDiacritice(text).split(' ');
+            let line = '';
+            const lineHeight = 10;
+
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const testWidth = customFont.widthOfTextAtSize(testLine, size);
+                if (testWidth > maxWidth && i > 0) {
+                    if (y < 120) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                    page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                    y -= lineHeight;
+                    line = words[i] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            if (line.trim().length > 0) {
+                if (y < 120) { deseneazaFooter(); page = pdfDoc.addPage([595.28, 841.89]); y = 780; }
+                page.drawText(line.trim(), { x: 45, y, size, font: customFont });
+                y -= lineHeight;
+            }
+            y -= 3;
+        };
+
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
+        const getChecked = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.checked : false;
+        };
+
+        const titluText = "PROCURĂ SPECIALĂ AUTO";
+        const subTitluText = "MODEL / PROIECT PENTRU AUTENTIFICARE NOTARIALĂ";
+        
+        let textWidth = fontBold.widthOfTextAtSize(titluText, 10);
+        let centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(titluText), { x: centerX, y, size: 10, font: fontBold });
+        y -= 12;
+
+        textWidth = fontBold.widthOfTextAtSize(subTitluText, 7.5);
+        centerX = (595.28 - textWidth) / 2;
+        page.drawText(curataDiacritice(subTitluText), { x: centerX, y, size: 7.5, font: fontBold, color: rgb(0.7, 0.2, 0.2) });
+        y -= 22;
+
+        deseneazaTitluSectiune("1. DATELE MANDANTULUI (PROPRIETARUL TITULAR)");
+        deseneazaParagraf(`Subsemnatul/a (Denumire firmă / Proprietar): ${getVal('procuraMandantNume') || '...................................................'}, CNP / CUI: ${getVal('procuraMandantCnp') || '................'}, posesor/oare al actului de identitate CI seria și numărul: ${getVal('procuraMandantAct') || '........'}, cu domiciliul / sediul în: ${getVal('procuraMandantAdresa') || '...................................................'}.`);
+        y -= 3;
+
+        deseneazaTitluSectiune("2. DATELE MANDATARULUI (PERSOANA ÎMPUTERNICITĂ)");
+        deseneazaParagraf(`Numesc prin prezenta ca mandatar pe: ${getVal('procuraMandatarNume') || '...................................................'}, CNP: ${getVal('procuraMandatarCnp') || '................'}, posesor/oare al actului de identitate CI seria și numărul: ${getVal('procuraMandatarAct') || '........'}, cu domiciliul în: ${getVal('procuraMandatarAdresa') || '...................................................'}.`);
+        y -= 3;
+
+        deseneazaTitluSectiune("3. OBIECTUL ÎMPUTERNICIRII ȘI DATELE VEHICULULUI");
+        deseneazaParagraf(`Mandatarul meu este împuternicit să mă reprezinte în fața instituțiilor competente pentru vehiculul:`);
+        deseneazaParagraf(`- Marcă / Model: ${getVal('procuraAutoMarca') || '....................'} ${getVal('procuraAutoModel') || '....................'}`);
+        deseneazaParagraf(`- Serie Șasiu (VIN): ${getVal('procuraAutoVin') || '...................................................'}`);
+        deseneazaParagraf(`- Număr Înmatriculare / Status: ${getVal('procuraAutoNr') || 'NEÎNMATRICULAT'}`);
+        deseneazaParagraf(`- Serie Motor: ${getVal('procuraAutoMotor') || '................................'}`);
+        y -= 3;
+
+        deseneazaTitluSectiune("4. INSTITUȚII ȘI ATRIBUȚII AUTORIZATE");
+        deseneazaParagraf(`Mandatarul este pe deplin autorizat să efectueze următoarele demersuri în numele meu:`);
+        if (getChecked('instRar')) deseneazaParagraf(`[ X ] Registrul Auto Român (RAR): Efectuare ITP, obținere CIV, autentificare, omologare.`);
+        if (getChecked('instDrpciv')) deseneazaParagraf(`[ X ] Serviciul de Înmatriculări (SPCRPCIV): Înmatriculare, radiere, obținere numere provizorii sau definitive.`);
+        if (getChecked('instFisc')) deseneazaParagraf(`[ X ] Organul Fiscal Local & ANAF: Luare în evidență, scoatere din evidență, obținere certificat fiscal.`);
+        y -= 3;
+
+        deseneazaTitluSectiune("5. PUTERI ȘI VALABILITATE");
+        deseneazaParagraf(`Prezenta procură este valabilă până la îndeplinirea mandatarului a sarcinilor menționate mai sus. Mandatarul poate semna în numele meu orice cereri, declarații și documente necesare în relația cu autoritățile.`);
+        y -= 15;
+
+        // Verificare spațiu pentru chenarul notarial pe pagina curentă
+        if (y < 230) { 
+            deseneazaFooter(); 
+            page = pdfDoc.addPage([595.28, 841.89]); 
+            y = 780; 
+        }
+
+        // --- CASETA DE ÎNCHEIERE NOTARIALĂ ---
+        page.drawRectangle({
+            x: 45,
+            y: y - 180,
+            width: 505,
+            height: 185,
+            borderColor: rgb(0.2, 0.2, 0.2),
+            borderWidth: 1,
+            color: rgb(0.98, 0.98, 0.98),
+        });
+
+        page.drawText(curataDiacritice("ROMÂNIA — UNIUNEA NAȚIONALĂ A NOTARILOR PUBLICI"), { x: 55, y: y - 15, size: 7, font: fontBold });
+        page.drawText(curataDiacritice("BIROUL NOTARULUI PUBLIC ...................................................."), { x: 55, y: y - 27, size: 7, font });
+        page.drawText(curataDiacritice("ÎNCHEIERE DE AUTENTIFICARE NR. ________ / DATA: ........................"), { x: 55, y: y - 39, size: 7, font: fontBold });
+        
+        let textNotar = 
+            "S-a prezentat în fața mea, notar public, ...................................................., mandantul identificat prin " +
+            "actul de identitate, care a consimțit la autentificarea prezentului înscris, a citit conținutul și a declarat " +
+            "că cele cuprinse reprezintă voința sa. S-a perceput onorariul de ............ lei + TVA.";
+        
+        // Desenează textul în interiorul chenarului
+        let textY = y - 55;
+        const wordsN = curataDiacritice(textNotar).split(' ');
+        let lineN = '';
+        for (let i = 0; i < wordsN.length; i++) {
+            const testL = lineN + wordsN[i] + ' ';
+            if (font.widthOfTextAtSize(testL, 6.5) > 485 && i > 0) {
+                page.drawText(lineN.trim(), { x: 55, y: textY, size: 6.5, font, color: rgb(0.2, 0.2, 0.2) });
+                textY -= 9;
+                lineN = wordsN[i] + ' ';
+            } else {
+                lineN = testL;
+            }
+        }
+        if (lineN.trim().length > 0) {
+            page.drawText(lineN.trim(), { x: 55, y: textY, size: 6.5, font, color: rgb(0.2, 0.2, 0.2) });
+        }
+
+        page.drawText(curataDiacritice("[ L.S. / SIGILIU ]"), { x: 75, y: y - 135, size: 8, font: fontBold, color: rgb(0.4, 0.4, 0.4) });
+        page.drawText(curataDiacritice("NOTAR PUBLIC,"), { x: 390, y: y - 125, size: 7.5, font: fontBold });
+        page.drawText(curataDiacritice("Semnătura și Parafa ........................"), { x: 350, y: y - 145, size: 7, font });
+
+        y -= 200;
+        deseneazaFooter();
+
+        const bytes = await pdfDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = "PROIECT_PROCURA_PENTRU_NOTAR.pdf";
+        a.click();
+
+        if (typeof salveazaInArhivaprivata === 'function') {
+            salveazaInArhivaprivata({ idAct: 'PROCURA-' + Math.floor(1000 + Math.random()*9000), numeClient: curataDiacritice(getVal('procuraMandantNume') || 'Mandant') });
+        }
+        arataNotificare("✅ Proiectul de procură pregătit pentru notar a fost generat cu succes!");
+    } catch(e) { arataNotificare("Eroare PDF Procură: " + e.message, true); }
+}
+
 // Inițializare canvas la încărcarea paginii pentru semnături
 window.addEventListener('DOMContentLoaded', () => {
     initCanvasSemnatura('sigProprietarCanvas');
@@ -1523,4 +1702,5 @@ window.addEventListener('DOMContentLoaded', () => {
     initCanvasSemnatura('sigDemisieCanvas');
     initCanvasSemnatura('sigPvPredatorCanvas');
     initCanvasSemnatura('sigPvPrimitorCanvas');
+    initCanvasSemnatura('sigProcuraMandantCanvas');
 });

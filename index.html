@@ -591,6 +591,15 @@
                     <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodantAutoAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
                 </div>
 
+                <!-- Formular Procură / Împuternicire Pas 1: Date Mandant -->
+<div id="formProcuraStep1" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Mandant (Proprietar / Titular)</strong></div>
+    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="procuraMandantNume" placeholder="ex: DRAGUSANU MARIO"></div>
+    <div><label>CNP / CUI *</label><input type="text" id="procuraMandantCnp" placeholder="ex: 5040101123456" maxlength="13"></div>
+    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="procuraMandantAct" placeholder="ex: VS 123456"></div>
+    <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="procuraMandantAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2, BÂRLAD"></div>
+</div>
+
                 <!-- Formular Comodat Imobil Pas 1 -->
                 <div id="formComodatImobilStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Comodant (Proprietar Imobil)</strong></div>
@@ -757,6 +766,15 @@
                     <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodatarAutoAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
                 </div>
 
+                <!-- Formular Procură / Împuternicire Pas 2: Date Mandatar -->
+<div id="formProcuraStep2" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Mandatar (Persoana Împuternicită)</strong></div>
+    <div class="full-width"><label>Nume și Prenume Complet *</label><input type="text" id="procuraMandatarNume" placeholder="ex: POPESCU ION"></div>
+    <div><label>CNP *</label><input type="text" id="procuraMandatarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
+    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="procuraMandatarAct" placeholder="ex: BZ 654321"></div>
+    <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="procuraMandatarAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
+</div>
+
                 <!-- Formular CIM Pas 2 -->
                 <div id="formCimStep2" class="form-grid" style="display:none;">
                   <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Salariat & Detalii Post</strong></div>
@@ -892,6 +910,38 @@
                     <div><label>Capacitate Cilindrică (cmc) *</label><input type="text" id="comodatAutoCmc" placeholder="ex: 1968"></div>
                     <div><label>Durata Contractului *</label><input type="text" id="comodatAutoDurata" placeholder="ex: 1 AN"></div>
                 </div>
+
+                <!-- Formular Procură / Împuternicire Pas 3: Vehicul & Instituții -->
+<div id="formProcuraStep3" class="form-grid" style="display:none;">
+    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Date Vehicul & Instituții Autorizate</strong></div>
+    <div><label>Marcă Auto *</label><input type="text" id="procuraAutoMarca" placeholder="ex: AUDI"></div>
+    <div><label>Model Auto *</label><input type="text" id="procuraAutoModel" placeholder="ex: A4 B8"></div>
+    <div class="full-width"><label>Serie Șasiu / VIN (exact 17 caractere) *</label><input type="text" id="procuraAutoVin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
+    <div><label>Număr Înmatriculare (sau "Neînmatriculat") *</label><input type="text" id="procuraAutoNr" placeholder="ex: VS12XYZ sau NEÎNMATRICULAT"></div>
+    <div><label>Serie Motor *</label><input type="text" id="procuraAutoMotor" placeholder="ex: CAGA123456"></div>
+    
+    <div class="full-width" style="margin-top: 10px;">
+        <label style="color: var(--primary); margin-bottom: 8px;">Instituții la care se acordă împuternicirea:</label>
+        <div style="display: grid; gap: 8px; font-size: 13px;">
+            <label style="display: flex; align-items: center; gap: 8px; text-transform: none; font-weight: 500; cursor: pointer;">
+                <input type="checkbox" id="instRar" checked style="width: auto;"> Registrul Auto Român (RAR) - ITP, Autentificare, Omologare, CIV
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; text-transform: none; font-weight: 500; cursor: pointer;">
+                <input type="checkbox" id="instDrpciv" checked style="width: auto;"> Serviciul de Înmatriculări (DRPCIV) - Înmatriculare, Radiere, Numere
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; text-transform: none; font-weight: 500; cursor: pointer;">
+                <input type="checkbox" id="instFisc" checked style="width: auto;"> Organul Fiscal Local (Impozite și Taxe) & ANAF
+            </label>
+        </div>
+    </div>
+</div>
+
+<!-- Container Semnătură Mandant pentru Procură (Pas 3 sau Pas 4) -->
+<div id="procuraSignContainer" style="display:none; margin-top: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+    <label style="margin-bottom: 6px;">Semnătură Olografă Mandant (Proprietar)</label>
+    <canvas id="sigProcuraMandantCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
+    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProcuraMandantCanvas')">Resetează Semnătura</button>
+</div>
 
                 <!-- Formular Act Adițional Pas 3 -->
                 <div id="formActAditionalStep3" class="form-grid" style="display:none;">
