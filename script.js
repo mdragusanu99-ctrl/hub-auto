@@ -218,29 +218,26 @@ function arataElemente(ids, titluPas1) {
 // NAVIGARE PAȘI WIZARD (1 la 5)
 // ==========================================
 function nextStep(current) {
-    // Ascundem absolut toți pașii mai întâi
-    for (let i = 1; i <= 5; i++) {
-        const stepEl = document.getElementById(`step${i}`);
-        if (stepEl) stepEl.classList.remove("active");
-    }
+    const pasCurentEl = document.getElementById(`step${current}`) || document.querySelector(`.step-${current}`);
+    const pasUrmatorEl = document.getElementById(`step${current + 1}`) || document.querySelector(`.step-${current + 1}`);
 
+    if (pasCurentEl) pasCurentEl.classList.remove("active");
+    
     state.currentStep = current + 1;
     if (state.currentStep > 5) state.currentStep = 5;
 
-    // Dacă suntem în mod remote și am terminat datele noastre, sărim la pasul 4 (Remote Link)
-    if (state.isRemoteMode && state.currentStep === 3) {
-        state.currentStep = 4;
-        const targetStep = document.getElementById(`step4`);
-        if (targetStep) targetStep.classList.add("active");
-        pornesteFluxRemote();
+    if (pasUrmatorEl) {
+        pasUrmatorEl.classList.add("active");
     } else {
-        const targetStep = document.getElementById(`step${state.currentStep}`);
-        if (targetStep) targetStep.classList.add("active");
-        
-        // Dacă am ajuns la pasul de plată (pasul 5 sau pasul final)
-        if (state.currentStep === 5) {
-            pregatesteEcranPlataSauDescarcare();
-        }
+        // Fallback dacă folosești alte id-uri
+        const altUrmator = document.getElementById(`step${state.currentStep}`);
+        if (altUrmator) altUrmator.classList.add("active");
+    }
+
+    if (state.isRemoteMode && state.currentStep === 4) {
+        pornesteFluxRemote();
+    } else if (state.currentStep === 5) {
+        pregatesteEcranPlataSauDescarcare();
     }
 
     actualizeazaProgresWizard();
@@ -248,16 +245,20 @@ function nextStep(current) {
 }
 
 function prevStep(current) {
-    for (let i = 1; i <= 5; i++) {
-        const stepEl = document.getElementById(`step${i}`);
-        if (stepEl) stepEl.classList.remove("active");
-    }
+    const pasCurentEl = document.getElementById(`step${current}`) || document.querySelector(`.step-${current}`);
+    const pasAnteriorEl = document.getElementById(`step${current - 1}`) || document.querySelector(`.step-${current - 1}`);
 
+    if (pasCurentEl) pasCurentEl.classList.remove("active");
+    
     state.currentStep = current - 1;
     if (state.currentStep < 1) state.currentStep = 1;
 
-    const targetStep = document.getElementById(`step${state.currentStep}`);
-    if (targetStep) targetStep.classList.add("active");
+    if (pasAnteriorEl) {
+        pasAnteriorEl.classList.add("active");
+    } else {
+        const altAnterior = document.getElementById(`step${state.currentStep}`);
+        if (altAnterior) altAnterior.classList.add("active");
+    }
 
     actualizeazaProgresWizard();
     window.scrollTo({ top: 0, behavior: 'smooth' });
