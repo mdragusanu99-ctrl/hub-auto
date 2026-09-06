@@ -814,30 +814,27 @@
             </div>
 
             <!-- STEP 5 -->
-            <div class="step-content" id="step5">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep5">Pasul Final: Plată & Descărcare Document</div>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea documentului oficial în format PDF.</p>
-                
-                <div style="margin-top: 20px;">
-                    <button class="btn btn-secondary" onclick="prevStep(5)">⬅ Înapoi</button>
-                </div>
-
-                <div class="paymentStepContainer" style="display: block; text-align: center; padding: 20px 0; margin-top: 10px;">
-                    <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială.</p>
-                    <button class="btn btn-primary" style="padding: 14px 20px; font-size: 15px; width: 100%; max-width: 400px; margin: 0 auto;" onclick="proceseazaPlataSiDescarca()">💳 Plătește cu Cardul & Descarcă PDF</button>
-                </div>
-                
-                <div class="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); margin-bottom: 20px;">
-                        <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">✅ Plată Efectuată cu Succes!</div>
-                    </div>
-                    <button class="btn btn-success btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()" style="max-width: 400px; margin: 0 auto;">📥 Descarcă Din Nou Documentul PDF</button>
-                </div>
-            </div>
-
-        </div>
+<div class="step-content" id="step5">
+    <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="titleStep5">Pasul Final: Plată & Descărcare Document</div>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea documentului oficial în format PDF.</p>
+    
+    <div style="margin-top: 20px;">
+        <button class="btn btn-secondary" onclick="prevStep(5)">⬅ Înapoi</button>
     </div>
+
+    <div id="paymentStepContainer" style="display: block; text-align: center; padding: 20px 0; margin-top: 10px;">
+        <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială.</p>
+        <button class="btn btn-primary" style="padding: 14px 20px; font-size: 15px; width: 100%; max-width: 400px; margin: 0 auto;" onclick="proceseazaPlataSiDescarca()">💳 Plătește cu Cardul & Descarcă PDF</button>
+    </div>
+    
+    <div id="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
+        <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); margin-bottom: 20px;">
+            <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">✅ Plată Efectuată cu Succes!</div>
+        </div>
+        <button class="btn btn-success btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()" style="max-width: 400px; margin: 0 auto;">📥 Descarcă Din Nou Documentul PDF</button>
+    </div>
+</div>
 
     <script src="script.js"></script>
     <script src="pdf-generator.js"></script>
