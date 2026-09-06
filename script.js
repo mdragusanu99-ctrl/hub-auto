@@ -158,11 +158,11 @@ function selecteazaModSiPorneste(mod) {
     // Ascundem meniurile anterioare
     amestecaVizibilitateElemente([], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
     
-    // Acum afișăm bara de progres folosind clasa dedicată
+    // Afișăm bara de progres
     const pb = document.getElementById("progressBarContainer");
     if (pb) pb.classList.add("active-progress");
 
-    // Resetăm pașii și activăm doar pasul 1
+    // Ascundem toți pașii și îl activăm doar pe primul
     for (let i = 1; i <= 5; i++) {
         const el = document.getElementById(`step${i}`);
         if (el) el.classList.remove("active");
@@ -246,47 +246,55 @@ function arataElemente(ids, titluPas1) {
 // NAVIGARE PAȘI WIZARD (1 la 5)
 // ==========================================
 function nextStep(current) {
-    const pasCurentEl = document.getElementById(`step${current}`) || document.querySelector(`.step-${current}`);
-    const pasUrmatorEl = document.getElementById(`step${current + 1}`) || document.querySelector(`.step-${current + 1}`);
-
+    const pasCurentEl = document.getElementById(`step${current}`);
     if (pasCurentEl) pasCurentEl.classList.remove("active");
-    
-    state.currentStep = current + 1;
+
+    if (state.isRemoteMode) {
+        // Fluxul la distanță: Pasul 1 (Datele tale) -> Pasul 2 (Vehicul/Detalii) -> Pasul 4 (Trimitere Link QR/WhatsApp)
+        if (current === 1) {
+            state.currentStep = 2;
+        } else if (current === 2) {
+            state.currentStep = 4; // Sărim direct la pasul de trimitere link
+            pornesteFluxRemote();
+        } else if (current === 4) {
+            state.currentStep = 5;
+            pregatesteEcranPlataSauDescarcare();
+        }
+    } else {
+        // Fluxul local: Parcurge ordonat 1 -> 2 -> 3 -> 5 (sau 4)
+        state.currentStep = current + 1;
+        if (state.currentStep === 5) {
+            pregatesteEcranPlataSauDescarcare();
+        }
+    }
+
     if (state.currentStep > 5) state.currentStep = 5;
 
-    if (pasUrmatorEl) {
-        pasUrmatorEl.classList.add("active");
-    } else {
-        // Fallback dacă folosești alte id-uri
-        const altUrmator = document.getElementById(`step${state.currentStep}`);
-        if (altUrmator) altUrmator.classList.add("active");
-    }
-
-    if (state.isRemoteMode && state.currentStep === 4) {
-        pornesteFluxRemote();
-    } else if (state.currentStep === 5) {
-        pregatesteEcranPlataSauDescarcare();
-    }
+    const pasUrmatorEl = document.getElementById(`step${state.currentStep}`);
+    if (pasUrmatorEl) pasUrmatorEl.classList.add("active");
 
     actualizeazaProgresWizard();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function prevStep(current) {
-    const pasCurentEl = document.getElementById(`step${current}`) || document.querySelector(`.step-${current}`);
-    const pasAnteriorEl = document.getElementById(`step${current - 1}`) || document.querySelector(`.step-${current - 1}`);
-
+    const pasCurentEl = document.getElementById(`step${current}`);
     if (pasCurentEl) pasCurentEl.classList.remove("active");
-    
-    state.currentStep = current - 1;
+
+    if (state.isRemoteMode) {
+        if (current === 4) {
+            state.currentStep = 2;
+        } else {
+            state.currentStep = current - 1;
+        }
+    } else {
+        state.currentStep = current - 1;
+    }
+
     if (state.currentStep < 1) state.currentStep = 1;
 
-    if (pasAnteriorEl) {
-        pasAnteriorEl.classList.add("active");
-    } else {
-        const altAnterior = document.getElementById(`step${state.currentStep}`);
-        if (altAnterior) altAnterior.classList.add("active");
-    }
+    const pasAnteriorEl = document.getElementById(`step${state.currentStep}`);
+    if (pasAnteriorEl) pasAnteriorEl.classList.add("active");
 
     actualizeazaProgresWizard();
     window.scrollTo({ top: 0, behavior: 'smooth' });
