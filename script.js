@@ -139,6 +139,12 @@ function selecteazaModSiPorneste(mod) {
     state.isRemoteMode = (mod === 'remote');
     state.currentStep = 1;
     
+    // Resetăm starea de plată la fiecare pornire nouă a unui contract
+    const payCont = document.querySelector(".paymentStepContainer");
+    const downCont = document.querySelector(".finalDownloadContainer");
+    if (payCont) payCont.style.display = "block";
+    if (downCont) downCont.style.display = "none";
+
     pregatesteFormulareDupaTipDocument();
     amestecaVizibilitateElemente([], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
     
@@ -264,10 +270,22 @@ function actualizeazaProgresWizard() {
         if (!pasEl) continue;
         pasEl.classList.remove("active", "completed");
         
-        // Dacă suntem în modul local, tratăm pasul 5 vizual ca fiind pasul 4 final
+        if (!state.isRemoteMode) {
+            // În modul local, avem doar pașii: 1, 2, 3 și 5 (Plată)
+            // Ascundem complet bulina 4 din DOM vizual pentru a nu crea confuzie
+            if (i === 4) {
+                pasEl.style.display = "none";
+                continue;
+            } else {
+                pasEl.style.display = "flex";
+            }
+        } else {
+            if (i === 4) pasEl.style.display = "flex";
+        }
+
         let vizualCurrent = state.currentStep;
         if (!state.isRemoteMode && state.currentStep === 5) {
-            vizualCurrent = 4;
+            vizualCurrent = 5; // Direct la pasul 5
         }
 
         if (i < vizualCurrent) {
@@ -303,7 +321,16 @@ function nextStep(current) {
         }
     }
 
-    if (state.currentStep > 5) state.currentStep = 5;
+    if (state.currentStep === 5) {
+    // Dacă venim prima dată la pasul 5, ne asigurăm că se vede plata, nu ecranul de succes vechi
+    const payCont = document.querySelector(".paymentStepContainer");
+    const downCont = document.querySelector(".finalDownloadContainer");
+    // Dacă nu a fost marcat ca plătit anterior în sesiune:
+    if (!state.platitCurent) {
+        if (payCont) payCont.style.display = "block";
+        if (downCont) downCont.style.display = "none";
+    }
+}
 
     pregatesteFormulareDupaTipDocument();
     asiguraVizibilitateCorectaPasi();
