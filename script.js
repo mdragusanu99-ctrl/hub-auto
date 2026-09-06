@@ -3,18 +3,16 @@
    Dedicat exclusiv categoriilor: Auto & Transport & Imobiliare
    ================================================================= */
 
-// Starea Globală a Aplicației
 let state = {
-    currentCategory: null, // 'auto' sau 'imobiliare'
+    currentCategory: null,
     currentDocType: null,
     currentStep: 1,
     isRemoteMode: false,
-    user: null, // Datele utilizatorului logat
+    user: null,
     activePackage: 'GRATUIT',
     contracteGenerate: []
 };
 
-// Datele și Structura Documentelor Disponibile (Strict Auto & Imobiliare)
 const dateCategorii = {
     auto: {
         titlu: "Auto & Transport",
@@ -40,15 +38,12 @@ const dateCategorii = {
     }
 };
 
-// Inițializare la încărcarea paginii
 document.addEventListener("DOMContentLoaded", () => {
     verificaStareUtilizatorLocal();
     pornireSplashTimer();
+    activeazaAscultatoriCanvasOptimizzati();
 });
 
-// ==========================================
-// SPLASH SCREEN & NAVIGARE PRINCIPALĂ
-// ==========================================
 function inchideSplash() {
     const splash = document.getElementById("splashScreen");
     if (splash) {
@@ -72,15 +67,9 @@ function pornireSplashTimer() {
         }
     }, 1000);
 }
+
 function deschideMeniuPrincipal() {
-    // 1. Ascundem absolut tot ce ține de formulare, pași, listă de acte și moduri de lucru
-    const elementeDeAscuns = [
-        "listaDocumenteContainer", 
-        "dashboardView", 
-        "modeSelectorContainer", 
-        "step1", "step2", "step3", "step4", "step5"
-    ];
-    
+    const elementeDeAscuns = ["listaDocumenteContainer", "dashboardView", "modeSelectorContainer", "step1", "step2", "step3", "step4", "step5"];
     elementeDeAscuns.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -89,15 +78,12 @@ function deschideMeniuPrincipal() {
         }
     });
 
-    // 2. Ascundem bara de progres folosind clasa dedicată
     const pb = document.getElementById("progressBarContainer");
     if (pb) pb.classList.remove("active-progress");
 
-    // 3. Afișăm înapoi exclusiv ecranul principal cu cele 2 carduri (Auto & Imobiliare)
     const hub = document.getElementById("hubCategorii");
     if (hub) hub.style.display = "block";
 
-    // Resetăm starea globală
     state.currentCategory = null;
     state.currentDocType = null;
     state.currentStep = 1;
@@ -154,15 +140,11 @@ function selecteazaModSiPorneste(mod) {
     state.currentStep = 1;
     
     pregatesteFormulareDupaTipDocument();
-    
-    // Ascundem meniurile anterioare
     amestecaVizibilitateElemente([], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
     
-    // Afișăm bara de progres
     const pb = document.getElementById("progressBarContainer");
     if (pb) pb.classList.add("active-progress");
 
-    // Ascundem toți pașii și îl activăm doar pe primul
     for (let i = 1; i <= 5; i++) {
         const el = document.getElementById(`step${i}`);
         if (el) el.classList.remove("active");
@@ -173,11 +155,7 @@ function selecteazaModSiPorneste(mod) {
     actualizeazaProgresWizard();
 }
 
-// ==========================================
-// CONFIGURARE DINAMICĂ FORMULARE PE DOCUMENTE
-// ==========================================
 function pregatesteFormulareDupaTipDocument() {
-    // Ascundem tot inițial
     const elementeDeAscuns = [
         "formAutoStep1", "formAutoStep2", "formAutoStep3",
         "formComodatAutoStep1", "formComodatAutoStep2", "formComodatAutoStep3",
@@ -194,7 +172,6 @@ function pregatesteFormulareDupaTipDocument() {
         if (el) el.style.display = "none";
     });
 
-    // Activăm ce este necesar pentru documentul curent
     const doc = state.currentDocType;
     
     if (doc === 'itl_054') {
@@ -202,39 +179,39 @@ function pregatesteFormulareDupaTipDocument() {
         arataElemente(["formAutoStep2"], "Pasul 2: Date Cumpărător");
         arataElemente(["formAutoStep3"], "Pasul 3: Vehiculul și Prețul");
     } else if (doc === 'itl_016') {
-        arataElemente(["formItl016Step1"], "Pasul 1: Date Contribuabil (Declarant)");
-        arataElemente(["formItl016Step2"], "Pasul 2: Mijlocul de Transport & Motivul");
-        arataElemente(["formItl016Step3", "itlSignContainer"], "Pasul 3: Act Doveditor și Semnătură");
+        arataElemente(["formItl016Step1"], "Pasul 1: Date Contribuabil");
+        arataElemente(["formItl016Step2"], "Pasul 2: Mijloc de Transport");
+        arataElemente(["formItl016Step3", "itlSignContainer"], "Pasul 3: Act și Semnătură");
     } else if (doc === 'itl_005') {
         arataElemente(["formAutoStep1"], "Pasul 1: Date Titular Nou");
-        arataElemente(["formAutoStep3"], "Pasul 2: Datele Vehiculului înregistrat");
+        arataElemente(["formAutoStep3"], "Pasul 2: Date Vehicul");
     } else if (doc === 'comodat_auto') {
-        arataElemente(["formComodatAutoStep1"], "Pasul 1: Date Comodant (Proprietar)");
-        arataElemente(["formComodatAutoStep2"], "Pasul 2: Date Comodatar (Utilizator)");
-        arataElemente(["formComodatAutoStep3"], "Pasul 3: Detalii Auto & Durată");
+        arataElemente(["formComodatAutoStep1"], "Pasul 1: Comodant");
+        arataElemente(["formComodatAutoStep2"], "Pasul 2: Comodatar");
+        arataElemente(["formComodatAutoStep3"], "Pasul 3: Detalii Auto");
     } else if (doc === 'procura_auto') {
-        arataElemente(["formProcuraStep1"], "Pasul 1: Date Mandant (Proprietar)");
-        arataElemente(["formProcuraStep2"], "Pasul 2: Date Mandatar (Împuternicit)");
-        arataElemente(["formProcuraStep3", "procuraSignContainer"], "Pasul 3: Vehicul, Instituții & Semnătură");
+        arataElemente(["formProcuraStep1"], "Pasul 1: Mandant");
+        arataElemente(["formProcuraStep2"], "Pasul 2: Mandatar");
+        arataElemente(["formProcuraStep3", "procuraSignContainer"], "Pasul 3: Vehicul & Semnătură");
     } else if (doc === 'inchiriere_locuinta') {
-        arataElemente(["formImobiliareStep1"], "Pasul 1: Date Proprietar & Imobil");
-        arataElemente(["formImobiliareStep2"], "Pasul 2: Date Chiriaș (Locatar)");
+        arataElemente(["formImobiliareStep1"], "Pasul 1: Proprietar & Imobil");
+        arataElemente(["formImobiliareStep2"], "Pasul 2: Chiriaș");
         arataElemente(["imobiliareSemnaturiContainer"], "Pasul 3: Semnături Părți");
     } else if (doc === 'comodat_imobil') {
-        arataElemente(["formComodatImobilStep1"], "Pasul 1: Date Comodant (Proprietar)");
-        arataElemente(["formComodatImobilStep2"], "Pasul 2: Date Comodatar (Beneficiar)");
-        arataElemente(["formComodatImobilStep3"], "Pasul 3: Detalii Imobil & CF");
+        arataElemente(["formComodatImobilStep1"], "Pasul 1: Comodant");
+        arataElemente(["formComodatImobilStep2"], "Pasul 2: Comodatar");
+        arataElemente(["formComodatImobilStep3"], "Pasul 3: Detalii Imobil");
     } else if (doc === 'proces_verbal_primire') {
-        arataElemente(["formPvLoc1"], "Pasul 1: Date Locator");
-        arataElemente(["formPvLoc2"], "Pasul 2: Date Locatar & Imobil");
-        arataElemente(["formPvLoc3", "pvLocuintaSemnaturiContainer"], "Pasul 3: Inventar & Semnături");
+        arataElemente(["formPvLoc1"], "Pasul 1: Locator");
+        arataElemente(["formPvLoc2"], "Pasul 2: Locatar");
+        arataElemente(["formPvLoc3", "pvLocuintaSemnaturiContainer"], "Pasul 3: Inventar");
     }
 }
 
 function arataElemente(ids, titluPas1) {
     ids.forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.style.display = "grid"; // majoritatea sunt grid
+        if (el) el.style.display = "grid";
     });
     if (titluPas1) {
         const t1 = document.getElementById("titleStep1");
@@ -242,35 +219,76 @@ function arataElemente(ids, titluPas1) {
     }
 }
 
-// ==========================================
-// NAVIGARE PAȘI WIZARD (1 la 5)
-// ==========================================
+// Validare și Sanitizare
+function valideazaPasulCurent(current) {
+    const pasEl = document.getElementById(`step${current}`);
+    if (!pasEl) return true;
+    
+    const requiredInputs = pasEl.querySelectorAll("input[required], select[required]");
+    let valid = true;
+
+    requiredInputs.forEach(input => {
+        if (!input.value.trim()) {
+            valid = false;
+            input.style.borderColor = "var(--danger)";
+        } else {
+            input.style.borderColor = "var(--border-color)";
+        }
+    });
+
+    if (!valid) {
+        arataToast("Te rugăm să completezi toate câmpurile obligatorii!", true);
+    }
+    return valid;
+}
+
+function sanitizeazaDateleCricale() {
+    const vinInputs = document.querySelectorAll("#chassisSeries, #itlAutoVin, #comodatAutoVin, #procuraAutoVin");
+    vinInputs.forEach(input => {
+        if (input) input.value = input.value.toUpperCase().trim();
+    });
+
+    const cnpInputs = document.querySelectorAll("#seller_ci_cnp, #buyerCNP, #comodantAutoCnp, #itlContribuabilCnp");
+    cnpInputs.forEach(input => {
+        if (input) input.value = input.value.trim();
+    });
+}
+
+function actualizeazaProgresWizard() {
+    for (let i = 1; i <= 5; i++) {
+        const pasEl = document.getElementById(`p${i}`);
+        if (!pasEl) continue;
+        pasEl.classList.remove("active", "completed");
+        if (i < state.currentStep) {
+            pasEl.classList.add("completed");
+        } else if (i === state.currentStep) {
+            pasEl.classList.add("active");
+        }
+    }
+}
+
 function nextStep(current) {
+    if (!valideazaPasulCurent(current)) return;
+    sanitizeazaDateleCricale();
+
     const pasCurentEl = document.getElementById(`step${current}`);
     if (pasCurentEl) pasCurentEl.classList.remove("active");
 
     if (state.isRemoteMode) {
-        // Fluxul la distanță: Pasul 1 (Datele tale) -> Pasul 2 (Vehicul/Detalii) -> Pasul 4 (Trimitere Link QR/WhatsApp)
         if (current === 1) {
             state.currentStep = 2;
         } else if (current === 2) {
-            state.currentStep = 4; // Sărim direct la pasul de trimitere link
+            state.currentStep = 4;
             pornesteFluxRemote();
         } else if (current === 4) {
             state.currentStep = 5;
-            pregatesteEcranPlataSauDescarcare();
         }
     } else {
-        // Fluxul local: Parcurge ordonat 1 -> 2 -> 3 -> 5 (sau 4)
         state.currentStep = current + 1;
-        if (state.currentStep === 5) {
-            pregatesteEcranPlataSauDescarcare();
-        }
     }
 
     if (state.currentStep > 5) state.currentStep = 5;
 
-    // AICI ERA LIPSA: Rechemăm pregătirea formularelor ca să se randeze câmpurile pasului curent
     pregatesteFormulareDupaTipDocument();
 
     const pasUrmatorEl = document.getElementById(`step${state.currentStep}`);
@@ -284,19 +302,14 @@ function prevStep(current) {
     const pasCurentEl = document.getElementById(`step${current}`);
     if (pasCurentEl) pasCurentEl.classList.remove("active");
 
-    if (state.isRemoteMode) {
-        if (current === 4) {
-            state.currentStep = 2;
-        } else {
-            state.currentStep = current - 1;
-        }
+    if (state.isRemoteMode && current === 4) {
+        state.currentStep = 2;
     } else {
         state.currentStep = current - 1;
     }
 
     if (state.currentStep < 1) state.currentStep = 1;
 
-    // Aici era lipsa: rechemăm pregătirea formularelor ca să se vadă câmpurile corecte pe ecran
     pregatesteFormulareDupaTipDocument();
 
     const pasAnteriorEl = document.getElementById(`step${state.currentStep}`);
@@ -306,9 +319,7 @@ function prevStep(current) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ==========================================
-// GESTIONARE MODAL AUTENTIFICARE & CONT
-// ==========================================
+// Autentificare și Cont
 function deschideModalAuth(mod = 'autentificare') {
     const modal = document.getElementById("authModal");
     if (!modal) return;
@@ -340,9 +351,7 @@ function inchideModalAuth() {
     if (modal) modal.style.display = "none";
 }
 
-function schimbaModulAuth(mod) {
-    deschideModalAuth(mod);
-}
+function schimbaModulAuth(mod) { deschideModalAuth(mod); }
 
 function selecteazaPachetModal(pkg) {
     document.querySelectorAll(".package-card").forEach(c => c.classList.remove("selected"));
@@ -362,7 +371,7 @@ function gestioneazaAutentificareSauInregistrare() {
         email: email,
         profil: document.getElementById("authTipProfil") ? document.getElementById("authTipProfil").value : "PERSOANA_FIZICA",
         pachet: state.activePackage,
-        credite: state.activePackage === 'GRATUIT' ? 3 : (state.activePackage === 'STANDARD' ? 400 : 1200)
+        credite: state.activePackage === 'GRATUIT' ? 3 : 400
     };
 
     localStorage.setItem("actpeloc_user", JSON.stringify(state.user));
@@ -387,15 +396,6 @@ function actualizeazaUIContUtilizator() {
     document.getElementById("userAvatarText").innerText = state.user.email[0].toUpperCase();
     document.getElementById("dashNavBtn").style.display = "inline-flex";
     document.getElementById("dropdownEmailText").innerText = state.user.email;
-    
-    // Setări tab dashboard
-    if (document.getElementById("infoDashEmail")) {
-        document.getElementById("infoDashEmail").innerText = state.user.email;
-        document.getElementById("infoDashProfil").innerText = state.user.profil;
-        document.getElementById("infoDashPachet").innerText = state.user.pachet;
-        document.getElementById("infoDashRamase").innerText = state.user.credite;
-        document.getElementById("myReferralLinkText").innerText = `https://actpeloc.ro/?ref=${btoa(state.user.email).substring(0, 8)}`;
-    }
 }
 
 function gestioneazaClickContulMeu() {
@@ -418,9 +418,6 @@ function deconectareUtilizator() {
     deschideMeniuPrincipal();
 }
 
-// ==========================================
-// DASHBOARD & TAB-URI INTERNE
-// ==========================================
 function acceseazaDashboardTab(tabName) {
     document.getElementById("profileDropdownMenu").style.display = "none";
     amestecaVizibilitateElemente(["dashboardView"], ["hubCategorii", "listaDocumenteContainer", "modeSelectorContainer", "progressBarContainer", "step1", "step2", "step3", "step4", "step5"]);
@@ -430,7 +427,6 @@ function acceseazaDashboardTab(tabName) {
 function schimbaTabDash(tabKey, btnEl) {
     document.querySelectorAll(".dash-tab-btn").forEach(b => b.classList.remove("active"));
     if (btnEl) btnEl.classList.add("active");
-
     const tabs = ['arhiva', 'nou', 'abonament', 'afiliere', 'setari'];
     tabs.forEach(t => {
         const el = document.getElementById(`dashTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
@@ -438,42 +434,25 @@ function schimbaTabDash(tabKey, btnEl) {
     });
 }
 
-// ==========================================
-// PLATĂ & DESCĂRCARE PDF FINAL
-// ==========================================
-function pregatesteEcranPlataSauDescarcare() {
-    const containerePlata = document.querySelectorAll(".paymentStepContainer");
-    const containereDescarcare = document.querySelectorAll(".finalDownloadContainer");
-
-    if (state.user && state.user.credite > 0) {
-        // Are credite gratuite, poate descărca direct sau simulăm plata
-        containerePlata.forEach(el => el.style.display = "block");
-        containereDescarcare.forEach(el => el.style.display = "none");
-    } else {
-        containerePlata.forEach(el => el.style.display = "block");
-        containereDescarcare.forEach(el => el.style.display = "none");
-    }
-}
-
+// Plată & Descărcare
 function proceseazaPlataSiDescarca() {
-    arataToast("Se procesează plata securizată...");
+    arataToast("Se procesează plata securizată și se generează PDF-ul...");
+    
     setTimeout(() => {
         if (state.user && state.user.credite > 0) {
             state.user.credite--;
             localStorage.setItem("actpeloc_user", JSON.stringify(state.user));
-            actualizeazaUIContUtilizator();
         }
         
-        document.querySelectorAll(".paymentStepContainer").forEach(el => el.style.display = "none");
-        document.querySelectorAll(".finalDownloadContainer").forEach(el => el.style.display = "block");
+        document.querySelector(".paymentStepContainer").style.display = "none";
+        document.querySelector(".finalDownloadContainer").style.display = "block";
         
-        arataToast("Plată confirmată! Documentul este pregătit.");
+        arataToast("Plată confirmată! Documentul este gata.");
         
-        // Apelăm funcția de generare PDF din pdf-generator.js
         if (typeof genereazaSiDescarcaPDFOficial === 'function') {
             genereazaSiDescarcaPDFOficial();
         }
-    }, 1200);
+    }, 1500);
 }
 
 function ruleazaDescarcareaFinala() {
@@ -484,9 +463,7 @@ function ruleazaDescarcareaFinala() {
     }
 }
 
-// ==========================================
-// FUNCȚII AUXILIARE & CANVAS SEMNĂTURI
-// ==========================================
+// Utilitare & Canvas
 function amestecaVizibilitateElemente(arataIDs, ascundeIDs) {
     ascundeIDs.forEach(id => {
         const el = document.getElementById(id);
@@ -515,22 +492,12 @@ function comutaTema() {
 
 function comutaDomiciliuFiscal() {
     const sec = document.getElementById("sectiuneFiscala");
-    sec.style.display = sec.style.display === "none" ? "grid" : "none";
+    if (sec) sec.style.display = sec.style.display === "none" ? "grid" : "none";
 }
 
 function comutaFirma() {
     const sec = document.getElementById("sectiuneFirma");
-    sec.style.display = sec.style.display === "none" ? "grid" : "none";
-}
-
-function comutaDomiciliuFiscalCumparator() {
-    const sec = document.getElementById("sectiuneFiscalaCumparator");
-    sec.style.display = sec.style.display === "none" ? "grid" : "none";
-}
-
-function comutaFirmaCumparator() {
-    const sec = document.getElementById("sectiuneFirmaCumparator");
-    sec.style.display = sec.style.display === "none" ? "grid" : "none";
+    if (sec) sec.style.display = sec.style.display === "none" ? "grid" : "none";
 }
 
 function curataCanvas(canvasId) {
@@ -540,12 +507,16 @@ function curataCanvas(canvasId) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// Inițializare desen pe canvas pentru semnături olografe
-document.addEventListener("mousedown", initCanvasDrawing);
-document.addEventListener("touchstart", initCanvasDrawing);
+function activeazaAscultatoriCanvasOptimizzati() {
+    document.addEventListener("mousedown", (e) => {
+        if (e.target.tagName === 'CANVAS') initCanvasDrawing(e);
+    });
+    document.addEventListener("touchstart", (e) => {
+        if (e.target.tagName === 'CANVAS') initCanvasDrawing(e);
+    }, { passive: true });
+}
 
 function initCanvasDrawing(e) {
-    if (e.target.tagName !== 'CANVAS') return;
     const canvas = e.target;
     const ctx = canvas.getContext("2d");
     let desenand = true;
@@ -554,10 +525,7 @@ function initCanvasDrawing(e) {
         const rect = canvas.getBoundingClientRect();
         const clientX = evt.clientX || (evt.touches ? evt.touches[0].clientX : 0);
         const clientY = evt.clientY || (evt.touches ? evt.touches[0].clientY : 0);
-        return {
-            x: clientX - rect.left,
-            y: clientY - rect.top
-        };
+        return { x: clientX - rect.left, y: clientY - rect.top };
     }
 
     const pos = obtinePozitie(e);
@@ -589,17 +557,27 @@ function initCanvasDrawing(e) {
 }
 
 function pornesteFluxRemote() {
-    document.getElementById("localActions").style.display = "none";
-    document.getElementById("waitingAnimationContainer").style.display = "block";
+    const localAct = document.getElementById("localActions");
+    const waitCont = document.getElementById("waitingAnimationContainer");
+    if (localAct) localAct.style.display = "none";
+    if (waitCont) waitCont.style.display = "block";
+
     const link = `https://actpeloc.ro/semneaza?s=${Math.random().toString(36).substring(7)}`;
-    document.getElementById("shareLinkContainer").innerText = link;
+    const shareCont = document.getElementById("shareLinkContainer");
+    if (shareCont) shareCont.innerText = link;
     
     const qrContainer = document.getElementById("qrcode");
-    qrContainer.innerHTML = "";
-    if (typeof QRCode !== 'undefined') {
-        new QRCode(qrContainer, { text: link, width: 120, height: 120 });
+    if (qrContainer) {
+        qrContainer.innerHTML = "";
+        if (typeof QRCode !== 'undefined') {
+            try {
+                new QRCode(qrContainer, { text: link, width: 120, height: 120 });
+            } catch (err) {
+                arataToast("Eroare la generarea codului QR", true);
+            }
+        }
     }
-    arataToastân("Link de semnătură la distanță generat!");
+    arataToast("Link de semnătură la distanță generat!");
 }
 
 function copiazaLinkul() {
@@ -621,7 +599,7 @@ function copiazaLinkAfiliere() {
 
 function trimiteAfiliereWhatsApp() {
     const text = document.getElementById("myReferralLinkText").innerText;
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Salut! Folosește acest link pe ActPeLoc pentru a beneficia de 35% reducere la generarea contractelor tale: " + text)}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Salut! Folosește acest link pe ActPeLoc pentru a beneficia de reducere: " + text)}`, '_blank');
 }
 
 function actualizeazaEmailCont() {

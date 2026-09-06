@@ -60,64 +60,49 @@
             overflow-x: hidden;
         }
 
-      /* Ambient Background Split-Screen Intensificat */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 50vw;
-    height: 100vh;
-    background: radial-gradient(circle at 30% 35%, rgba(79, 70, 229, 0.22) 0%, rgba(79, 70, 229, 0.05) 50%, transparent 80%);
-    z-index: -1;
-    pointer-events: none;
-}
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 50vw; height: 100vh;
+            background: radial-gradient(circle at 30% 35%, rgba(79, 70, 229, 0.22) 0%, rgba(79, 70, 229, 0.05) 50%, transparent 80%);
+            z-index: -1; pointer-events: none;
+        }
 
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 50vw;
-    height: 100vh;
-    background: radial-gradient(circle at 70% 35%, rgba(16, 185, 129, 0.22) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%);
-    z-index: -1;
-    pointer-events: none;
-}
-/* Tranziții dinamice îmbunătățite pentru cardurile mari */
-.category-mega-card {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
-}
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; right: 0; width: 50vw; height: 100vh;
+            background: radial-gradient(circle at 70% 35%, rgba(16, 185, 129, 0.22) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%);
+            z-index: -1; pointer-events: none;
+        }
 
-.category-mega-card.auto-card:hover {
-    transform: translateY(-8px) scale(1.01);
-    box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.25);
-}
+        .category-mega-card {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+        }
 
-.category-mega-card.imob-card:hover {
-    transform: translateY(-8px) scale(1.01);
-    box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.25);
-}
-@keyframes pulseGlow {
-    0% { box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4); }
-    50% { box-shadow: 0 10px 35px 2px rgba(16, 185, 129, 0.7); }
-    100% { box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4); }
-}
+        .category-mega-card.auto-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.25);
+        }
 
-.btn-primary-glow {
-    animation: pulseGlow 3s infinite ease-in-out;
-}
+        .category-mega-card.imob-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.25);
+        }
 
-/* WIZARD & STEPS CONTROL */
-.step-content { 
-    display: none; 
-}
-.step-content.active { 
-    display: block; 
-    animation: fadeIn 0.3s ease; 
-}
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4); }
+            50% { box-shadow: 0 10px 35px 2px rgba(16, 185, 129, 0.7); }
+            100% { box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4); }
+        }
 
-        /* SPLASH SCREEN */
+        .btn-primary-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        .step-content { display: none; }
+        .step-content.active { display: block; animation: fadeIn 0.3s ease; }
+
         #splashScreen {
             position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #090d16 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
@@ -137,7 +122,6 @@ body::after {
         .btn-secondary-glass:hover { background: rgba(255, 255, 255, 0.1); color: white; }
         .splash-timer { font-size: 12px; color: #64748b; margin-top: 24px; }
 
-        /* NAVBAR MODERN */
         header { width: 100%; max-width: 1100px; margin: 24px auto 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; color: var(--text-main); text-decoration: none; cursor: pointer; }
         .nav-logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary), var(--success)); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
@@ -148,7 +132,6 @@ body::after {
         .user-pill:hover { border-color: var(--primary); }
         .user-avatar { width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
 
-        /* DROPDOWN MENIU */
         .dropdown-container { position: relative; display: inline-block; }
         .dropdown-menu { position: absolute; right: 0; top: 125%; background: var(--bg-card); min-width: 240px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-card); display: none; z-index: 1000; overflow: hidden; animation: menuPop 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes menuPop { from { opacity: 0; transform: translateY(-8px); scale: 0.98; } to { opacity: 1; transform: translateY(0); scale: 1; } }
@@ -159,13 +142,11 @@ body::after {
         .dropdown-item.logout { color: var(--danger); }
         .dropdown-item.logout:hover { background: rgba(239, 68, 68, 0.1); }
 
-        /* CONTAINER PRINCIPAL */
         .main-wrapper { width: 100%; max-width: 960px; margin: 30px auto; padding: 0 20px; flex: 1; }
         .card-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-card); position: relative; transition: all 0.3s; }
         
         .alert-banner { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); border: 1px solid var(--accent); color: var(--accent); padding: 14px 20px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
 
-        /* MODAL AUTENTIFICARE */
         #authModal { position: fixed; inset: 0; background: rgba(9, 13, 22, 0.7); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
         .auth-box { background: var(--bg-card); width: 100%; max-width: 480px; padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-card); position: relative; animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.96) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
@@ -192,106 +173,34 @@ body::after {
         .btn-success { background: var(--success); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
         .btn-success:hover { opacity: 0.9; }
 
-        /* HERO & DUAL-CARD DESIGN EXCLUSIV PENTRU AUTO & IMOBILIARE */
-        .dual-hero-container {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-        .dual-hero-container h1 {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-        .dual-hero-container p {
-            font-size: 14px;
-            color: var(--text-muted);
-            max-width: 550px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
+        .dual-hero-container { text-align: center; margin-bottom: 35px; }
+        .dual-hero-container h1 { font-size: 28px; font-weight: 800; color: var(--text-main); margin-bottom: 10px; letter-spacing: -0.5px; }
+        .dual-hero-container p { font-size: 14px; color: var(--text-muted); max-width: 550px; margin: 0 auto; line-height: 1.5; }
 
-        .dual-categories-wrapper {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-top: 25px;
-        }
-        @media (max-width: 768px) {
-            .dual-categories-wrapper { grid-template-columns: 1fr; }
-        }
+        .dual-categories-wrapper { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 25px; }
+        @media (max-width: 768px) { .dual-categories-wrapper { grid-template-columns: 1fr; } }
 
         .category-mega-card {
-            background: var(--bg-body);
-            border: 2px solid var(--border-color);
-            padding: 32px 28px;
-            border-radius: var(--radius-lg);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            background: var(--bg-body); border: 2px solid var(--border-color); padding: 32px 28px; border-radius: var(--radius-lg);
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-align: left; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
-        .category-mega-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: transparent;
-            transition: background 0.3s;
-        }
-        .category-mega-card.auto-card:hover {
-            border-color: #4f46e5;
-            transform: translateY(-5px);
-            box-shadow: 0 20px 35px -10px rgba(79, 70, 229, 0.15);
-            background: var(--bg-card);
-        }
+        .category-mega-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: transparent; transition: background 0.3s; }
+        .category-mega-card.auto-card:hover { border-color: #4f46e5; transform: translateY(-5px); box-shadow: 0 20px 35px -10px rgba(79, 70, 229, 0.15); background: var(--bg-card); }
         .category-mega-card.auto-card:hover::after { background: #4f46e5; }
-
-        .category-mega-card.imob-card:hover {
-            border-color: #10b981;
-            transform: translateY(-5px);
-            box-shadow: 0 20px 35px -10px rgba(16, 185, 129, 0.15);
-            background: var(--bg-card);
-        }
+        .category-mega-card.imob-card:hover { border-color: #10b981; transform: translateY(-5px); box-shadow: 0 20px 35px -10px rgba(16, 185, 129, 0.15); background: var(--bg-card); }
         .category-mega-card.imob-card:hover::after { background: #10b981; }
 
-        .mega-icon-box {
-            width: 60px; height: 60px;
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
+        .mega-icon-box { width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px; }
         .auto-card .mega-icon-box { background: rgba(79, 70, 229, 0.1); color: #4f46e5; }
         .imob-card .mega-icon-box { background: rgba(16, 185, 129, 0.1); color: #10b981; }
 
-        .category-mega-card h3 {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 8px;
-        }
-        .category-mega-card p {
-            font-size: 13.5px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-        .mega-card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 13px;
-            font-weight: 700;
-        }
+        .category-mega-card h3 { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .category-mega-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
+        .mega-card-footer { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 700; }
         .auto-card .mega-card-footer { color: #4f46e5; }
         .imob-card .mega-card-footer { color: #10b981; }
 
-        /* DASHBOARD & TABS */
         .dash-nav { display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; flex-wrap: wrap; }
         .dash-tab-btn { background: var(--bg-body); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
         .dash-tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
@@ -306,70 +215,28 @@ body::after {
         .referral-card { background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(99, 102, 241, 0.1)); border: 2px solid var(--primary); border-radius: var(--radius-md); padding: 24px; margin-top: 20px; }
         .referral-url-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: var(--radius-sm); font-family: monospace; font-size: 12px; word-break: break-all; margin: 12px 0; color: var(--text-main); font-weight: 600; }
 
-/* WIZARD & STEPS ORIZONTAL & CONTROL */
-.progress-container { 
-    display: flex !important; 
-    flex-direction: row !important;
-    justify-content: space-between !important; 
-    align-items: center !important;
-    margin-bottom: 32px !important; 
-    position: relative !important; 
-    width: 100% !important;
-}
-.progress-container::before { 
-    content: ''; 
-    position: absolute; 
-    top: 50%; 
-    left: 20px; 
-    right: 20px; 
-    height: 2px; 
-    background: var(--border-color); 
-    transform: translateY(-50%); 
-    z-index: 1; 
-}
-.progress-step { 
-    width: 36px !important; 
-    height: 36px !important; 
-    border-radius: 50% !important; 
-    background: var(--bg-body) !important; 
-    border: 2px solid var(--border-color) !important; 
-    color: var(--text-muted) !important; 
-    display: flex !important; 
-    align-items: center !important; 
-    justify-content: center !important; 
-    font-weight: 700 !important; 
-    font-size: 13px !important; 
-    position: relative !important; 
-    z-index: 2 !important; 
-}
-.progress-step.active { 
-    background: var(--primary) !important; 
-    border-color: var(--primary) !important; 
-    color: white !important; 
-}
-.progress-step.completed { 
-    background: var(--success) !important; 
-    border-color: var(--success) !important; 
-    color: white !important; 
-}
+        .progress-container { 
+            display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important;
+            margin-bottom: 32px !important; position: relative !important; width: 100% !important;
+        }
+        .progress-container::before { 
+            content: ''; position: absolute; top: 50%; left: 20px; right: 20px; height: 2px; background: var(--border-color); transform: translateY(-50%); z-index: 1; 
+        }
+        .progress-step { 
+            width: 36px !important; height: 36px !important; border-radius: 50% !important; background: var(--bg-body) !important; 
+            border: 2px solid var(--border-color) !important; color: var(--text-muted) !important; display: flex !important; 
+            align-items: center !important; justify-content: center !important; font-weight: 700 !important; font-size: 13px !important; 
+            position: relative !important; z-index: 2 !important; 
+        }
+        .progress-step.active { background: var(--primary) !important; border-color: var(--primary) !important; color: white !important; }
+        .progress-step.completed { background: var(--success) !important; border-color: var(--success) !important; color: white !important; }
 
-/* Controlul pașilor din formular */
-.step-content { 
-    display: none !important; 
-}
-.step-content.active { 
-    display: block !important; 
-}
+        .step-content { display: none !important; }
+        .step-content.active { display: block !important; }
 
-/* Ascundem bara de progres global, o activăm doar din JS în pași */
-#progressBarContainer {
-    display: none !important;
-}
-#progressBarContainer.active-progress {
-    display: flex !important;
-}
+        #progressBarContainer { display: none !important; }
+        #progressBarContainer.active-progress { display: flex !important; }
 
-        /* TOAST NOTIFICARE */
         #toastNotification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--success); color: white; padding: 14px 28px; border-radius: var(--radius-md); font-size: 14px; font-weight: 700; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 20000; pointer-events: none; }
         #toastNotification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         #toastNotification.error { background: var(--danger); box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4); }
@@ -498,17 +365,14 @@ body::after {
             <!-- TOAST NOTIFICARE -->
             <div id="toastNotification">Acțiune realizată cu succes!</div>
 
-          <!-- SECȚIUNEA PRINCIPALĂ: EXCLUSIV AUTO & IMOBILIARE (DESIGN NOU PREMIUM DUAL) -->
+            <!-- SECȚIUNEA PRINCIPALĂ: EXCLUSIV AUTO & IMOBILIARE -->
             <div id="hubCategorii" style="display: block;">
                 <div class="dual-hero-container">
                     <h1>Generator Oficial de Acte & Contracte</h1>
                     <p>Selectează mai jos domeniul de interes pentru a accesa documentele oficiale valabile la nivel național, optimizate pentru completare rapidă.</p>
                 </div>
 
-                <!-- Grid-ul principal format din cele 2 Mega Carduri Premium -->
                 <div class="dual-categories-wrapper">
-                    
-                    <!-- Categoria Auto -->
                     <div class="category-mega-card auto-card" onclick="deschideCategorie('auto')">
                         <div>
                             <div class="mega-icon-box">🚗</div>
@@ -521,7 +385,6 @@ body::after {
                         </div>
                     </div>
 
-                    <!-- Categoria Imobiliare -->
                     <div class="category-mega-card imob-card" onclick="deschideCategorie('imobiliare')">
                         <div>
                             <div class="mega-icon-box">🏠</div>
@@ -533,22 +396,16 @@ body::after {
                             <span>➔</span>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <!-- CONTAINERUL PENTRU LISTA DE DOCUMENTE DIN CATEGORIE (Ascuns inițial) -->
+            <!-- LISTA DE DOCUMENTE -->
             <div id="listaDocumenteContainer" style="display: none;">
                 <button onclick="inchideListaCategorii()" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px; margin-bottom: 20px; cursor: pointer;">
                     ⬅ Înapoi la categorii
                 </button>
-
                 <h2 id="titluCategorieSelectata" style="font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 16px;"></h2>
-                
-                <!-- Lista dinamică a actelor -->
-                <div id="elementeListaActe" style="display: grid; gap: 12px;">
-                    <!-- Aici se injectează actele specifice prin JavaScript -->
-                </div>
+                <div id="elementeListaActe" style="display: grid; gap: 12px;"></div>
             </div>
 
             <!-- DASHBOARD VIEW -->
@@ -566,7 +423,6 @@ body::after {
                     <button class="dash-tab-btn" onclick="schimbaTabDash('setari', this)">⚙️ Setări Cont</button>
                 </div>
 
-                <!-- Tab 1: Arhivă -->
                 <div id="dashTabArhiva" class="dash-section active">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Istoricul Documentelor Generate</h4>
                     <div style="max-height: 320px; overflow-y: auto;">
@@ -585,7 +441,6 @@ body::after {
                     </div>
                 </div>
 
-                <!-- Tab 2: Creează Nou -->
                 <div id="dashTabNou" class="dash-section">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Porniți o Tranzacție Nouă</h4>
                     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Selectați tipul de contract pe care doriți să îl generați:</p>
@@ -603,7 +458,6 @@ body::after {
                     </div>
                 </div>
 
-                <!-- Tab 3: Abonament -->
                 <div id="dashTabAbonament" class="dash-section">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;">Detalii Abonament & Credite</h4>
                     <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); font-size: 13px; display: grid; gap: 10px;">
@@ -614,11 +468,9 @@ body::after {
                     </div>
                 </div>
 
-                <!-- Tab 4: Afiliere -->
                 <div id="dashTabAfiliere" class="dash-section">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Programul de Afiliere ActPeLoc</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Câștigă reduceri majore! Trimite linkul tău unic prietenilor. Ei primesc <b>35% reducere</b> instant la înregistrare, iar tu primești <b>+1 punct</b> pentru fiecare cont creat (fiecare punct oferindu-ți <b>30% reducere</b> pentru următoarele contracte).</p>
-                    
+                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Câștigă reduceri majore! Trimite linkul tău unic prietenilor. Ei primesc <b>35% reducere</b> instant la înregistrare, iar tu primești <b>+1 punct</b> pentru fiecare cont creat.</p>
                     <div class="referral-card">
                         <label style="color: var(--primary);">Linkul tău unic de recomandare:</label>
                         <div class="referral-url-box" id="myReferralLinkText">-</div>
@@ -627,17 +479,10 @@ body::after {
                             <button class="btn btn-success" style="font-size: 13px; padding: 10px;" onclick="trimiteAfiliereWhatsApp()">💬 Trimite pe WhatsApp</button>
                         </div>
                     </div>
-
-                    <div style="margin-top: 16px; background: var(--bg-body); border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-md); font-size: 13px; display: grid; gap: 8px;">
-                        <div><b>Puncte Acumulate:</b> <span id="infoPuncteAfiliere" style="color: var(--accent); font-weight: 800;">0 puncte</span></div>
-                        <div><b>Reducere Activă Curentă:</b> <span id="infoReducereAfiliere" style="color: var(--success); font-weight: 800;">0% reducere</span></div>
-                    </div>
                 </div>
 
-                <!-- Tab 5: Setări -->
                 <div id="dashTabSetari" class="dash-section">
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Setări Cont & Date Personale</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Poți modifica adresa de e-mail asociată contului tău:</p>
                     <div class="form-grid" style="max-width: 450px;">
                         <div class="full-width">
                             <label>Adresă E-mail Nouă</label>
@@ -677,33 +522,35 @@ body::after {
                 <div class="progress-step" id="p5" style="display:none;">5</div>
             </div>
 
-            <div id="stepsCompletedBanner" class="alert-banner" style="display:none; background: rgba(16, 185, 129, 0.1); border-color: var(--success); color: var(--success);">🎉 Toate datele au fost colectate și contractul este pregătit pentru descărcare.</div>
+            <!-- Buton rapid de schimbare document / act -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <button class="btn btn-secondary" onclick="deschideMeniuPrincipal()" style="width: auto; padding: 6px 12px; font-size: 11px;">🏠 Schimbă Actul / Acasă</button>
+            </div>
 
-            <!-- STEP 1: FORMULAR PASUL 1 -->
+            <!-- STEP 1 -->
             <div class="step-content" id="step1">
                 <div class="step-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div style="font-size: 18px; font-weight: 800;" id="titleStep1">Pasul 1: Datele Vânzătorului</div>
-                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 12px;" onclick="deschideMeniuPrincipal()">🏠 Acasă</button>
                 </div>
                 
-                <!-- Formular Auto Pas 1 (Vânzător) -->
+                <!-- Formular Auto Pas 1 (Complet original) -->
                 <div id="formAutoStep1" class="form-grid">
-                    <div class="full-width"><label>Nume și Prenume (Subsemnatul)</label><input type="text" id="sellerName" placeholder="ex: DRAGUSANU MARIO"></div>
-                    <div><label>Județ</label><input type="text" id="sellerCounty" placeholder="ex: VASLUI"></div>
+                    <div class="full-width"><label>Nume și Prenume (Subsemnatul) *</label><input type="text" id="sellerName" placeholder="ex: DRAGUSANU MARIO" required></div>
+                    <div><label>Județ *</label><input type="text" id="sellerCounty" placeholder="ex: VASLUI" required></div>
                     <div><label>Cod Poștal</label><input type="text" id="sellerPostalCode" placeholder="ex: 731184"></div>
-                    <div><label>Municipiul / Oraș / Comună</label><input type="text" id="sellerCity" placeholder="ex: BÂRLAD"></div>
+                    <div><label>Municipiul / Oraș / Comună *</label><input type="text" id="sellerCity" placeholder="ex: BÂRLAD" required></div>
                     <div><label>Sat / Sector</label><input type="text" id="seller_sector" placeholder="ex: -"></div>
-                    <div><label>Stradă</label><input type="text" id="sellerStreet" placeholder="ex: G-RAL MILEA"></div>
-                    <div><label>Număr Stradă</label><input type="text" id="sellerStreetNo" placeholder="ex: 2"></div>
+                    <div><label>Stradă *</label><input type="text" id="sellerStreet" placeholder="ex: G-RAL MILEA" required></div>
+                    <div><label>Număr Stradă *</label><input type="text" id="sellerStreetNo" placeholder="ex: 2" required></div>
                     <div><label>Bloc (Bl.)</label><input type="text" id="sellerBlock" placeholder="ex: B1"></div>
                     <div><label>Scară</label><input type="text" id="sellerBuilding" placeholder="ex: 1"></div>
                     <div><label>Etaj</label><input type="text" id="sellerFloor" placeholder="ex: 2"></div>
                     <div><label>Apartament</label><input type="text" id="sellerApartment" placeholder="ex: 10"></div>
-                    <div><label>Seria Act Identitate</label><input type="text" id="seller_ci_serie" placeholder="ex: VS"></div>
-                    <div><label>Număr Act Identitate</label><input type="text" id="seller_ci_number" placeholder="ex: 123456"></div>
-                    <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere)</label><input type="text" id="seller_ci_cnp" placeholder="ex: 5040101123456" maxlength="13"></div>
-                    <div><label>Telefon / Fax</label><input type="text" id="seller_phone" placeholder="ex: 0749685347"></div>
-                    <div><label>E-mail</label><input type="text" id="seller_email" placeholder="ex: dragusanumario@gmail.com" style="text-transform: none;"></div>
+                    <div><label>Seria Act Identitate *</label><input type="text" id="seller_ci_serie" placeholder="ex: VS" required></div>
+                    <div><label>Număr Act Identitate *</label><input type="text" id="seller_ci_number" placeholder="ex: 123456" required></div>
+                    <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere) *</label><input type="text" id="seller_ci_cnp" placeholder="ex: 5040101123456" maxlength="13" required></div>
+                    <div><label>Telefon / Fax *</label><input type="text" id="seller_phone" placeholder="ex: 0749685347" required></div>
+                    <div><label>E-mail *</label><input type="text" id="seller_email" placeholder="ex: dragusanumario@gmail.com" style="text-transform: none;" required></div>
 
                     <div class="full-width">
                         <button type="button" class="btn btn-secondary" id="btnToggleFiscal" onclick="comutaDomiciliuFiscal()" style="margin-top: 10px;">➕ Adaugă Domiciliu Fiscal Diferit (Opțional)</button>
@@ -733,7 +580,7 @@ body::after {
                     </div>
                 </div>
 
-                <!-- Formular Comodat Auto Pas 1 -->
+                <!-- Celelalte formulare originale pas 1 -->
                 <div id="formComodatAutoStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Comodant (Proprietar Auto)</strong></div>
                     <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodantAutoNume" placeholder="ex: POPESCU ION"></div>
@@ -742,76 +589,58 @@ body::after {
                     <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodantAutoAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
                 </div>
 
-                <!-- Formular ITL-016 Pas 1: Date Contribuabil -->
                 <div id="formItl016Step1" class="form-grid" style="display:none;">
                     <div class="full-width" style="background: var(--primary-light); border: 1px solid var(--primary); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; color: var(--primary); font-weight: 600;">
                         📄 Declarație pentru scoaterea din evidență a mijloacelor de transport (Model 2016 ITL-016)
                     </div>
-                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă (Subsemnatul / Subscrisa) *</label><input type="text" id="itlContribuabilNume" placeholder="ex: DRAGUSANU MARIO"></div>
+                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="itlContribuabilNume" placeholder="ex: DRAGUSANU MARIO"></div>
                     <div><label>CNP / CUI *</label><input type="text" id="itlContribuabilCnp" placeholder="ex: 5040101123456" maxlength="13"></div>
-                    <div><label>Act Identitate (B.I. / C.I. / Pașaport Serie și Nr) *</label><input type="text" id="itlContribuabilAct" placeholder="ex: VS 123456"></div>
-                    <div class="full-width"><label>Adresă Domiciliu / Sediu Completă (Județ, Localitate, Stradă, Nr.) *</label><input type="text" id="itlContribuabilAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2, BÂRLAD, JUD. VASLUI"></div>
+                    <div><label>Act Identitate *</label><input type="text" id="itlContribuabilAct" placeholder="ex: VS 123456"></div>
+                    <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="itlContribuabilAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2"></div>
                     <div>
                         <label>Calitatea Contribuabilului *</label>
                         <select id="itlContribuabilCalitate">
                             <option value="proprietar">Proprietar</option>
                             <option value="coproprietar">Coproprietar</option>
-                            <option value="mostenitor">Moștenitor (cu certificat de moștenitor)</option>
-                            <option value="mandatar">Mandatar / Împuternicit</option>
-                            <option value="administrator">Administrator / Reprezentant Firmă</option>
+                            <option value="mostenitor">Moștenitor</option>
+                            <option value="mandatar">Mandatar</option>
                         </select>
                     </div>
                     <div><label>Telefon / Fax *</label><input type="text" id="itlContribuabilTelefon" placeholder="ex: 0749685347"></div>
-                    <div class="full-width"><label>Adresă E-mail pentru comunicare oficială *</label><input type="email" id="itlContribuabilEmail" placeholder="ex: dragusanumario@gmail.com" style="text-transform: none;"></div>
+                    <div class="full-width"><label>E-mail *</label><input type="email" id="itlContribuabilEmail" placeholder="ex: dragusanumario@gmail.com" style="text-transform: none;"></div>
                 </div>
 
-                <!-- Formular Procură / Împuternicire Pas 1: Date Mandant -->
                 <div id="formProcuraStep1" class="form-grid" style="display:none;">
-                    <div class="full-width" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); border: 1px solid var(--accent); color: var(--accent); padding: 14px 18px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
-                        ⚠️ <strong>Atenție:</strong> Acest formular generează un proiect de procură specială. Pentru a fi acceptat și valabil în fața instituțiilor (RAR / Înmatriculări), actul necesită în mod obligatoriu prezentarea la un birou notarial în vederea autentificării.
-                    </div>
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Mandant (Proprietar / Titular)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="procuraMandantNume" placeholder="ex: DRAGUSANU MARIO"></div>
+                    <div class="full-width"><label>Nume și Prenume *</label><input type="text" id="procuraMandantNume" placeholder="ex: DRAGUSANU MARIO"></div>
                     <div><label>CNP / CUI *</label><input type="text" id="procuraMandantCnp" placeholder="ex: 5040101123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="procuraMandantAct" placeholder="ex: VS 123456"></div>
-                    <div class="full-width"><label>Adresă Domiciliu / Sediu Completă *</label><input type="text" id="procuraMandantAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2, BÂRLAD"></div>
+                    <div><label>Act Identitate *</label><input type="text" id="procuraMandantAct" placeholder="ex: VS 123456"></div>
+                    <div class="full-width"><label>Adresă Domiciliu *</label><input type="text" id="procuraMandantAdresa" placeholder="ex: STR. G-RAL MILEA, NR. 2"></div>
                 </div>
 
-                <!-- Formular Comodat Imobil Pas 1 -->
                 <div id="formComodatImobilStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Comodant (Proprietar Imobil)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodantImobilNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div class="full-width"><label>Nume și Prenume *</label><input type="text" id="comodantImobilNume" placeholder="ex: IONESCU MARIA"></div>
                     <div><label>CNP / CUI *</label><input type="text" id="comodantImobilCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-                    <div><label>Act / Reg. Com. *</label><input type="text" id="comodantImobilAct" placeholder="ex: BZ 654321"></div>
-                    <div class="full-width"><label>Adresă / Sediu Completă *</label><input type="text" id="comodantImobilAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
+                    <div><label>Act *</label><input type="text" id="comodantImobilAct" placeholder="ex: BZ 654321"></div>
+                    <div class="full-width"><label>Adresă *</label><input type="text" id="comodantImobilAdresa" placeholder="ex: STR. VICTORIEI, NR. 5"></div>
                 </div>
 
-                <!-- Formular Imobiliare Pas 1 -->
                 <div id="formImobiliareStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Proprietar (Locator)</strong></div>
                     <div class="full-width"><label>Nume și Prenume Proprietar *</label><input type="text" id="proprietarNume" placeholder="ex: POPESCU ION"></div>
                     <div><label>CNP Proprietar *</label><input type="text" id="proprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="proprietarAct" placeholder="ex: VS 123456"></div>
-
-                    <div class="full-width" style="margin-top: 15px;"><strong style="color: var(--primary); font-size: 13px;">2. Imobilul Închiriat & Condiții Financiare</strong></div>
-                    <div class="full-width"><label>Adresă Completă Imobil Închiriat *</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
-                    <div class="full-width" style="margin-top: 5px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Inventar Bunuri / Electrocasnice (Opțional)</label>
-                        <input type="text" id="imobilInventar" placeholder="ex: Centrala termica, Frigider Arctic">
-                    </div>
-                    <div><label>Durată Contract *</label><input type="text" id="imobilDurata" value="12 LUNI"></div>
-                    <div><label>Data Începere *</label><input type="text" id="imobilDataStart" value="01.09.2026"></div>
+                    <div><label>Act Identitate *</label><input type="text" id="proprietarAct" placeholder="ex: VS 123456"></div>
+                    <div class="full-width"><label>Adresă Completă Imobil *</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5"></div>
                     <div><label>Chirie Lunară *</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
                     <div><label>Garanție *</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
                 </div>
 
-                <!-- Formular Proces-Verbal Locuință Pas 1 -->
                 <div id="formPvLoc1" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">1. Date Locator (Proprietar) & Locatar (Chiriaș)</strong></div>
                     <div class="full-width"><label>Nume și Prenume Locator (Proprietar) *</label><input type="text" id="pvProprietarNume" placeholder="ex: POPESCU ION"></div>
                     <div><label>CNP Locator *</label><input type="text" id="pvProprietarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
-                    <div><label>CI Serie și Nr Locator *</label><input type="text" id="pvProprietarAct" placeholder="ex: VS 123456"></div>
-                    <div class="full-width"><label>Adresă Domiciliu Locator *</label><input type="text" id="pvProprietarAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BÂRLAD"></div>
+                    <div><label>CI Locator *</label><input type="text" id="pvProprietarAct" placeholder="ex: VS 123456"></div>
+                    <div class="full-width"><label>Adresă Domiciliu Locator *</label><input type="text" id="pvProprietarAdresa" placeholder="ex: STR. VICTORIEI, NR. 5"></div>
                 </div>
 
                 <div style="margin-top: 30px;">
@@ -824,120 +653,62 @@ body::after {
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep2">Pasul 2: Datele Cumpărătorului</div>
                 
                 <div id="formAutoStep2" class="form-grid">
-                    <div class="full-width"><label>Nume și Prenume / Denumire</label><input type="text" id="buyerName" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>Județ</label><input type="text" id="buyer_judet" placeholder="ex: BUCUREȘTI"></div>
+                    <div class="full-width"><label>Nume și Prenume / Denumire *</label><input type="text" id="buyerName" placeholder="ex: IONESCU MARIA" required></div>
+                    <div><label>Județ *</label><input type="text" id="buyer_judet" placeholder="ex: BUCUREȘTI" required></div>
                     <div><label>Cod Poștal</label><input type="text" id="buyerPostalCode" placeholder="ex: 010101"></div>
-                    <div><label>Municipiul / Oraș / Comună</label><input type="text" id="buyer_city" placeholder="ex: BUCUREȘTI"></div>
+                    <div><label>Municipiul / Oraș / Comună *</label><input type="text" id="buyer_city" placeholder="ex: BUCUREȘTI" required></div>
                     <div><label>Sat / Sector</label><input type="text" id="buyer_sector" placeholder="ex: SECTOR 1"></div>
-                    <div><label>Stradă</label><input type="text" id="buyerStreet" placeholder="ex: STR. VICTORIEI"></div>
-                    <div><label>Număr</label><input type="text" id="buyerStreetNo" placeholder="ex: 5"></div>
-                    <div><label>Bloc (Bl.)</label><input type="text" id="buyerBlock" placeholder="ex: -"></div>
-                    <div><label>Scară</label><input type="text" id="buyerBuilding" placeholder="ex: -"></div>
-                    <div><label>Etaj</label><input type="text" id="buyerFloor" placeholder="ex: -"></div>
-                    <div><label>Apartament</label><input type="text" id="buyerApartment" placeholder="ex: -"></div>
-                    <div><label>Tip Act & Serie</label><input type="text" id="buyerCISeries" placeholder="ex: CI RX"></div>
-                    <div><label>Număr Act</label><input type="text" id="buyerCINumber" placeholder="ex: 654321"></div>
-                    <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere)</label><input type="text" id="buyerCNP" placeholder="ex: 2950505654321" maxlength="13"></div>
-                    <div><label>Telefon / Fax</label><input type="text" id="buyerPhone" placeholder="ex: 0733000000"></div>
-                    <div><label>E-mail</label><input type="text" id="buyerEmail" placeholder="ex: cumparator@email.com" style="text-transform: none;"></div>
-
-                    <div class="full-width">
-                        <button type="button" class="btn btn-secondary" id="btnToggleBuyerFiscal" onclick="comutaDomiciliuFiscalCumparator()" style="margin-top: 10px;">➕ Adaugă Domiciliu Fiscal Diferit (Cumpărător)</button>
-                        <div id="sectiuneFiscalaCumparator" class="form-grid" style="display:none; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 12px;">
-                            <div class="full-width"><strong style="font-size: 13px;">Date Domiciliu Fiscal Cumpărător</strong></div>
-                            <div><label>Județ Fiscal</label><input type="text" id="buyerFiscalCounty"></div>
-                            <div><label>Cod Poștal</label><input type="text" id="buyerFiscalPostalCode"></div>
-                            <div><label>Localitate</label><input type="text" id="buyerFiscalCity"></div>
-                            <div><label>Sector / Sat</label><input type="text" id="buyerFiscalSector"></div>
-                            <div><label>Stradă</label><input type="text" id="buyerFiscalStreet"></div>
-                            <div><label>Număr</label><input type="text" id="buyerFiscalStreetNo"></div>
-                        </div>
-                    </div>
-
-                    <div class="full-width">
-                        <button type="button" class="btn btn-secondary" id="btnToggleBuyerFirma" onclick="comutaFirmaCumparator()" style="margin-top: 10px;">🏢 Cumpărarea prin Firmă / Mandatar (Cumpărător)</button>
-                        <div id="sectiuneFirmaCumparator" class="form-grid" style="display:none; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 12px;">
-                            <div class="full-width"><strong style="font-size: 13px;">Date Reprezentant / Firmă Cumpărător</strong></div>
-                            <div><label>Reprezentată prin (Nume)</label><input type="text" id="buyerRepresentant"></div>
-                            <div><label>În calitate de</label><input type="text" id="buyerQuality" placeholder="ex: ADMINISTRATOR"></div>
-                            <div><label>Seria Act Reprezentant</label><input type="text" id="buyerRepresCISeries"></div>
-                            <div><label>Număr Act Reprezentant</label><input type="text" id="buyerRepresCINumber"></div>
-                            <div class="full-width"><label>CNP / CIF Reprezentant (13 caractere)</label><input type="text" id="buyerRepresCNP" maxlength="13"></div>
-                            <div><label>Telefon Reprezentant</label><input type="text" id="buyerRepresPhone"></div>
-                            <div><label>E-mail Reprezentant</label><input type="text" id="buyerRepresEmail" style="text-transform: none;"></div>
-                        </div>
-                    </div>
+                    <div><label>Stradă *</label><input type="text" id="buyerStreet" placeholder="ex: STR. VICTORIEI" required></div>
+                    <div><label>Număr *</label><input type="text" id="buyerStreetNo" placeholder="ex: 5" required></div>
+                    <div><label>Tip Act & Serie *</label><input type="text" id="buyerCISeries" placeholder="ex: CI RX" required></div>
+                    <div><label>Număr Act *</label><input type="text" id="buyerCINumber" placeholder="ex: 654321" required></div>
+                    <div class="full-width"><label>C.N.P. / C.I.F. (13 caractere) *</label><input type="text" id="buyerCNP" placeholder="ex: 2950505654321" maxlength="13" required></div>
+                    <div><label>Telefon / Fax *</label><input type="text" id="buyerPhone" placeholder="ex: 0733000000" required></div>
+                    <div><label>E-mail *</label><input type="text" id="buyerEmail" placeholder="ex: cumparator@email.com" style="text-transform: none;" required></div>
                 </div>
 
-                <!-- Formular Comodat Auto Pas 2 -->
                 <div id="formComodatAutoStep2" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Utilizator Auto)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodatarAutoNume" placeholder="ex: IONESCU MARIA"></div>
-                    <div><label>CNP / CUI *</label><input type="text" id="comodatarAutoCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="comodatarAutoAct" placeholder="ex: BZ 654321"></div>
-                    <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="comodatarAutoAdresa" placeholder="ex: STR. VICTORIEI, NR. 5, BUCUREȘTI"></div>
+                    <div class="full-width"><label>Nume Comodatar *</label><input type="text" id="comodatarAutoNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div><label>CNP *</label><input type="text" id="comodatarAutoCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
+                    <div><label>Act *</label><input type="text" id="comodatarAutoAct" placeholder="ex: BZ 654321"></div>
+                    <div class="full-width"><label>Adresă *</label><input type="text" id="comodatarAutoAdresa" placeholder="ex: STR. VICTORIEI"></div>
                 </div>
 
-                <!-- Formular ITL-016 Pas 2: Vehicul & Motiv -->
                 <div id="formItl016Step2" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Datele Mijlocului de Transport & Motivul Radierii</strong></div>
                     <div><label>Marcă Auto *</label><input type="text" id="itlAutoMarca" placeholder="ex: AUDI"></div>
                     <div><label>Serie Motor *</label><input type="text" id="itlAutoMotor" placeholder="ex: CAGA123456"></div>
-                    <div class="full-width"><label>Serie Șasiu (VIN - exact 17 caractere) *</label><input type="text" id="itlAutoVin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
-                    <div><label>Capacitate Cilindrică (cm³) sau Tonaj *</label><input type="text" id="itlAutoCapacitate" placeholder="ex: 1968 cm³"></div>
-                    <div><label>Data Dobândirii Inițiale *</label><input type="text" id="itlAutoDataDobandirii" placeholder="ex: 15.05.2023"></div>
-                    
-                    <div class="full-width" style="margin-top: 10px;">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Solicit scoaterea din evidență ca efect al: *</label>
-                        <select id="itlMotivRadiere" style="margin-bottom: 12px;">
-                            <option value="instrinarii / transferului">Înstrăinării / Transferului (Vânzare)</option>
-                            <option value="transferului la un alt punct de lucru">Transferului la un alt punct de lucru</option>
-                            <option value="furtului">Furtului</option>
-                            <option value="scoaterii din functiune">Scoaterii din funcțiune</option>
-                            <option value="schimbarii domiciliului">Schimbării domiciliului</option>
-                            <option value="incetarii contractului de leasing inainte de scadenta">Încetării contractului de leasing înainte de scadență</option>
-                            <option value="scoaterii definitive din tara">Scoaterii definitive din țară</option>
-                        </select>
-                    </div>
-                    <div><label>Începând cu data de *</label><input type="text" id="itlDataEfectiva" placeholder="ex: 01.09.2026"></div>
+                    <div class="full-width"><label>Serie Șasiu (VIN - 17 caractere) *</label><input type="text" id="itlAutoVin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
+                    <div><label>Capacitate Cilindrică *</label><input type="text" id="itlAutoCapacitate" placeholder="ex: 1968 cm³"></div>
                 </div>
 
-                <!-- Formular Procură / Împuternicire Pas 2: Date Mandatar -->
                 <div id="formProcuraStep2" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Mandatar (Persoana Împuternicită)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Complet *</label><input type="text" id="procuraMandatarNume" placeholder="ex: POPESCU ION"></div>
+                    <div class="full-width"><label>Nume Mandatar *</label><input type="text" id="procuraMandatarNume" placeholder="ex: POPESCU ION"></div>
                     <div><label>CNP *</label><input type="text" id="procuraMandatarCnp" placeholder="ex: 1800101123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="procuraMandatarAct" placeholder="ex: BZ 654321"></div>
-                    <div class="full-width"><label>Adresă Domiciliu Completă *</label><input type="text" id="procuraMandatarAdresa" placeholder="ex: STR. REPUBLICII, NR. 15, BÂRLAD"></div>
+                    <div><label>Act *</label><input type="text" id="procuraMandatarAct" placeholder="ex: BZ 654321"></div>
+                    <div class="full-width"><label>Adresă *</label><input type="text" id="procuraMandatarAdresa" placeholder="ex: STR. REPUBLICII"></div>
                 </div>
 
-                <!-- Formular Comodat Imobil Pas 2 -->
                 <div id="formComodatImobilStep2" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Comodatar (Beneficiar Imobil / Sediu)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume / Denumire Firmă *</label><input type="text" id="comodatarImobilNume" placeholder="ex: SC BUSINESS SRL"></div>
-                    <div><label>CNP / CUI *</label><input type="text" id="comodatarImobilCnp" placeholder="ex: RO12345678"></div>
-                    <div><label>Act / Reg. Com. *</label><input type="text" id="comodatarImobilAct" placeholder="ex: J40/123/2026"></div>
-                    <div class="full-width"><label>Adresă Sediu / Domiciliu *</label><input type="text" id="comodatarImobilAdresa" placeholder="ex: STR. LICEULUI, NR. 10"></div>
+                    <div class="full-width"><label>Nume Comodatar *</label><input type="text" id="comodatarImobilNume" placeholder="ex: SC BUSINESS SRL"></div>
+                    <div><label>CUI *</label><input type="text" id="comodatarImobilCnp" placeholder="ex: RO12345678"></div>
+                    <div><label>Reg. Com. *</label><input type="text" id="comodatarImobilAct" placeholder="ex: J40/123/2026"></div>
+                    <div class="full-width"><label>Adresă *</label><input type="text" id="comodatarImobilAdresa" placeholder="ex: STR. LICEULUI"></div>
                 </div>
 
                 <div id="formImobiliareStep2" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Chiriaș (Locatar)</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div class="full-width"><label>Nume Chiriaș *</label><input type="text" id="chiriasNume" placeholder="ex: IONESCU MARIA"></div>
                     <div><label>CNP Chiriaș *</label><input type="text" id="chiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-                    <div><label>Act Identitate (CI Serie și Nr) *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
+                    <div><label>Act Identitate *</label><input type="text" id="chiriasAct" placeholder="ex: BZ 654321"></div>
                 </div>
 
-                <!-- Formular Proces-Verbal Locuință Pas 2 -->
                 <div id="formPvLoc2" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">2. Date Locatar (Chiriaș) & Detalii Imobil</strong></div>
-                    <div class="full-width"><label>Nume și Prenume Locatar (Chiriaș) *</label><input type="text" id="pvChiriasNume" placeholder="ex: IONESCU MARIA"></div>
+                    <div class="full-width"><label>Nume Locatar *</label><input type="text" id="pvChiriasNume" placeholder="ex: IONESCU MARIA"></div>
                     <div><label>CNP Locatar *</label><input type="text" id="pvChiriasCnp" placeholder="ex: 2950505123456" maxlength="13"></div>
-                    <div><label>CI Serie și Nr Locatar *</label><input type="text" id="pvChiriasAct" placeholder="ex: BZ 654321"></div>
-                    <div class="full-width"><label>Adresă Imobil Închiriat *</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5, BÂRLAD"></div>
+                    <div><label>CI Locatar *</label><input type="text" id="pvChiriasAct" placeholder="ex: BZ 654321"></div>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; gap: 12px;" id="btnGroupStep2">
-                    <button class="btn btn-secondary" id="btnPrevStep2" onclick="prevStep(2)">⬅ Înapoi</button>
+                <div style="margin-top: 30px; display: flex; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="prevStep(2)">⬅ Înapoi</button>
                     <button class="btn btn-primary" onclick="nextStep(2)">Înainte ➔</button>
                 </div>
             </div>
@@ -947,166 +718,72 @@ body::after {
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="titleStep3">Pasul 3: Vehiculul și Prețul</div>
                 
                 <div id="formAutoStep3" class="form-grid">
-                    <div><label>Marcă</label><input type="text" id="make" placeholder="ex: AUDI"></div>
-                    <div><label>Tipul</label><input type="text" id="type" placeholder="ex: A4 B8"></div>
-                    <div class="full-width"><label>Număr de Identificare (VIN - 17 caractere)</label><input type="text" id="chassisSeries" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
-                    <div><label>Serie Motor</label><input type="text" id="motorSeries" placeholder="ex: CAGA123456"></div>
-                    <div><label>Capacitate Cilindrică (cm³)</label><input type="text" id="cilCapacity" placeholder="ex: 1968"></div>
-                    <div><label>Greutate Maximă Admisă (fără kg)</label><input type="text" id="maxWeight" placeholder="ex: 1800"></div>
-                    <div><label>Număr Înmatriculare</label><input type="text" id="regNumber" placeholder="ex: VS12XYZ"></div>
-                    <div><label>Data Expirare ITP</label><input type="text" id="ITPExpirationDate" placeholder="ex: 12.10.2027"></div>
-                    <div><label>Număr C.I.V.</label><input type="text" id="vehicleIDCardNumber" placeholder="ex: B123456"></div>
-                    <div><label>An Fabricație</label><input type="text" id="productionYear" placeholder="ex: 2012"></div>
-                    <div><label>Normă Euro</label><input type="text" id="euroStandard" placeholder="ex: EURO 5"></div>
-                    <div><label>Data Dobândirii Anterioare</label><input type="text" id="acquiredDate" placeholder="ex: 15.05.2020"></div>
-
-                    <div>
-                        <label>Tip Act Anterior Dobândire</label>
-                        <select id="acquiredActType">
-                            <option value="CONTRACT DE VANZARE-CUMPARARE">CONTRACT DE VANZARE-CUMPARARE</option>
-                            <option value="FACTURA FISCALA">FACTURA FISCALA</option>
-                            <option value="CERTIFICAT DE MOSTENITOR">CERTIFICAT DE MOSTENITOR</option>
-                            <option value="CONTRACT DE DONATIE">CONTRACT DE DONATIE</option>
-                        </select>
-                    </div>
-                    <div><label>Număr și Dată Act Dobândire</label><input type="text" id="acquiredActDetails" placeholder="ex: NR. 45 DIN 12.05.2023"></div>
-
-                    <div><label>Preț în Cifre</label><input type="text" id="figurePrice" placeholder="ex: 8.500 EUR"></div>
-                    <div><label>Preț în Litere</label><input type="text" id="lettersPrice" placeholder="ex: OPT MII CINCI SUTE EURO"></div>
+                    <div><label>Marcă *</label><input type="text" id="make" placeholder="ex: AUDI" required></div>
+                    <div><label>Tipul *</label><input type="text" id="type" placeholder="ex: A4 B8" required></div>
+                    <div class="full-width"><label>Număr de Identificare (VIN - 17 caractere) *</label><input type="text" id="chassisSeries" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17" required></div>
+                    <div><label>Serie Motor *</label><input type="text" id="motorSeries" placeholder="ex: CAGA123456" required></div>
+                    <div><label>Capacitate Cilindrică (cm³) *</label><input type="text" id="cilCapacity" placeholder="ex: 1968" required></div>
+                    <div><label>Greutate Maximă Admisă *</label><input type="text" id="maxWeight" placeholder="ex: 1800" required></div>
+                    <div><label>Număr Înmatriculare *</label><input type="text" id="regNumber" placeholder="ex: VS12XYZ" required></div>
+                    <div><label>Preț în Cifre *</label><input type="text" id="figurePrice" placeholder="ex: 8.500 EUR" required></div>
+                    <div><label>Preț în Litere *</label><input type="text" id="lettersPrice" placeholder="ex: OPT MII CINCI SUTE EURO" required></div>
                 </div>
 
-                <!-- Formular Comodat Auto Pas 3 -->
                 <div id="formComodatAutoStep3" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Detalii Autoturism & Durată</strong></div>
                     <div><label>Marcă Auto *</label><input type="text" id="comodatAutoMarca" placeholder="ex: AUDI"></div>
                     <div><label>Model Auto *</label><input type="text" id="comodatAutoModel" placeholder="ex: A4"></div>
                     <div class="full-width"><label>Serie Șasiu (VIN - 17 caractere) *</label><input type="text" id="comodatAutoVin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
                     <div><label>Număr Înmatriculare *</label><input type="text" id="comodatAutoNr" placeholder="ex: VS12XYZ"></div>
-                    <div><label>Serie Motor *</label><input type="text" id="comodatAutoMotor" placeholder="ex: CAGA123456"></div>
-                    <div><label>Capacitate Cilindrică (cmc) *</label><input type="text" id="comodatAutoCmc" placeholder="ex: 1968"></div>
-                    <div><label>Durata Contractului *</label><input type="text" id="comodatAutoDurata" placeholder="ex: 1 AN"></div>
                 </div>
 
-                <!-- Formular ITL-016 Pas 3: Noul Proprietar, Act Doveditor & Casetă Dedicată Semnătură -->
                 <div id="formItl016Step3" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Act Doveditor & Noul Proprietar</strong></div>
                     <div><label>Tip Act Doveditor *</label><input type="text" id="itlTipActDoveditor" value="Contract de vanzare-cumparare"></div>
                     <div><label>Număr și Dată Act *</label><input type="text" id="itlNumarDataAct" placeholder="ex: nr. 12 din 01.09.2026"></div>
-                    
-                    <div class="full-width" style="margin-top: 10px;"><strong style="font-size: 13px; color: var(--text-main);">Date Noul Proprietar (în caz de înstrăinare):</strong></div>
-                    <div class="full-width"><label>Nume / Denumire Noul Proprietar *</label><input type="text" id="itlNoulProprietarNume" placeholder="ex: IONESCU MARIA"></div>
-                    <div class="full-width"><label>Adresă / Localitate / Județ Noul Proprietar *</label><input type="text" id="itlNoulProprietarAdresa" placeholder="ex: BUCUREȘTI, SECTOR 1"></div>
-
-                    <!-- Căsuță separată și elegantă pentru semnătura ITL-016 -->
+                    <div class="full-width"><label>Nume Noul Proprietar *</label><input type="text" id="itlNoulProprietarNume" placeholder="ex: IONESCU MARIA"></div>
                     <div class="full-width" id="itlSignContainer" style="margin-top: 20px; background: var(--bg-body); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <label style="margin: 0; color: var(--primary); font-weight: 700;">Semnătură Olografă Contribuabil (Declarant)</label>
-                            <span style="font-size: 11px; color: var(--text-muted);">Desenați în chenar</span>
-                        </div>
-                        <canvas id="sigItlDeclarantCanvas" width="320" height="100" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block;"></canvas>
-                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; width: auto; margin-top: 8px;" onclick="curataCanvas('sigItlDeclarantCanvas')">🔄 Resetează Semnătura</button>
+                        <label style="margin: 0; color: var(--primary); font-weight: 700;">Semnătură Olografă Contribuabil</label>
+                        <canvas id="sigItlDeclarantCanvas" width="320" height="100" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 8px;"></canvas>
+                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; width: auto; margin-top: 8px;" onclick="curataCanvas('sigItlDeclarantCanvas')">🔄 Resetează</button>
                     </div>
                 </div>
 
-                <!-- Formular Procură / Împuternicire Pas 3: Vehicul & Instituții -->
                 <div id="formProcuraStep3" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Date Vehicul & Instituții Autorizate</strong></div>
                     <div><label>Marcă Auto *</label><input type="text" id="procuraAutoMarca" placeholder="ex: AUDI"></div>
                     <div><label>Model Auto *</label><input type="text" id="procuraAutoModel" placeholder="ex: A4 B8"></div>
-                    <div class="full-width"><label>Serie Șasiu / VIN (exact 17 caractere) *</label><input type="text" id="procuraAutoVin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
-                    <div><label>Număr Înmatriculare (sau "Neînmatriculat") *</label><input type="text" id="procuraAutoNr" placeholder="ex: VS12XYZ sau NEÎNMATRICULAT"></div>
-                    <div><label>Serie Motor *</label><input type="text" id="procuraAutoMotor" placeholder="ex: CAGA123456"></div>
-                    
-                    <div class="full-width" style="margin-top: 10px;">
-                        <label style="color: var(--primary); margin-bottom: 8px;">Instituții la care se acordă împuternicirea:</label>
-                        <div style="display: grid; gap: 8px; font-size: 13px;">
-                            <label style="display: flex; align-items: center; gap: 8px; text-transform: none; font-weight: 500; cursor: pointer;">
-                                <input type="checkbox" id="instRar" checked style="width: auto;"> Registrul Auto Român (RAR) - ITP, Autentificare, Omologare, CIV
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 8px; text-transform: none; font-weight: 500; cursor: pointer;">
-                                <input type="checkbox" id="instDrpciv" checked style="width: auto;"> Serviciul de Înmatriculări (DRPCIV) - Înmatriculare, Radiere, Numere
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 8px; text-transform: none; font-weight: 500; cursor: pointer;">
-                                <input type="checkbox" id="instFisc" checked style="width: auto;"> Organul Fiscal Local (Impozite și Taxe) & ANAF
-                            </label>
-                        </div>
-                    </div>
+                    <div class="full-width"><label>Serie Șasiu / VIN (17 caractere) *</label><input type="text" id="procuraAutoVin" placeholder="ex: WAUZZZ8K1FA123456" maxlength="17"></div>
                 </div>
 
-                <!-- Container Semnătură Mandant pentru Procură (Pas 3 sau Pas 4) -->
                 <div id="procuraSignContainer" style="display:none; margin-top: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                    <label style="margin-bottom: 6px;">Semnătură Olografă Mandant (Proprietar)</label>
+                    <label>Semnătură Mandant</label>
                     <canvas id="sigProcuraMandantCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-                    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProcuraMandantCanvas')">Resetează Semnătura</button>
+                    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProcuraMandantCanvas')">Resetează</button>
                 </div>
 
-                <!-- Formular Comodat Imobil Pas 3 -->
                 <div id="formComodatImobilStep3" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Detalii Imobil & Situație Juridică</strong></div>
-                    <div class="full-width"><label>Adresă Completă Imobil (Locuință / Sediu) *</label><input type="text" id="comodatImobilAdresaBun" placeholder="ex: STR. STEFAN CEL MARE, NR. 12, BÂRLAD"></div>
+                    <div class="full-width"><label>Adresă Completă Imobil *</label><input type="text" id="comodatImobilAdresaBun" placeholder="ex: STR. STEFAN CEL MARE"></div>
                     <div><label>Număr Carte Funciară (CF) *</label><input type="text" id="comodatImobilCf" placeholder="ex: 123456"></div>
-                    <div><label>Număr Cadastral *</label><input type="text" id="comodatCadastru" placeholder="ex: 123456-C1"></div>
-                    <div class="full-width"><label>Scopul / Destinația *</label><input type="text" id="comodatImobilScop" placeholder="ex: Stabilire Sediu Social și/sau Locuință"></div>
-                    <div><label>Durata Contractului *</label><input type="text" id="comodatImobilDurata" placeholder="ex: 3 ANI"></div>
                 </div>
 
-                <!-- Formular Proces-Verbal Locuință Pas 3 -->
                 <div id="formPvLoc3" class="form-grid" style="display:none;">
-                    <div class="full-width"><strong style="color: var(--primary); font-size: 13px;">3. Inventar Bunuri, Stare Tehnică & Semnături</strong></div>
-                    <div class="full-width"><label>Inventar Bunuri / Mobilier / Electrocasnice *</label><textarea id="pvInventarBunuri" placeholder="ex: Centrala termica, Frigider Arctic, Aragaz..." style="height: 100px; text-transform: none;"></textarea></div>
+                    <div class="full-width"><label>Inventar Bunuri *</label><textarea id="pvInventarBunuri" placeholder="ex: Centrala termica, Frigider..." style="height: 100px; text-transform: none;"></textarea></div>
                 </div>
 
                 <div id="imobiliareSemnaturiContainer" style="display:none; margin-bottom: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                     <div id="proprietarSignBox" style="margin-bottom: 16px;">
-                        <label id="labelPart1Sign">Semnătură Proprietar (Locator)</label>
+                        <label>Semnătură Proprietar</label>
                         <canvas id="sigProprietarCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează Semnătura</button>
+                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează</button>
                     </div>
                     <div id="chiriasSignBox">
-                        <label id="chiriasSignLabel">Semnătură Chiriaș (Locatar)</label>
+                        <label>Semnătură Chiriaș</label>
                         <canvas id="sigChiriasCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează Semnătura</button>
-                    </div>
-                </div>
-
-                <!-- Canvas specific pentru Proces-Verbal Locuință -->
-                <div id="pvLocuintaSemnaturiContainer" style="display:none; margin-top: 20px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Semnături Electronice Olografe</div>
-                    
-                    <div style="margin-bottom: 16px;">
-                        <label>Semnătură Locator (Proprietar)</label>
-                        <canvas id="sigPvProprietarCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigPvProprietarCanvas')">Resetează Semnătura</button>
-                    </div>
-
-                    <div>
-                        <label>Semnătură Locatar (Chiriaș)</label>
-                        <canvas id="sigPvChiriasCanvas" width="280" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-top: 4px;"></canvas>
-                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigPvChiriasCanvas')">Resetează Semnătura</button>
+                        <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; width: auto; margin-top: 6px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează</button>
                     </div>
                 </div>
 
                 <div style="margin-top: 30px; display: flex; gap: 12px;">
                     <button class="btn btn-secondary" onclick="prevStep(3)">⬅ Înapoi</button>
                     <button class="btn btn-primary" id="btnNextStep3" onclick="nextStep(3)">Finalizare & Opțiuni ➔</button>
-                </div>
-
-                <!-- Un singur Bloc Plată Pas 3 -->
-                <div class="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
-                    <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); max-width: 400px; margin: 0 auto 20px auto; text-align: left;">
-                        <p style="font-size: 13px; margin-bottom: 8px;"><strong>Document:</strong> Contract Oficial Generat</p>
-                        <p style="font-size: 13px;"><strong>Cost generare:</strong> <span style="color: var(--primary); font-weight: bold;">19.00 RON</span> (sau 1 Credit)</p>
-                    </div>
-                    <button class="btn btn-primary" style="padding: 14px 20px; font-size: 15px; width: 100%; max-width: 400px; margin: 0 auto;" onclick="proceseazaPlataSiDescarca()">💳 Plătește cu Cardul & Descarcă PDF</button>
-                </div>
-                <div class="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">✅ Plată Efectuată cu Succes!</div>
-                        <p style="font-size: 12px; color: var(--text-muted);">Documentul tău a fost generat, criptat și salvat în arhivă.</p>
-                    </div>
-                    <button class="btn btn-success btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()" style="max-width: 400px; margin: 0 auto;">📥 Descarcă Din Nou Documentul PDF</button>
                 </div>
             </div>
 
@@ -1116,13 +793,12 @@ body::after {
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Colectați semnăturile sau generați linkul pentru cealaltă parte.</p>
                 
                 <div id="localActions" style="display:none;">
-                    <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" onclick="pornesteFluxRemote()">📤 Generează Link de Trimitere la Distanță</button>
+                    <button class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706);" onclick="pornesteFluxRemote()">📤 Generează Link de Trimitere la Distanță</button>
                 </div>
 
                 <div id="waitingAnimationContainer" style="display:none; background: var(--bg-body); border: 1px dashed var(--border-color); padding: 24px; border-radius: var(--radius-md); text-align: center; margin-top: 16px;">
                     <div class="spinner"></div>
                     <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 4px;">Link securizat generat!</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Trimite linkul de mai jos celeilalte părți:</p>
                     <div style="display: inline-block; background: var(--bg-card); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" id="qrcode"></div>
                     <div style="font-family: monospace; font-size: 12px; margin: 12px 0; background: var(--bg-card); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); word-break: break-all;" id="shareLinkContainer"></div>
                     <div style="display: flex; gap: 10px; margin-top: 12px;">
@@ -1135,24 +811,6 @@ body::after {
                     <button class="btn btn-secondary" onclick="prevStep(4)">⬅ Înapoi</button>
                     <button class="btn btn-primary" id="btnNextStep4" onclick="nextStep(4)" style="display:none;">Continuă spre Plată ➔</button>
                 </div>
-
-                <!-- Un singur Bloc Plată Pas 4 -->
-                <div class="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
-                    <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); max-width: 400px; margin: 0 auto 20px auto; text-align: left;">
-                        <p style="font-size: 13px; margin-bottom: 8px;"><strong>Document:</strong> Contract Oficial Generat</p>
-                        <p style="font-size: 13px;"><strong>Cost generare:</strong> <span style="color: var(--primary); font-weight: bold;">19.00 RON</span> (sau 1 Credit)</p>
-                    </div>
-                    <button class="btn btn-primary" style="padding: 14px 20px; font-size: 15px; width: 100%; max-width: 400px; margin: 0 auto;" onclick="proceseazaPlataSiDescarca()">💳 Plătește cu Cardul & Descarcă PDF</button>
-                </div>
-                <div class="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">✅ Plată Efectuată cu Succes!</div>
-                        <p style="font-size: 12px; color: var(--text-muted);">Documentul tău a fost generat, criptat și salvat în arhivă.</p>
-                    </div>
-                    <button class="btn btn-success btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()" style="max-width: 400px; margin: 0 auto;">📥 Descarcă Din Nou Documentul PDF</button>
-                </div>
             </div>
 
             <!-- STEP 5 -->
@@ -1164,20 +822,15 @@ body::after {
                     <button class="btn btn-secondary" onclick="prevStep(5)">⬅ Înapoi</button>
                 </div>
 
-                <!-- Un singur Bloc Plată Pas 5 -->
-                <div class="paymentStepContainer" style="display: none; text-align: center; padding: 20px 0; margin-top: 10px;">
+                <div class="paymentStepContainer" style="display: block; text-align: center; padding: 20px 0; margin-top: 10px;">
                     <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Sumar Comandă & Plată Securizată</h3>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială a documentului generat.</p>
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); max-width: 400px; margin: 0 auto 20px auto; text-align: left;">
-                        <p style="font-size: 13px; margin-bottom: 8px;"><strong>Document:</strong> Contract Oficial Generat</p>
-                        <p style="font-size: 13px;"><strong>Cost generare:</strong> <span style="color: var(--primary); font-weight: bold;">19.00 RON</span> (sau 1 Credit)</p>
-                    </div>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata pentru a debloca descărcarea oficială.</p>
                     <button class="btn btn-primary" style="padding: 14px 20px; font-size: 15px; width: 100%; max-width: 400px; margin: 0 auto;" onclick="proceseazaPlataSiDescarca()">💳 Plătește cu Cardul & Descarcă PDF</button>
                 </div>
+                
                 <div class="finalDownloadContainer" style="display:none; text-align: center; margin-top: 20px;">
-                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
+                    <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); margin-bottom: 20px;">
                         <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">✅ Plată Efectuată cu Succes!</div>
-                        <p style="font-size: 12px; color: var(--text-muted);">Documentul tău a fost generat, criptat și salvat în arhivă.</p>
                     </div>
                     <button class="btn btn-success btnDescarcaOficial" onclick="ruleazaDescarcareaFinala()" style="max-width: 400px; margin: 0 auto;">📥 Descarcă Din Nou Documentul PDF</button>
                 </div>
@@ -1186,7 +839,6 @@ body::after {
         </div>
     </div>
 
-    <!-- SCRIPT EXTERN -->
     <script src="script.js"></script>
     <script src="pdf-generator.js"></script>
 </body>
