@@ -72,9 +72,17 @@ function pornireSplashTimer() {
         }
     }, 1000);
 }
-
 function deschideMeniuPrincipal() {
-    amestecaVizibilitateElemente(["hubCategorii"], ["listaDocumenteContainer", "dashboardView", "modeSelectorContainer", "progressBarContainer", "step1", "step2", "step3", "step4", "step5"]);
+    // Ascundem tot ce ține de pași și formulare, afișăm doar hub-ul
+    const elementeDeAscuns = ["listaDocumenteContainer", "dashboardView", "modeSelectorContainer", "progressBarContainer", "step1", "step2", "step3", "step4", "step5"];
+    elementeDeAscuns.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = "none";
+    });
+
+    const hub = document.getElementById("hubCategorii");
+    if (hub) hub.style.display = "block";
+
     state.currentCategory = null;
     state.currentDocType = null;
     state.currentStep = 1;
@@ -132,15 +140,20 @@ function selecteazaModSiPorneste(mod) {
     
     pregatesteFormulareDupaTipDocument();
     
-    // Ascundem meniul principal și afișăm bara de progres + pasul 1
-    amestecaVizibilitateElemente(["progressBarContainer"], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
+    // Ascundem meniurile anterioare
+    amestecaVizibilitateElemente([], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
     
-    // Ascundem toți pașii și afișăm doar pasul 1
+    // Afișăm bara de progres
+    const pb = document.getElementById("progressBarContainer");
+    if (pb) pb.style.display = "flex"; // sau block, în funcție de cum e în HTML
+
+    // Resetăm pașii și activăm doar pasul 1
     for (let i = 1; i <= 5; i++) {
         const el = document.getElementById(`step${i}`);
         if (el) el.classList.remove("active");
     }
-    document.getElementById("step1").classList.add("active");
+    const pas1 = document.getElementById("step1");
+    if (pas1) pas1.classList.add("active");
     
     actualizeazaProgresWizard();
 }
