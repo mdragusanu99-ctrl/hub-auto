@@ -130,15 +130,18 @@ function selecteazaModSiPorneste(mod) {
     state.isRemoteMode = (mod === 'remote');
     state.currentStep = 1;
     
-    // Pregătim formularele specifice în funcție de documentul ales
     pregatesteFormulareDupaTipDocument();
     
-    if (state.isRemoteMode) {
-        // Dacă e la distanță, vom face ca pasul 3 sau pasul 4 să fie cel de trimitere link
-        arataToast("Mod la distanță activat: completează datele tale și mergi spre generare link.");
-    }
+    // Ascundem meniul principal și afișăm bara de progres + pasul 1
+    amestecaVizibilitateElemente(["progressBarContainer"], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
     
-    amestecaVizibilitateElemente(["progressBarContainer", "step1"], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
+    // Ascundem toți pașii și afișăm doar pasul 1
+    for (let i = 1; i <= 5; i++) {
+        const el = document.getElementById(`step${i}`);
+        if (el) el.classList.remove("active");
+    }
+    document.getElementById("step1").classList.add("active");
+    
     actualizeazaProgresWizard();
 }
 
@@ -215,57 +218,49 @@ function arataElemente(ids, titluPas1) {
 // NAVIGARE PAȘI WIZARD (1 la 5)
 // ==========================================
 function nextStep(current) {
-    if (current === 1) {
-        amestecaVizibilitateElemente(["step2"], ["step1"]);
-        state.currentStep = 2;
-    } else if (current === 2) {
-        // Dacă suntem în mod remote la contractul auto, după datele vânzătorului sărim direct la pasul 4 (Remote / QR)
-        if (state.isRemoteMode && state.currentDocType === 'itl_054') {
-            amestecaVizibilitateElemente(["step4"], ["step2"]);
-            state.currentStep = 4;
-            pornesteFluxRemote();
-        } else {
-            amestecaVizibilitateElemente(["step3"], ["step2"]);
-            state.currentStep = 3;
-        }
-    } else if (current === 3) {
-        if (state.isRemoteMode) {
-            amestecaVizibilitateElemente(["step4"], ["step3"]);
-            state.currentStep = 4;
-            pornesteFluxRemote();
-        } else {
-            amestecaVizibilitateElemente(["step5"], ["step3"]);
-            state.currentStep = 5;
+    // Ascundem absolut toți pașii mai întâi
+    for (let i = 1; i <= 5; i++) {
+        const stepEl = document.getElementById(`step${i}`);
+        if (stepEl) stepEl.classList.remove("active");
+    }
+
+    state.currentStep = current + 1;
+    if (state.currentStep > 5) state.currentStep = 5;
+
+    // Dacă suntem în mod remote și am terminat datele noastre, sărim la pasul 4 (Remote Link)
+    if (state.isRemoteMode && state.currentStep === 3) {
+        state.currentStep = 4;
+        const targetStep = document.getElementById(`step4`);
+        if (targetStep) targetStep.classList.add("active");
+        pornesteFluxRemote();
+    } else {
+        const targetStep = document.getElementById(`step${state.currentStep}`);
+        if (targetStep) targetStep.classList.add("active");
+        
+        // Dacă am ajuns la pasul de plată (pasul 5 sau pasul final)
+        if (state.currentStep === 5) {
             pregatesteEcranPlataSauDescarcare();
         }
-    } else if (current === 4) {
-        amestecaVizibilitateElemente(["step5"], ["step4"]);
-        state.currentStep = 5;
-        pregatesteEcranPlataSauDescarcare();
     }
+
     actualizeazaProgresWizard();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function prevStep(current) {
-    if (current === 2) {
-        amestecaVizibilitateElemente(["step1"], ["step2"]);
-        state.currentStep = 1;
-    } else if (current === 3) {
-        amestecaVizibilitateElemente(["step2"], ["step3"]);
-        state.currentStep = 2;
-    } else if (current === 4) {
-        amestecaVizibilitateElemente(["step3"], ["step4"]);
-        state.currentStep = 3;
-    } else if (current === 5) {
-        if (state.isRemoteMode) {
-            amestecaVizibilitateElemente(["step4"], ["step5"]);
-            state.currentStep = 4;
-        } else {
-            amestecaVizibilitateElemente(["step3"], ["step5"]);
-            state.currentStep = 3;
-        }
+    for (let i = 1; i <= 5; i++) {
+        const stepEl = document.getElementById(`step${i}`);
+        if (stepEl) stepEl.classList.remove("active");
     }
+
+    state.currentStep = current - 1;
+    if (state.currentStep < 1) state.currentStep = 1;
+
+    const targetStep = document.getElementById(`step${state.currentStep}`);
+    if (targetStep) targetStep.classList.add("active");
+
     actualizeazaProgresWizard();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function actualizeazaProgresWizard() {

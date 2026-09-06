@@ -108,6 +108,15 @@ body::after {
     animation: pulseGlow 3s infinite ease-in-out;
 }
 
+/* WIZARD & STEPS CONTROL */
+.step-content { 
+    display: none; 
+}
+.step-content.active { 
+    display: block; 
+    animation: fadeIn 0.3s ease; 
+}
+
         /* SPLASH SCREEN */
         #splashScreen {
             position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #090d16 100%);
