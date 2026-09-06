@@ -297,15 +297,53 @@ body::after {
         .referral-card { background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(99, 102, 241, 0.1)); border: 2px solid var(--primary); border-radius: var(--radius-md); padding: 24px; margin-top: 20px; }
         .referral-url-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: var(--radius-sm); font-family: monospace; font-size: 12px; word-break: break-all; margin: 12px 0; color: var(--text-main); font-weight: 600; }
 
-        /* PROGRESS WIZARD */
-        .progress-container { display: flex; justify-content: space-between; margin-bottom: 32px; position: relative; }
-        .progress-container::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--border-color); transform: translateY(-50%); z-index: 1; }
-        .progress-step { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-body); border: 2px solid var(--border-color); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; position: relative; z-index: 2; transition: all 0.3s; }
-        .progress-step.active { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 0 0 4px var(--primary-light); }
-        .progress-step.completed { background: var(--success); border-color: var(--success); color: white; }
-
-        .step-content { display: none; }
-        .step-content.active { display: block; animation: fadeIn 0.3s ease; }
+/* PROGRESS WIZARD CORECCAT ORIZONTAL */
+.progress-container { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 32px; 
+    position: relative; 
+    width: 100%;
+}
+.progress-container::before { 
+    content: ''; 
+    position: absolute; 
+    top: 50%; 
+    left: 20px; 
+    right: 20px; 
+    height: 2px; 
+    background: var(--border-color); 
+    transform: translateY(-50%); 
+    z-index: 1; 
+}
+.progress-step { 
+    width: 36px; 
+    height: 36px; 
+    border-radius: 50%; 
+    background: var(--bg-body); 
+    border: 2px solid var(--border-color); 
+    color: var(--text-muted); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-weight: 700; 
+    font-size: 13px; 
+    position: relative; 
+    z-index: 2; 
+    transition: all 0.3s; 
+}
+.progress-step.active { 
+    background: var(--primary); 
+    border-color: var(--primary); 
+    color: white; 
+    box-shadow: 0 0 0 4px var(--primary-light); 
+}
+.progress-step.completed { 
+    background: var(--success); 
+    border-color: var(--success); 
+    color: white; 
+}
 
         /* TOAST NOTIFICARE */
         #toastNotification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--success); color: white; padding: 14px 28px; border-radius: var(--radius-md); font-size: 14px; font-weight: 700; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 20000; pointer-events: none; }

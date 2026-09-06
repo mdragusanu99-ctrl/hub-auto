@@ -133,6 +133,11 @@ function selecteazaModSiPorneste(mod) {
     // Pregătim formularele specifice în funcție de documentul ales
     pregatesteFormulareDupaTipDocument();
     
+    if (state.isRemoteMode) {
+        // Dacă e la distanță, vom face ca pasul 3 sau pasul 4 să fie cel de trimitere link
+        arataToast("Mod la distanță activat: completează datele tale și mergi spre generare link.");
+    }
+    
     amestecaVizibilitateElemente(["progressBarContainer", "step1"], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
     actualizeazaProgresWizard();
 }
@@ -210,21 +215,25 @@ function arataElemente(ids, titluPas1) {
 // NAVIGARE PAȘI WIZARD (1 la 5)
 // ==========================================
 function nextStep(current) {
-    // Validări rapide elementare
     if (current === 1) {
-        // Trecem la pasul 2
         amestecaVizibilitateElemente(["step2"], ["step1"]);
         state.currentStep = 2;
     } else if (current === 2) {
-        amestecaVizibilitateElemente(["step3"], ["step2"]);
-        state.currentStep = 3;
+        // Dacă suntem în mod remote la contractul auto, după datele vânzătorului sărim direct la pasul 4 (Remote / QR)
+        if (state.isRemoteMode && state.currentDocType === 'itl_054') {
+            amestecaVizibilitateElemente(["step4"], ["step2"]);
+            state.currentStep = 4;
+            pornesteFluxRemote();
+        } else {
+            amestecaVizibilitateElemente(["step3"], ["step2"]);
+            state.currentStep = 3;
+        }
     } else if (current === 3) {
         if (state.isRemoteMode) {
             amestecaVizibilitateElemente(["step4"], ["step3"]);
             state.currentStep = 4;
-            genereazaLinkRemote();
+            pornesteFluxRemote();
         } else {
-            // Trecem direct la plata/finalizare pas 5 sau pas 3 final
             amestecaVizibilitateElemente(["step5"], ["step3"]);
             state.currentStep = 5;
             pregatesteEcranPlataSauDescarcare();
