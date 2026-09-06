@@ -73,8 +73,7 @@ function pornireSplashTimer() {
     }, 1000);
 }
 function deschideMeniuPrincipal() {
-    // Ascundem tot ce ține de pași și formulare, afișăm doar hub-ul
-    const elementeDeAscuns = ["listaDocumenteContainer", "dashboardView", "modeSelectorContainer", "progressBarContainer", "step1", "step2", "step3", "step4", "step5"];
+    const elementeDeAscuns = ["listaDocumenteContainer", "dashboardView", "modeSelectorContainer", "step1", "step2", "step3", "step4", "step5"];
     elementeDeAscuns.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = "none";
@@ -82,6 +81,10 @@ function deschideMeniuPrincipal() {
 
     const hub = document.getElementById("hubCategorii");
     if (hub) hub.style.display = "block";
+
+    // Ascundem bara de progres pe ecranul principal
+    const pb = document.getElementById("progressBarContainer");
+    if (pb) pb.classList.remove("active-progress");
 
     state.currentCategory = null;
     state.currentDocType = null;
@@ -143,9 +146,9 @@ function selecteazaModSiPorneste(mod) {
     // Ascundem meniurile anterioare
     amestecaVizibilitateElemente([], ["modeSelectorContainer", "hubCategorii", "listaDocumenteContainer"]);
     
-    // Afișăm bara de progres
+    // Acum afișăm bara de progres folosind clasa dedicată
     const pb = document.getElementById("progressBarContainer");
-    if (pb) pb.style.display = "flex"; // sau block, în funcție de cum e în HTML
+    if (pb) pb.classList.add("active-progress");
 
     // Resetăm pașii și activăm doar pasul 1
     for (let i = 1; i <= 5; i++) {

@@ -361,6 +361,14 @@ body::after {
     display: block !important; 
 }
 
+/* Ascundem bara de progres global, o activăm doar din JS în pași */
+#progressBarContainer {
+    display: none !important;
+}
+#progressBarContainer.active-progress {
+    display: flex !important;
+}
+
         /* TOAST NOTIFICARE */
         #toastNotification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--success); color: white; padding: 14px 28px; border-radius: var(--radius-md); font-size: 14px; font-weight: 700; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 20000; pointer-events: none; }
         #toastNotification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
