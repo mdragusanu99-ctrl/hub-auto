@@ -73,19 +73,31 @@ function pornireSplashTimer() {
     }, 1000);
 }
 function deschideMeniuPrincipal() {
-    const elementeDeAscuns = ["listaDocumenteContainer", "dashboardView", "modeSelectorContainer", "step1", "step2", "step3", "step4", "step5"];
+    // 1. Ascundem absolut tot ce ține de formulare, pași, listă de acte și moduri de lucru
+    const elementeDeAscuns = [
+        "listaDocumenteContainer", 
+        "dashboardView", 
+        "modeSelectorContainer", 
+        "step1", "step2", "step3", "step4", "step5"
+    ];
+    
     elementeDeAscuns.forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.style.display = "none";
+        if (el) {
+            el.style.display = "none";
+            el.classList.remove("active");
+        }
     });
 
-    const hub = document.getElementById("hubCategorii");
-    if (hub) hub.style.display = "block";
-
-    // Ascundem bara de progres pe ecranul principal
+    // 2. Ascundem bara de progres folosind clasa dedicată
     const pb = document.getElementById("progressBarContainer");
     if (pb) pb.classList.remove("active-progress");
 
+    // 3. Afișăm înapoi exclusiv ecranul principal cu cele 2 carduri (Auto & Imobiliare)
+    const hub = document.getElementById("hubCategorii");
+    if (hub) hub.style.display = "block";
+
+    // Resetăm starea globală
     state.currentCategory = null;
     state.currentDocType = null;
     state.currentStep = 1;
