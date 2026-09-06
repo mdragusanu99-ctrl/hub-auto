@@ -153,6 +153,7 @@ function selecteazaModSiPorneste(mod) {
     if (pas1) pas1.classList.add("active");
     
     actualizeazaProgresWizard();
+    asiguraVizibilitateCorectaPasi();
 }
 
 function pregatesteFormulareDupaTipDocument() {
@@ -228,6 +229,9 @@ function valideazaPasulCurent(current) {
     let valid = true;
 
     requiredInputs.forEach(input => {
+        // Ignorăm validarea câmpurilor care aparțin unor elemente ascunse în mod dinamic
+        if (input.offsetParent === null) return;
+
         if (!input.value.trim()) {
             valid = false;
             input.style.borderColor = "var(--danger)";
@@ -259,9 +263,16 @@ function actualizeazaProgresWizard() {
         const pasEl = document.getElementById(`p${i}`);
         if (!pasEl) continue;
         pasEl.classList.remove("active", "completed");
-        if (i < state.currentStep) {
+        
+        // Dacă suntem în modul local, tratăm pasul 5 vizual ca fiind pasul 4 final
+        let vizualCurrent = state.currentStep;
+        if (!state.isRemoteMode && state.currentStep === 5) {
+            vizualCurrent = 4;
+        }
+
+        if (i < vizualCurrent) {
             pasEl.classList.add("completed");
-        } else if (i === state.currentStep) {
+        } else if (i === vizualCurrent) {
             pasEl.classList.add("active");
         }
     }
@@ -278,18 +289,24 @@ function nextStep(current) {
         if (current === 1) {
             state.currentStep = 2;
         } else if (current === 2) {
-            state.currentStep = 4;
+            state.currentStep = 4; // Pasul de trimitere link distanță
             pornesteFluxRemote();
         } else if (current === 4) {
-            state.currentStep = 5;
+            state.currentStep = 5; // Spre plată
         }
     } else {
-        state.currentStep = current + 1;
+        // Modul Local: Sărim direct la pasul final de plată (Pasul 5) din pasul 3
+        if (current === 3) {
+            state.currentStep = 5;
+        } else {
+            state.currentStep = current + 1;
+        }
     }
 
     if (state.currentStep > 5) state.currentStep = 5;
 
     pregatesteFormulareDupaTipDocument();
+    asiguraVizibilitateCorectaPasi();
 
     const pasUrmatorEl = document.getElementById(`step${state.currentStep}`);
     if (pasUrmatorEl) pasUrmatorEl.classList.add("active");
@@ -302,21 +319,48 @@ function prevStep(current) {
     const pasCurentEl = document.getElementById(`step${current}`);
     if (pasCurentEl) pasCurentEl.classList.remove("active");
 
-    if (state.isRemoteMode && current === 4) {
-        state.currentStep = 2;
+    if (state.isRemoteMode) {
+        if (current === 4) {
+            state.currentStep = 2;
+        } else {
+            state.currentStep = current - 1;
+        }
     } else {
-        state.currentStep = current - 1;
+        // În modul local, de la pasul 5 înapoi ajungem la pasul 3
+        if (current === 5) {
+            state.currentStep = 3;
+        } else {
+            state.currentStep = current - 1;
+        }
     }
 
     if (state.currentStep < 1) state.currentStep = 1;
 
     pregatesteFormulareDupaTipDocument();
+    asiguraVizibilitateCorectaPasi();
 
     const pasAnteriorEl = document.getElementById(`step${state.currentStep}`);
     if (pasAnteriorEl) pasAnteriorEl.classList.add("active");
 
     actualizeazaProgresWizard();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function asiguraVizibilitateCorectaPasi() {
+    const localActions = document.getElementById("localActions");
+    const p4Container = document.getElementById("p4");
+    const btnNextStep3 = document.getElementById("btnNextStep3");
+
+    if (state.isRemoteMode) {
+        if (localActions) localActions.style.display = "block";
+        if (p4Container) p4Container.style.display = "flex";
+        if (btnNextStep3) btnNextStep3.innerText = "Finalizare & Opțiuni ➔";
+    } else {
+        if (localActions) localActions.style.display = "none";
+        // Ascundem bulina 4 din bara de sus în modul local pentru a avea exact 4 pași vizuali
+        if (p4Container) p4Container.style.display = "none";
+        if (btnNextStep3) btnNextStep3.innerText = "Mergi la Plată & Finalizare ➔";
+    }
 }
 
 // Autentificare și Cont
