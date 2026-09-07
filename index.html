@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ActPeLoc.ro - Platforma Oficială de Generare Documente</title>
-    <!-- Librăria PDFLib și QRCode pentru generare documente și linkuri remote -->
+    <!-- Librăria PDFLib și QRCode -->
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <style>
@@ -49,7 +49,6 @@
         .splash-box h2 { color: var(--primary); font-size: 22px; margin-bottom: 10px; }
         .splash-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
 
-        /* Layout General */
         header {
             background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 15px 30px;
             display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
@@ -64,7 +63,6 @@
         .btn-secondary { background: var(--text-muted); color: white; }
         .btn-success { background: var(--success); color: white; }
         
-        /* Meniu Lateral / Drawer */
         #sideMenu {
             position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: var(--bg-card);
             border-right: 1px solid var(--border-color); z-index: 1100; box-shadow: 5px 0 15px rgba(0,0,0,0.1);
@@ -78,7 +76,6 @@
         }
         .menu-links a:hover, .menu-links button:hover { background: var(--primary-light); color: var(--primary); }
 
-        /* Container Principal & Hero Banner */
         .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         .hero-banner {
             background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 40px; border-radius: var(--radius-md);
@@ -87,10 +84,7 @@
         .hero-banner h1 { font-size: 28px; margin-bottom: 10px; }
         .hero-banner p { font-size: 15px; opacity: 0.9; max-width: 700px; margin: 0 auto 20px auto; }
         
-        /* Secțiune Categorii Meniu Split (Auto & Imobiliare) */
-        .category-split {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;
-        }
+        .category-split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         @media(max-width: 768px) { .category-split { grid-template-columns: 1fr; } }
         .cat-card {
             padding: 30px; border-radius: var(--radius-md); color: white; cursor: pointer;
@@ -102,7 +96,6 @@
         .cat-card h3 { font-size: 20px; margin-bottom: 10px; }
         .cat-card p { font-size: 13px; opacity: 0.85; margin-bottom: 15px; }
 
-        /* Listă Documente & Formulare */
         .document-list-view, .dashboard-view, .packages-view { background: var(--bg-card); border: 1px solid var(--border-color); padding: 30px; border-radius: var(--radius-md); box-shadow: var(--shadow); display: none; }
         .doc-item {
             padding: 15px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); margin-bottom: 12px;
@@ -119,14 +112,32 @@
         }
         input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); border-color: transparent; }
 
-        /* Modal Auth & Notificări */
+        /* Widget Flotant Live Chat Suport */
+        #liveChatWidget {
+            position: fixed; bottom: 20px; right: 20px; z-index: 998;
+        }
+        .chat-bubble-btn {
+            background: var(--primary); color: white; width: 55px; height: 55px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: none; transition: transform 0.2s;
+        }
+        .chat-bubble-btn:hover { transform: scale(1.05); }
+        .chat-window {
+            position: absolute; bottom: 70px; right: 0; width: 320px; background: var(--bg-card);
+            border: 1px solid var(--border-color); border-radius: var(--radius-md); box-shadow: var(--shadow);
+            display: none; flex-direction: column; overflow: hidden;
+        }
+        .chat-header { background: var(--primary); color: white; padding: 12px; font-size: 14px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { padding: 15px; height: 200px; overflow-y: auto; font-size: 13px; display: flex; flex-direction: column; gap: 10px; }
+        .chat-footer { padding: 10px; border-top: 1px solid var(--border-color); display: flex; gap: 6px; }
+
         #authModal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
             display: none; justify-content: center; align-items: center; z-index: 1200; backdrop-filter: blur(3px);
         }
         .modal-card { background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
         .notification-toast {
-            position: fixed; bottom: 20px; right: 20px; background: var(--text-main); color: var(--bg-card);
+            position: fixed; bottom: 90px; right: 20px; background: var(--text-main); color: var(--bg-card);
             padding: 12px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; z-index: 9999;
             box-shadow: var(--shadow); display: none; animation: slideIn 0.3s ease;
         }
@@ -213,11 +224,9 @@
         <div id="listaDocumenteContainer" class="document-list-view">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 id="titluCategorieLista" style="font-size: 18px; font-weight: 800;">Documente Disponibile</h2>
-                <button class="btn btn-secondary" onclick="deschidePaginaPrincipala()">⬅ Înapoi laCategorii</button>
+                <button class="btn btn-secondary" onclick="deschidePaginaPrincipala()">⬅ Înapoi la Categorii</button>
             </div>
-            <div id="containerItemiActe">
-                <!-- Se populează din JS -->
-            </div>
+            <div id="containerItemiActe"></div>
         </div>
 
         <!-- Flux Asistat de Generare Document (Pași Formular) -->
@@ -239,7 +248,6 @@
             <div class="step-content" id="step1">
                 <div style="font-size: 16px; font-weight: 800; margin-bottom: 15px;" id="titleStep1">Pasul 1: Datele Părților</div>
                 
-                <!-- Formulare Pas 1 -->
                 <div id="formAutoStep1" class="form-grid" style="display:none;">
                     <div class="full-width"><label>Nume și Prenume (Vânzător)</label><input type="text" id="sellerName" placeholder="ex: POPESCU ION"></div>
                     <div><label>Județ</label><input type="text" id="sellerCounty" placeholder="ex: VASLUI"></div>
@@ -255,8 +263,11 @@
                     <div><label>CNP Proprietar</label><input type="text" id="proprietarCnp" maxlength="13" placeholder="ex: 2950505123456"></div>
                     <div><label>Act Identitate (CI)</label><input type="text" id="proprietarAct" placeholder="ex: BZ 654321"></div>
                     <div class="full-width"><label>Adresă Imobil Închiriat</label><input type="text" id="imobilAdresa" placeholder="ex: BD. REPUBLICII, BL. A1, AP. 5"></div>
-                    <div><label>Chirie Lunară</label><input type="text" id="imobilChirie" placeholder="ex: 350 EUR"></div>
-                    <div><label>Garanție</label><input type="text" id="imobilGarantie" placeholder="ex: 350 EUR"></div>
+                    <div><label>Chirie Lunară</label><input type="text" id="imobilChirie" placeholder="ex: 350"></div>
+                    <div>
+                        <label>Monedă Chirie</label>
+                        <select id="imobilMoneda"><option value="EUR">EUR</option><option value="RON">RON</option></select>
+                    </div>
                 </div>
 
                 <div id="formItl016Step1" class="form-grid" style="display:none;">
@@ -267,7 +278,7 @@
                 </div>
 
                 <div id="formItl005Step1" class="form-grid" style="display:none;">
-                    <div><label>Tip Contribuabil</label><select id="itl005TipContribuabil"><option value="pf">Persoană Fizică</option><option value="pj">Persoană Juridicǎ</option></select></div>
+                    <div><label>Tip Contribuabil</label><select id="itl005TipContribuabil"><option value="pf">Persoană Fizică</option><option value="pj">Persoană Juridică</option></select></div>
                     <div><label>Nume / Denumire</label><input type="text" id="itl005Nume" placeholder="ex: POPESCU ION"></div>
                     <div class="full-width"><label>CNP sau CUI</label><input type="text" id="itl005Cnp" placeholder="ex: 1800101123456"></div>
                     <div class="full-width"><label>Adresă Sediu / Domiciliu</label><input type="text" id="itl005Adresa" placeholder="ex: BÂRLAD, STR. PRINCIPALĂ"></div>
@@ -370,17 +381,19 @@
                     <div><label>Serie Motor</label><input type="text" id="engineSeries" placeholder="ex: CAGA123456"></div>
                     <div><label>Capacitate Cilindrică (cmc)</label><input type="text" id="cylinderCapacity" placeholder="ex: 1968"></div>
                     <div><label>Greutate Maximă (kg)</label><input type="text" id="maxWeight" placeholder="ex: 1800"></div>
-                    <div><label>Preț Vânzare (RON/EUR)</label><input type="text" id="contractPrice" placeholder="ex: 8.500 EUR"></div>
-                    <div><label>Data Contractului</label><input type="text" id="contractDate" placeholder="ex: 01.09.2026"></div>
+                    <div><label>Preț Vânzare</label><input type="text" id="contractPrice" placeholder="ex: 8.500"></div>
+                    <div>
+                        <label>Monedă Preț</label>
+                        <select id="contractCurrency"><option value="EUR">EUR</option><option value="RON">RON</option></select>
+                    </div>
                 </div>
 
-                <!-- Chenare Semnături Olografe -->
                 <div id="semnaturiContainerStandard" style="margin-top: 20px; background: var(--bg-body); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
                     <label style="margin-bottom: 6px; font-weight: 700; color: var(--primary);">Semnătura Partea 1 (Proprietar / Vânzător / Locator)</label>
                     <canvas id="sigProprietarCanvas" width="300" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-bottom: 8px;"></canvas>
                     <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px;" onclick="curataCanvas('sigProprietarCanvas')">Resetează Semnătura 1</button>
 
-                    <label style="margin-top: 15px; margin-bottom: 6px; font-weight: 700; color: var(--primary); display: block;">Semnătura Partea 2 (Cumpărător / Chirias / Comodatar)</label>
+                    <label style="margin-top: 15px; margin-bottom: 6px; font-weight: 700; color: var(--primary); display: block;">Semnătura Partea 2 (Cumpărător / Chiriaș / Comodatar)</label>
                     <canvas id="sigChiriasCanvas" width="300" height="90" style="border: 1px solid var(--border-color); background: var(--bg-card); border-radius: 6px; cursor: crosshair; display: block; margin-bottom: 8px;"></canvas>
                     <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px;" onclick="curataCanvas('sigChiriasCanvas')">Resetează Semnătura 2</button>
                 </div>
@@ -391,7 +404,7 @@
                 </div>
             </div>
 
-            <!-- STEP 4 (Pasul Final: Plată & Descărcare) -->
+            <!-- STEP 4 -->
             <div class="step-content" id="step4" style="display:none; text-align: center;">
                 <div style="font-size: 18px; font-weight: 800; margin-bottom: 10px;">Pasul Final: Sumar Comandă & Plată Securizată</div>
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata sau folosiți un credit din cont pentru a debloca descărcarea PDF.</p>
@@ -417,7 +430,7 @@
 
         </div>
 
-        <!-- Pagina Pachete Lunare (Business & Casual) -->
+        <!-- Pachete Lunare -->
         <div id="packagesView" class="packages-view">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="font-size: 18px; font-weight: 800;">Alege Pachetul Dorit</h2>
@@ -442,19 +455,18 @@
             </div>
         </div>
 
-        <!-- Pagina Arhivă Documente -->
+        <!-- Arhivă Documente -->
         <div id="archiveView" class="dashboard-view">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="font-size: 18px; font-weight: 800;">📁 Arhiva Mea de Documente</h2>
                 <button class="btn btn-secondary" onclick="deschidePaginaPrincipala()">⬅ Înapoi</button>
             </div>
             <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Aici găsești toate contractele și declarațiile generate anterior de tine.</p>
-            <div id="listaArhivaContainer">
-                <!-- Se populează din JS -->
-            </div>
+            <div id="listaArhivaContainer"></div>
+            <button class="btn btn-secondary" style="margin-top: 15px; font-size: 12px;" onclick="curataArhivaGlobala()">🗑️ Golește Arhiva</button>
         </div>
 
-        <!-- Pagina Profil & Credite / Afiliere -->
+        <!-- Profil & Credite -->
         <div id="dashboardView" class="dashboard-view">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="font-size: 18px; font-weight: 800;">👤 Profilul Meu & Credite</h2>
@@ -475,7 +487,25 @@
 
     </div>
 
-    <!-- Modal Autentificare / Înregistrare -->
+    <!-- Widget Live Chat Suport -->
+    <div id="liveChatWidget">
+        <div class="chat-window" id="chatWindowBox">
+            <div class="chat-header">
+                <span>💬 Asistență ActPeLoc</span>
+                <button class="btn btn-secondary" style="padding: 2px 6px; font-size: 11px;" onclick="comutaChatBox()">✕</button>
+            </div>
+            <div class="chat-body" id="chatBodyContent">
+                <div style="background: var(--primary-light); padding: 8px; border-radius: 6px; color: var(--primary); font-weight: 600;">Salut! Cu ce te pot ajuta legat de completarea actelor astăzi?</div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="chatInputText" placeholder="Scrie mesajul..." style="font-size: 12px; text-transform: none;">
+                <button class="btn" style="padding: 6px 10px; font-size: 12px;" onclick="trimiteMesajChat()">Trimite</button>
+            </div>
+        </div>
+        <button class="chat-bubble-btn" onclick="comutaChatBox()">💬</button>
+    </div>
+
+    <!-- Modal Auth -->
     <div id="authModal">
         <div class="modal-card">
             <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 15px; color: var(--primary);">Autentificare / Înregistrare</h3>
@@ -494,7 +524,6 @@
     <!-- Notificare Toast -->
     <div id="notificationToast" class="notification-toast">Notificare sistem</div>
 
-    <!-- Import Fișiere de Script -->
     <script src="script.js"></script>
     <script src="pdf-generator.js"></script>
 </body>

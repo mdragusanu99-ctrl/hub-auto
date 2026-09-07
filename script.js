@@ -1,13 +1,11 @@
 // ==========================================
-// SCRIPT.JS - Logică, Navigare și Stare Platformă
+// SCRIPT.JS - Completat cu Suport Chat, Monedă și Arhivă Avansată
 // ==========================================
 
 let tipContractCurent = 'auto';
-let maxStepsTotal = 4;
 let currentStepIndex = 1;
 let profilCurent = { email: 'mdragusanu99@platforma.ro', pachet: 'GRATUIT', ramase: 9 };
 
-// Structura categoriilor și actelor
 const dateCategorii = {
     auto: {
         titlu: "Auto & Transport",
@@ -62,7 +60,7 @@ function arataNotificare(mesaj, esteEroare = false) {
     const toast = document.getElementById('notificationToast');
     if (!toast) return;
     toast.innerText = mesaj;
-    toast.style.background = esteEroare ? '#dc2626' : 'var(--text-main)';
+    toast.style.background = esteEroare ? '#dc2626' : 'var(--text-main)'; 
     toast.style.display = 'block';
     setTimeout(() => { toast.style.display = 'none'; }, 3500);
 }
@@ -88,13 +86,8 @@ function inchideSplash() {
     }
 }
 
-function deschideMeniuLateral() {
-    document.getElementById('sideMenu').classList.add('open');
-}
-
-function inchideMeniuLateral() {
-    document.getElementById('sideMenu').classList.remove('open');
-}
+function deschideMeniuLateral() { document.getElementById('sideMenu').classList.add('open'); }
+function inchideMeniuLateral() { document.getElementById('sideMenu').classList.remove('open'); }
 
 function comutaTema() {
     const body = document.body;
@@ -165,8 +158,6 @@ function pornesteFluxDocument(tip) {
     tipContractCurent = tip;
     document.getElementById('listaDocumenteContainer').style.display = 'none';
     document.getElementById('modeSelectorContainer').style.display = 'block';
-    
-    // Setează titlul modului
     document.getElementById('modSelectorTitle').innerText = `Generare: ${tip.toUpperCase()}`;
     activeazaPasulUI(1);
 }
@@ -178,57 +169,34 @@ function activeazaPasulUI(stepNum) {
         if (s) s.style.display = (i === stepNum) ? 'block' : 'none';
     }
 
-    // Gestionare formulare pas 1 & 2 & 3
-    const fAuto1 = document.getElementById('formAutoStep1');
-    const fImob1 = document.getElementById('formImobiliareStep1');
-    const fItl1 = document.getElementById('formItl016Step1');
-    const fItl005_1 = document.getElementById('formItl005Step1');
-    const fComAuto1 = document.getElementById('formComodatAutoStep1');
-    const fComImob1 = document.getElementById('formComodatImobilStep1');
-    const fPvLoc1 = document.getElementById('formPvLocuintaStep1');
-
-    if (fAuto1) fAuto1.style.display = 'none';
-    if (fImob1) fImob1.style.display = 'none';
-    if (fItl1) fItl1.style.display = 'none';
-    if (fItl005_1) fItl005_1.style.display = 'none';
-    if (fComAuto1) fComAuto1.style.display = 'none';
-    if (fComImob1) fComImob1.style.display = 'none';
-    if (fPvLoc1) fPvLoc1.style.display = 'none';
+    // Ascunde toate formularele de la pas 1 și 2
+    ['formAutoStep1', 'formImobiliareStep1', 'formItl016Step1', 'formItl005Step1', 'formComodatAutoStep1', 'formComodatImobilStep1', 'formPvLocuintaStep1'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+    ['formAutoStep2', 'formImobiliareStep2', 'formItl016Step2', 'formItl005_2', 'formComodatAutoStep2', 'formComodatImobilStep2', 'formPvLocuintaStep2'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
 
     if (stepNum === 1) {
-        if (tipContractCurent === 'auto' && fAuto1) fAuto1.style.display = 'grid';
-        else if (tipContractCurent === 'imobiliare' && fImob1) fImob1.style.display = 'grid';
-        else if (tipContractCurent === 'itl_016' && fItl1) fItl1.style.display = 'grid';
-        else if (tipContractCurent === 'itl_005' && fItl005_1) fItl005_1.style.display = 'grid';
-        else if (tipContractCurent === 'comodat_auto' && fComAuto1) fComAuto1.style.display = 'grid';
-        else if (tipContractCurent === 'comodat_imobil' && fComImob1) fComImob1.style.display = 'grid';
-        else if (tipContractCurent === 'pv_locuinta' && fPvLoc1) fPvLoc1.style.display = 'grid';
+        if (tipContractCurent === 'auto') document.getElementById('formAutoStep1').style.display = 'grid';
+        else if (tipContractCurent === 'imobiliare') document.getElementById('formImobiliareStep1').style.display = 'grid';
+        else if (tipContractCurent === 'itl_016') document.getElementById('formItl016Step1').style.display = 'grid';
+        else if (tipContractCurent === 'itl_005') document.getElementById('formItl005Step1').style.display = 'grid';
+        else if (tipContractCurent === 'comodat_auto') document.getElementById('formComodatAutoStep1').style.display = 'grid';
+        else if (tipContractCurent === 'comodat_imobil') document.getElementById('formComodatImobilStep1').style.display = 'grid';
+        else if (tipContractCurent === 'pv_locuinta') document.getElementById('formPvLocuintaStep1').style.display = 'grid';
     }
 
-    const fAuto2 = document.getElementById('formAutoStep2');
-    const fImob2 = document.getElementById('formImobiliareStep2');
-    const fItl2 = document.getElementById('formItl016Step2');
-    const fItl005_2 = document.getElementById('formItl005_2');
-    const fComAuto2 = document.getElementById('formComodatAutoStep2');
-    const fComImob2 = document.getElementById('formComodatImobilStep2');
-    const fPvLoc2 = document.getElementById('formPvLocuintaStep2');
-
-    if (fAuto2) fAuto2.style.display = 'none';
-    if (fImob2) fImob2.style.display = 'none';
-    if (fItl2) fItl2.style.display = 'none';
-    if (fItl005_2) fItl005_2.style.display = 'none';
-    if (fComAuto2) fComAuto2.style.display = 'none';
-    if (fComImob2) fComImob2.style.display = 'none';
-    if (fPvLoc2) fPvLoc2.style.display = 'none';
-
     if (stepNum === 2) {
-        if (tipContractCurent === 'auto' && fAuto2) fAuto2.style.display = 'grid';
-        else if (tipContractCurent === 'imobiliare' && fImob2) fImob2.style.display = 'grid';
-        else if (tipContractCurent === 'itl_016' && fItl2) fItl2.style.display = 'grid';
-        else if (tipContractCurent === 'itl_005' && fItl005_2) fItl005_2.style.display = 'grid';
-        else if (tipContractCurent === 'comodat_auto' && fComAuto2) fComAuto2.style.display = 'grid';
-        else if (tipContractCurent === 'comodat_imobil' && fComImob2) fComImob2.style.display = 'grid';
-        else if (tipContractCurent === 'pv_locuinta' && fPvLoc2) fPvLoc2.style.display = 'grid';
+        if (tipContractCurent === 'auto') document.getElementById('formAutoStep2').style.display = 'grid';
+        else if (tipContractCurent === 'imobiliare') document.getElementById('formImobiliareStep2').style.display = 'grid';
+        else if (tipContractCurent === 'itl_016') document.getElementById('formItl016Step2').style.display = 'grid';
+        else if (tipContractCurent === 'itl_005') document.getElementById('formItl005_2').style.display = 'grid';
+        else if (tipContractCurent === 'comodat_auto') document.getElementById('formComodatAutoStep2').style.display = 'grid';
+        else if (tipContractCurent === 'comodat_imobil') document.getElementById('formComodatImobilStep2').style.display = 'grid';
+        else if (tipContractCurent === 'pv_locuinta') document.getElementById('formPvLocuintaStep2').style.display = 'grid';
     }
 
     const fAuto3 = document.getElementById('formAutoStep3');
@@ -239,19 +207,13 @@ function activeazaPasulUI(stepNum) {
 }
 
 function nextStep(current) {
-    if (current < 3) {
-        activeazaPasulUI(current + 1);
-    } else {
-        activeazaPasulUI(4); // Pasul 4 este plata și descărcarea
-    }
+    if (current < 3) activeazaPasulUI(current + 1);
+    else activeazaPasulUI(4);
 }
 
 function prevStep(current) {
-    if (current > 1) {
-        activeazaPasulUI(current - 1);
-    } else {
-        deschidePaginaPrincipala();
-    }
+    if (current > 1) activeazaPasulUI(current - 1);
+    else deschidePaginaPrincipala();
 }
 
 function initCanvasSemnatura(canvasId) {
@@ -263,24 +225,6 @@ function initCanvasSemnatura(canvasId) {
     canvas.addEventListener('mousedown', (e) => { desenand = true; ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY); });
     canvas.addEventListener('mousemove', (e) => { if (!desenand) return; ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke(); });
     window.addEventListener('mouseup', () => { desenand = false; });
-
-    canvas.addEventListener('touchstart', (e) => {
-        desenand = true;
-        const rect = canvas.getBoundingClientRect();
-        const touch = e.touches[0];
-        ctx.beginPath();
-        ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
-        e.preventDefault();
-    });
-    canvas.addEventListener('touchmove', (e) => {
-        if (!desenand) return;
-        const rect = canvas.getBoundingClientRect();
-        const touch = e.touches[0];
-        ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
-        ctx.stroke();
-        e.preventDefault();
-    });
-    window.addEventListener('touchend', () => { desenand = false; });
 }
 
 function curataCanvas(canvasId) {
@@ -313,13 +257,13 @@ function colecteazaDate() {
         cylinderCapacity: document.getElementById('cylinderCapacity')?.value || '',
         maxWeight: document.getElementById('maxWeight')?.value || '',
         contractPrice: document.getElementById('contractPrice')?.value || '',
-        contractDate: document.getElementById('contractDate')?.value || '',
+        contractCurrency: document.getElementById('contractCurrency')?.value || 'EUR',
         proprietarNume: document.getElementById('proprietarNume')?.value || '',
         proprietarCnp: document.getElementById('proprietarCnp')?.value || '',
         proprietarAct: document.getElementById('proprietarAct')?.value || '',
         imobilAdresa: document.getElementById('imobilAdresa')?.value || '',
         imobilChirie: document.getElementById('imobilChirie')?.value || '',
-        imobilGarantie: document.getElementById('imobilGarantie')?.value || '',
+        imobilMoneda: document.getElementById('imobilMoneda')?.value || 'EUR',
         chiriasNume: document.getElementById('chiriasNume')?.value || '',
         chiriasCnp: document.getElementById('chiriasCnp')?.value || '',
         chiriasAct: document.getElementById('chiriasAct')?.value || '',
@@ -398,10 +342,16 @@ function deschideArhiva() {
     }
     container.innerHTML = arhiva.map(item => `
         <div class="doc-item">
-            <div><strong>${item.idAct || 'DOC'}</strong> - ${item.nume}</div>
+            <div><strong>${item.idAct}</strong> - ${item.nume}</div>
             <span style="font-size: 12px; color: var(--text-muted);">${item.data}</span>
         </div>
     `).join('');
+}
+
+function curataArhivaGlobala() {
+    localStorage.removeItem('act_peloc_arhiva');
+    deschideArhiva();
+    arataNotificare("🗑️ Arhiva a fost golită.");
 }
 
 function deschidePachete() {
@@ -444,6 +394,26 @@ function deconectareUtilizator() {
 function copiazaLinkAfiliere() {
     navigator.clipboard.writeText("https://actpeloc.ro/?ref=MARIO25");
     arataNotificare("📋 Link de afiliere copiat în clipboard!");
+}
+
+function comutaChatBox() {
+    const box = document.getElementById('chatWindowBox');
+    box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
+}
+
+function trimiteMesajChat() {
+    const txt = document.getElementById('chatInputText');
+    const body = document.getElementById('chatBodyContent');
+    if (!txt.value.trim()) return;
+    
+    body.innerHTML += `<div style="background: var(--bg-body); padding: 8px; border-radius: 6px; text-align: right;">${txt.value}</div>`;
+    let userMsg = txt.value;
+    txt.value = '';
+    
+    setTimeout(() => {
+        body.innerHTML += `<div style="background: var(--primary-light); padding: 8px; border-radius: 6px; color: var(--primary);">Am înțeles. Asistența noastră preia solicitarea ta privitoare la "${userMsg}". Te ajutăm imediat!</div>`;
+        body.scrollTop = body.scrollHeight;
+    }, 700);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
