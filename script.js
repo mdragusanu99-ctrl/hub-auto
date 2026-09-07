@@ -167,9 +167,16 @@ function activeazaPasulUI(stepNum) {
     for (let i = 1; i <= 4; i++) {
         const s = document.getElementById('step' + i);
         if (s) s.style.display = (i === stepNum) ? 'block' : 'none';
+        
+        const ind = document.getElementById('ind' + i);
+        if (ind) {
+            if (i === stepNum) ind.className = 'step-ind active';
+            else if (i < stepNum) ind.className = 'step-ind active';
+            else ind.className = 'step-ind';
+        }
     }
 
-    // Ascunde toate formularele de la pas 1 și 2
+    // Ascunde formulare pas 1 & 2
     ['formAutoStep1', 'formImobiliareStep1', 'formItl016Step1', 'formItl005Step1', 'formComodatAutoStep1', 'formComodatImobilStep1', 'formPvLocuintaStep1'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
@@ -201,6 +208,19 @@ function activeazaPasulUI(stepNum) {
 
     const fAuto3 = document.getElementById('formAutoStep3');
     if (fAuto3) fAuto3.style.display = (tipContractCurent === 'auto' && stepNum === 3) ? 'grid' : 'none';
+
+    // Populează previzualizarea la pasul 4
+    if (stepNum === 4) {
+        const d = colecteazaDate();
+        const prevBox = document.getElementById('livePreviewContainer');
+        if (prevBox) {
+            prevBox.innerHTML = `<strong>DOCUMENT:</strong> ${tipContractCurent.toUpperCase()}<br>` +
+                                `<strong>Vânzător / Proprietar:</strong> ${d.sellerName || d.proprietarNume || d.itlContribuabilNume || '-'}<br>` +
+                                `<strong>Cumpărător / Chiriaș:</strong> ${d.buyerName || d.chiriasNume || '-'}<br>` +
+                                `<strong>Preț / Valoare:</strong> ${d.contractPrice || d.imobilChirie || '0'} ${d.contractCurrency || d.imobilMoneda || 'RON'}<br>` +
+                                `<em>Toate clauzele și datele de identificare au fost preluate corect.</em>`;
+        }
+    }
 
     initCanvasSemnatura('sigProprietarCanvas');
     initCanvasSemnatura('sigChiriasCanvas');

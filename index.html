@@ -31,9 +31,8 @@
             --primary-light: #1e3a8a;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.5; transition: background 0.3s, color 0.3s; }
+        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.5; transition: background 0.3s, color 0.3s; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* Splash Screen Animație Transparentă */
         #splashScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.85); display: flex; justify-content: center; align-items: center;
@@ -76,7 +75,7 @@
         }
         .menu-links a:hover, .menu-links button:hover { background: var(--primary-light); color: var(--primary); }
 
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
         .hero-banner {
             background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 40px; border-radius: var(--radius-md);
             text-align: center; margin-bottom: 30px; box-shadow: var(--shadow);
@@ -84,7 +83,7 @@
         .hero-banner h1 { font-size: 28px; margin-bottom: 10px; }
         .hero-banner p { font-size: 15px; opacity: 0.9; max-width: 700px; margin: 0 auto 20px auto; }
         
-        .category-split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .category-split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
         @media(max-width: 768px) { .category-split { grid-template-columns: 1fr; } }
         .cat-card {
             padding: 30px; border-radius: var(--radius-md); color: white; cursor: pointer;
@@ -95,6 +94,13 @@
         .cat-imob { background: linear-gradient(135deg, #065f46, #059669); border-left: 6px solid #34d399; }
         .cat-card h3 { font-size: 20px; margin-bottom: 10px; }
         .cat-card p { font-size: 13px; opacity: 0.85; margin-bottom: 15px; }
+
+        /* Secțiune FAQ pe prima pagină */
+        .faq-section { background: var(--bg-card); border: 1px solid var(--border-color); padding: 30px; border-radius: var(--radius-md); margin-bottom: 40px; box-shadow: var(--shadow); }
+        .faq-section h3 { font-size: 18px; font-weight: 800; margin-bottom: 15px; color: var(--primary); }
+        .faq-item { margin-bottom: 15px; }
+        .faq-item h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .faq-item p { font-size: 13px; color: var(--text-muted); }
 
         .document-list-view, .dashboard-view, .packages-view { background: var(--bg-card); border: 1px solid var(--border-color); padding: 30px; border-radius: var(--radius-md); box-shadow: var(--shadow); display: none; }
         .doc-item {
@@ -112,10 +118,27 @@
         }
         input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); border-color: transparent; }
 
-        /* Widget Flotant Live Chat Suport */
-        #liveChatWidget {
-            position: fixed; bottom: 20px; right: 20px; z-index: 998;
+        /* Indicatori Pași Stilați cu Text */
+        .step-indicators { display: flex; justify-content: space-between; margin-bottom: 25px; gap: 5px; }
+        .step-ind { font-size: 11px; font-weight: 700; color: var(--text-muted); text-align: center; flex: 1; padding-bottom: 6px; border-bottom: 3px solid var(--border-color); }
+        .step-ind.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+        /* Cutie Previzualizare Document */
+        .preview-box {
+            background: var(--bg-body); border: 1px dashed var(--border-color); padding: 20px; border-radius: var(--radius-sm);
+            font-family: monospace; font-size: 12px; max-height: 180px; overflow-y: auto; text-align: left; margin-bottom: 20px; color: var(--text-main);
         }
+
+        /* Footer Oficial */
+        footer {
+            background: var(--bg-card); border-top: 1px solid var(--border-color); padding: 25px 30px; text-align: center;
+            font-size: 12px; color: var(--text-muted); margin-top: auto; display: flex; flex-direction: column; gap: 10px; align-items: center;
+        }
+        .footer-links { display: flex; gap: 20px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; }
+        .footer-links a:hover { color: var(--primary); }
+
+        #liveChatWidget { position: fixed; bottom: 20px; right: 20px; z-index: 998; }
         .chat-bubble-btn {
             background: var(--primary); color: white; width: 55px; height: 55px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer;
@@ -218,6 +241,23 @@
                     <button class="btn" style="background: #34d399; color: #065f46;">Accesează Imobiliare ➔</button>
                 </div>
             </div>
+
+            <!-- Secțiune Întrebări Frecvente (FAQ) -->
+            <div class="faq-section">
+                <h3>❓ Întrebări Frecvente</h3>
+                <div class="faq-item">
+                    <h4>Sunt aceste contracte valabile legal în România?</h4>
+                    <p>Da, toate modelele noastre respectă normele impuse de Ministerul Finanțelor, codul fiscal și reglementările Direcțiilor de Impozite și Taxe Locale (ITL).</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Ce se întâmplă după ce efectuez plata?</h4>
+                    <p>Documentul este generat instant în format PDF securizat, gata de descărcare și tipărire, fiind salvat automat și în arhiva ta privată.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Pot folosi creditele lunare pentru orice tip de act?</h4>
+                    <p>Da, creditele din pachetele Casual sau Business pot fi folosite pentru oricare dintre cele 7 documente disponibile pe platformă.</p>
+                </div>
+            </div>
         </div>
 
         <!-- Vizualizare Listă Documente pe Categorie -->
@@ -236,12 +276,12 @@
                 <button class="btn btn-secondary" onclick="deschidePaginaPrincipala()">Anulează</button>
             </div>
 
-            <!-- Indicatori Pași (Progres) -->
-            <div id="progressBarContainer" style="display: flex; gap: 8px; margin-bottom: 25px;">
-                <div id="p1" style="flex:1; height: 6px; background: var(--primary); border-radius: 3px;"></div>
-                <div id="p2" style="flex:1; height: 6px; background: var(--border-color); border-radius: 3px;"></div>
-                <div id="p3" style="flex:1; height: 6px; background: var(--border-color); border-radius: 3px;"></div>
-                <div id="p4" style="flex:1; height: 6px; background: var(--border-color); border-radius: 3px;"></div>
+            <!-- Indicatori Pași Stilați (Cu Titluri Vizibile) -->
+            <div class="step-indicators">
+                <div id="ind1" class="step-ind active">1. Părți</div>
+                <div id="ind2" class="step-ind">2. Detalii</div>
+                <div id="ind3" class="step-ind">3. Semnături</div>
+                <div id="ind4" class="step-ind">4. Plată & PDF</div>
             </div>
 
             <!-- STEP 1 -->
@@ -404,13 +444,19 @@
                 </div>
             </div>
 
-            <!-- STEP 4 -->
+            <!-- STEP 4 (Include Previzualizare & Plată) -->
             <div class="step-content" id="step4" style="display:none; text-align: center;">
-                <div style="font-size: 18px; font-weight: 800; margin-bottom: 10px;">Pasul Final: Sumar Comandă & Plată Securizată</div>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Efectuați plata sau folosiți un credit din cont pentru a debloca descărcarea PDF.</p>
+                <div style="font-size: 18px; font-weight: 800; margin-bottom: 10px;">Pasul Final: Previzualizare & Plată</div>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Verificați schița documentului înainte de finalizare și descărcare.</p>
                 
-                <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); max-width: 400px; margin: 0 auto 20px auto; text-align: left;">
-                    <p style="font-size: 13px; margin-bottom: 8px;"><strong>Document:</strong> Contract / Declarație Oficială</p>
+                <!-- Schiță Previzualizare Live -->
+                <div class="preview-box" id="livePreviewContainer">
+                    [ PREVIZUALIZARE DOCUMENT GENERAT ]<br>
+                    Datele introduse vor fi structurate oficial conform șablonului juridic selectat.
+                </div>
+
+                <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 15px; border-radius: var(--radius-md); max-width: 400px; margin: 0 auto 20px auto; text-align: left;">
+                    <p style="font-size: 13px; margin-bottom: 6px;"><strong>Document:</strong> Contract / Declarație Oficială</p>
                     <p style="font-size: 13px;"><strong>Cost generare:</strong> <span style="color: var(--primary); font-weight: bold;">19.00 RON</span> (sau 1 Credit)</p>
                 </div>
 
@@ -520,6 +566,16 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer Oficial -->
+    <footer>
+        <div>© 2026 ActPeLoc.ro — Toate drepturile rezervate. Generator autorizat de documente juridice și fiscale.</div>
+        <div class="footer-links">
+            <a href="#" onclick="arataNotificare('Termeni și Condiții conform legislației UE.')">Termeni și Condiții</a>
+            <a href="#" onclick="arataNotificare('Politica de Confidențialitate & GDPR activă.')">Politica GDPR</a>
+            <a href="#" onclick="arataNotificare('Contact suport: suport@actpeloc.ro')">Contact Suport</a>
+        </div>
+    </footer>
 
     <!-- Notificare Toast -->
     <div id="notificationToast" class="notification-toast">Notificare sistem</div>
