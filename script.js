@@ -1,7 +1,3 @@
-// ==========================================
-// SCRIPT.JS - Completat cu Suport Chat, Monedă și Arhivă Avansată
-// ==========================================
-
 let tipContractCurent = 'auto';
 let currentStepIndex = 1;
 let profilCurent = { email: 'mdragusanu99@platforma.ro', pachet: 'GRATUIT', ramase: 9 };
@@ -11,8 +7,8 @@ const dateCategorii = {
         titlu: "Auto & Transport",
         acte: [
             { id: 'auto-054', nume: "Contract Vânzare-Cumpărare Auto (ITL 054)", desc: "Model oficial fiscal pentru înmatriculare / radieri.", func: "pornesteFluxDocument('auto')" },
-            { id: 'itl-016', nume: "Declarație Scoatere din Evidență Auto (ITL-016)", desc: "Model oficial pentru radiere fiscală la Primărie (vânzător).", func: "pornesteFluxDocument('itl_016')" },
-            { id: 'itl-005', nume: "Declarație Fiscală ITL-005 (Cumpărător / Impunere Auto)", desc: "Declarație fiscală pentru stabilirea impozitului auto.", func: "pornesteFluxDocument('itl_005')" },
+            { id: 'itl-016', nume: "Declarație Scoatere din Evidență Auto (ITL-016)", desc: "Model oficial pentru radiere fiscală la Primărie.", func: "pornesteFluxDocument('itl_016')" },
+            { id: 'itl-005', nume: "Declarație Fiscală ITL-005 (Impunere Auto)", desc: "Declarație fiscală pentru stabilirea impozitului auto.", func: "pornesteFluxDocument('itl_005')" },
             { id: 'comodat-auto', nume: "Contract de Comodat Auto", desc: "Împrumut folosință autoturism fără costuri.", func: "pornesteFluxDocument('comodat_auto')" }
         ]
     },
@@ -52,15 +48,13 @@ function verificaSiActiveazaCredite() {
     }
     const elementContor = document.getElementById('crediteRamaseDisplay');
     if (elementContor) elementContor.innerText = profilCurent.ramase;
-    const dashRamase = document.getElementById('infoDashRamase');
-    if (dashRamase) dashRamase.innerText = profilCurent.ramase;
 }
 
 function arataNotificare(mesaj, esteEroare = false) {
     const toast = document.getElementById('notificationToast');
     if (!toast) return;
     toast.innerText = mesaj;
-    toast.style.background = esteEroare ? '#dc2626' : 'var(--text-main)'; 
+    toast.style.background = esteEroare ? '#dc2626' : '#1e293b';
     toast.style.display = 'block';
     setTimeout(() => { toast.style.display = 'none'; }, 3500);
 }
@@ -114,8 +108,6 @@ function salveazaContUtilizator() {
     let db = obtineBazaConturi();
     db[email] = profilCurent;
     salveazaBazaConturi(db);
-    document.getElementById('infoDashEmail').innerText = email;
-    document.getElementById('authHeaderBtn').innerText = nume || email;
     inchideModalAuth();
     arataNotificare("✅ Autentificare reușită!");
 }
@@ -146,9 +138,9 @@ function selecteazaCategorieTip(cat) {
         div.innerHTML = `
             <div>
                 <strong>${act.nume}</strong>
-                <p style="font-size: 12px; color: var(--text-muted);">${act.desc}</p>
+                <p style="font-size: 11px; color: var(--text-muted);">${act.desc}</p>
             </div>
-            <button class="btn" onclick="${act.func}">Generează ➔</button>
+            <button class="btn" style="justify-content:center;" onclick="${act.func}">Generează ➔</button>
         `;
         container.appendChild(div);
     });
@@ -162,6 +154,38 @@ function pornesteFluxDocument(tip) {
     activeazaPasulUI(1);
 }
 
+function valideazaPasCurent(stepNum) {
+    if (stepNum === 1) {
+        const cnpInputs = ['sellerCnp', 'proprietarCnp', 'itlContribuabilNume', 'itl005Cnp', 'comodantAutoCnp', 'comodantImobilCnp', 'pvProprietarCnp'];
+        for (let id of cnpInputs) {
+            const el = document.getElementById(id);
+            if (el && el.offsetParent !== null) {
+                let val = el.value.trim();
+                if (id.includes('Cnp') && val.length > 0 && val.length !== 13) {
+                    arataNotificare("Eroare: CNP-ul trebuie să conțină exact 13 caractere!", true);
+                    el.focus();
+                    return false;
+                }
+            }
+        }
+    }
+    if (stepNum === 2) {
+        const vinInputs = ['itlAutoVin', 'itl005Vin', 'chassisSeries'];
+        for (let id of vinInputs) {
+            const el = document.getElementById(id);
+            if (el && el.offsetParent !== null) {
+                let val = el.value.trim();
+                if (val.length > 0 && val.length !== 17) {
+                    arataNotificare("Eroare: Seria de șasiu (VIN) trebuie să aibă exact 17 caractere!", true);
+                    el.focus();
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
 function activeazaPasulUI(stepNum) {
     currentStepIndex = stepNum;
     for (let i = 1; i <= 4; i++) {
@@ -170,13 +194,11 @@ function activeazaPasulUI(stepNum) {
         
         const ind = document.getElementById('ind' + i);
         if (ind) {
-            if (i === stepNum) ind.className = 'step-ind active';
-            else if (i < stepNum) ind.className = 'step-ind active';
+            if (i <= stepNum) ind.className = 'step-ind active';
             else ind.className = 'step-ind';
         }
     }
 
-    // Ascunde formulare pas 1 & 2
     ['formAutoStep1', 'formImobiliareStep1', 'formItl016Step1', 'formItl005Step1', 'formComodatAutoStep1', 'formComodatImobilStep1', 'formPvLocuintaStep1'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
@@ -209,16 +231,14 @@ function activeazaPasulUI(stepNum) {
     const fAuto3 = document.getElementById('formAutoStep3');
     if (fAuto3) fAuto3.style.display = (tipContractCurent === 'auto' && stepNum === 3) ? 'grid' : 'none';
 
-    // Populează previzualizarea la pasul 4
     if (stepNum === 4) {
         const d = colecteazaDate();
         const prevBox = document.getElementById('livePreviewContainer');
         if (prevBox) {
             prevBox.innerHTML = `<strong>DOCUMENT:</strong> ${tipContractCurent.toUpperCase()}<br>` +
-                                `<strong>Vânzător / Proprietar:</strong> ${d.sellerName || d.proprietarNume || d.itlContribuabilNume || '-'}<br>` +
-                                `<strong>Cumpărător / Chiriaș:</strong> ${d.buyerName || d.chiriasNume || '-'}<br>` +
-                                `<strong>Preț / Valoare:</strong> ${d.contractPrice || d.imobilChirie || '0'} ${d.contractCurrency || d.imobilMoneda || 'RON'}<br>` +
-                                `<em>Toate clauzele și datele de identificare au fost preluate corect.</em>`;
+                                `<strong>Părți:</strong> ${d.sellerName || d.proprietarNume || 'N/A'} &rarr; ${d.buyerName || d.chiriasNume || 'N/A'}<br>` +
+                                `<strong>Valoare:</strong> ${d.contractPrice || d.imobilChirie || '0'} ${d.contractCurrency || d.imobilMoneda || 'RON'}<br>` +
+                                `<em>Date validate cu succes, pregătit pentru generare PDF.</em>`;
         }
     }
 
@@ -227,6 +247,7 @@ function activeazaPasulUI(stepNum) {
 }
 
 function nextStep(current) {
+    if (!valideazaPasCurent(current)) return;
     if (current < 3) activeazaPasulUI(current + 1);
     else activeazaPasulUI(4);
 }
@@ -257,60 +278,19 @@ function curataCanvas(canvasId) {
 function colecteazaDate() {
     return {
         sellerName: document.getElementById('sellerName')?.value || '',
-        sellerCounty: document.getElementById('sellerCounty')?.value || '',
-        sellerCity: document.getElementById('sellerCity')?.value || '',
-        sellerAddress: document.getElementById('sellerAddress')?.value || '',
-        sellerIdSeries: document.getElementById('sellerIdSeries')?.value || '',
-        sellerIdNumber: document.getElementById('sellerIdNumber')?.value || '',
         sellerCnp: document.getElementById('sellerCnp')?.value || '',
         buyerName: document.getElementById('buyerName')?.value || '',
-        buyerCounty: document.getElementById('buyerCounty')?.value || '',
-        buyerCity: document.getElementById('buyerCity')?.value || '',
-        buyerAddress: document.getElementById('buyerAddress')?.value || '',
-        buyerIdSeries: document.getElementById('buyerIdSeries')?.value || '',
-        buyerIdNumber: document.getElementById('buyerIdNumber')?.value || '',
         buyerCnp: document.getElementById('buyerCnp')?.value || '',
         vehicleMake: document.getElementById('vehicleMake')?.value || '',
-        vehicleModel: document.getElementById('vehicleModel')?.value || '',
         chassisSeries: document.getElementById('chassisSeries')?.value || '',
-        engineSeries: document.getElementById('engineSeries')?.value || '',
-        cylinderCapacity: document.getElementById('cylinderCapacity')?.value || '',
-        maxWeight: document.getElementById('maxWeight')?.value || '',
         contractPrice: document.getElementById('contractPrice')?.value || '',
         contractCurrency: document.getElementById('contractCurrency')?.value || 'EUR',
         proprietarNume: document.getElementById('proprietarNume')?.value || '',
-        proprietarCnp: document.getElementById('proprietarCnp')?.value || '',
-        proprietarAct: document.getElementById('proprietarAct')?.value || '',
-        imobilAdresa: document.getElementById('imobilAdresa')?.value || '',
         imobilChirie: document.getElementById('imobilChirie')?.value || '',
         imobilMoneda: document.getElementById('imobilMoneda')?.value || 'EUR',
         chiriasNume: document.getElementById('chiriasNume')?.value || '',
-        chiriasCnp: document.getElementById('chiriasCnp')?.value || '',
-        chiriasAct: document.getElementById('chiriasAct')?.value || '',
         itlContribuabilNume: document.getElementById('itlContribuabilNume')?.value || '',
-        itlContribuabilCnp: document.getElementById('itlContribuabilCnp')?.value || '',
-        itlContribuabilAct: document.getElementById('itlContribuabilAct')?.value || '',
-        itlContribuabilAdresa: document.getElementById('itlContribuabilAdresa')?.value || '',
-        itlAutoMarca: document.getElementById('itlAutoMarca')?.value || '',
-        itlAutoMotor: document.getElementById('itlAutoMotor')?.value || '',
-        itlAutoVin: document.getElementById('itlAutoVin')?.value || '',
-        itlAutoCapacitate: document.getElementById('itlAutoCapacitate')?.value || '',
-        itlAutoDataDobandirii: document.getElementById('itlAutoDataDobandirii')?.value || '',
-        itl005TipContribuabil: document.getElementById('itl005TipContribuabil')?.value || 'pf',
-        itl005Nume: document.getElementById('itl005Nume')?.value || '',
-        itl005Cnp: document.getElementById('itl005Cnp')?.value || '',
-        itl005Adresa: document.getElementById('itl005Adresa')?.value || '',
-        itl005Marca: document.getElementById('itl005Marca')?.value || '',
-        itl005Vin: document.getElementById('itl005Vin')?.value || '',
-        itl005Capacitate: document.getElementById('itl005Capacitate')?.value || '',
-        itl005An: document.getElementById('itl005An')?.value || '',
-        comodantAutoNume: document.getElementById('comodantAutoNume')?.value || '',
-        comodatarAutoNume: document.getElementById('comodatarAutoNume')?.value || '',
-        comodantImobilNume: document.getElementById('comodantImobilNume')?.value || '',
-        comodatarImobilNume: document.getElementById('comodatarImobilNume')?.value || '',
-        pvProprietarNume: document.getElementById('pvProprietarNume')?.value || '',
-        pvChiriasNume: document.getElementById('pvChiriasNume')?.value || '',
-        pvInventarBunuri: document.getElementById('pvInventarBunuri')?.value || ''
+        itl005Nume: document.getElementById('itl005Nume')?.value || ''
     };
 }
 
@@ -357,13 +337,13 @@ function deschideArhiva() {
     const container = document.getElementById('listaArhivaContainer');
     let arhiva = JSON.parse(localStorage.getItem('act_peloc_arhiva') || '[]');
     if (arhiva.length === 0) {
-        container.innerHTML = `<p style="font-size: 13px; color: var(--text-muted);">Nu ai generat niciun document momentan.</p>`;
+        container.innerHTML = `<p style="font-size: 12px; color: var(--text-muted);">Niciun document generat.</p>`;
         return;
     }
     container.innerHTML = arhiva.map(item => `
         <div class="doc-item">
             <div><strong>${item.idAct}</strong> - ${item.nume}</div>
-            <span style="font-size: 12px; color: var(--text-muted);">${item.data}</span>
+            <span style="font-size: 11px; color: var(--text-muted);">${item.data}</span>
         </div>
     `).join('');
 }
@@ -371,7 +351,7 @@ function deschideArhiva() {
 function curataArhivaGlobala() {
     localStorage.removeItem('act_peloc_arhiva');
     deschideArhiva();
-    arataNotificare("🗑️ Arhiva a fost golită.");
+    arataNotificare("🗑️ Arhivă golită.");
 }
 
 function deschidePachete() {
@@ -402,18 +382,13 @@ function cumparaPachet(pachet) {
     salveazaBazaConturi(db);
     verificaSiActiveazaCredite();
     document.getElementById('infoDashPachet').innerText = pachet;
-    arataNotificare(`🎉 Felicitări! Ai activat pachetul ${pachet}!`);
+    arataNotificare(`🎉 Pachetul ${pachet} activat!`);
 }
 
 function deconectareUtilizator() {
     inchideMeniuLateral();
-    arataNotificare("🔒 Ai fost deconectat cu succes.");
+    arataNotificare("🔒 Deconectat cu succes.");
     deschidePaginaPrincipala();
-}
-
-function copiazaLinkAfiliere() {
-    navigator.clipboard.writeText("https://actpeloc.ro/?ref=MARIO25");
-    arataNotificare("📋 Link de afiliere copiat în clipboard!");
 }
 
 function comutaChatBox() {
@@ -426,12 +401,10 @@ function trimiteMesajChat() {
     const body = document.getElementById('chatBodyContent');
     if (!txt.value.trim()) return;
     
-    body.innerHTML += `<div style="background: var(--bg-body); padding: 8px; border-radius: 6px; text-align: right;">${txt.value}</div>`;
-    let userMsg = txt.value;
+    body.innerHTML += `<div style="background: var(--bg-body); padding: 6px; border-radius: 4px; text-align: right;">${txt.value}</div>`;
     txt.value = '';
-    
     setTimeout(() => {
-        body.innerHTML += `<div style="background: var(--primary-light); padding: 8px; border-radius: 6px; color: var(--primary);">Am înțeles. Asistența noastră preia solicitarea ta privitoare la "${userMsg}". Te ajutăm imediat!</div>`;
+        body.innerHTML += `<div style="background: var(--primary-light); padding: 6px; border-radius: 4px; color: var(--primary);">Am înțeles. Te ajutăm imediat!</div>`;
         body.scrollTop = body.scrollHeight;
     }, 700);
 }
