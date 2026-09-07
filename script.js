@@ -128,19 +128,33 @@ function selecteazaCategorieTip(cat) {
     listaC.style.display = 'block';
     
     const infoCat = dateCategorii[cat];
-    document.getElementById('titluCategorieLista').innerText = infoCat.titlu;
+    
+    // Generăm structura modernă cu header și grid direct în containerul principal de listă
+    listaC.innerHTML = `
+        <div class="category-header-flex">
+            <div>
+                <span style="font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px;">Categorie Oficială</span>
+                <h2>${infoCat.titlu}</h2>
+            </div>
+            <button class="btn btn-secondary" onclick="deschidePaginaPrincipala()">⬅ Înapoi</button>
+        </div>
+        <div class="docs-grid-modern" id="containerItemiActe"></div>
+    `;
+
     const container = document.getElementById('containerItemiActe');
-    container.innerHTML = "";
 
     infoCat.acte.forEach(act => {
         const div = document.createElement('div');
-        div.className = 'doc-item';
+        div.className = 'doc-card-item';
         div.innerHTML = `
-            <div>
-                <strong>${act.nume}</strong>
-                <p style="font-size: 11px; color: var(--text-muted);">${act.desc}</p>
+            <div class="doc-card-info">
+                <div style="font-size: 20px; margin-bottom: 10px;">📄</div>
+                <h4>${act.nume}</h4>
+                <p>${act.desc}</p>
             </div>
-            <button class="btn" style="justify-content:center;" onclick="${act.func}">Generează ➔</button>
+            <div class="doc-card-action">
+                <button class="btn" style="width: 100%; justify-content: center;" onclick="${act.func}">Completează & Generează ➔</button>
+            </div>
         `;
         container.appendChild(div);
     });
